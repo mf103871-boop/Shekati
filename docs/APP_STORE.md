@@ -1,23 +1,32 @@
 # مواد المتجر | App Store material
 
-Prepared copy for version 1.0. Replace operator/contact placeholders and check all claims against the accepted device build. The source delivery has not been submitted to Apple.
+Publication draft for version 1.0.0. Replace operator/contact placeholders and check feature claims against the processed build and physical-iPhone results before public submission. The App Store Connect app record and pricing are saved. [Build 2](https://github.com/mf103871-boop/Shekati/actions/runs/37147465558) passed complete native tests, native screenshot review, signed archive/export and upload. Apple processing/TestFlight readiness is not yet confirmed. Public App Review has not been requested, and physical-device/iCloud acceptance is not complete. Configuration items described as saved below are confirmed; the remaining publication fields are draft values.
 
 ## Store configuration
 
 | Field | Value |
 | --- | --- |
 | Product | Paid app download; all features included |
-| US base price | $9.99; comparable local storefront prices |
+| US base price | $9.99, saved in App Store Connect; [confirmation image](screenshots/Shekati-price-saved.jpg) |
+| Local prices | Price schedule configured across 175 storefronts with corresponding local prices |
 | Primary category | Finance |
 | Secondary category | Productivity |
-| Device | iPhone only |
+| Device | iPhone only; signed build 2 archive and IPA family `[1]` guards passed |
+| Mac and Apple Vision Pro availability | Unchecked and saved in App Store Connect |
+| Reduced school volume price | Unchecked and saved |
+| Paid Apps Agreement | Active, verified read-only; 25 September 2026–3 September 2027 |
+| Free Apps Agreement | Active, verified read-only |
+| US Foreign Status and W-8BEN | Active, verified read-only |
+| DSA | Active, verified read-only |
+| Brazil tax form | Missing tax information; not changed during setup |
+| Internal testing group | `Shekati Owner Testing`, zero testers, automatic distribution off, no invitations sent |
 | Minimum OS | iOS 17 |
 | Languages | Arabic and English |
 | Privacy-policy URL | `[ACTUAL_PUBLIC_PRIVACY_URL]` |
 | Support URL | `[ACTUAL_PUBLIC_SUPPORT_URL]` |
 | Copyright | `[YEAR] [LEGAL_OPERATOR_NAME]` |
 
-Price is set in App Store Connect, not hard-coded in the app or marketing description. Confirm the Paid Apps Agreement before setting a paid price. [Apple pricing guidance](https://developer.apple.com/help/app-store-connect/manage-app-pricing/set-a-price/)
+The price has already been set in App Store Connect; it is not hard-coded in the app or marketing description. Read-only Business verification confirmed that the Paid Apps Agreement is already Active, as required for paid public sale. The Brazil tax form still shows missing information and needs owner review for applicable distribution requirements before public sale. No agreement was accepted or tax form changed during the agent-run verification. These account checks do not authorize public release or establish device/iCloud acceptance. [Apple pricing guidance](https://developer.apple.com/help/app-store-connect/manage-app-pricing/set-a-price/), [Apple agreement requirements](https://developer.apple.com/help/app-store-connect/manage-agreements/sign-and-update-agreements).
 
 ## العربية
 
@@ -90,3 +99,5 @@ Provide `[REAL_REVIEW_CONTACT_NAME]`, `[REAL_REVIEW_CONTACT_EMAIL]` and `[REAL_R
 ## Screenshot brief
 
 Capture actual iPhone screens in each language: dashboard, searchable cheque list, add-cheque form, cheque details with a fictional sample image, and reminder/privacy settings. Use fictional account names and numbers. Include a dark-mode example and demonstrate readable enlarged text. Do not use customer bank data. Check Apple's current upload dimensions when preparing final screenshots.
+
+Verified raw native build 2 simulator captures (1260×2736): [Arabic Home](screenshots/native-arabic-home.png), [English cheque detail](screenshots/native-english-detail.png), and [English Settings after changing language](screenshots/native-english-settings.png). The Settings capture confirms readable, unmirrored English and correct left-to-right layout. These demonstrate the native build; complete the final store screenshot set and device acceptance before public submission.

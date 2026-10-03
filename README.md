@@ -2,7 +2,7 @@
 
 تطبيق أصلي للآيفون لمتابعة الشيكات الواردة والصادرة، وتواريخ الاستحقاق والصرف الفعلي، والصور والتذكيرات. واجهة عربية وإنجليزية، حفظ محلي، ومزامنة خاصة عبر iCloud. الحد الأدنى iOS 17.
 
-This repository contains the SwiftUI app, its SwiftData models, a Foundation-only business-logic package, automated tests, XcodeGen configuration, and hosted macOS build workflows. The native app has compiled on hosted macOS; an installable iPhone build is still pending signing and TestFlight upload.
+This repository contains the SwiftUI app, its SwiftData models, a Foundation-only business-logic package, automated tests, XcodeGen configuration, and hosted macOS build workflows. [Version 1.0.0, build 2](https://github.com/mf103871-boop/Shekati/actions/runs/37147465558) passed complete native validation, visual review, signed archive/export and upload to App Store Connect. Apple processing and TestFlight availability have not yet been confirmed; the app has not been installed on a physical iPhone.
 
 ## What is included
 
@@ -16,13 +16,13 @@ This repository contains the SwiftUI app, its SwiftData models, a Foundation-onl
 - Per-cheque reminder days and time, with inherited defaults and live civil-day refresh.
 - Core unit tests, iPhone integration tests and an isolated XCUITest flow, plus a manually invoked TestFlight upload workflow.
 
-The commercial model is a **$9.99 paid download**, with all features included and no subscription or in-app purchase. App Store pricing is configured in App Store Connect; it is not an application setting.
+The commercial model is a **$9.99 paid download**, with all features included and no subscription or in-app purchase. The US base price has been [saved in App Store Connect](docs/screenshots/Shekati-price-saved.jpg). Mac and Apple Vision Pro availability and the reduced school volume price were unchecked and saved. Pricing is a store configuration; the app has not been publicly released.
 
 ## Build and release
 
-See [Build guide](docs/BUILD.md) for macOS or Windows-with-hosted-macOS instructions, Apple signing, private iCloud setup, and TestFlight secrets. Start with an unsigned simulator CI build, then perform [real-device acceptance checks](docs/DEVICE_QA.md).
+See [Build guide](docs/BUILD.md) for macOS or Windows-with-hosted-macOS instructions, Apple signing, private iCloud setup, and TestFlight secrets. Build 2 automated simulator validation has passed; [real-device acceptance checks](docs/DEVICE_QA.md) remain pending.
 
-تم ربط المستودع الخاص وهوية التطبيق وحاوية iCloud وسجل المتجر، وإصدار شهادة وملف التوزيع وحفظ أسرار التوقيع والنشر السبعة في بيئة GitHub المقيّدة بفرع `main`. تهيئة مخطط iCloud ورفع TestFlight قيد التجهيز. راجع [حالة الربط الفعلية](docs/ACCOUNT_SETUP_STATUS.md) و[متابعة التجهيز من ويندوز](docs/CONNECT_ACCOUNTS_AR.md).
+تم ربط المستودع الخاص وهوية التطبيق وحاوية iCloud وسجل المتجر، وإصدار شهادة وملف التوزيع وحفظ أسرار التوقيع والنشر السبعة في بيئة GitHub المقيّدة بفرع `main`. نجح رفع البناء رقم 2 إلى Apple؛ ظهور النسخة وجاهزيتها في TestFlight وتهيئة مخطط iCloud ما زالت قيد التحقق. راجع [حالة الربط الفعلية](docs/ACCOUNT_SETUP_STATUS.md) و[متابعة التجهيز من ويندوز](docs/CONNECT_ACCOUNTS_AR.md).
 
 ## معاينة التصميم | Design preview
 
@@ -34,9 +34,13 @@ Release material is supplied in [Arabic and English store copy](docs/APP_STORE.m
 
 ## Validation status
 
-Hosted macOS [run 37145564552](https://github.com/mf103871-boop/Shekati/actions/runs/37145564552) compiled the native app using Xcode 26.6 and an iOS 26.5 simulator. All 24 core tests, all 22 hosted unit/integration tests, and the Arabic-to-English UI test passed. The add-cheque UI test failed when the test harness could not reach an offscreen field. [Retry 37146039264](https://github.com/mf103871-boop/Shekati/actions/runs/37146039264) repeated those passes but still failed to reach the party field; its simulator result is under review. Complete validation has not passed yet.
+Build 2's complete native [validation job 111274269760](https://github.com/mf103871-boop/Shekati/actions/runs/37147465558/job/111274269760) passed using Xcode 26.6 and an iOS 26.5 simulator: all 24 macOS core tests, then all 48 iPhone scenarios (24 core, 22 hosted unit/integration and both UI tests). The separate native [cloud schema bootstrap tool](Tools/SchemaBootstrap/README.md) also built successfully. Fresh native screenshots confirmed readable English Settings with the correct left-to-right layout after switching from Arabic, with the selected Settings tab preserved.
 
-No TestFlight build has been uploaded. Private iCloud sync, camera, biometrics and closed-app notification delivery still require signed physical-iPhone checks.
+Build 2's [signed upload job 111274911754](https://github.com/mf103871-boop/Shekati/actions/runs/37147465558/job/111274911754) succeeded, including both archive and IPA checks for the iPhone-only device family `[1]`; [saved success proof](docs/screenshots/Shekati-build-upload-success.jpg). The earlier build 1 rejection (90474, unintended iPad support) is resolved in the signed output. Upload success is confirmed; portal processing/TestFlight readiness, private iCloud schema setup and signed physical-iPhone checks remain pending.
+
+These native test results apply to build 2 commit [7325d7046101](https://github.com/mf103871-boop/Shekati/commit/7325d70461017efe53bec6e44b1d59c54d72220e). Read-only account verification confirmed the Paid Apps Agreement is already active. The Brazil tax form still shows missing information; publication URLs/contact details and public App Review remain outstanding. The empty internal group `Shekati Owner Testing` has zero testers, with automatic distribution off and no invitations sent.
+
+Actual build 2 simulator captures: [Arabic Home](docs/screenshots/native-arabic-home.png), [English cheque detail](docs/screenshots/native-english-detail.png), and [English Settings after language change](docs/screenshots/native-english-settings.png). These are raw native captures, separate from the browser design preview.
 
 See [validation results](docs/VALIDATION.md) for the checks actually performed and checks still pending. Simulator builds intentionally use local-only storage; private iCloud must be tested with a signed iPhone build.
 
@@ -52,5 +56,6 @@ See [validation results](docs/VALIDATION.md) for the checks actually performed a
 | `.github/workflows/` | Unsigned CI checks and manually requested signed TestFlight upload |
 | `docs/` | Build guide, device QA and bilingual release drafts |
 | `Preview/` | Interactive design preview with fictional data and preview screenshots |
+| `Tools/SchemaBootstrap/` | Development-only native tool for initializing the CloudKit schema before deployment |
 
 No user financial records, Apple credentials, generated project, archives or signing files are included.
