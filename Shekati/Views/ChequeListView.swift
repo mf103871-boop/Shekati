@@ -41,14 +41,14 @@ struct ChequeListView: View {
 
     var body: some View {
         listContent
-            .toolbar(content: { () -> ChequeListToolbar in
+            .toolbar {
                 ChequeListToolbar(
                     canReorder: app.preferences.sort == .manual && !visible.isEmpty,
                     hasFilters: hasFilters,
                     showingFilters: $showingFilters,
                     showingEditor: $showingEditor
                 )
-            })
+            }
             .sheet(isPresented: $showingEditor) {
                 NavigationStack { ChequeEditorView() }
             }
