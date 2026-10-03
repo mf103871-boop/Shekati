@@ -1,6 +1,8 @@
 # مواد المتجر | App Store material
 
-Publication draft for version 1.0.0. Replace operator/contact placeholders and check feature claims against physical-iPhone results before public submission. [Build 2](https://appstoreconnect.apple.com/teams/609ff8f7-15ce-48ec-9e60-e95f8ed24d3a/apps/6818852973/testflight/ios/c6a99453-40c5-4cd3-a86b-aeca16550426) passed complete native tests, native screenshot review, signed archive/export and upload. Internal readiness is confirmed in the group Builds tab: `Ready to Test`, `Expires in 90 days`. One owner tester has been invited; status `Invited`. The registered-phone setup completed and the CloudKit Production schema was deployed and verified on 4 October 2026. Public App Review has not been requested, and invitation acceptance, regular TestFlight installation and device/private-sync acceptance remain unverified. Configuration items described as saved below are confirmed; the remaining publication fields are draft values.
+Publication draft for version 1.0.0. Replace operator/contact placeholders and check feature claims against physical-iPhone results before public submission. The registered-phone setup completed and the CloudKit Production schema was deployed and verified on 4 October 2026. App Store Connect reports installation of regular build 2 on the owner's iPhone. Build 4 is now available in the internal group. Public App Review has not been requested; build 4 installation and device/private-sync acceptance remain unverified. Configuration items described as saved below are confirmed; the remaining publication fields are draft values.
+
+Build **1.0.0 (4)** contains the sync-status correction, passed 56 iPhone scenarios and the separate 24-test macOS suite, and completed signed iPhone-only export/upload in [run 37161293969](https://github.com/mf103871-boop/Shekati/actions/runs/37161293969); [proof](screenshots/Shekati-build4-upload-success.jpg). Processing completed, and the group Builds tab confirms `Testing`, `Expires in 90 days`; [availability proof](screenshots/Shekati-TestFlight-build4.jpg). The native design screenshots below are from the earlier tested build 2.
 
 ## Store configuration
 
@@ -11,7 +13,7 @@ Publication draft for version 1.0.0. Replace operator/contact placeholders and c
 | Local prices | Price schedule configured across 175 storefronts with corresponding local prices |
 | Primary category | Finance |
 | Secondary category | Productivity |
-| Device | iPhone only; signed build 2 archive and IPA family `[1]` guards passed |
+| Device | iPhone only; signed build 4 archive and IPA family `[1]` guards passed |
 | Mac and Apple Vision Pro availability | Unchecked and saved in App Store Connect |
 | Reduced school volume price | Unchecked and saved |
 | Paid Apps Agreement | Active, verified read-only; 25 September 2026–3 September 2027 |
@@ -19,10 +21,10 @@ Publication draft for version 1.0.0. Replace operator/contact placeholders and c
 | US Foreign Status and W-8BEN | Active, verified read-only |
 | DSA | Active, verified read-only |
 | Brazil tax form | Missing tax information; not changed during setup |
-| Internal testing group | `Shekati Owner Testing` attached to build 2: one build and one owner tester, automatic distribution off |
-| Owner invitation | Sent on 3 October 2026; status `Invited`, acceptance and installation unconfirmed |
-| TestFlight build | Version 1.0.0, build 2 visible; [portal proof](screenshots/Shekati-TestFlight-build.jpg) |
-| Internal TestFlight readiness | Group Builds tab: `Ready to Test`, `Expires in 90 days`; physical installation and device acceptance pending |
+| Internal testing group | `Shekati Owner Testing` attached to builds 4 and 2: two builds and one owner tester, automatic distribution off |
+| Owner invitation | Sent on 3 October 2026; portal now reports `Installed 1.0.0 (2)` on 4 October; build 4 installation unconfirmed |
+| TestFlight build | Version 1.0.0, build 4 available; [portal proof](screenshots/Shekati-TestFlight-build4.jpg) |
+| Internal TestFlight readiness | Group Builds tab: build 4 `Testing`, `Expires in 90 days`; build 4 installation and device acceptance pending |
 | iCloud schema | Phone initialization completed; Production deployment and all fields/indexes verified; [proof](screenshots/Shekati-iCloud-production-schema.jpg); private runtime sync acceptance pending |
 | Minimum OS | iOS 17 |
 | Languages | Arabic and English |
