@@ -1,0 +1,568 @@
+import SwiftUI
+import SwiftData
+import PhotosUI
+import UIKit
+import AVFoundation
+import UserNotifications
+import ShekatiCore
+
+@MainActor
+struct ChequeEditorView: View {
+    @Environment(AppState.self) private var app
+    @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
+    @Query private var records: [ChequeRecord]
+    let record: ChequeRecord?
+
+    @State private var direction: ChequeDirection
+    @State private var amountText: String
+    @State private var dueDate: Date
+    @State private var includeIssueDate: Bool
+    @State private var issueDate: Date
+    @State private var number: String
+    @State private var bank: String
+    @State private var branch: String
+    @State private var party: String
+    @State private var accountReference: String
+    @State private var notes: String
+    @State private var frontImageData: Data?
+    @State private var backImageData: Data?
+    @State private var remindersEnabled: Bool
+    @State private var useDefaultReminders: Bool
+    @State private var before3: Bool
+    @State private var before1: Bool
+    @State private var onDueDate: Bool
+    @State private var customOffsets: Set<Int>
+    @State private var reminderTime: Date?
+    @State private var customDays = ""
+    @State private var frontPhoto: PhotosPickerItem?
+    @State private var backPhoto: PhotosPickerItem?
+    @State private var showingScanner = false
+    @State private var scanSide: AttachmentSide = .front
+    @State private var showingCameraHelp = false
+    @State private var ocrSuggestion: OCRSuggestion?
+    @State private var isReadingImage = false
+    @State private var isSaving = false
+    @State private var errorMessage: String?
+    @State private var hasEdited = false
+    @State private var showingDiscard = false
+
+    init(record: ChequeRecord? = nil) {
+        self.record = record
+        let offsets = record?.reminderOffsets ?? [3, 1, 0]
+        _direction = State(initialValue: record?.direction ?? .incoming)
+        _amountText = State(initialValue: record.map {
+            CurrencyMath.editable(minorUnits: $0.amountMinorUnits, currencyCode: $0.currencyCode)
+        } ?? "")
+        _dueDate = State(initialValue: record?.dueDate.date() ?? Date())
+        _includeIssueDate = State(initialValue: record?.issueDate != nil)
+        _issueDate = State(initialValue: record?.issueDate?.date() ?? Date())
+        _number = State(initialValue: record?.number ?? "")
+        _bank = State(initialValue: record?.bank ?? "")
+        _branch = State(initialValue: record?.branch ?? "")
+        _party = State(initialValue: record?.party ?? "")
+        _accountReference = State(initialValue: record?.accountReference ?? "")
+        _notes = State(initialValue: record?.notes ?? "")
+        _frontImageData = State(initialValue: record?.frontImageData)
+        _backImageData = State(initialValue: record?.backImageData)
+        _remindersEnabled = State(initialValue: record?.remindersEnabled ?? true)
+        _useDefaultReminders = State(initialValue: record?.reminderOffsets == nil)
+        _before3 = State(initialValue: offsets.contains(3))
+        _before1 = State(initialValue: offsets.contains(1))
+        _onDueDate = State(initialValue: offsets.contains(0))
+        _customOffsets = State(initialValue: Set(offsets.filter { ![0, 1, 3].contains($0) }))
+        if let hour = record?.reminderHour, let minute = record?.reminderMinute {
+            _reminderTime = State(initialValue: Self.clockDate(hour: hour, minute: minute))
+        } else {
+            _reminderTime = State(initialValue: nil)
+        }
+    }
+
+    private var currency: String { record?.currencyCode ?? app.currencyCode }
+    private var busy: Bool { isSaving || isReadingImage }
+    private var effectiveReminderTime: Date {
+        reminderTime ?? Self.clockDate(hour: app.preferences.reminderHour, minute: app.preferences.reminderMinute)
+    }
+    private var selectedOffsets: [Int] {
+        var offsets = customOffsets
+        if before3 { offsets.insert(3) }
+        if before1 { offsets.insert(1) }
+        if onDueDate { offsets.insert(0) }
+        return offsets.sorted(by: >)
+    }
+
+    private var formSignature: [String] {
+        [direction.rawValue, amountText, LocalDay(date: dueDate).iso,
+         String(includeIssueDate), LocalDay(date: issueDate).iso,
+         number, bank, branch, party, accountReference, notes,
+         String(remindersEnabled), String(useDefaultReminders),
+         selectedOffsets.map(String.init).joined(separator: ","),
+         reminderTime.map { String($0.timeIntervalSince1970) } ?? "defaultTime",
+         String(frontImageData?.hashValue ?? 0), String(backImageData?.hashValue ?? 0)]
+    }
+
+    var body: some View {
+        Form {
+            Section {
+                Picker(app.tr("Direction"), selection: $direction) {
+                    Text(app.tr("Incoming")).tag(ChequeDirection.incoming)
+                    Text(app.tr("Outgoing")).tag(ChequeDirection.outgoing)
+                }
+                .pickerStyle(.segmented)
+                HStack {
+                    Text(app.tr("Amount"))
+                    Spacer(minLength: 12)
+                    TextField(app.tr("Required"), text: $amountText)
+                        .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                        .accessibilityLabel(app.tr("Amount"))
+                        .accessibilityIdentifier("amountField")
+                    Text(currency).font(.subheadline.weight(.medium)).foregroundStyle(.secondary)
+                }
+                DatePicker(app.tr("Due date"), selection: $dueDate, displayedComponents: .date)
+            } header: {
+                Text(app.tr("Required details"))
+            } footer: {
+                Text(app.tr("Enter a positive amount and the date written on the cheque."))
+            }
+
+            Section(app.tr("Cheque details")) {
+                TextField(app.tr("Cheque number (optional)"), text: $number)
+                    .textInputAutocapitalization(.never).autocorrectionDisabled()
+                    .accessibilityIdentifier("chequeNumberField")
+                TextField(app.tr("Bank (optional)"), text: $bank)
+                TextField(app.tr("Branch (optional)"), text: $branch)
+                TextField(app.tr(direction == .incoming ? "Payer (optional)" : "Payee (optional)"), text: $party)
+                    .accessibilityIdentifier("partyField")
+                TextField(app.tr("Account reference (optional)"), text: $accountReference)
+                    .textInputAutocapitalization(.never).autocorrectionDisabled()
+                Toggle(app.tr("Add issue date"), isOn: $includeIssueDate)
+                if includeIssueDate {
+                    DatePicker(app.tr("Issue date"), selection: $issueDate, displayedComponents: .date)
+                }
+            }
+
+            Section {
+                attachment(.front, data: frontImageData, selection: $frontPhoto)
+                attachment(.back, data: backImageData, selection: $backPhoto)
+                if frontImageData != nil {
+                    Button {
+                        Task { await recognizeFrontImage() }
+                    } label: {
+                        HStack {
+                            Label(app.tr("Read details from front image"), systemImage: "text.viewfinder")
+                            Spacer()
+                            if isReadingImage { ProgressView() }
+                        }
+                    }
+                    .disabled(busy)
+                }
+            } header: {
+                Text(app.tr("Cheque images"))
+            } footer: {
+                Text(app.tr("Scan or choose an image, review the suggested details, then save the cheque."))
+            }
+
+            Section {
+                Toggle(app.tr("Reminders enabled"), isOn: $remindersEnabled)
+                if remindersEnabled {
+                    Toggle(app.tr("Use default reminders"), isOn: $useDefaultReminders)
+                    if useDefaultReminders {
+                        Text(app.tr("The reminder days and time from Settings will be used."))
+                            .font(.caption).foregroundStyle(.secondary)
+                        Text(app.preferences.reminderOffsets.isEmpty ? app.tr("No reminder days selected") :
+                             app.preferences.reminderOffsets.sorted(by: >).map(reminderTitle).joined(separator: " · "))
+                            .font(.caption).foregroundStyle(.secondary)
+                    } else {
+                        DatePicker(app.tr("Reminder time"), selection: Binding(
+                            get: { effectiveReminderTime }, set: { reminderTime = $0 }
+                        ), displayedComponents: .hourAndMinute)
+                        Toggle(app.tr("3 days before"), isOn: $before3)
+                        Toggle(app.tr("1 day before"), isOn: $before1)
+                        Toggle(app.tr("On due date"), isOn: $onDueDate)
+                        ForEach(customOffsets.sorted(by: >), id: \.self) { offset in
+                            HStack {
+                                Text(String(offset) + " " + app.tr("days before"))
+                                Spacer()
+                                Button(role: .destructive) { customOffsets.remove(offset) } label: {
+                                    Image(systemName: "minus.circle")
+                                }
+                                .buttonStyle(.borderless)
+                                .accessibilityLabel(app.tr("Remove reminder") + " " + String(offset))
+                            }
+                        }
+                        HStack {
+                            TextField(app.tr("Days before (1–365)"), text: $customDays)
+                                .keyboardType(.numberPad)
+                            Button(app.tr("Add")) { addCustomReminder() }
+                                .buttonStyle(.borderless)
+                        }
+                    }
+                }
+            } header: {
+                Text(app.tr("Reminders"))
+            } footer: {
+                Text(app.tr("Reminders stop when a cheque is settled or cancelled. Past reminder times are skipped."))
+            }
+
+            Section(app.tr("Notes")) {
+                TextField(app.tr("Notes (optional)"), text: $notes, axis: .vertical)
+                    .lineLimit(3...8)
+            }
+        }
+        .scrollDismissesKeyboard(.interactively)
+        .navigationTitle(app.tr(record == nil ? "Add cheque" : "Edit cheque"))
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(app.tr("Cancel")) {
+                    if hasEdited { showingDiscard = true } else { dismiss() }
+                }
+                .disabled(isSaving)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    Task { await save() }
+                } label: {
+                    if isSaving { ProgressView() } else { Text(app.tr("Save")).fontWeight(.semibold) }
+                }
+                .disabled(busy)
+                .accessibilityLabel(app.tr("Save cheque"))
+                .accessibilityIdentifier("saveCheque")
+            }
+        }
+        .interactiveDismissDisabled(hasEdited || busy)
+        .onChange(of: formSignature) { _, _ in hasEdited = true }
+        .onChange(of: frontPhoto) { _, item in
+            Task { await loadPhoto(item, side: .front) }
+        }
+        .onChange(of: backPhoto) { _, item in
+            Task { await loadPhoto(item, side: .back) }
+        }
+        .sheet(isPresented: $showingScanner) {
+            DocumentScanner(onScan: { image in
+                storeImage(image, side: scanSide)
+                showingScanner = false
+            }, onCancel: { showingScanner = false })
+            .ignoresSafeArea()
+        }
+        .sheet(isPresented: Binding(
+            get: { ocrSuggestion != nil }, set: { if !$0 { ocrSuggestion = nil } }
+        )) {
+            if let suggestion = ocrSuggestion {
+                NavigationStack {
+                    OCRReviewSheet(suggestion: suggestion) { selected in
+                        applyOCR(suggestion, selected: selected)
+                        ocrSuggestion = nil
+                    }
+                }
+            }
+        }
+        .alert(app.tr("Camera unavailable"), isPresented: $showingCameraHelp) {
+            if AVCaptureDevice.authorizationStatus(for: .video) == .denied {
+                Button(app.tr("Open Settings")) {
+                    if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+                }
+            }
+            Button(app.tr("OK"), role: .cancel) { }
+        } message: {
+            Text(app.tr("You can choose an image from Photos or enter all cheque details manually. Allow camera access in Settings to scan."))
+        }
+        .alert(app.tr("Check the details"), isPresented: Binding(
+            get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }
+        )) {
+            Button(app.tr("OK"), role: .cancel) { errorMessage = nil }
+        } message: { Text(errorMessage ?? "") }
+        .alert(app.tr("Discard changes?"), isPresented: $showingDiscard) {
+            Button(app.tr("Discard"), role: .destructive) { dismiss() }
+            Button(app.tr("Keep editing"), role: .cancel) { }
+        } message: { Text(app.tr("Your unsaved changes will be lost.")) }
+    }
+
+    @ViewBuilder
+    private func attachment(_ side: AttachmentSide, data: Data?, selection: Binding<PhotosPickerItem?>) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(app.tr(side == .front ? "Front" : "Back")).font(.subheadline.weight(.semibold))
+            if let data, let image = UIImage(data: data) {
+                Image(uiImage: image).resizable().scaledToFit()
+                    .frame(maxWidth: .infinity, maxHeight: 145)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .accessibilityLabel(app.tr("Cheque image"))
+            }
+            HStack(spacing: 18) {
+                Button {
+                    let status = AVCaptureDevice.authorizationStatus(for: .video)
+                    guard DocumentScanner.isSupported, status != .denied, status != .restricted else {
+                        showingCameraHelp = true
+                        return
+                    }
+                    scanSide = side
+                    showingScanner = true
+                } label: { Label(app.tr("Scan"), systemImage: "camera") }
+                .buttonStyle(.borderless)
+                PhotosPicker(selection: selection, matching: .images) {
+                    Label(app.tr("Photos"), systemImage: "photo")
+                }
+                .buttonStyle(.borderless)
+                if data != nil {
+                    Spacer(minLength: 0)
+                    Button(role: .destructive) {
+                        if side == .front { frontImageData = nil } else { backImageData = nil }
+                    } label: { Image(systemName: "trash") }
+                    .buttonStyle(.borderless)
+                    .accessibilityLabel(app.tr("Remove image"))
+                }
+            }
+            .font(.subheadline)
+            .disabled(busy)
+        }
+        .padding(.vertical, 5)
+    }
+
+    private func addCustomReminder() {
+        let ascii = String(customDays.trimmingCharacters(in: .whitespacesAndNewlines).map { character in
+            guard let digit = character.wholeNumberValue, (0...9).contains(digit) else { return character }
+            return Character(String(digit))
+        })
+        guard let days = Int(ascii), (1...365).contains(days) else {
+            errorMessage = app.tr("Enter a whole number of days from 1 to 365.")
+            return
+        }
+        if days == 1 { before1 = true }
+        else if days == 3 { before3 = true }
+        else { customOffsets.insert(days) }
+        customDays = ""
+    }
+
+    @MainActor
+    private func loadPhoto(_ item: PhotosPickerItem?, side: AttachmentSide) async {
+        guard let item else { return }
+        isReadingImage = true
+        defer {
+            isReadingImage = false
+            if side == .front { frontPhoto = nil } else { backPhoto = nil }
+        }
+        do {
+            guard let data = try await item.loadTransferable(type: Data.self), let image = UIImage(data: data) else {
+                errorMessage = app.tr("This image could not be opened. Try another image or enter the details manually.")
+                return
+            }
+            storeImage(image, side: side)
+        } catch {
+            errorMessage = app.tr("This image could not be opened. Try another image or enter the details manually.")
+        }
+    }
+
+    @MainActor
+    private func storeImage(_ image: UIImage, side: AttachmentSide) {
+        let longestSide = max(image.size.width, image.size.height)
+        guard longestSide > 0 else { return }
+        let ratio = min(1, 1_800 / longestSide)
+        let size = CGSize(width: image.size.width * ratio, height: image.size.height * ratio)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let normalized = UIGraphicsImageRenderer(size: size, format: format).image { _ in
+            image.draw(in: CGRect(origin: .zero, size: size))
+        }
+        let data = normalized.jpegData(compressionQuality: 0.85)
+        if side == .front { frontImageData = data } else { backImageData = data }
+    }
+
+    @MainActor
+    private func recognizeFrontImage() async {
+        guard let data = frontImageData, let image = UIImage(data: data) else { return }
+        guard !currency.isEmpty else {
+            errorMessage = app.tr("Choose the app currency in Settings before adding a cheque.")
+            return
+        }
+        isReadingImage = true
+        defer { isReadingImage = false }
+        do {
+            ocrSuggestion = try await ChequeOCRService.recognize(image: image, currencyCode: currency, direction: direction)
+        } catch {
+            errorMessage = app.tr("The image could not be read. You can enter all details manually.")
+        }
+    }
+
+    private func applyOCR(_ suggestion: OCRSuggestion, selected: Set<OCRField>) {
+        if selected.contains(.number), let value = suggestion.number { number = value }
+        if selected.contains(.bank), let value = suggestion.bank { bank = value }
+        if selected.contains(.party), let value = suggestion.party { party = value }
+        if selected.contains(.amount), let value = suggestion.amountText { amountText = value }
+        if selected.contains(.dueDate), let value = suggestion.dueDate { dueDate = value.date() }
+    }
+
+    @MainActor
+    private func save() async {
+        guard !isSaving else { return }
+        guard record != nil || (!app.currencyConflict && !app.currencyCode.isEmpty) else {
+            errorMessage = app.tr("Resolve the currency setting before adding a cheque.")
+            return
+        }
+        guard !currency.isEmpty else {
+            errorMessage = app.tr("Choose the app currency in Settings before adding a cheque.")
+            return
+        }
+        guard let amount = CurrencyMath.parseMinorUnits(amountText, currencyCode: currency), amount > 0 else {
+            errorMessage = app.tr("Enter a valid amount greater than zero, using the currency’s decimal places.")
+            return
+        }
+        let due = LocalDay(date: dueDate)
+        let issued = includeIssueDate ? LocalDay(date: issueDate) : nil
+        if let issued, issued > due {
+            errorMessage = app.tr("The issue date must be on or before the due date.")
+            return
+        }
+        if remindersEnabled && !useDefaultReminders && selectedOffsets.isEmpty {
+            errorMessage = app.tr("Choose at least one reminder day, or turn reminders off.")
+            return
+        }
+        isSaving = true
+        defer { isSaving = false }
+        let maxRank = records.map(\.manualRank).max() ?? -1
+        let nextRank = maxRank.addingReportingOverflow(1)
+        let snapshot = ChequeSnapshot(
+            id: record?.id ?? UUID(), direction: direction, status: record?.status ?? .pending,
+            amountMinorUnits: amount, currencyCode: currency, dueDate: due,
+            actualDate: record?.actualDate, issueDate: issued,
+            number: number.trimmingCharacters(in: .whitespacesAndNewlines),
+            bank: bank.trimmingCharacters(in: .whitespacesAndNewlines),
+            branch: branch.trimmingCharacters(in: .whitespacesAndNewlines),
+            party: party.trimmingCharacters(in: .whitespacesAndNewlines),
+            accountReference: accountReference.trimmingCharacters(in: .whitespacesAndNewlines),
+            notes: notes.trimmingCharacters(in: .whitespacesAndNewlines),
+            createdAt: record?.createdAt ?? Date(),
+            manualRank: record?.manualRank ?? (nextRank.overflow ? Int64.max : nextRank.partialValue)
+        )
+        let offsets = useDefaultReminders ? nil : selectedOffsets
+        let clock = Calendar(identifier: .gregorian)
+        let hour = useDefaultReminders ? nil : clock.component(.hour, from: effectiveReminderTime)
+        let minute = useDefaultReminders ? nil : clock.component(.minute, from: effectiveReminderTime)
+        if let record {
+            record.update(from: snapshot)
+            record.frontImageData = frontImageData
+            record.backImageData = backImageData
+            record.remindersEnabled = remindersEnabled
+            record.reminderOffsets = offsets
+            record.reminderHour = hour
+            record.reminderMinute = minute
+        } else {
+            context.insert(ChequeRecord(snapshot: snapshot, frontImageData: frontImageData,
+                                        backImageData: backImageData, remindersEnabled: remindersEnabled,
+                                        reminderOffsets: offsets, reminderHour: hour, reminderMinute: minute))
+        }
+        do {
+            try context.save()
+            app.didMutate()
+        } catch {
+            context.rollback()
+            errorMessage = app.tr("The cheque could not be saved. Your draft is still here; please try again.")
+            return
+        }
+        let effectiveOffsets = offsets ?? app.preferences.reminderOffsets
+        if remindersEnabled && snapshot.isOutstanding && (!effectiveOffsets.isEmpty || app.preferences.dailySummary) {
+            await app.notifications.refreshAuthorization()
+            if app.notifications.authorizationStatus == .notDetermined {
+                await app.notifications.requestPermission()
+                app.didMutate()
+            }
+        }
+        dismiss()
+    }
+
+    private func reminderTitle(_ offset: Int) -> String {
+        if offset == 0 { return app.tr("On due date") }
+        if offset == 1 { return app.tr("1 day before") }
+        if offset == 3 { return app.tr("3 days before") }
+        return String(offset) + " " + app.tr("days before")
+    }
+
+    private static func clockDate(hour: Int, minute: Int) -> Date {
+        let calendar = Calendar(identifier: .gregorian)
+        var components = calendar.dateComponents([.year, .month, .day], from: Date())
+        components.hour = min(23, max(0, hour))
+        components.minute = min(59, max(0, minute))
+        return calendar.date(from: components) ?? Date()
+    }
+}
+
+private enum AttachmentSide: Equatable { case front, back }
+private enum OCRField: Hashable { case number, bank, party, amount, dueDate }
+
+@MainActor
+private struct OCRReviewSheet: View {
+    @Environment(AppState.self) private var app
+    @Environment(\.dismiss) private var dismiss
+    let suggestion: OCRSuggestion
+    let apply: (Set<OCRField>) -> Void
+    @State private var selected: Set<OCRField>
+
+    init(suggestion: OCRSuggestion, apply: @escaping (Set<OCRField>) -> Void) {
+        self.suggestion = suggestion
+        self.apply = apply
+        var fields = Set<OCRField>()
+        if suggestion.number != nil { fields.insert(.number) }
+        if suggestion.bank != nil { fields.insert(.bank) }
+        if suggestion.party != nil { fields.insert(.party) }
+        if suggestion.amountText != nil { fields.insert(.amount) }
+        if suggestion.dueDate != nil { fields.insert(.dueDate) }
+        _selected = State(initialValue: fields)
+    }
+
+    var body: some View {
+        Form {
+            Section {
+                Text(app.tr("Check each suggestion against your cheque. Nothing is saved until you tap Save."))
+                    .font(.subheadline)
+                if suggestion.unsupportedArabic {
+                    Label(app.tr("Some Arabic text may need manual entry. You can complete every field yourself."),
+                          systemImage: "info.circle")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+            }
+            Section(app.tr("Suggested details")) {
+                if let value = suggestion.number { suggestionRow(.number, title: "Cheque number", value: value) }
+                if let value = suggestion.bank { suggestionRow(.bank, title: "Bank", value: value) }
+                if let value = suggestion.party { suggestionRow(.party, title: "Name", value: value) }
+                if let value = suggestion.amountText { suggestionRow(.amount, title: "Amount", value: value) }
+                if let value = suggestion.dueDate {
+                    suggestionRow(.dueDate, title: "Due date", value: app.formatDay(value))
+                }
+                if suggestion.number == nil && suggestion.bank == nil && suggestion.party == nil &&
+                    suggestion.amountText == nil && suggestion.dueDate == nil {
+                    Text(app.tr("No fields were recognized. Keep entering the details manually."))
+                        .foregroundStyle(.secondary)
+                }
+            }
+            if !suggestion.recognizedText.isEmpty {
+                Section {
+                    DisclosureGroup(app.tr("Recognized text")) {
+                        Text(suggestion.recognizedText).font(.caption).textSelection(.enabled)
+                    }
+                }
+            }
+        }
+        .navigationTitle(app.tr("Review image details"))
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(app.tr("Cancel")) { dismiss() }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(app.tr("Use selected")) { apply(selected) }
+                    .fontWeight(.semibold).disabled(selected.isEmpty)
+            }
+        }
+    }
+
+    private func suggestionRow(_ field: OCRField, title: String, value: String) -> some View {
+        Toggle(isOn: Binding(
+            get: { selected.contains(field) },
+            set: { if $0 { selected.insert(field) } else { selected.remove(field) } }
+        )) {
+            VStack(alignment: .leading, spacing: 5) {
+                Text(app.tr(title)).font(.caption).foregroundStyle(.secondary)
+                Text(value).font(.body).textSelection(.enabled)
+            }
+        }
+    }
+}

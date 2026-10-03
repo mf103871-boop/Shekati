@@ -1,0 +1,17 @@
+.DS_Store
+DerivedData/
+build/
+*.xcresult/
+*.xcarchive/
+*.ipa
+*.p12
+*.p8
+*.mobileprovision
+*.xcuserstate
+xcuserdata/
+.build/
+.swiftpm/
+Shekati.xcodeproj/
+.env
+.env.*
+!*.example

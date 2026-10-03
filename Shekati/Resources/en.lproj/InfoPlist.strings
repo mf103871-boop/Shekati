@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "Scan a cheque to suggest its details for your review.";
+"NSFaceIDUsageDescription" = "Unlock your cheque records securely using Face ID.";

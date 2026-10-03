@@ -1,0 +1,57 @@
+name: Build and test iPhone app
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show build tools
+        run: |
+          xcodebuild -version
+          swift --version
+      - name: Validate core behavior on macOS
+        run: swift test --package-path Packages/ShekatiCore
+      - name: Install project generator
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Choose an available iPhone simulator
+        id: simulator
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess
+          devices = json.loads(subprocess.check_output(['xcrun', 'simctl', 'list', 'devices', 'available', '-j']))['devices']
+          candidates = [(runtime, d) for runtime, values in devices.items() if '.iOS-' in runtime for d in values if d.get('isAvailable') and d['name'].startswith('iPhone')]
+          if not candidates:
+              raise SystemExit('No available iPhone simulator. Install an iOS simulator runtime on the runner.')
+          runtime, device = sorted(candidates, key=lambda value: (value[0], value[1]['name']), reverse=True)[0]
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write(f"destination=platform=iOS Simulator,id={device['udid']}\n")
+          print('Selected', device['name'], runtime)
+          PY
+      - name: Build and run iPhone tests
+        env:
+          SIMULATOR_DESTINATION: ${{ steps.simulator.outputs.destination }}
+        run: |
+          xcodebuild test -project Shekati.xcodeproj -scheme Shekati \
+            -destination "$SIMULATOR_DESTINATION" \
+            -derivedDataPath DerivedData -resultBundlePath build/Shekati.xcresult \
+            CODE_SIGNING_ALLOWED=NO
+      - name: Save simulator test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Shekati-simulator-test-report
+          path: build/Shekati.xcresult
+          if-no-files-found: ignore
+          retention-days: 14
