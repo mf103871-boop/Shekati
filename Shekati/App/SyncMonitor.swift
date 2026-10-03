@@ -19,19 +19,37 @@ private final class SyncMonitorLifetime {
 
 @MainActor @Observable
 final class SyncMonitor {
-    enum State { case checking, available, syncing, synced, offline, unavailable, failed, localOnly }
+    enum State: Equatable { case checking, available, syncing, synced, offline, unavailable, failed, localOnly }
+    typealias AccountStatusProvider = @MainActor () async throws -> CKAccountStatus
+    private struct CompletedEvent {
+        let endDate: Date
+        let succeeded: Bool
+        let detail: String?
+    }
     private(set) var state: State = .checking
     private(set) var lastSyncDate: Date?
     private(set) var detail: String?
     private var networkAvailable = true
-    private var cloudAvailable = false
+    private var cloudAvailable: Bool?
+    private var accountFailure: String?
+    private var activeEvents: Set<UUID> = []
+    private var completedEvents: [NSPersistentCloudKitContainer.EventType: CompletedEvent] = [:]
     @ObservationIgnored private let lifetime = SyncMonitorLifetime()
+    @ObservationIgnored private let accountStatusProvider: AccountStatusProvider
     private let localOnly: Bool
 
-    init(localOnlyReason: String? = nil) {
+    init(localOnlyReason: String? = nil, observeChanges: Bool = true,
+         accountStatusProvider: AccountStatusProvider? = nil) {
         localOnly = localOnlyReason != nil
         detail = localOnlyReason
+        self.accountStatusProvider = accountStatusProvider ?? {
+            let identifier = Bundle.main.object(forInfoDictionaryKey: "ShekatiCloudContainerIdentifier") as? String
+            let container = identifier.map(CKContainer.init(identifier:)) ?? CKContainer.default()
+            return try await container.accountStatus()
+        }
         if localOnly { state = .localOnly }
+        // Tests exercise the actual state transitions without starting live observers/network checks.
+        guard observeChanges else { return }
         lifetime.observers.append(NotificationCenter.default.addObserver(
             forName: NSPersistentCloudKitContainer.eventChangedNotification,
             object: nil, queue: .main
@@ -48,11 +66,7 @@ final class SyncMonitor {
             let online = path.status == .satisfied
             Task { @MainActor [weak self] in
                 guard let self else { return }
-                self.networkAvailable = online
-                if !self.localOnly {
-                    if !online { self.state = .offline }
-                    else { await self.refresh() }
-                }
+                await self.updateNetworkAvailability(online)
             }
         }
         lifetime.monitor.start(queue: lifetime.queue)
@@ -62,37 +76,61 @@ final class SyncMonitor {
         guard !localOnly else { state = .localOnly; return }
         guard networkAvailable else { state = .offline; return }
         do {
-            let identifier = Bundle.main.object(forInfoDictionaryKey: "ShekatiCloudContainerIdentifier") as? String
-            let container = identifier.map(CKContainer.init(identifier:)) ?? CKContainer.default()
-            let status = try await container.accountStatus()
+            let status = try await accountStatusProvider()
             cloudAvailable = status == .available
-            if cloudAvailable {
-                if state != .syncing { state = lastSyncDate == nil ? .available : .synced }
-                detail = nil
-            } else {
-                state = .unavailable
-                detail = nil
-            }
+            accountFailure = nil
         } catch {
-            state = .failed
-            detail = error.localizedDescription
+            accountFailure = error.localizedDescription
         }
+        updateState()
+    }
+
+    func updateNetworkAvailability(_ available: Bool) async {
+        networkAvailable = available
+        guard !localOnly else { return }
+        if available { await refresh() }
+        else { updateState() }
     }
 
     private func receive(_ event: NSPersistentCloudKitContainer.Event) {
+        receiveEvent(type: event.type, identifier: event.identifier, endDate: event.endDate,
+                     succeeded: event.succeeded, errorDescription: event.error?.localizedDescription)
+    }
+
+    // Adapter seam avoids constructing Apple's read-only event objects in hosted unit tests.
+    func receiveEvent(type: NSPersistentCloudKitContainer.EventType, identifier: UUID,
+                      endDate: Date?, succeeded: Bool, errorDescription: String? = nil) {
         guard !localOnly else { return }
-        if event.endDate == nil { state = .syncing; return }
-        if event.succeeded {
-            if event.type == .setup {
-                state = networkAvailable ? .available : .offline
-                return
-            }
-            lastSyncDate = event.endDate
-            state = networkAvailable ? .synced : .offline
-            detail = nil
-        } else {
-            state = networkAvailable ? .failed : .offline
-            detail = event.error?.localizedDescription
+        guard let endDate else {
+            activeEvents.insert(identifier)
+            updateState()
+            return
         }
+        activeEvents.remove(identifier)
+        // Late delivery of an older completion must not erase a newer failure or success.
+        if completedEvents[type].map({ $0.endDate <= endDate }) ?? true {
+            completedEvents[type] = CompletedEvent(endDate: endDate, succeeded: succeeded,
+                                                   detail: errorDescription)
+        }
+        if succeeded && type != .setup {
+            if lastSyncDate.map({ $0 < endDate }) ?? true {
+                lastSyncDate = endDate
+            }
+        }
+        updateState()
+    }
+
+    private func updateState() {
+        guard !localOnly else { state = .localOnly; return }
+        let failure = completedEvents.values.filter { !$0.succeeded }.max { $0.endDate < $1.endDate }
+        detail = failure?.detail ?? accountFailure
+        if !networkAvailable { state = .offline }
+        else if accountFailure != nil { state = .failed }
+        else if cloudAvailable == false { state = .unavailable }
+        else if !activeEvents.isEmpty { state = .syncing }
+        else if failure != nil { state = .failed }
+        else if lastSyncDate != nil { state = .synced }
+        else if cloudAvailable == true || completedEvents[.setup]?.succeeded == true { state = .available }
+        else { state = .checking }
     }
 }
