@@ -102,6 +102,8 @@ struct ChequeListView: View {
                 move(from: source, to: destination)
             }
         }
+        // Recreate the native list after a direction change without resetting the filter state.
+        .id(app.preferences.language.rawValue)
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .background(Theme.background)

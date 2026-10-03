@@ -128,6 +128,13 @@ jobs:
             PRODUCT_BUNDLE_IDENTIFIER="$APP_BUNDLE_ID" SHEKATI_ICLOUD_CONTAINER="$CLOUD_CONTAINER_ID" \
             CURRENT_PROJECT_VERSION="$APP_BUILD_NUMBER" DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
             CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY='Apple Distribution' PROVISIONING_PROFILE_SPECIFIER="$SCHEMA_PROFILE_UUID"
+          python3 - <<'PY'
+          import os, pathlib, plistlib
+          info_path = pathlib.Path(os.environ['RUNNER_TEMP']) / 'ShekatiSchemaBootstrap.xcarchive/Products/Applications/ShekatiSchemaBootstrap.app/Info.plist'
+          families = plistlib.loads(info_path.read_bytes()).get('UIDeviceFamily')
+          if families != [1]:
+              raise SystemExit(f'Refusing to export a setup archive with UIDeviceFamily={families!r}; expected iPhone only [1]')
+          PY
           xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/ShekatiSchemaBootstrap.xcarchive" \
             -exportOptionsPlist "$RUNNER_TEMP/SchemaExportOptions.plist" -exportPath "$RUNNER_TEMP/Schema-export"
       - name: Verify exported app uses the development CloudKit environment
@@ -153,6 +160,8 @@ jobs:
           if entitlements.get('aps-environment') != 'production':
               raise SystemExit('Exported ad-hoc app uses the wrong push notification environment')
           info = plistlib.loads((app / 'Info.plist').read_bytes())
+          if info.get('UIDeviceFamily') != [1]:
+              raise SystemExit(f'Refusing to deliver a setup IPA with UIDeviceFamily={info.get("UIDeviceFamily")!r}; expected iPhone only [1]')
           if info['CFBundleIdentifier'] != os.environ['APP_BUNDLE_ID'] or info.get('ShekatiCloudContainerIdentifier') != os.environ['CLOUD_CONTAINER_ID']:
               raise SystemExit('Exported app metadata does not match the requested setup')
           PY

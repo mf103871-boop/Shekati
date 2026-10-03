@@ -19,6 +19,7 @@ struct SettingsView: View {
                     BrandMark()
                     VStack(alignment: .leading, spacing: 4) {
                         Text(app.tr("Shekati")).font(.title2.bold())
+                            .accessibilityIdentifier("settingsBrandTitle")
                         Text(app.tr("Every cheque, at a glance.")).font(.footnote).foregroundStyle(.secondary)
                     }
                 }.padding(.vertical, 8)
@@ -119,7 +120,11 @@ struct SettingsView: View {
                     .font(.footnote).foregroundStyle(.secondary)
                 NavigationLink(app.tr("Privacy policy")) { PrivacyPolicyView() }
             }
-        }.navigationTitle(app.tr("Settings"))
+        }
+        // UIKit-backed forms can retain an RTL transform when direction changes in place.
+        // Rebuild the form while keeping this screen's state and the selected tab intact.
+        .id(app.preferences.language.rawValue)
+        .navigationTitle(app.tr("Settings"))
             .sheet(isPresented: $showCurrencies) { NavigationStack { CurrencyPickerView() } }
             .alert(app.tr("Device lock unavailable"), isPresented: $lockUnavailable) {
                 Button(app.tr("OK"), role: .cancel) {}

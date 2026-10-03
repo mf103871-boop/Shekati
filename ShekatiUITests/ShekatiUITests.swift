@@ -61,7 +61,37 @@ final class ShekatiUITests: XCTestCase {
         app.buttons["English"].tap()
         XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Appearance and language"].exists || app.staticTexts["APPEARANCE AND LANGUAGE"].exists)
+        XCTAssertTrue(app.tabBars.buttons["Settings"].isSelected)
+        waitForStableEnglishSettingsLayout(in: app)
         captureScreenshot(app, name: "English settings after language switch")
+    }
+
+    private func waitForStableEnglishSettingsLayout(in app: XCUIApplication) {
+        let brand = app.staticTexts["settingsBrandTitle"]
+        var previousFrame = CGRect.null
+        var stableSince: Date?
+        let layout = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            guard brand.exists, brand.isHittable else {
+                stableSince = nil
+                return false
+            }
+            let frame = brand.frame
+            // Arabic places the brand text on the right. English must rebuild on the left,
+            // rather than leaving translated text inside the old mirrored Form container.
+            guard frame.width > 0, frame.midX < app.windows.firstMatch.frame.midX else {
+                stableSince = nil
+                return false
+            }
+            if frame != previousFrame || stableSince == nil {
+                previousFrame = frame
+                stableSince = Date()
+                return false
+            }
+            return Date().timeIntervalSince(stableSince!) >= 0.6
+        }, object: brand)
+        let result = XCTWaiter.wait(for: [layout], timeout: 8)
+        if result != .completed { captureDiagnostics(app, name: "English Settings layout did not settle") }
+        XCTAssertEqual(result, .completed, "Expected stable left-to-right English Settings layout")
     }
 
     /// Container hit-testing can be false while its fields remain interactive on iOS 26.

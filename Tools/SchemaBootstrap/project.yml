@@ -38,6 +38,7 @@ targets:
       - package: ShekatiCore
     settings:
       base:
+        TARGETED_DEVICE_FAMILY: "1"
         PRODUCT_BUNDLE_IDENTIFIER: com.mf103871.shekati
         PRODUCT_NAME: ShekatiSchemaBootstrap
         INFOPLIST_FILE: Resources/Info.plist
