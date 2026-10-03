@@ -35,8 +35,8 @@ No Apple credentials are needed for that unsigned simulator check. Workflow exec
 
 ## 3. Configure an account-owned app and private iCloud container
 
-1. Enroll in the Apple Developer Program and register a unique explicit app identifier. `com.shekati.app` is a sample identifier to replace.
-2. Register the app's CloudKit container. `iCloud.com.shekati.app` is a sample identifier to replace. Enable iCloud/CloudKit and Push Notifications for the app identifier and associate the container.
+1. The owner's explicit app identifier `com.mf103871.shekati` has been registered. If building for another account, register your own unique identifier and update the project.
+2. The owner's container `iCloud.com.mf103871.shekati` has been registered and associated with this app's iCloud/CloudKit capability. Push Notifications is enabled. If building for another account, register and associate your own container.
 3. On a Mac, update `PRODUCT_BUNDLE_IDENTIFIER` and `SHEKATI_ICLOUD_CONTAINER` in `project.yml`, generate again, and choose the owning development team. For the hosted signed workflow, supply these values as dispatch inputs instead.
 4. Keep the custom Info key `ShekatiCloudContainerIdentifier` and the iCloud entitlement consistent; both expand the same `SHEKATI_ICLOUD_CONTAINER` setting. Background remote notifications support CloudKit's silent sync signals. Cheque reminders remain local.
 5. Run a **signed development build** with the real container and an iCloud account to initialize its development schema. Inspect the records in CloudKit Console and deploy the schema to Production before TestFlight. A simulator build without signing/account access does not prove cloud sync. A developer Mac or correctly provisioned registered-device development build is needed for this first schema step.

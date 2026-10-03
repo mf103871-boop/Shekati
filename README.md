@@ -22,6 +22,8 @@ The commercial model is a **$9.99 paid download**, with all features included an
 
 See [Build guide](docs/BUILD.md) for macOS or Windows-with-hosted-macOS instructions, Apple signing, private iCloud setup, and TestFlight secrets. Start with an unsigned simulator CI build, then perform [real-device acceptance checks](docs/DEVICE_QA.md).
 
+تم إنشاء المستودع الخاص وهوية التطبيق وحاوية iCloud وسجل المتجر. راجع [حالة الربط الفعلية](docs/ACCOUNT_SETUP_STATUS.md) و[خطوات الربط من ويندوز](docs/CONNECT_ACCOUNTS_AR.md).
+
 ## معاينة التصميم | Design preview
 
 افتح [المعاينة التفاعلية](Preview/index.html) لاستعراض الألوان والشاشات بالعربية والإنجليزية، وتجربة إدخال بيانات تجريبية والبحث والحذف. المعاينة مستقلة عن تطبيق الآيفون؛ بياناتها مؤقتة وتُعاد عند تحديث الصفحة. الكاميرا والتنبيهات وiCloud والقفل موجودة في المصدر الأصلي، وتحتاج اختبار iOS فعليًا.

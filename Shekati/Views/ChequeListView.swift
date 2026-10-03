@@ -40,6 +40,31 @@ struct ChequeListView: View {
     }
 
     var body: some View {
+        listContent
+            .toolbar(content: { () -> ChequeListToolbar in
+                ChequeListToolbar(
+                    canReorder: app.preferences.sort == .manual && !visible.isEmpty,
+                    hasFilters: hasFilters,
+                    showingFilters: $showingFilters,
+                    showingEditor: $showingEditor
+                )
+            })
+            .sheet(isPresented: $showingEditor) {
+                NavigationStack { ChequeEditorView() }
+            }
+            .sheet(isPresented: $showingFilters) {
+                NavigationStack {
+                    ChequeFilterSheet(initial: filter, banks: records.map(\.bank)) { filter = $0 }
+                }
+            }
+            .alert(app.tr("Could not save changes"), isPresented: Binding(
+                get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }
+            )) {
+                Button(app.tr("OK"), role: .cancel) { errorMessage = nil }
+            } message: { Text(errorMessage ?? "") }
+    }
+
+    private var listContent: some View {
         List {
             if !visible.isEmpty {
                 HStack {
@@ -70,8 +95,12 @@ struct ChequeListView: View {
                 }
                 .listRowSeparator(.hidden).listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                .moveDisabled(app.preferences.sort != .manual)
             }
-            .onMove(perform: app.preferences.sort == .manual ? move : nil)
+            .onMove { source, destination in
+                guard app.preferences.sort == .manual else { return }
+                move(from: source, to: destination)
+            }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
@@ -98,34 +127,55 @@ struct ChequeListView: View {
         }
         .navigationTitle(app.tr("Cheques"))
         .searchable(text: $filter.query, prompt: Text(app.tr("Search number, bank or name")))
-        .toolbar { listToolbar }
-        .sheet(isPresented: $showingEditor) {
-            NavigationStack { ChequeEditorView() }
-        }
-        .sheet(isPresented: $showingFilters) {
-            NavigationStack {
-                ChequeFilterSheet(initial: filter, banks: records.map(\.bank)) { filter = $0 }
-            }
-        }
-        .alert(app.tr("Could not save changes"), isPresented: Binding(
-            get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }
-        )) {
-            Button(app.tr("OK"), role: .cancel) { errorMessage = nil }
-        } message: { Text(errorMessage ?? "") }
     }
 
+    private func move(from source: IndexSet, to destination: Int) {
+        let global = ChequeListEngine.filteredAndSorted(
+            cheques: records.map(\.snapshot), filter: .init(), sort: .manual,
+            ascending: app.preferences.ascending
+        ).map(\.id)
+        let ordered = ChequeListEngine.reorderedIDs(
+            all: global, visible: visible.map(\.id), from: source, to: destination
+        )
+        let byID = Dictionary(uniqueKeysWithValues: records.map { ($0.id, $0) })
+        for (index, id) in ordered.enumerated() {
+            byID[id]?.manualRank = app.preferences.ascending ? Int64(index) : Int64(ordered.count - index)
+        }
+        do {
+            try context.save()
+            app.didMutate()
+        } catch {
+            context.rollback()
+            errorMessage = app.tr("Your previous order was kept. Please try again.")
+        }
+    }
+
+}
+
+/// A concrete toolbar type keeps the deprecated View-producing toolbar overload out of inference.
+@MainActor
+private struct ChequeListToolbar: ToolbarContent {
+    @Environment(AppState.self) private var app
+    let canReorder: Bool
+    let hasFilters: Bool
+    @Binding var showingFilters: Bool
+    @Binding var showingEditor: Bool
+
     @ToolbarContentBuilder
-    private var listToolbar: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            if app.preferences.sort == .manual && !visible.isEmpty {
-                EditButton()
-                    .accessibilityHint(app.tr("Drag cheques to change their order."))
+    var body: some ToolbarContent {
+        if canReorder {
+            ToolbarItem(placement: .topBarTrailing) {
+                EditButton().accessibilityHint(app.tr("Drag cheques to change their order."))
             }
-            sortMenu
+        }
+        ToolbarItem(placement: .topBarTrailing) { sortMenu }
+        ToolbarItem(placement: .topBarTrailing) {
             Button { showingFilters = true } label: {
                 Image(systemName: hasFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
             }
             .accessibilityLabel(app.tr("Filters"))
+        }
+        ToolbarItem(placement: .topBarTrailing) {
             Button { showingEditor = true } label: { Image(systemName: "plus") }
                 .accessibilityLabel(app.tr("Add cheque"))
                 .disabled(app.currencyConflict || app.currencyCode.isEmpty)
@@ -149,27 +199,6 @@ struct ChequeListView: View {
             }
         } label: { Image(systemName: "arrow.up.arrow.down") }
         .accessibilityLabel(app.tr("Sort cheques"))
-    }
-
-    private func move(from source: IndexSet, to destination: Int) {
-        let global = ChequeListEngine.filteredAndSorted(
-            cheques: records.map(\.snapshot), filter: .init(), sort: .manual,
-            ascending: app.preferences.ascending
-        ).map(\.id)
-        let ordered = ChequeListEngine.reorderedIDs(
-            all: global, visible: visible.map(\.id), from: source, to: destination
-        )
-        let byID = Dictionary(uniqueKeysWithValues: records.map { ($0.id, $0) })
-        for (index, id) in ordered.enumerated() {
-            byID[id]?.manualRank = app.preferences.ascending ? Int64(index) : Int64(ordered.count - index)
-        }
-        do {
-            try context.save()
-            app.didMutate()
-        } catch {
-            context.rollback()
-            errorMessage = app.tr("Your previous order was kept. Please try again.")
-        }
     }
 
     private func sortTitle(_ sort: ChequeSort) -> String {

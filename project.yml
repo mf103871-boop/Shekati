@@ -22,7 +22,7 @@ settings:
     SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
     MARKETING_VERSION: "1.0.0"
     CURRENT_PROJECT_VERSION: "1"
-    SHEKATI_ICLOUD_CONTAINER: iCloud.com.shekati.app
+    SHEKATI_ICLOUD_CONTAINER: iCloud.com.mf103871.shekati
   configs:
     Debug:
       SHEKATI_APS_ENVIRONMENT: development
@@ -45,7 +45,7 @@ targets:
       - package: ShekatiCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.shekati.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.mf103871.shekati
         PRODUCT_NAME: Shekati
         INFOPLIST_FILE: Shekati/Resources/Info.plist
         GENERATE_INFOPLIST_FILE: NO
@@ -64,7 +64,7 @@ targets:
       - package: ShekatiCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.shekati.app.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.mf103871.shekati.tests
         GENERATE_INFOPLIST_FILE: YES
   ShekatiUITests:
     type: bundle.ui-testing
@@ -76,7 +76,7 @@ targets:
       - target: Shekati
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.shekati.app.uitests
+        PRODUCT_BUNDLE_IDENTIFIER: com.mf103871.shekati.uitests
         GENERATE_INFOPLIST_FILE: YES
 schemes:
   Shekati:
