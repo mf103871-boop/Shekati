@@ -39,6 +39,12 @@ Record tester, app/build version, device model, iOS version, date, result and sc
 
 ## iCloud and release readiness
 
+Production schema deployment was verified on 4 October 2026; [Console proof](screenshots/Shekati-iCloud-production-schema.jpg). Runtime checks below remain pending. Replace the temporary setup app with regular Shekati 1.0.0 (2) through TestFlight. If needed, open the app's **Previous Builds**, choose the version and install the available build; [Apple's instructions](https://beta.itunes.apple.com/). Do not uninstall the app or erase its data to perform this check.
+
+For an initial single-phone check, save one fictional incoming cheque with amount `1`, number `SYNC-TEST`, tomorrow's due date and reminders off while online. Record the save time, then inspect Settings. `iCloud available / iCloud متاح` checks account readiness; the **Check iCloud status** button does not force a sync. `Synced / تمت المزامنة` with a new **Last sync** timestamp means a successful import or export event, but does not alone prove every pending record was uploaded. Reopening the app and finding the row confirms local persistence only. Use Production **Logs**, restricted to the test interval and **PRIVATE** database, to verify successful save-operation metadata without opening financial record values. [Apple's Logs documentation](https://developer.apple.com/icloud/logs/) explains that logs show modifications and status, without changed record contents.
+
+For import and round-trip proof, open the same beta on a second unlocked, online iPhone using the same iCloud account. Verify `SYNC-TEST` and the chosen currency arrive without re-entry; edit the marker there and verify the first phone receives the update. A fictional image can extend this check to assets. [Apple's two-device sync guidance](https://developer.apple.com/documentation/coredata/syncing-a-core-data-store-with-cloudkit).
+
 - Using the registered private production container, add/edit/delete on two iPhones on the same Apple Account and verify eventual propagation of records, images and currency.
 - Disconnect one device, edit locally, reconnect and verify eventual sync and honest state indicators. Test unavailable account, network failure and local-store fallback without data loss.
 - Test conflicting records/currency after two devices start offline; the app must expose any currency conflict and avoid treating unlike currencies as one total.
