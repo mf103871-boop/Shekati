@@ -11,6 +11,7 @@ final class ShekatiUITests: XCTestCase {
         }
         app.launch()
         XCTAssertTrue(app.buttons["chooseCurrency"].waitForExistence(timeout: 10))
+        reveal(app.buttons["chooseCurrency"], in: app)
         app.buttons["chooseCurrency"].tap()
         XCTAssertTrue(app.buttons["currency_USD"].waitForExistence(timeout: 5))
         app.buttons["currency_USD"].tap()

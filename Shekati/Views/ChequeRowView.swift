@@ -87,44 +87,70 @@ struct ChequeRowView: View {
         return formatter.string(from: record.dueDate.date())
     }
 
+    private var accessibleDescription: String {
+        let number = record.number.isEmpty ? app.tr("Not provided") : record.number
+        let numberDescription = "\(app.tr("No.")) \(number)"
+        let dueDescription = "\(app.tr("Due date")) \(app.formatDay(record.dueDate))"
+        return [title, numberDescription, amount, dueDescription, statusLabel, directionLabel]
+            .joined(separator: ", ")
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if dynamicTypeSize.isAccessibilitySize {
-                stackedFields
-            } else {
-                ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .top, spacing: 12) {
-                        identityFields
-                            .frame(minWidth: nameMinimum, maxWidth: .infinity, alignment: .leading)
-                        financialFields
-                            .fixedSize(horizontal: true, vertical: false)
-                            .frame(minWidth: amountMinimum, alignment: .trailing)
-                    }
-                    stackedFields
-                }
-            }
-            ViewThatFits(in: .horizontal) {
-                HStack(spacing: 12) {
-                    statusText
-                    Spacer(minLength: 8)
-                    Text(directionLabel).foregroundStyle(.secondary)
-                }
-                VStack(alignment: .leading, spacing: 4) {
-                    statusText
-                    Text(directionLabel).foregroundStyle(.secondary)
-                }
-            }
-            .font(.footnote)
+            adaptiveFields
+            statusLine
         }
         .padding(.vertical, 10)
         .frame(maxWidth: .infinity, minHeight: 76, alignment: .leading)
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(title + ", " + app.tr("No.") + " " +
-                            (record.number.isEmpty ? app.tr("Not provided") : record.number) + ", " +
-                            amount + ", " + app.tr("Due date") + " " + app.formatDay(record.dueDate) + ", " +
-                            statusLabel + ", " + directionLabel)
+        .accessibilityLabel(Text(accessibleDescription))
         .accessibilityIdentifier("cheque-row-\(record.id.uuidString)")
+    }
+
+    @ViewBuilder
+    private var adaptiveFields: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            stackedFields
+        } else {
+            ViewThatFits(in: .horizontal) {
+                horizontalFields
+                stackedFields
+            }
+        }
+    }
+
+    private var horizontalFields: some View {
+        HStack(alignment: .top, spacing: 12) {
+            identityFields
+                .frame(minWidth: nameMinimum, maxWidth: .infinity, alignment: .leading)
+            financialFields
+                .fixedSize(horizontal: true, vertical: false)
+                .frame(minWidth: amountMinimum, alignment: .trailing)
+        }
+    }
+
+    private var statusLine: some View {
+        ViewThatFits(in: .horizontal) {
+            horizontalStatus
+            stackedStatus
+        }
+        .font(.footnote)
+    }
+
+    private var horizontalStatus: some View {
+        HStack(spacing: 12) {
+            statusText
+            Spacer(minLength: 8)
+            Text(directionLabel).foregroundStyle(.secondary)
+        }
+    }
+
+    private var stackedStatus: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            statusText
+            Text(directionLabel).foregroundStyle(.secondary)
+        }
     }
 
     private var identityFields: some View {
