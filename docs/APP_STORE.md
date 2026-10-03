@@ -1,6 +1,6 @@
 # مواد المتجر | App Store material
 
-Publication draft for version 1.0.0. Replace operator/contact placeholders and check feature claims against physical-iPhone results before public submission. [Build 2](https://appstoreconnect.apple.com/teams/609ff8f7-15ce-48ec-9e60-e95f8ed24d3a/apps/6818852973/testflight/ios/c6a99453-40c5-4cd3-a86b-aeca16550426) passed complete native tests, native screenshot review, signed archive/export and upload. Internal readiness is confirmed in the group Builds tab: `Ready to Test`, `Expires in 90 days`. Public App Review has not been requested, invitations have not been sent, and physical-device/iCloud acceptance is not complete. Configuration items described as saved below are confirmed; the remaining publication fields are draft values.
+Publication draft for version 1.0.0. Replace operator/contact placeholders and check feature claims against physical-iPhone results before public submission. [Build 2](https://appstoreconnect.apple.com/teams/609ff8f7-15ce-48ec-9e60-e95f8ed24d3a/apps/6818852973/testflight/ios/c6a99453-40c5-4cd3-a86b-aeca16550426) passed complete native tests, native screenshot review, signed archive/export and upload. Internal readiness is confirmed in the group Builds tab: `Ready to Test`, `Expires in 90 days`. One owner tester has been invited; status `Invited`. Public App Review has not been requested, and invitation acceptance, physical installation and device/iCloud acceptance remain unverified. Configuration items described as saved below are confirmed; the remaining publication fields are draft values.
 
 ## Store configuration
 
@@ -19,9 +19,10 @@ Publication draft for version 1.0.0. Replace operator/contact placeholders and c
 | US Foreign Status and W-8BEN | Active, verified read-only |
 | DSA | Active, verified read-only |
 | Brazil tax form | Missing tax information; not changed during setup |
-| Internal testing group | `Shekati Owner Testing` attached to build 2: one build, zero testers, automatic distribution off, no invitations sent |
+| Internal testing group | `Shekati Owner Testing` attached to build 2: one build and one owner tester, automatic distribution off |
+| Owner invitation | Sent on 3 October 2026; status `Invited`, acceptance and installation unconfirmed |
 | TestFlight build | Version 1.0.0, build 2 visible; [portal proof](screenshots/Shekati-TestFlight-build.jpg) |
-| Internal TestFlight readiness | Group Builds tab: `Ready to Test`, `Expires in 90 days`; owner invitation and physical installation pending |
+| Internal TestFlight readiness | Group Builds tab: `Ready to Test`, `Expires in 90 days`; physical installation and device acceptance pending |
 | Minimum OS | iOS 17 |
 | Languages | Arabic and English |
 | Privacy-policy URL | `[ACTUAL_PUBLIC_PRIVACY_URL]` |
