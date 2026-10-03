@@ -1,5 +1,7 @@
 # البناء والتوقيع | Build and signing
 
+للبدء من ويندوز مع حساب Apple Developer وGitHub مفعّلين، راجع [دليل ربط الحسابات بالعربية](CONNECT_ACCOUNTS_AR.md).
+
 ## 1. Build the source on a Mac
 
 Use a current stable Xcode, Command Line Tools, an installed iPhone simulator, and XcodeGen 2.42 or newer. The project uses Swift 5 language mode and Swift tools 5.9, with an iOS 17 deployment target. For App Store/TestFlight uploads, use Xcode 26 or newer to meet Apple's current iOS build requirements; check [Apple's upload requirements](https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds/) before release. Project generation follows the [XcodeGen project specification](https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md).

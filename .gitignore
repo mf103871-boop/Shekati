@@ -6,6 +6,9 @@ build/
 *.ipa
 *.p12
 *.p8
+*.key
+*.key.pem
+*.certSigningRequest
 *.mobileprovision
 *.xcuserstate
 xcuserdata/

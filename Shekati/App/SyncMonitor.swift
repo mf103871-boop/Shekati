@@ -4,6 +4,19 @@ import CoreData
 import Network
 import Observation
 
+// The owner is main-actor isolated, but ARC may release it on any thread.
+// Keep thread-safe observer/monitor cleanup in an ordinary lifetime object.
+private final class SyncMonitorLifetime {
+    var observers: [NSObjectProtocol] = []
+    let monitor = NWPathMonitor()
+    let queue = DispatchQueue(label: "Shekati.Network")
+
+    deinit {
+        monitor.cancel()
+        for observer in observers { NotificationCenter.default.removeObserver(observer) }
+    }
+}
+
 @MainActor @Observable
 final class SyncMonitor {
     enum State { case checking, available, syncing, synced, offline, unavailable, failed, localOnly }
@@ -12,16 +25,14 @@ final class SyncMonitor {
     private(set) var detail: String?
     private var networkAvailable = true
     private var cloudAvailable = false
-    private var observers: [NSObjectProtocol] = []
-    private let monitor = NWPathMonitor()
-    private let queue = DispatchQueue(label: "Shekati.Network")
+    @ObservationIgnored private let lifetime = SyncMonitorLifetime()
     private let localOnly: Bool
 
     init(localOnlyReason: String? = nil) {
         localOnly = localOnlyReason != nil
         detail = localOnlyReason
         if localOnly { state = .localOnly }
-        observers.append(NotificationCenter.default.addObserver(
+        lifetime.observers.append(NotificationCenter.default.addObserver(
             forName: NSPersistentCloudKitContainer.eventChangedNotification,
             object: nil, queue: .main
         ) { [weak self] notification in
@@ -29,11 +40,11 @@ final class SyncMonitor {
                     as? NSPersistentCloudKitContainer.Event else { return }
             Task { @MainActor [weak self] in self?.receive(event) }
         })
-        observers.append(NotificationCenter.default.addObserver(forName: .CKAccountChanged,
+        lifetime.observers.append(NotificationCenter.default.addObserver(forName: .CKAccountChanged,
                           object: nil, queue: .main) { [weak self] _ in
             Task { @MainActor [weak self] in await self?.refresh() }
         })
-        monitor.pathUpdateHandler = { [weak self] path in
+        lifetime.monitor.pathUpdateHandler = { [weak self] path in
             let online = path.status == .satisfied
             Task { @MainActor [weak self] in
                 guard let self else { return }
@@ -44,7 +55,7 @@ final class SyncMonitor {
                 }
             }
         }
-        monitor.start(queue: queue)
+        lifetime.monitor.start(queue: lifetime.queue)
     }
 
     func refresh() async {
@@ -83,10 +94,5 @@ final class SyncMonitor {
             state = networkAvailable ? .failed : .offline
             detail = event.error?.localizedDescription
         }
-    }
-
-    deinit {
-        monitor.cancel()
-        for observer in observers { NotificationCenter.default.removeObserver(observer) }
     }
 }
