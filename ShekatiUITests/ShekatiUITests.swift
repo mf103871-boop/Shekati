@@ -3,9 +3,12 @@ import XCTest
 final class ShekatiUITests: XCTestCase {
     override func setUpWithError() throws { continueAfterFailure = false }
 
-    private func launch(arabic: Bool = false) -> XCUIApplication {
+    private func launch(arabic: Bool = false, largeText: Bool = false) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing"] + (arabic ? ["--arabic"] : [])
+        if largeText {
+            app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityL"]
+        }
         app.launch()
         XCTAssertTrue(app.buttons["chooseCurrency"].waitForExistence(timeout: 10))
         app.buttons["chooseCurrency"].tap()
@@ -20,6 +23,11 @@ final class ShekatiUITests: XCTestCase {
         app.buttons["addCheque"].tap()
         let amount = app.textFields["amountField"]
         XCTAssertTrue(amount.waitForExistence(timeout: 5))
+        XCTAssertTrue(amount.isHittable)
+        XCTAssertTrue(app.textFields["partyField"].isHittable)
+        XCTAssertTrue(app.textFields["chequeNumberField"].isHittable)
+        XCTAssertFalse(app.textFields["bankField"].exists)
+        captureScreenshot(app, name: "English quick cheque entry")
         amount.tap()
         amount.typeText("125.50")
         let number = app.textFields["chequeNumberField"]
@@ -30,11 +38,17 @@ final class ShekatiUITests: XCTestCase {
         reveal(party, in: app)
         party.tap()
         party.typeText("CI cheque")
+        let details = app.descendants(matching: .any).matching(identifier: "extraChequeDetails").firstMatch
+        reveal(details, in: app)
+        details.tap()
+        let bank = app.textFields["bankField"]
+        XCTAssertTrue(bank.waitForExistence(timeout: 5))
+        reveal(bank, in: app)
+        bank.tap()
+        bank.typeText("Demo Bank")
         app.buttons["saveCheque"].tap()
         allowNotificationPromptIfPresented()
-        let dismissed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"),
-                                                  object: app.buttons["saveCheque"])
-        XCTAssertEqual(XCTWaiter.wait(for: [dismissed], timeout: 10), .completed)
+        waitForEditorDismissal(in: app)
         app.tabBars.buttons["Cheques"].tap()
         let row = app.descendants(matching: .any).matching(NSPredicate(
             format: "identifier BEGINSWITH %@ AND label CONTAINS %@ AND label CONTAINS %@",
@@ -44,10 +58,100 @@ final class ShekatiUITests: XCTestCase {
         XCTAssertTrue(row.label.contains("CI cheque"))
         XCTAssertTrue(row.label.contains("000182"))
         reveal(row, in: app)
+        captureScreenshot(app, name: "English compact cheque table")
         row.tap()
         XCTAssertTrue(app.navigationBars["Cheque"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["000182"].exists)
         captureScreenshot(app, name: "English cheque details — leading zeros preserved")
+        app.buttons["Edit"].tap()
+        XCTAssertTrue(app.textFields["bankField"].waitForExistence(timeout: 5),
+                      "Existing optional details should expand when editing")
+        XCTAssertEqual(app.textFields["bankField"].value as? String, "Demo Bank")
+        XCTAssertEqual(app.textFields["chequeNumberField"].value as? String, "000182")
+        app.buttons["Cancel"].tap()
+    }
+
+    func testArabicQuickEntryAndDirectionFiltersKeepChequesSeparate() {
+        let app = launch(arabic: true)
+        app.buttons["addCheque"].tap()
+        XCTAssertTrue(app.textFields["amountField"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.textFields["partyField"].isHittable)
+        XCTAssertTrue(app.textFields["chequeNumberField"].isHittable)
+        XCTAssertFalse(app.textFields["bankField"].exists)
+        captureScreenshot(app, name: "Arabic quick cheque entry")
+        fillQuickCheque(in: app, amount: "125.50", party: "Demo incoming", number: "000101")
+        app.buttons["saveCheque"].tap()
+        allowNotificationPromptIfPresented()
+        waitForEditorDismissal(in: app)
+        app.buttons["addCheque"].tap()
+        XCTAssertTrue(app.textFields["amountField"].waitForExistence(timeout: 5))
+        app.segmentedControls["chequeDirectionPicker"].buttons["صادر"].tap()
+        fillQuickCheque(in: app, amount: "760.00", party: "Demo outgoing", number: "000102")
+        app.buttons["saveCheque"].tap()
+        allowNotificationPromptIfPresented()
+        waitForEditorDismissal(in: app)
+        captureScreenshot(app, name: "Arabic simple home with cheques")
+        app.tabBars.buttons["الشيكات"].tap()
+        let incoming = chequeRow(in: app, named: "Demo incoming")
+        let outgoing = chequeRow(in: app, named: "Demo outgoing")
+        XCTAssertTrue(incoming.waitForExistence(timeout: 5))
+        XCTAssertTrue(outgoing.waitForExistence(timeout: 5))
+        captureScreenshot(app, name: "Arabic compact cheque table — mixed numbers")
+        let directions = app.segmentedControls["listDirectionPicker"]
+        XCTAssertTrue(directions.exists)
+        directions.buttons["صادر"].tap()
+        XCTAssertTrue(outgoing.waitForExistence(timeout: 5))
+        XCTAssertFalse(incoming.exists, "Outgoing filter must hide incoming cheques")
+        directions.buttons["وارد"].tap()
+        XCTAssertTrue(incoming.waitForExistence(timeout: 5))
+        XCTAssertFalse(outgoing.exists, "Incoming filter must hide outgoing cheques")
+        directions.buttons["الكل"].tap()
+        XCTAssertTrue(incoming.waitForExistence(timeout: 5))
+        XCTAssertTrue(outgoing.waitForExistence(timeout: 5))
+    }
+
+    private func fillQuickCheque(in app: XCUIApplication, amount: String, party: String, number: String) {
+        for (identifier, text) in [("amountField", amount), ("partyField", party), ("chequeNumberField", number)] {
+            let field = app.textFields[identifier]
+            reveal(field, in: app)
+            field.tap()
+            field.typeText(text)
+        }
+    }
+
+    func testLargeTextKeepsChequeRowReadableAndNavigable() {
+        let app = launch(largeText: true)
+        app.buttons["addCheque"].tap()
+        XCTAssertTrue(app.textFields["amountField"].waitForExistence(timeout: 5))
+        fillQuickCheque(in: app, amount: "9999.50", party: "Large text demo", number: "000999")
+        app.buttons["saveCheque"].tap()
+        allowNotificationPromptIfPresented()
+        waitForEditorDismissal(in: app)
+        app.tabBars.buttons["Cheques"].tap()
+        let row = chequeRow(in: app, named: "Large text demo")
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+        XCTAssertTrue(row.label.contains("000999"))
+        reveal(row, in: app)
+        let window = app.windows.firstMatch.frame
+        XCTAssertGreaterThan(row.frame.height, 160,
+                             "Accessibility text size should use the labelled, stacked row layout")
+        XCTAssertGreaterThanOrEqual(row.frame.minX, window.minX)
+        XCTAssertLessThanOrEqual(row.frame.maxX, window.maxX)
+        captureScreenshot(app, name: "Accessibility large text cheque table")
+        row.tap()
+        XCTAssertTrue(app.navigationBars["Cheque"].waitForExistence(timeout: 5))
+    }
+
+    private func chequeRow(in app: XCUIApplication, named name: String) -> XCUIElement {
+        app.descendants(matching: .any).matching(NSPredicate(
+            format: "identifier BEGINSWITH %@ AND label CONTAINS %@", "cheque-row-", name
+        )).firstMatch
+    }
+
+    private func waitForEditorDismissal(in app: XCUIApplication) {
+        let dismissed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"),
+                                                  object: app.buttons["saveCheque"])
+        XCTAssertEqual(XCTWaiter.wait(for: [dismissed], timeout: 10), .completed)
     }
 
     func testArabicFirstRunAndEnglishLanguageSwitch() {

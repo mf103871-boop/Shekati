@@ -46,6 +46,9 @@ struct ChequeEditorView: View {
     @State private var errorMessage: String?
     @State private var hasEdited = false
     @State private var showingDiscard = false
+    @State private var extraDetailsExpanded: Bool
+    @State private var imagesExpanded: Bool
+    @State private var reminderOptionsExpanded: Bool
 
     init(record: ChequeRecord? = nil) {
         self.record = record
@@ -71,6 +74,14 @@ struct ChequeEditorView: View {
         _before1 = State(initialValue: offsets.contains(1))
         _onDueDate = State(initialValue: offsets.contains(0))
         _customOffsets = State(initialValue: Set(offsets.filter { ![0, 1, 3].contains($0) }))
+        _extraDetailsExpanded = State(initialValue: record.map {
+            $0.issueDate != nil || [$0.bank, $0.branch, $0.accountReference, $0.notes].contains {
+                !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            }
+        } ?? false)
+        _imagesExpanded = State(initialValue: record?.frontImageData != nil || record?.backImageData != nil)
+        _reminderOptionsExpanded = State(initialValue: record?.reminderOffsets != nil ||
+                                        record?.reminderHour != nil || record?.reminderMinute != nil)
         if let hour = record?.reminderHour, let minute = record?.reminderMinute {
             _reminderTime = State(initialValue: Self.clockDate(hour: hour, minute: minute))
         } else {
@@ -109,6 +120,7 @@ struct ChequeEditorView: View {
                     Text(app.tr("Outgoing")).tag(ChequeDirection.outgoing)
                 }
                 .pickerStyle(.segmented)
+                .accessibilityIdentifier("chequeDirectionPicker")
                 HStack {
                     Text(app.tr("Amount"))
                     Spacer(minLength: 12)
@@ -119,43 +131,55 @@ struct ChequeEditorView: View {
                     Text(currency).font(.subheadline.weight(.medium)).foregroundStyle(.secondary)
                 }
                 DatePicker(app.tr("Due date"), selection: $dueDate, displayedComponents: .date)
+                    .accessibilityIdentifier("dueDateField")
+                TextField(app.tr(direction == .incoming ? "Payer (optional)" : "Payee (optional)"), text: $party)
+                    .accessibilityIdentifier("partyField")
+                TextField(app.tr("Cheque number (optional)"), text: $number)
+                    .textInputAutocapitalization(.never).autocorrectionDisabled()
+                    .accessibilityIdentifier("chequeNumberField")
             } header: {
-                Text(app.tr("Required details"))
+                Text(app.tr("Cheque details"))
             } footer: {
                 Text(app.tr("Enter a positive amount and the date written on the cheque."))
             }
 
-            Section(app.tr("Cheque details")) {
-                TextField(app.tr("Cheque number (optional)"), text: $number)
-                    .textInputAutocapitalization(.never).autocorrectionDisabled()
-                    .accessibilityIdentifier("chequeNumberField")
-                TextField(app.tr("Bank (optional)"), text: $bank)
-                TextField(app.tr("Branch (optional)"), text: $branch)
-                TextField(app.tr(direction == .incoming ? "Payer (optional)" : "Payee (optional)"), text: $party)
-                    .accessibilityIdentifier("partyField")
-                TextField(app.tr("Account reference (optional)"), text: $accountReference)
-                    .textInputAutocapitalization(.never).autocorrectionDisabled()
-                Toggle(app.tr("Add issue date"), isOn: $includeIssueDate)
-                if includeIssueDate {
-                    DatePicker(app.tr("Issue date"), selection: $issueDate, displayedComponents: .date)
+            Section {
+                DisclosureGroup(app.tr("More details"), isExpanded: $extraDetailsExpanded) {
+                    TextField(app.tr("Bank (optional)"), text: $bank)
+                        .accessibilityIdentifier("bankField")
+                    TextField(app.tr("Branch (optional)"), text: $branch)
+                    TextField(app.tr("Account reference (optional)"), text: $accountReference)
+                        .textInputAutocapitalization(.never).autocorrectionDisabled()
+                    Toggle(app.tr("Add issue date"), isOn: $includeIssueDate)
+                    if includeIssueDate {
+                        DatePicker(app.tr("Issue date"), selection: $issueDate, displayedComponents: .date)
+                    }
+                    TextField(app.tr("Notes (optional)"), text: $notes, axis: .vertical)
+                        .lineLimit(3...8)
                 }
+                .accessibilityIdentifier("extraChequeDetails")
             }
 
             Section {
-                attachment(.front, data: frontImageData, selection: $frontPhoto)
-                attachment(.back, data: backImageData, selection: $backPhoto)
-                if frontImageData != nil {
-                    Button {
-                        Task { await recognizeFrontImage() }
-                    } label: {
-                        HStack {
-                            Label(app.tr("Read details from front image"), systemImage: "text.viewfinder")
-                            Spacer()
-                            if isReadingImage { ProgressView() }
+                DisclosureGroup(isExpanded: $imagesExpanded) {
+                    attachment(.front, data: frontImageData, selection: $frontPhoto)
+                    attachment(.back, data: backImageData, selection: $backPhoto)
+                    if frontImageData != nil {
+                        Button {
+                            Task { await recognizeFrontImage() }
+                        } label: {
+                            HStack {
+                                Label(app.tr("Read details from front image"), systemImage: "text.viewfinder")
+                                Spacer()
+                                if isReadingImage { ProgressView() }
+                            }
                         }
+                        .disabled(busy)
                     }
-                    .disabled(busy)
+                } label: {
+                    Label(app.tr("Scan or add photos"), systemImage: "camera")
                 }
+                .accessibilityIdentifier("chequeImageOptions")
             } header: {
                 Text(app.tr("Cheque images"))
             } footer: {
@@ -165,38 +189,41 @@ struct ChequeEditorView: View {
             Section {
                 Toggle(app.tr("Reminders enabled"), isOn: $remindersEnabled)
                 if remindersEnabled {
-                    Toggle(app.tr("Use default reminders"), isOn: $useDefaultReminders)
-                    if useDefaultReminders {
-                        Text(app.tr("The reminder days and time from Settings will be used."))
-                            .font(.caption).foregroundStyle(.secondary)
-                        Text(app.preferences.reminderOffsets.isEmpty ? app.tr("No reminder days selected") :
-                             app.preferences.reminderOffsets.sorted(by: >).map(reminderTitle).joined(separator: " · "))
-                            .font(.caption).foregroundStyle(.secondary)
-                    } else {
-                        DatePicker(app.tr("Reminder time"), selection: Binding(
-                            get: { effectiveReminderTime }, set: { reminderTime = $0 }
-                        ), displayedComponents: .hourAndMinute)
-                        Toggle(app.tr("3 days before"), isOn: $before3)
-                        Toggle(app.tr("1 day before"), isOn: $before1)
-                        Toggle(app.tr("On due date"), isOn: $onDueDate)
-                        ForEach(customOffsets.sorted(by: >), id: \.self) { offset in
-                            HStack {
-                                Text(String(offset) + " " + app.tr("days before"))
-                                Spacer()
-                                Button(role: .destructive) { customOffsets.remove(offset) } label: {
-                                    Image(systemName: "minus.circle")
+                    DisclosureGroup(app.tr("Reminder options"), isExpanded: $reminderOptionsExpanded) {
+                        Toggle(app.tr("Use default reminders"), isOn: $useDefaultReminders)
+                        if useDefaultReminders {
+                            Text(app.tr("The reminder days and time from Settings will be used."))
+                                .font(.caption).foregroundStyle(.secondary)
+                            Text(app.preferences.reminderOffsets.isEmpty ? app.tr("No reminder days selected") :
+                                 app.preferences.reminderOffsets.sorted(by: >).map(reminderTitle).joined(separator: " · "))
+                                .font(.caption).foregroundStyle(.secondary)
+                        } else {
+                            DatePicker(app.tr("Reminder time"), selection: Binding(
+                                get: { effectiveReminderTime }, set: { reminderTime = $0 }
+                            ), displayedComponents: .hourAndMinute)
+                            Toggle(app.tr("3 days before"), isOn: $before3)
+                            Toggle(app.tr("1 day before"), isOn: $before1)
+                            Toggle(app.tr("On due date"), isOn: $onDueDate)
+                            ForEach(customOffsets.sorted(by: >), id: \.self) { offset in
+                                HStack {
+                                    Text(String(offset) + " " + app.tr("days before"))
+                                    Spacer()
+                                    Button(role: .destructive) { customOffsets.remove(offset) } label: {
+                                        Image(systemName: "minus.circle")
+                                    }
+                                    .buttonStyle(.borderless)
+                                    .accessibilityLabel(app.tr("Remove reminder") + " " + String(offset))
                                 }
-                                .buttonStyle(.borderless)
-                                .accessibilityLabel(app.tr("Remove reminder") + " " + String(offset))
+                            }
+                            HStack {
+                                TextField(app.tr("Days before (1–365)"), text: $customDays)
+                                    .keyboardType(.numberPad)
+                                Button(app.tr("Add")) { addCustomReminder() }
+                                    .buttonStyle(.borderless)
                             }
                         }
-                        HStack {
-                            TextField(app.tr("Days before (1–365)"), text: $customDays)
-                                .keyboardType(.numberPad)
-                            Button(app.tr("Add")) { addCustomReminder() }
-                                .buttonStyle(.borderless)
-                        }
                     }
+                    .accessibilityIdentifier("chequeReminderOptions")
                 }
             } header: {
                 Text(app.tr("Reminders"))
@@ -204,10 +231,6 @@ struct ChequeEditorView: View {
                 Text(app.tr("Reminders stop when a cheque is settled or cancelled. Past reminder times are skipped."))
             }
 
-            Section(app.tr("Notes")) {
-                TextField(app.tr("Notes (optional)"), text: $notes, axis: .vertical)
-                    .lineLimit(3...8)
-            }
         }
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle(app.tr(record == nil ? "Add cheque" : "Edit cheque"))
@@ -366,6 +389,7 @@ struct ChequeEditorView: View {
         }
         let data = normalized.jpegData(compressionQuality: 0.85)
         if side == .front { frontImageData = data } else { backImageData = data }
+        imagesExpanded = true
     }
 
     @MainActor
@@ -386,7 +410,10 @@ struct ChequeEditorView: View {
 
     private func applyOCR(_ suggestion: OCRSuggestion, selected: Set<OCRField>) {
         if selected.contains(.number), let value = suggestion.number { number = value }
-        if selected.contains(.bank), let value = suggestion.bank { bank = value }
+        if selected.contains(.bank), let value = suggestion.bank {
+            bank = value
+            extraDetailsExpanded = true
+        }
         if selected.contains(.party), let value = suggestion.party { party = value }
         if selected.contains(.amount), let value = suggestion.amountText { amountText = value }
         if selected.contains(.dueDate), let value = suggestion.dueDate { dueDate = value.date() }

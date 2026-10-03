@@ -6,11 +6,13 @@ import ShekatiCore
 struct ChequeListView: View {
     @Environment(AppState.self) private var app
     @Environment(\.modelContext) private var context
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Query private var records: [ChequeRecord]
     @State private var filter: ChequeFilter
     @State private var showingFilters = false
     @State private var showingEditor = false
     @State private var errorMessage: String?
+    @State private var editMode: EditMode = .inactive
 
     init(initialFilter: ChequeFilter = .init()) {
         _filter = State(initialValue: initialFilter)
@@ -40,15 +42,44 @@ struct ChequeListView: View {
     }
 
     var body: some View {
-        listContent
+        VStack(spacing: 0) {
+            directionPicker
+                .padding(.horizontal, 16)
+                .padding(.top, 6)
+                .padding(.bottom, 12)
+            shownSummary
+                .padding(.horizontal, 16)
+                .padding(.bottom, 12)
+            if !visible.isEmpty {
+                ChequeTableHeaderView()
+                    .accessibilityIdentifier("chequeTableHeader")
+                    .padding(.leading, 16)
+                    // Match the row's content inset and the native disclosure indicator.
+                    .padding(.trailing, 36)
+                    .padding(.vertical, 9)
+                    .background(Theme.surface)
+                Divider()
+            }
+            listContent
+        }
+            .background(Theme.background)
+            .environment(\.editMode, $editMode)
+            .navigationTitle(app.tr("Cheques"))
+            .searchable(text: $filter.query, prompt: Text(app.tr("Search number, bank or name")))
             .toolbar {
                 ChequeListToolbar(
                     canReorder: app.preferences.sort == .manual && !visible.isEmpty,
                     hasFilters: hasFilters,
                     showingFilters: $showingFilters,
-                    showingEditor: $showingEditor
+                    showingEditor: $showingEditor,
+                    editMode: $editMode,
+                    clearFilters: { filter = .init(query: filter.query) }
                 )
             }
+            .onChange(of: app.preferences.sort) { _, sort in
+                if sort != .manual { editMode = .inactive }
+            }
+            .onChange(of: filter.direction) { _, _ in editMode = .inactive }
             .sheet(isPresented: $showingEditor) {
                 NavigationStack { ChequeEditorView() }
             }
@@ -66,35 +97,16 @@ struct ChequeListView: View {
 
     private var listContent: some View {
         List {
-            if !visible.isEmpty {
-                HStack {
-                    if !app.currencyConflict && !app.currencyCode.isEmpty {
-                      VStack(alignment: .leading, spacing: 5) {
-                        Text(app.tr("Shown amount")).font(.caption).foregroundStyle(.secondary)
-                        if let total = shownTotal {
-                            AmountText(minorUnits: total).font(.title3.bold()).lineLimit(1).minimumScaleFactor(0.7)
-                        } else {
-                            Text(app.tr("Total exceeds supported range")).font(.footnote).foregroundStyle(.orange)
-                        }
-                      }
-                    }
-                    Spacer()
-                    VStack(alignment: .trailing, spacing: 5) {
-                        Text(app.tr("Cheques")).font(.caption).foregroundStyle(.secondary)
-                        Text(visible.count, format: .number).font(.title3.bold()).monospacedDigit()
-                    }
-                }
-                .listRowSeparator(.hidden).listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 12, leading: 20, bottom: 12, trailing: 20))
-            }
-            ForEach(visible, id: \.id) { record in
+            ForEach(Array(visible.enumerated()), id: \.element.id) { index, record in
                 NavigationLink {
                     ChequeDetailView(record: record)
                 } label: {
                     ChequeRowView(record: record)
                 }
-                .listRowSeparator(.hidden).listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                .listRowSeparator(.visible)
+                .listRowSeparatorTint(Color.primary.opacity(0.1))
+                .listRowBackground(index.isMultiple(of: 2) ? Theme.surface : Theme.accent.opacity(0.035))
+                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                 .moveDisabled(app.preferences.sort != .manual)
             }
             .onMove { source, destination in
@@ -127,8 +139,64 @@ struct ChequeListView: View {
                 .padding(28)
             }
         }
-        .navigationTitle(app.tr("Cheques"))
-        .searchable(text: $filter.query, prompt: Text(app.tr("Search number, bank or name")))
+    }
+
+    @ViewBuilder
+    private var directionPicker: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            directionSelection.pickerStyle(.menu)
+        } else {
+            directionSelection.pickerStyle(.segmented)
+        }
+    }
+
+    private var directionSelection: some View {
+        Picker(app.tr("Direction"), selection: $filter.direction) {
+            Text(app.tr("All")).tag(nil as ChequeDirection?)
+            Text(app.tr("Incoming")).tag(ChequeDirection.incoming as ChequeDirection?)
+            Text(app.tr("Outgoing")).tag(ChequeDirection.outgoing as ChequeDirection?)
+        }
+        .accessibilityIdentifier("listDirectionPicker")
+    }
+
+    private var shownSummary: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(alignment: .firstTextBaseline, spacing: 12) {
+                shownCount
+                Spacer(minLength: 8)
+                shownAmount.fixedSize(horizontal: true, vertical: false)
+            }
+            VStack(alignment: .leading, spacing: 8) {
+                shownCount
+                shownAmount.fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private var shownCount: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 5) {
+            Text(visible.count, format: .number).font(.subheadline.weight(.semibold)).monospacedDigit()
+            Text(app.tr("Shown cheques")).font(.footnote).foregroundStyle(.secondary)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("shownChequeCount")
+    }
+
+    @ViewBuilder
+    private var shownAmount: some View {
+        if !app.currencyConflict && !app.currencyCode.isEmpty {
+            VStack(alignment: .trailing, spacing: 3) {
+                Text(app.tr("Shown amount")).font(.footnote).foregroundStyle(.secondary)
+                if let total = shownTotal {
+                    AmountText(minorUnits: total).font(.subheadline.weight(.semibold))
+                        .environment(\.layoutDirection, .leftToRight)
+                } else {
+                    Text(app.tr("Total exceeds supported range")).font(.footnote).foregroundStyle(.orange)
+                }
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("shownChequeAmount")
+        }
     }
 
     private func move(from source: IndexSet, to destination: Int) {
@@ -162,30 +230,35 @@ private struct ChequeListToolbar: ToolbarContent {
     let hasFilters: Bool
     @Binding var showingFilters: Bool
     @Binding var showingEditor: Bool
+    @Binding var editMode: EditMode
+    let clearFilters: () -> Void
 
     @ToolbarContentBuilder
     var body: some ToolbarContent {
-        if canReorder {
-            ToolbarItem(placement: .topBarTrailing) {
-                EditButton().accessibilityHint(app.tr("Drag cheques to change their order."))
-            }
-        }
-        ToolbarItem(placement: .topBarTrailing) { sortMenu }
+        ToolbarItem(placement: .topBarTrailing) { optionsMenu }
         ToolbarItem(placement: .topBarTrailing) {
-            Button { showingFilters = true } label: {
-                Image(systemName: hasFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-            }
-            .accessibilityLabel(app.tr("Filters"))
-        }
-        ToolbarItem(placement: .topBarTrailing) {
-            Button { showingEditor = true } label: { Image(systemName: "plus") }
+            Button { showingEditor = true } label: { Label(app.tr("Add"), systemImage: "plus") }
+                .labelStyle(.titleAndIcon)
                 .accessibilityLabel(app.tr("Add cheque"))
                 .disabled(app.currencyConflict || app.currencyCode.isEmpty)
         }
     }
 
-    private var sortMenu: some View {
+    private var optionsMenu: some View {
         Menu {
+            Button {
+                editMode = .inactive
+                showingFilters = true
+            } label: {
+                Label(app.tr("Filters"), systemImage: hasFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+            }
+            if hasFilters {
+                Button(app.tr("Clear filters")) {
+                    editMode = .inactive
+                    clearFilters()
+                }
+            }
+            Divider()
             Picker(app.tr("Sort by"), selection: Binding(
                 get: { app.preferences.sort }, set: { app.preferences.sort = $0 }
             )) {
@@ -199,8 +272,20 @@ private struct ChequeListToolbar: ToolbarContent {
                 Text(app.tr("Ascending")).tag(true)
                 Text(app.tr("Descending")).tag(false)
             }
-        } label: { Image(systemName: "arrow.up.arrow.down") }
-        .accessibilityLabel(app.tr("Sort cheques"))
+            if canReorder {
+                Divider()
+                Button {
+                    withAnimation { editMode = editMode.isEditing ? .inactive : .active }
+                } label: {
+                    Label(app.tr(editMode.isEditing ? "Done" : "Reorder cheques"), systemImage: "arrow.up.arrow.down")
+                }
+                .accessibilityHint(app.tr("Drag cheques to change their order."))
+            }
+        } label: {
+            Label(app.tr("Filters and sort"), systemImage: hasFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+        }
+        .labelStyle(.titleAndIcon)
+        .accessibilityLabel(app.tr("Filters and sort"))
     }
 
     private func sortTitle(_ sort: ChequeSort) -> String {

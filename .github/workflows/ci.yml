@@ -55,6 +55,20 @@ jobs:
             -destination "$SIMULATOR_DESTINATION" \
             -derivedDataPath DerivedData -resultBundlePath build/Shekati.xcresult \
             CODE_SIGNING_ALLOWED=NO
+      - name: Export native UI attachments
+        if: always()
+        run: |
+          if [ -d build/Shekati.xcresult ]; then
+            xcrun xcresulttool export attachments --path build/Shekati.xcresult --output-path build/ui-attachments
+          fi
+      - name: Save native UI attachments
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Shekati-native-ui-attachments
+          path: build/ui-attachments
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Save simulator test report
         if: always()
         uses: actions/upload-artifact@v4

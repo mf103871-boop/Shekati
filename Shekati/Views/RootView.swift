@@ -10,7 +10,6 @@ struct RootView: View {
     @Query private var records: [ChequeRecord]
     @Query(sort: \AppConfiguration.createdAt) private var configurations: [AppConfiguration]
     @State private var selectedTab = 0
-    @State private var showEditor = false
     @State private var linkedRecord: ChequeRecord?
     @State private var dayRevision = 0
 
@@ -35,7 +34,6 @@ struct RootView: View {
                     TabView(selection: $selectedTab) {
                         NavigationStack {
                             DashboardView()
-                                .toolbar { addButton }
                         }.tabItem { Label(app.tr("Home"), systemImage: "square.grid.2x2") }.tag(0)
                         NavigationStack {
                             ChequeListView()
@@ -53,7 +51,6 @@ struct RootView: View {
                 VStack(spacing: 16) { BrandMark(); Text(app.tr("Shekati")).font(.title.bold()) }
             }
         }
-        .sheet(isPresented: $showEditor) { NavigationStack { ChequeEditorView() } }
         .sheet(item: $linkedRecord, onDismiss: {
             if let id = app.openedChequeID { app.notifications.acknowledgeOpenCheque(id) }
             app.openedChequeID = nil
@@ -117,15 +114,6 @@ struct RootView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
             app.privacy.update(app: app, phase: .active)
-        }
-    }
-
-    private var addButton: some ToolbarContent {
-        ToolbarItem(placement: .primaryAction) {
-            Button { showEditor = true } label: {
-                Label(app.tr("Add cheque"), systemImage: "plus.circle.fill")
-            }.disabled(app.currencyCode.isEmpty || app.currencyConflict)
-                .accessibilityIdentifier("addCheque")
         }
     }
 
