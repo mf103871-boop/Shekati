@@ -2,7 +2,7 @@
 
 تطبيق أصلي للآيفون لمتابعة الشيكات الواردة والصادرة، وتواريخ الاستحقاق والصرف الفعلي، والصور والتذكيرات. واجهة عربية وإنجليزية، حفظ محلي، ومزامنة خاصة عبر iCloud. الحد الأدنى iOS 17.
 
-This repository contains the SwiftUI app, its SwiftData models, a Foundation-only business-logic package, automated tests, XcodeGen configuration, and hosted macOS build workflows. It is a source delivery; an installable iPhone build requires Apple signing.
+This repository contains the SwiftUI app, its SwiftData models, a Foundation-only business-logic package, automated tests, XcodeGen configuration, and hosted macOS build workflows. The native app has compiled on hosted macOS; an installable iPhone build is still pending signing and TestFlight upload.
 
 ## What is included
 
@@ -22,7 +22,7 @@ The commercial model is a **$9.99 paid download**, with all features included an
 
 See [Build guide](docs/BUILD.md) for macOS or Windows-with-hosted-macOS instructions, Apple signing, private iCloud setup, and TestFlight secrets. Start with an unsigned simulator CI build, then perform [real-device acceptance checks](docs/DEVICE_QA.md).
 
-تم إنشاء المستودع الخاص وهوية التطبيق وحاوية iCloud وسجل المتجر. راجع [حالة الربط الفعلية](docs/ACCOUNT_SETUP_STATUS.md) و[خطوات الربط من ويندوز](docs/CONNECT_ACCOUNTS_AR.md).
+تم ربط المستودع الخاص وهوية التطبيق وحاوية iCloud وسجل المتجر، وإصدار شهادة وملف التوزيع وحفظ أسرار التوقيع والنشر السبعة في بيئة GitHub المقيّدة بفرع `main`. تهيئة مخطط iCloud ورفع TestFlight قيد التجهيز. راجع [حالة الربط الفعلية](docs/ACCOUNT_SETUP_STATUS.md) و[متابعة التجهيز من ويندوز](docs/CONNECT_ACCOUNTS_AR.md).
 
 ## معاينة التصميم | Design preview
 
@@ -34,7 +34,9 @@ Release material is supplied in [Arabic and English store copy](docs/APP_STORE.m
 
 ## Validation status
 
-This delivery was prepared on Windows without Xcode or a Swift compiler. Source/configuration inspection is possible here; compilation, XCTest execution, simulator behavior, iCloud sync, camera, biometrics, and notification delivery require the macOS CI workflow and physical iPhones. No successful iOS build or completed TestFlight upload is implied by this repository.
+Hosted macOS [run 37145564552](https://github.com/mf103871-boop/Shekati/actions/runs/37145564552) compiled the native app using Xcode 26.6 and an iOS 26.5 simulator. All 24 core tests, all 22 hosted unit/integration tests, and the Arabic-to-English UI test passed. The add-cheque UI test failed when the test harness could not reach an offscreen field. [Retry 37146039264](https://github.com/mf103871-boop/Shekati/actions/runs/37146039264) repeated those passes but still failed to reach the party field; its simulator result is under review. Complete validation has not passed yet.
+
+No TestFlight build has been uploaded. Private iCloud sync, camera, biometrics and closed-app notification delivery still require signed physical-iPhone checks.
 
 See [validation results](docs/VALIDATION.md) for the checks actually performed and checks still pending. Simulator builds intentionally use local-only storage; private iCloud must be tested with a signed iPhone build.
 

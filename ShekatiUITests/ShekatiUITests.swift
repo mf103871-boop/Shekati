@@ -31,6 +31,7 @@ final class ShekatiUITests: XCTestCase {
         party.tap()
         party.typeText("CI cheque")
         app.buttons["saveCheque"].tap()
+        allowNotificationPromptIfPresented()
         let dismissed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"),
                                                   object: app.buttons["saveCheque"])
         XCTAssertEqual(XCTWaiter.wait(for: [dismissed], timeout: 10), .completed)
@@ -46,11 +47,13 @@ final class ShekatiUITests: XCTestCase {
         row.tap()
         XCTAssertTrue(app.navigationBars["Cheque"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["000182"].exists)
+        captureScreenshot(app, name: "English cheque details — leading zeros preserved")
     }
 
     func testArabicFirstRunAndEnglishLanguageSwitch() {
         let app = launch(arabic: true)
         XCTAssertTrue(app.tabBars.buttons["الرئيسية"].exists)
+        captureScreenshot(app, name: "Arabic home")
         app.tabBars.buttons["الإعدادات"].tap()
         let language = app.descendants(matching: .any).matching(identifier: "languagePicker").firstMatch
         XCTAssertTrue(language.waitForExistence(timeout: 5))
@@ -58,6 +61,7 @@ final class ShekatiUITests: XCTestCase {
         app.buttons["English"].tap()
         XCTAssertTrue(app.tabBars.buttons["Settings"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Appearance and language"].exists || app.staticTexts["APPEARANCE AND LANGUAGE"].exists)
+        captureScreenshot(app, name: "English settings after language switch")
     }
 
     /// Container hit-testing can be false while its fields remain interactive on iOS 26.
@@ -74,8 +78,14 @@ final class ShekatiUITests: XCTestCase {
             if element.isHittable { return }
             let frame = window.frame
             let keyboard = app.keyboards.firstMatch
-            let keyboardTop = keyboard.exists && keyboard.frame.height > 0 ? keyboard.frame.minY : frame.maxY
-            let visibleBottom = min(frame.maxY - 80, keyboardTop) - 24
+            let keyboardVisible = keyboard.exists && keyboard.frame.height > 0
+            let keyboardTop = keyboardVisible ? keyboard.frame.minY : frame.maxY
+            // Native iOS 26 evidence: Keyboard.frame starts at 611, but Typing Predictions starts at 567.
+            // Respect the separate accessory element; keep a conservative inset when it isn't exposed.
+            let predictions = app.otherElements["Typing Predictions"].firstMatch
+            let accessoryTop = keyboardVisible ?
+                (predictions.exists && predictions.frame.height > 0 ? predictions.frame.minY : keyboardTop - 60) : keyboardTop
+            let visibleBottom = min(frame.maxY - 80, min(keyboardTop, accessoryTop)) - 24
             let editorBar = app.navigationBars["Add cheque"]
             let listBar = app.navigationBars["Cheques"]
             let navigationBottom = editorBar.exists ? editorBar.frame.maxY :
@@ -97,13 +107,32 @@ final class ShekatiUITests: XCTestCase {
     }
 
     private func captureDiagnostics(_ app: XCUIApplication, name: String) {
-        let screenshot = XCTAttachment(screenshot: app.screenshot())
-        screenshot.name = name
-        screenshot.lifetime = .keepAlways
-        add(screenshot)
+        captureScreenshot(app, name: name)
         let hierarchy = XCTAttachment(string: app.debugDescription)
         hierarchy.name = name + " — accessibility hierarchy"
         hierarchy.lifetime = .keepAlways
         add(hierarchy)
+    }
+
+    private func captureScreenshot(_ app: XCUIApplication, name: String) {
+        let screenshot = XCTAttachment(screenshot: app.screenshot())
+        screenshot.name = name
+        screenshot.lifetime = .keepAlways
+        add(screenshot)
+    }
+
+    private func allowNotificationPromptIfPresented() {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let alert = springboard.alerts.firstMatch
+        if alert.waitForExistence(timeout: 2) {
+            let allow = alert.buttons["Allow"]
+            let text = ([alert.label] + alert.staticTexts.allElementsBoundByIndex.map(\.label)).joined(separator: " ")
+            guard allow.exists && text.localizedCaseInsensitiveContains("notification") else {
+                captureDiagnostics(springboard, name: "Unexpected system alert after save")
+                XCTFail("Expected an Allow button on the system notification prompt")
+                return
+            }
+            allow.tap()
+        }
     }
 }
