@@ -280,6 +280,7 @@ struct ChequeEditorView: View {
 
     @ViewBuilder
     private func attachment(_ side: AttachmentSide, data: Data?, selection: Binding<PhotosPickerItem?>) -> some View {
+        let photosTitle = app.tr("Photos")
         VStack(alignment: .leading, spacing: 12) {
             Text(app.tr(side == .front ? "Front" : "Back")).font(.subheadline.weight(.semibold))
             if let data, let image = UIImage(data: data) {
@@ -300,7 +301,7 @@ struct ChequeEditorView: View {
                 } label: { Label(app.tr("Scan"), systemImage: "camera") }
                 .buttonStyle(.borderless)
                 PhotosPicker(selection: selection, matching: .images) {
-                    Label(app.tr("Photos"), systemImage: "photo")
+                    Label(photosTitle, systemImage: "photo")
                 }
                 .buttonStyle(.borderless)
                 if data != nil {

@@ -98,22 +98,7 @@ struct ChequeListView: View {
         }
         .navigationTitle(app.tr("Cheques"))
         .searchable(text: $filter.query, prompt: Text(app.tr("Search number, bank or name")))
-        .toolbar {
-            ToolbarItemGroup(placement: .topBarTrailing) {
-                if app.preferences.sort == .manual && !visible.isEmpty {
-                    EditButton()
-                        .accessibilityHint(app.tr("Drag cheques to change their order."))
-                }
-                sortMenu
-                Button { showingFilters = true } label: {
-                    Image(systemName: hasFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                }
-                .accessibilityLabel(app.tr("Filters"))
-                Button { showingEditor = true } label: { Image(systemName: "plus") }
-                    .accessibilityLabel(app.tr("Add cheque"))
-                    .disabled(app.currencyConflict || app.currencyCode.isEmpty)
-            }
-        }
+        .toolbar { listToolbar }
         .sheet(isPresented: $showingEditor) {
             NavigationStack { ChequeEditorView() }
         }
@@ -127,6 +112,24 @@ struct ChequeListView: View {
         )) {
             Button(app.tr("OK"), role: .cancel) { errorMessage = nil }
         } message: { Text(errorMessage ?? "") }
+    }
+
+    @ToolbarContentBuilder
+    private var listToolbar: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            if app.preferences.sort == .manual && !visible.isEmpty {
+                EditButton()
+                    .accessibilityHint(app.tr("Drag cheques to change their order."))
+            }
+            sortMenu
+            Button { showingFilters = true } label: {
+                Image(systemName: hasFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+            }
+            .accessibilityLabel(app.tr("Filters"))
+            Button { showingEditor = true } label: { Image(systemName: "plus") }
+                .accessibilityLabel(app.tr("Add cheque"))
+                .disabled(app.currencyConflict || app.currencyCode.isEmpty)
+        }
     }
 
     private var sortMenu: some View {

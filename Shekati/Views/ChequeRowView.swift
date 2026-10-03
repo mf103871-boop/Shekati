@@ -57,5 +57,6 @@ struct ChequeRowView: View {
         .background(Theme.surface, in: RoundedRectangle(cornerRadius: 18))
         .overlay(RoundedRectangle(cornerRadius: 18).stroke(Theme.navy.opacity(0.06), lineWidth: 1))
         .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("cheque-row-\(record.id.uuidString)")
     }
 }
