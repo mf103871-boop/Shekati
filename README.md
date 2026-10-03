@@ -2,7 +2,7 @@
 
 تطبيق أصلي للآيفون لمتابعة الشيكات الواردة والصادرة، وتواريخ الاستحقاق والصرف الفعلي، والصور والتذكيرات. واجهة عربية وإنجليزية، حفظ محلي، ومزامنة خاصة عبر iCloud. الحد الأدنى iOS 17.
 
-This repository contains the SwiftUI app, its SwiftData models, a Foundation-only business-logic package, automated tests, XcodeGen configuration, and hosted macOS build workflows. [Version 1.0.0, build 2](https://appstoreconnect.apple.com/teams/609ff8f7-15ce-48ec-9e60-e95f8ed24d3a/apps/6818852973/testflight/ios/c6a99453-40c5-4cd3-a86b-aeca16550426) is confirmed `Ready to Test` in the internal TestFlight group's Builds tab, with `Expires in 90 days`. Native tests, visual review and signed upload passed. One owner tester was invited on 3 October 2026; invitation acceptance and physical-iPhone installation are not confirmed.
+This repository contains the SwiftUI app, its SwiftData models, a Foundation-only business-logic package, automated tests, XcodeGen configuration, and hosted macOS build workflows. [Version 1.0.0, build 2](https://appstoreconnect.apple.com/teams/609ff8f7-15ce-48ec-9e60-e95f8ed24d3a/apps/6818852973/testflight/ios/c6a99453-40c5-4cd3-a86b-aeca16550426) is confirmed `Ready to Test` in the internal TestFlight group's Builds tab, with `Expires in 90 days`. Native tests, visual review and signed upload passed. One owner tester was invited on 3 October 2026; invitation acceptance and installation of the regular TestFlight app are not confirmed.
 
 ## What is included
 
@@ -22,7 +22,7 @@ The commercial model is a **$9.99 paid download**, with all features included an
 
 See [Build guide](docs/BUILD.md) for macOS or Windows-with-hosted-macOS instructions, Apple signing, private iCloud setup, and TestFlight secrets. Build 2 automated simulator validation has passed; [real-device acceptance checks](docs/DEVICE_QA.md) remain pending.
 
-تم ربط المستودع الخاص وهوية التطبيق وحاوية iCloud وسجل المتجر، وإصدار شهادة وملف التوزيع وحفظ أسرار التوقيع والنشر السبعة في بيئة GitHub المقيّدة بفرع `main`. البناء رقم 2 جاهز للاختبار في TestFlight ومربوط بمجموعة اختبار المالك، التي تضم مختبرًا واحدًا وبناءً واحدًا. أُرسلت دعوة المالك في 3 أكتوبر 2026 وتظهر الحالة `Invited`؛ قبول الدعوة والتثبيت على الهاتف وتهيئة مخطط iCloud لم تُؤكَّد بعد. راجع [حالة الربط الفعلية](docs/ACCOUNT_SETUP_STATUS.md) و[متابعة التجهيز من ويندوز](docs/CONNECT_ACCOUNTS_AR.md).
+تم ربط المستودع الخاص وهوية التطبيق وحاوية iCloud وسجل المتجر، وإصدار شهادة وملف التوزيع وحفظ الأسرار الثمانية في بيئة GitHub المقيّدة بفرع `main`. البناء رقم 2 جاهز للاختبار في TestFlight ومربوط بمجموعة اختبار المالك، التي تضم مختبرًا واحدًا وبناءً واحدًا. أُرسلت دعوة المالك في 3 أكتوبر 2026 وتظهر الحالة `Invited`؛ قبولها وتثبيت النسخة العادية عبر TestFlight لم يُؤكَّدا بعد. في 4 أكتوبر سُجّل هاتف المالك، ونجح بناء وتوقيع نسخة التهيئة رقم 3، وثُبّتت **Shekati Sync Setup** على الآيفون. طلب الهاتف تفعيل نمط المطوّر؛ تشغيل التهيئة ونشر مخطط iCloud ما زالا بانتظار الخطوة على الهاتف. راجع [حالة الربط الفعلية](docs/ACCOUNT_SETUP_STATUS.md) و[متابعة التجهيز من ويندوز](docs/CONNECT_ACCOUNTS_AR.md).
 
 ## معاينة التصميم | Design preview
 
