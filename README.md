@@ -2,7 +2,7 @@
 
 تطبيق أصلي للآيفون لمتابعة الشيكات الواردة والصادرة، وتواريخ الاستحقاق والصرف الفعلي، والصور والتذكيرات. واجهة عربية وإنجليزية، حفظ محلي، ومزامنة خاصة عبر iCloud. الحد الأدنى iOS 17.
 
-This repository contains the SwiftUI app, its SwiftData models, a Foundation-only business-logic package, automated tests, XcodeGen configuration, and hosted macOS build workflows. [Version 1.0.0, build 2](https://github.com/mf103871-boop/Shekati/actions/runs/37147465558) passed complete native validation, visual review, signed archive/export and upload to App Store Connect. Apple processing and TestFlight availability have not yet been confirmed; the app has not been installed on a physical iPhone.
+This repository contains the SwiftUI app, its SwiftData models, a Foundation-only business-logic package, automated tests, XcodeGen configuration, and hosted macOS build workflows. [Version 1.0.0, build 2](https://appstoreconnect.apple.com/teams/609ff8f7-15ce-48ec-9e60-e95f8ed24d3a/apps/6818852973/testflight/ios/c6a99453-40c5-4cd3-a86b-aeca16550426) is confirmed `Ready to Test` in the internal TestFlight group's Builds tab, with `Expires in 90 days`. Native tests, visual review and signed upload passed; the invitation and physical-iPhone installation remain pending.
 
 ## What is included
 
@@ -22,7 +22,7 @@ The commercial model is a **$9.99 paid download**, with all features included an
 
 See [Build guide](docs/BUILD.md) for macOS or Windows-with-hosted-macOS instructions, Apple signing, private iCloud setup, and TestFlight secrets. Build 2 automated simulator validation has passed; [real-device acceptance checks](docs/DEVICE_QA.md) remain pending.
 
-تم ربط المستودع الخاص وهوية التطبيق وحاوية iCloud وسجل المتجر، وإصدار شهادة وملف التوزيع وحفظ أسرار التوقيع والنشر السبعة في بيئة GitHub المقيّدة بفرع `main`. نجح رفع البناء رقم 2 إلى Apple؛ ظهور النسخة وجاهزيتها في TestFlight وتهيئة مخطط iCloud ما زالت قيد التحقق. راجع [حالة الربط الفعلية](docs/ACCOUNT_SETUP_STATUS.md) و[متابعة التجهيز من ويندوز](docs/CONNECT_ACCOUNTS_AR.md).
+تم ربط المستودع الخاص وهوية التطبيق وحاوية iCloud وسجل المتجر، وإصدار شهادة وملف التوزيع وحفظ أسرار التوقيع والنشر السبعة في بيئة GitHub المقيّدة بفرع `main`. البناء رقم 2 جاهز للاختبار في TestFlight ومربوط بمجموعة اختبار المالك، مع صفر مختبرين ودون إرسال دعوات. دعوة المالك والتثبيت على الهاتف وتهيئة مخطط iCloud ما زالت قيد التجهيز. راجع [حالة الربط الفعلية](docs/ACCOUNT_SETUP_STATUS.md) و[متابعة التجهيز من ويندوز](docs/CONNECT_ACCOUNTS_AR.md).
 
 ## معاينة التصميم | Design preview
 
@@ -36,9 +36,9 @@ Release material is supplied in [Arabic and English store copy](docs/APP_STORE.m
 
 Build 2's complete native [validation job 111274269760](https://github.com/mf103871-boop/Shekati/actions/runs/37147465558/job/111274269760) passed using Xcode 26.6 and an iOS 26.5 simulator: all 24 macOS core tests, then all 48 iPhone scenarios (24 core, 22 hosted unit/integration and both UI tests). The separate native [cloud schema bootstrap tool](Tools/SchemaBootstrap/README.md) also built successfully. Fresh native screenshots confirmed readable English Settings with the correct left-to-right layout after switching from Arabic, with the selected Settings tab preserved.
 
-Build 2's [signed upload job 111274911754](https://github.com/mf103871-boop/Shekati/actions/runs/37147465558/job/111274911754) succeeded, including both archive and IPA checks for the iPhone-only device family `[1]`; [saved success proof](docs/screenshots/Shekati-build-upload-success.jpg). The earlier build 1 rejection (90474, unintended iPad support) is resolved in the signed output. Upload success is confirmed; portal processing/TestFlight readiness, private iCloud schema setup and signed physical-iPhone checks remain pending.
+Build 2's [signed upload job 111274911754](https://github.com/mf103871-boop/Shekati/actions/runs/37147465558/job/111274911754) succeeded, including both archive and IPA checks for the iPhone-only device family `[1]`; [saved success proof](docs/screenshots/Shekati-build-upload-success.jpg). The earlier build 1 rejection (90474, unintended iPad support) is resolved in the signed output. The [TestFlight group proof](docs/screenshots/Shekati-TestFlight-build.jpg) confirms build 2 is attached to `Shekati Owner Testing` and `Ready to Test`. Invitations, physical-device testing and private iCloud schema setup remain pending.
 
-These native test results apply to build 2 commit [7325d7046101](https://github.com/mf103871-boop/Shekati/commit/7325d70461017efe53bec6e44b1d59c54d72220e). Read-only account verification confirmed the Paid Apps Agreement is already active. The Brazil tax form still shows missing information; publication URLs/contact details and public App Review remain outstanding. The empty internal group `Shekati Owner Testing` has zero testers, with automatic distribution off and no invitations sent.
+These native test results apply to build 2 commit [7325d7046101](https://github.com/mf103871-boop/Shekati/commit/7325d70461017efe53bec6e44b1d59c54d72220e). Read-only account verification confirmed the Paid Apps Agreement is already active. The Brazil tax form still shows missing information; publication URLs/contact details and public App Review remain outstanding. The internal group `Shekati Owner Testing` has one attached build and zero testers, with automatic distribution off and no invitations sent.
 
 Actual build 2 simulator captures: [Arabic Home](docs/screenshots/native-arabic-home.png), [English cheque detail](docs/screenshots/native-english-detail.png), and [English Settings after language change](docs/screenshots/native-english-settings.png). These are raw native captures, separate from the browser design preview.
 

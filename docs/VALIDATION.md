@@ -1,6 +1,6 @@
 # حالة التحقق | Validation status
 
-Status updated on 3 October 2026. Version 1.0.0, build 2 at commit [7325d7046101](https://github.com/mf103871-boop/Shekati/commit/7325d70461017efe53bec6e44b1d59c54d72220e) passed complete native validation, visual screenshot review, signed archive/export and upload in [run 37147465558](https://github.com/mf103871-boop/Shekati/actions/runs/37147465558). Apple processing and TestFlight readiness remain unconfirmed.
+Status updated on 3 October 2026. Version 1.0.0, build 2 at commit [7325d7046101](https://github.com/mf103871-boop/Shekati/commit/7325d70461017efe53bec6e44b1d59c54d72220e) passed complete native validation, visual screenshot review, signed archive/export and upload in [run 37147465558](https://github.com/mf103871-boop/Shekati/actions/runs/37147465558). Internal TestFlight readiness is confirmed: the owner-testing group's Builds tab shows `Ready to Test`, `Expires in 90 days`. Invitation, physical installation and cloud/device acceptance remain pending.
 
 | Check | Result |
 | --- | --- |
@@ -24,16 +24,17 @@ Status updated on 3 October 2026. Version 1.0.0, build 2 at commit [7325d7046101
 | Distribution credentials, signed archive and IPA export | Build 2 succeeded: archive at 19:23:58 UTC and export at 19:23:59 UTC |
 | Signed device camera, Vision accuracy, private iCloud, lock, VoiceOver and closed-app alerts | Not run; requires physical iPhone acceptance |
 | Binary upload to App Store Connect | Build 2 [job 111274911754](https://github.com/mf103871-boop/Shekati/actions/runs/37147465558/job/111274911754) passed: `UPLOAD SUCCEEDED`, no errors, 19:25:05 UTC; [saved success proof](screenshots/Shekati-build-upload-success.jpg) |
-| Portal processing/TestFlight readiness | Not yet confirmed; the portal still showed no builds at 19:26:30 UTC, after the successful 19:25:05 UTC transfer |
+| Internal TestFlight readiness | Confirmed for [version 1.0.0, build 2](https://appstoreconnect.apple.com/teams/609ff8f7-15ce-48ec-9e60-e95f8ed24d3a/apps/6818852973/testflight/ios/c6a99453-40c5-4cd3-a86b-aeca16550426): group Builds tab shows `Ready to Test`, `Expires in 90 days`; [portal proof](screenshots/Shekati-TestFlight-build.jpg) |
+| Earlier portal observations | Main build row showed `Ready to Submit`, and Build Uploads showed `Processing`; the later authoritative internal-group view confirms `Ready to Test` |
 | iPhone-only distribution configuration | Signed archive and exported IPA both passed device-family `[1]` guards |
 | App Store configuration | US base price [$9.99 saved](screenshots/Shekati-price-saved.jpg); Mac/Vision availability and reduced school volume price unchecked and saved |
 | App Store agreements and compliance, read-only | Paid/Free Apps Agreements, US Foreign Status/W-8BEN and DSA active; Brazil tax form has missing information |
-| Internal testing group | `Shekati Owner Testing` created with zero testers; automatic distribution off and no invitations sent |
+| Internal testing group | `Shekati Owner Testing` attached to build 2: one build, zero testers; automatic distribution off, no invitations sent |
 | Public App Store release | Not performed |
 
 There are **48 native XCTest scenarios**: 24 core tests, 17 reminder/OCR tests, 5 model/persistence tests and 2 UI tests. All passed in the iPhone test run for build 2 commit [7325d7046101](https://github.com/mf103871-boop/Shekati/commit/7325d70461017efe53bec6e44b1d59c54d72220e), after the macOS core suite also passed. The earlier build 1 also passed 48 tests, but screenshot review exposed a Settings direction defect not detected by its assertions. Build 2 includes the lifecycle fix, passes the renewed tests and passed visual review of the actual native screenshots. Source was unchanged after the successful native validation. A simulator pass does not establish physical-device behavior or cloud synchronization.
 
-The signed build 1 archive and exported IPA succeeded, but App Store Connect rejected that upload with error 90474 because the app target inherited XcodeGen's iPad device-family preset. Build 2 sets the family at the target; both signed archive and IPA family checks passed. Its validation and upload jobs both succeeded. Upload delivery UUID: `c6a99453-40c5-4cd3-a86b-aeca16550426`. This confirms transport upload, while portal processing/TestFlight readiness remains pending.
+The signed build 1 archive and exported IPA succeeded, but App Store Connect rejected that upload with error 90474 because the app target inherited XcodeGen's iPad device-family preset. Build 2 sets the family at the target; both signed archive and IPA family checks passed. Its validation and upload jobs both succeeded. Upload delivery UUID: `c6a99453-40c5-4cd3-a86b-aeca16550426`. The owner-testing group is attached, and its Builds tab now confirms `Ready to Test`, `Expires in 90 days`. Earlier `Ready to Submit`/`Processing` observations do not block this confirmed internal readiness. The group has zero testers; no invitations or physical-iPhone installations have occurred.
 
 The raw 1260×2736 simulator screenshots came from native artifact `11283221817` for build 2: [Arabic Home](screenshots/native-arabic-home.png), [English cheque detail](screenshots/native-english-detail.png), and [English Settings after language change](screenshots/native-english-settings.png). The English Settings screenshot was visually reviewed and confirms the transition defect is resolved.
 
