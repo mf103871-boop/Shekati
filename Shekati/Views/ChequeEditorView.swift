@@ -13,8 +13,10 @@ struct ChequeEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @Query private var records: [ChequeRecord]
     let record: ChequeRecord?
-    /// Captured at init so the editor never reads `record` after it may have been permanently deleted.
+    /// Captured at init. save() confirms the record still exists through the identifier before
+    /// touching the model, and body reads the currency from here rather than from the record.
     private let recordID: UUID?
+    private let recordCurrency: String?
 
     @State private var direction: ChequeDirection
     @State private var amountText: String
@@ -68,6 +70,7 @@ struct ChequeEditorView: View {
     init(record: ChequeRecord? = nil) {
         self.record = record
         recordID = record?.id
+        recordCurrency = record?.currencyCode
         let offsets = record?.reminderOffsets ?? [3, 1, 0]
         _direction = State(initialValue: record?.direction ?? .incoming)
         _amountText = State(initialValue: record.map {
@@ -105,7 +108,7 @@ struct ChequeEditorView: View {
         }
     }
 
-    private var currency: String { record?.currencyCode ?? app.currencyCode }
+    private var currency: String { recordCurrency ?? app.currencyCode }
     private var busy: Bool { isSaving || isReadingImage }
     private var effectiveReminderTime: Date {
         reminderTime ?? Self.clockDate(hour: app.preferences.reminderHour, minute: app.preferences.reminderMinute)

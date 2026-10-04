@@ -135,7 +135,6 @@ struct SettingsView: View {
             .alert(app.tr("Device lock unavailable"), isPresented: $lockUnavailable) {
                 Button(app.tr("OK"), role: .cancel) {}
             } message: { Text(app.tr("Set a device passcode in iPhone Settings before enabling app lock.")) }
-            .onChange(of: preferences.notificationSignature) { _, _ in app.didMutate() }
             .onChange(of: preferences.reminderOffsets) { _, offsets in
                 if !offsets.isEmpty { Task { await requestPermissionIfNeeded() } }
             }

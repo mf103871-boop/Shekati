@@ -11,6 +11,8 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(Localization.arabicDays(11), "11 يومًا")
         XCTAssertEqual(Localization.arabicDays(99), "99 يومًا")
         XCTAssertEqual(Localization.arabicDays(100), "100 يوم")
+        XCTAssertEqual(Localization.arabicDays(111), "111 يومًا")
+        XCTAssertEqual(Localization.arabicDays(200), "200 يوم")
         XCTAssertEqual(Localization.arabicDays(103), "103 أيام")
         XCTAssertEqual(Localization.arabicDays(365), "365 يومًا")
         XCTAssertEqual(Localization.arabicDays(-15), "15 يومًا")

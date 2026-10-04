@@ -362,6 +362,17 @@ final class ChequeTransferTests: XCTestCase {
         entry.reminderOffsets = nil
         entry.apply(to: created)
         XCTAssertNil(created.reminderOffsets)
+
+        entry.reminderOffsets = [7, 7, 0]
+        let context = try makeContext()
+        let payload = ChequeBackupPayload(currencyCode: "JOD", records: [entry])
+        XCTAssertEqual(try ChequeTransferService.restore(payload, into: context), 1)
+        let stored = try XCTUnwrap(context.fetch(FetchDescriptor<ChequeRecord>()).first)
+        XCTAssertEqual(stored.reminderOffsets, [7, 0])
+        // Reviewing the same file again must report the normalised record as unchanged.
+        let again = try ChequeTransferService.preview(payload, existing: [stored])
+        XCTAssertEqual(again.identicalCount, 1); XCTAssertEqual(again.changedCount, 0)
+        XCTAssertEqual(try ChequeTransferService.restore(payload, into: context, replaceExisting: true), 0)
     }
 
     private func makeRecord() -> ChequeRecord {

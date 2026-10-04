@@ -61,6 +61,14 @@ struct ChequeBackupEntry: Codable, Equatable, Sendable {
         record.reminderMinute = reminderMinute
         record.deletedAt = deletedAt
     }
+
+    /// Backups may repeat reminder days. Previews and restores compare this form with stored
+    /// records, so a record that was normalised on restore is reported as unchanged.
+    var normalized: ChequeBackupEntry {
+        var copy = self
+        copy.reminderOffsets = reminderOffsets.map(deduplicatedOffsets)
+        return copy
+    }
 }
 
 struct GlobalReminderBackup: Codable, Equatable, Sendable {
@@ -152,7 +160,7 @@ enum ChequeTransferService {
         let byID = Dictionary(existing.map { ($0.id, ChequeBackupEntry(record: $0)) }, uniquingKeysWith: { first, _ in first })
         var preview = BackupRestorePreview(newCount: 0, identicalCount: 0, changedCount: 0,
                                           recentlyDeletedCount: payload.records.filter { $0.deletedAt != nil }.count)
-        for entry in payload.records {
+        for entry in payload.records.map(\.normalized) {
             if let old = byID[entry.snapshot.id] {
                 if old == entry { preview.identicalCount += 1 }
                 else { preview.changedCount += 1 }
@@ -171,7 +179,7 @@ enum ChequeTransferService {
         let byID = Dictionary(existing.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         var changed = 0
         do {
-            for entry in payload.records {
+            for entry in payload.records.map(\.normalized) {
                 if let record = byID[entry.snapshot.id] {
                     if replaceExisting && ChequeBackupEntry(record: record) != entry {
                         entry.apply(to: record); changed += 1
