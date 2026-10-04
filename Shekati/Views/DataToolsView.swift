@@ -52,8 +52,10 @@ private struct BackupCreationView: View {
                 LabeledContent(app.tr("Saved cheques"), value: records.count.formatted())
                 LabeledContent(app.tr("Currency"), value: app.currencyCode)
                 SecureField(app.tr("Backup password"), text: $password).textContentType(.newPassword)
+                    .disabled(busy)
                     .accessibilityIdentifier("backupPassword")
                 SecureField(app.tr("Confirm password"), text: $confirmation).textContentType(.newPassword)
+                    .disabled(busy)
                     .accessibilityIdentifier("backupPasswordConfirmation")
             } footer: { Text(app.tr("Use at least 10 characters. Your password is not saved or sent anywhere.")) }
             Section {
@@ -115,9 +117,9 @@ private struct BackupRestoreView: View {
     var body: some View {
         Form {
             Section {
-                Button(app.tr("Choose backup file")) { importing = true }
+                Button(app.tr("Choose backup file")) { importing = true }.disabled(busy)
                 if !filename.isEmpty { Text(filename).font(.footnote).lineLimit(2) }
-                SecureField(app.tr("Backup password"), text: $password)
+                SecureField(app.tr("Backup password"), text: $password).disabled(busy)
                 Button(app.tr("Review backup")) { review() }
                     .disabled(encryptedData == nil || password.isEmpty || busy)
                 if busy { ProgressView(app.tr("Opening backup")) }

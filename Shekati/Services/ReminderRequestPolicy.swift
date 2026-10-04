@@ -7,6 +7,28 @@ enum ReminderRequestPolicy {
     static let chequeCategory = "SHEKATI_CHEQUE"
     static let snoozeAction = "SHEKATI_SNOOZE_HOUR"
 
+    /// Structural identity for the view's refresh task. Each field is a separate
+    /// array element, so user text containing separators cannot hide a change.
+    /// No per-record hashing or money formatting runs while deriving this key.
+    static func refreshKey(inputs: [ChequeReminderInput], settings: ReminderSettings,
+                           dayRevision: Int, authorizationStatus: Int) -> [[String]] {
+        let global = [String(dayRevision), String(authorizationStatus), settings.languageCode,
+                      String(settings.hour), String(settings.minute), String(settings.dailySummary),
+                      String(settings.hideDetails), String(settings.offsets.count)] +
+            settings.offsets.sorted().map(String.init)
+        let records = inputs.sorted { $0.snapshot.id.uuidString < $1.snapshot.id.uuidString }.map { input in
+            let cheque = input.snapshot
+            let offsets = input.offsets ?? []
+            return [cheque.id.uuidString, cheque.direction.rawValue, cheque.status.rawValue,
+                    cheque.dueDate.iso, String(cheque.amountMinorUnits), cheque.currencyCode,
+                    cheque.number, cheque.party, String(input.enabled),
+                    input.offsets == nil ? "default" : "custom", String(offsets.count),
+                    input.hour.map(String.init) ?? "default", input.minute.map(String.init) ?? "default"] +
+                offsets.sorted().map(String.init)
+        }
+        return [global] + records
+    }
+
     /// This fingerprint contains no plaintext cheque information and ignores notes, photos and ordering.
     static func signature(input: ChequeReminderInput, settings: ReminderSettings) -> String {
         let cheque = input.snapshot

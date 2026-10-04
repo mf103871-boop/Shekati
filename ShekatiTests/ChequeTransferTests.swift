@@ -131,6 +131,56 @@ final class ChequeTransferTests: XCTestCase {
         XCTAssertThrowsError(try duplicatedID.validate())
     }
 
+    func testExtremeAndNonfiniteBackupTimestampsCannotPartiallyChangeStore() throws {
+        let context = try makeContext()
+        let existing = makeRecord(); context.insert(existing); try context.save()
+        let original = existing.snapshot
+        let newEntry = ChequeBackupEntry(record: makeRecord())
+        let invalidSeconds: [TimeInterval] = [1e99, -1e99, .infinity, -.infinity, .nan,
+                                             -62_135_596_800, 253_402_300_800]
+        for seconds in invalidSeconds {
+            let invalidDate = Date(timeIntervalSince1970: seconds)
+            var recordCreated = ChequeBackupEntry(record: makeRecord())
+            recordCreated.snapshot.createdAt = invalidDate
+            var deletion = ChequeBackupEntry(record: makeRecord())
+            deletion.deletedAt = invalidDate
+            let recordPayload = ChequeBackupPayload(currencyCode: "JOD", records: [newEntry, recordCreated])
+            let deletionPayload = ChequeBackupPayload(currencyCode: "JOD", records: [newEntry, deletion])
+            var backupCreated = ChequeBackupPayload(currencyCode: "JOD", records: [newEntry])
+            backupCreated.createdAt = invalidDate
+            for payload in [recordPayload, deletionPayload, backupCreated] {
+                XCTAssertThrowsError(try payload.validate())
+                XCTAssertThrowsError(try ChequeTransferService.restore(payload, into: context, replaceExisting: true))
+                XCTAssertEqual(try context.fetch(FetchDescriptor<ChequeRecord>()).count, 1)
+                XCTAssertEqual(existing.snapshot, original)
+                XCTAssertTrue(try context.fetch(FetchDescriptor<AppConfiguration>()).isEmpty)
+            }
+        }
+    }
+
+    func testHistoricalAndTimezoneSafeBoundaryTimestampsRemainRepresentable() throws {
+        let context = try makeContext()
+        let historical = Date(timeIntervalSince1970: -2_208_988_800) // 1900-01-01 UTC
+        var entry = ChequeBackupEntry(record: makeRecord())
+        entry.snapshot.createdAt = historical
+        entry.deletedAt = historical.addingTimeInterval(86_400)
+        var payload = ChequeBackupPayload(currencyCode: "JOD", records: [entry])
+        payload.createdAt = historical.addingTimeInterval(2 * 86_400)
+        XCTAssertNoThrow(try payload.validate())
+        XCTAssertEqual(try ChequeTransferService.restore(payload, into: context), 1)
+        let loaded = try XCTUnwrap(context.fetch(FetchDescriptor<ChequeRecord>()).first)
+        XCTAssertEqual(loaded.createdAt, historical)
+        XCTAssertEqual(loaded.deletedAt, historical.addingTimeInterval(86_400))
+        for seconds in [TimeInterval(-62_135_510_400), TimeInterval(253_402_214_399)] {
+            var boundary = entry
+            boundary.snapshot.createdAt = Date(timeIntervalSince1970: seconds)
+            boundary.deletedAt = boundary.snapshot.createdAt
+            payload.createdAt = boundary.snapshot.createdAt
+            payload.records = [boundary]
+            XCTAssertNoThrow(try payload.validate())
+        }
+    }
+
     func testCSVExportImportPreservesZerosArabicQuotesAndFormulaLikeText() throws {
         var snapshot = makeRecord().snapshot
         snapshot.notes = "=1+1\nنص عربي, \"ملاحظة\""
@@ -230,8 +280,12 @@ final class ChequeTransferTests: XCTestCase {
         let rows = (0..<100).map { index -> ChequeSnapshot in
             var value = base; value.id = UUID(); value.number = String(format: "%06d", index + 1)
             value.direction = index.isMultiple(of: 2) ? .incoming : .outgoing
-            if index == 0 { value.party = "اسم تجريبي طويل جدًا لفحص كشف الشيكات على صفحات PDF" }
-            if index == 1 { value.bank = "بنك تجريبي باسم طويل لفحص وضوح التفاصيل" }
+            if index == 0 {
+                value.party = "اسم تجريبي طويل جدًا لفحص كشف الشيكات على صفحات PDF " + String(repeating: "معلومات إضافية ", count: 10) + "PARTY-TAIL"
+            }
+            if index == 1 {
+                value.bank = "بنك تجريبي باسم طويل لفحص وضوح التفاصيل " + String(repeating: "فرع تجريبي ", count: 10) + "BANK-TAIL"
+            }
             return value
         }
         let english = ChequePDFReport.generate(cheques: rows, language: .english)
@@ -248,11 +302,45 @@ final class ChequeTransferTests: XCTestCase {
         XCTAssertTrue(pdf.string?.contains("000100") ?? false)
         XCTAssertTrue(pdf.string?.contains("Incoming") ?? false)
         XCTAssertTrue(pdf.string?.contains("Outgoing") ?? false)
+        XCTAssertTrue(pdf.string?.contains("PARTY-TAIL") ?? false)
+        XCTAssertTrue(pdf.string?.contains("BANK-TAIL") ?? false)
+        let arabicPDF = try XCTUnwrap(PDFDocument(data: arabic))
+        XCTAssertTrue(arabicPDF.string?.contains("PARTY-TAIL") ?? false)
+        XCTAssertTrue(arabicPDF.string?.contains("BANK-TAIL") ?? false)
         XCTAssertTrue(pdf.string?.contains(DisplayFormatting.day(rows[0].dueDate, locale: AppLanguage.english.locale)) ?? false)
-        let filtered = try XCTUnwrap(PDFDocument(data: ChequePDFReport.generate(cheques: [rows[0]], language: .arabic)))
+        let filteredBytes = ChequePDFReport.generate(cheques: [rows[0]], language: .arabic)
+        let filteredAttachment = XCTAttachment(data: filteredBytes, uniformTypeIdentifier: "com.adobe.pdf")
+        filteredAttachment.name = "build6-Arabic-filtered-one-cheque-report"; filteredAttachment.lifetime = .keepAlways
+        add(filteredAttachment)
+        let filtered = try XCTUnwrap(PDFDocument(data: filteredBytes))
         XCTAssertEqual(filtered.pageCount, 1)
         XCTAssertTrue(filtered.string?.contains("000001") ?? false)
+        XCTAssertTrue(filtered.string?.contains("PARTY-TAIL") ?? false)
         XCTAssertFalse(filtered.string?.contains("000100") ?? true)
+    }
+
+    func testPDFContinuesExtraordinaryWrappedChequeAcrossPagesWithoutLosingTailMarkers() throws {
+        var huge = makeRecord().snapshot
+        huge.number = "000777"
+        huge.party = String(repeating: "اسم تجريبي عربي كامل مع تفاصيل طويلة 👨‍👩‍👧‍👦 لقياس الاستمرار بين الصفحات. ", count: 90) + "PARTY-END-MARKER"
+        huge.bank = String(repeating: "بنك تجريبي وفرع طويل وتفاصيل كاملة للاستمرار. ", count: 90) + "BANK-END-MARKER"
+        for language in [AppLanguage.arabic, AppLanguage.english] {
+            let data = ChequePDFReport.generate(cheques: [huge], language: language)
+            let attachment = XCTAttachment(data: data, uniformTypeIdentifier: "com.adobe.pdf")
+            attachment.name = language == .arabic ? "build6-Arabic-long-cheque-continuation" : "build6-English-long-cheque-continuation"
+            attachment.lifetime = .keepAlways; add(attachment)
+            let document = try XCTUnwrap(PDFDocument(data: data))
+            XCTAssertGreaterThan(document.pageCount, 2)
+            let text = try XCTUnwrap(document.string)
+            XCTAssertTrue(text.contains("PARTY-END-MARKER"))
+            XCTAssertTrue(text.contains("BANK-END-MARKER"))
+            XCTAssertTrue(text.contains("000777"))
+            for index in 0..<document.pageCount {
+                let pageText = try XCTUnwrap(document.page(at: index)?.string)
+                XCTAssertTrue(pageText.contains("12.345"), "Amount must repeat on continuation page \(index + 1)")
+                XCTAssertTrue(pageText.contains(DisplayFormatting.day(huge.dueDate, locale: language.locale)))
+            }
+        }
     }
 
     private func makeRecord() -> ChequeRecord {

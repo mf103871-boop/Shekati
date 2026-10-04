@@ -13,11 +13,13 @@ struct RootView: View {
     @State private var linkedRecord: ChequeRecord?
     @State private var dayRevision = 0
 
-    private var reminderSignature: String {
-        let values = records.filter { $0.deletedAt == nil }.map {
-            "\($0.id)|\($0.directionRaw)|\($0.statusRaw)|\($0.dueDateISO)|\($0.amountMinorUnits)|\($0.currencyCode)|\($0.number)|\($0.party)|\($0.remindersEnabled)|\(String(describing: $0.reminderOffsets))|\(String(describing: $0.reminderHour)):\(String(describing: $0.reminderMinute))"
+    private var reminderSignature: [[String]] {
+        let inputs = records.filter { $0.deletedAt == nil }.map {
+            ChequeReminderInput(snapshot: $0.snapshot, enabled: $0.remindersEnabled,
+                                offsets: $0.reminderOffsets, hour: $0.reminderHour, minute: $0.reminderMinute)
         }
-        return "\(dayRevision)|\(app.notifications.authorizationStatus.rawValue)|\(app.preferences.notificationSignature)|" + values.joined(separator: ";")
+        return ReminderRequestPolicy.refreshKey(inputs: inputs, settings: app.reminderSettings,
+            dayRevision: dayRevision, authorizationStatus: app.notifications.authorizationStatus.rawValue)
     }
 
     private var currencySignature: String {

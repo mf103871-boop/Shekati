@@ -100,13 +100,13 @@ struct ChequeBackupPayload: Codable, Sendable {
         try globalReminders?.validate()
         guard Locale.commonISOCurrencyCodes.contains(currencyCode), records.count <= 20_000,
               Set(records.map { $0.snapshot.id }).count == records.count,
-              createdAt.timeIntervalSince1970.isFinite else { throw ChequeTransferError.invalidRecords }
+              Self.isRepresentableTimestamp(createdAt) else { throw ChequeTransferError.invalidRecords }
         for entry in records {
             let value = entry.snapshot
             let texts = [value.number, value.bank, value.branch, value.party, value.accountReference, value.notes]
             guard value.currencyCode == currencyCode, value.amountMinorUnits > 0,
-                  value.createdAt.timeIntervalSince1970.isFinite,
-                  entry.deletedAt?.timeIntervalSince1970.isFinite ?? true,
+                  Self.isRepresentableTimestamp(value.createdAt),
+                  entry.deletedAt.map(Self.isRepresentableTimestamp) ?? true,
                   texts.allSatisfy({ $0.utf8.count <= 100_000 }),
                   (entry.frontImageData?.count ?? 0) <= 20_000_000,
                   (entry.backImageData?.count ?? 0) <= 20_000_000,
@@ -119,6 +119,14 @@ struct ChequeBackupPayload: Codable, Sendable {
                 throw ChequeTransferError.invalidRecords
             }
         }
+    }
+
+    private static func isRepresentableTimestamp(_ date: Date) -> Bool {
+        // UTC 0001-01-02 through 9999-12-30. Reserve one day at each civil-date
+        // boundary so a device's time zone cannot move a timestamp into year 0/10000.
+        // Merely checking Double.isFinite would still allow dates such as 1e99.
+        let seconds = date.timeIntervalSince1970
+        return seconds.isFinite && seconds >= -62_135_510_400 && seconds < 253_402_214_400
     }
 }
 

@@ -16,6 +16,71 @@ final class ReminderEnhancementTests: XCTestCase {
                          hideDetails: false, languageCode: "en")
     }
 
+    func testRefreshKeyCannotCollideWhenSeparatorsMoveBetweenNumberAndParty() {
+        var original = input(day: LocalDay(iso: "2026-10-05")!)
+        original.snapshot.number = "123|Ahmed"
+        original.snapshot.party = "Ali"
+        var edited = original
+        edited.snapshot.number = "123"
+        edited.snapshot.party = "Ahmed|Ali"
+        XCTAssertNotEqual(refreshKey([original]), refreshKey([edited]))
+        original.snapshot.number = "123;Ahmed"
+        edited.snapshot.number = "123"
+        edited.snapshot.party = ";Ahmed|Ali"
+        XCTAssertNotEqual(refreshKey([original]), refreshKey([edited]))
+    }
+
+    func testRefreshKeyIgnoresRecordOrderNotesBankAndManualOrder() {
+        let first = input(day: LocalDay(iso: "2026-10-05")!)
+        let second = input(day: LocalDay(iso: "2026-10-06")!)
+        var noteEdit = first
+        noteEdit.snapshot.notes = "A note containing | and ;"
+        noteEdit.snapshot.bank = "New bank label"
+        noteEdit.snapshot.branch = "New branch"
+        noteEdit.snapshot.manualRank = 8_000
+        XCTAssertEqual(refreshKey([first, second]), refreshKey([second, noteEdit]))
+    }
+
+    func testRefreshKeyTracksGlobalPermissionSummaryClockPrivacyLanguageAndDefaultOffsets() {
+        let cheque = input(day: LocalDay(iso: "2026-10-05")!)
+        let baseline = refreshKey([cheque])
+        XCTAssertNotEqual(baseline, refreshKey([cheque], authorization: 1))
+        XCTAssertNotEqual(baseline, refreshKey([cheque], dayRevision: 1))
+        for property in 0..<6 {
+            var changed = settings
+            switch property {
+            case 0: changed.dailySummary = true
+            case 1: changed.hour = 10
+            case 2: changed.minute = 30
+            case 3: changed.hideDetails = true
+            case 4: changed.languageCode = "ar"
+            default: changed.offsets = [7, 1, 0]
+            }
+            XCTAssertNotEqual(baseline, refreshKey([cheque], settings: changed))
+        }
+    }
+
+    func testRefreshKeyTracksFinancialFieldsAndIndividualReminderOverrides() {
+        let cheque = input(day: LocalDay(iso: "2026-10-05")!)
+        let baseline = refreshKey([cheque])
+        for property in 0..<10 {
+            var changed = cheque
+            switch property {
+            case 0: changed.snapshot.amountMinorUnits += 1
+            case 1: changed.snapshot.dueDate = changed.snapshot.dueDate.adding(days: 1)
+            case 2: changed.snapshot.direction = .outgoing
+            case 3: changed.snapshot.status = .settled
+            case 4: changed.snapshot.currencyCode = "USD"
+            case 5: changed.snapshot.number = "000987"
+            case 6: changed.snapshot.party = "Another party"
+            case 7: changed.enabled = false
+            case 8: changed.offsets = []
+            default: changed.hour = 12; changed.minute = 15
+            }
+            XCTAssertNotEqual(baseline, refreshKey([changed]))
+        }
+    }
+
     func testSnoozesSummariesChequeAlertsAndCoverageShareOneSixtyRequestBudget() throws {
         var configuration = settings
         configuration.dailySummary = true
@@ -204,6 +269,12 @@ final class ReminderEnhancementTests: XCTestCase {
         ChequeReminderInput(snapshot: ChequeSnapshot(direction: .incoming, amountMinorUnits: 123_456,
                                                      currencyCode: "JOD", dueDate: day, number: "00001234",
                                                      party: "Private example party"), enabled: true, offsets: nil)
+    }
+
+    private func refreshKey(_ inputs: [ChequeReminderInput], settings configuration: ReminderSettings? = nil,
+                            dayRevision: Int = 0, authorization: Int = 2) -> [[String]] {
+        ReminderRequestPolicy.refreshKey(inputs: inputs, settings: configuration ?? settings,
+                                         dayRevision: dayRevision, authorizationStatus: authorization)
     }
 
     private func item(input: ChequeReminderInput, fireDate: Date) -> PlannedReminder {

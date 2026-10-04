@@ -47,7 +47,8 @@ enum ChequeCSV {
     }
 
     static func template(currencyCode: String) -> Data {
-        let snapshot = ChequeSnapshot(direction: .outgoing, amountMinorUnits: 100 * Int64(pow(10.0, Double(CurrencyMath.fractionDigits(for: currencyCode)))),
+        let multiplier = (0..<CurrencyMath.fractionDigits(for: currencyCode)).reduce(Int64(1)) { value, _ in value * 10 }
+        let snapshot = ChequeSnapshot(direction: .outgoing, amountMinorUnits: 100 * multiplier,
                                       currencyCode: currencyCode, dueDate: .today.adding(days: 7),
                                       number: "000001", bank: "Demo bank", party: "Demo payee")
         return export([snapshot])

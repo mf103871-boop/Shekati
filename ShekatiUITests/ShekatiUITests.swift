@@ -120,6 +120,12 @@ final class ShekatiUITests: XCTestCase {
             let field = app.textFields[identifier]
             reveal(field, in: app)
             field.tap()
+            let focused = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                field.debugDescription.contains("Keyboard Focused")
+            }, object: field)
+            let result = XCTWaiter.wait(for: [focused], timeout: 5)
+            if result != .completed { captureDiagnostics(app, name: "Input did not receive keyboard focus") }
+            XCTAssertEqual(result, .completed, "Expected the chosen field to receive focus before typing")
             field.typeText(text)
         }
     }
@@ -206,15 +212,13 @@ final class ShekatiUITests: XCTestCase {
     /// Container hit-testing can be false while its fields remain interactive on iOS 26.
     /// Use window coordinates bounded by the active navigation bar and software keyboard instead.
     private func reveal(_ element: XCUIElement, in app: XCUIApplication) {
-        if element.isHittable { return }
         let window = app.windows.firstMatch
         guard window.exists else {
             captureDiagnostics(app, name: "No app window while revealing field")
             XCTFail("Expected the app window to exist")
             return
         }
-        for _ in 0..<5 {
-            if element.isHittable { return }
+        for _ in 0..<12 {
             let frame = window.frame
             let keyboard = app.keyboards.firstMatch
             let keyboardVisible = keyboard.exists && keyboard.frame.height > 0
@@ -224,7 +228,12 @@ final class ShekatiUITests: XCTestCase {
             let predictions = app.otherElements["Typing Predictions"].firstMatch
             let accessoryTop = keyboardVisible ?
                 (predictions.exists && predictions.frame.height > 0 ? predictions.frame.minY : keyboardTop - 60) : keyboardTop
-            let visibleBottom = min(frame.maxY - 80, min(keyboardTop, accessoryTop)) - 24
+            // Native iOS 26 evidence: Next/Done starts at 519, above predictions at 567.
+            // A drag starting at 543 hits the toolbar rather than the scrolling Form.
+            let keyboardToolbarTop = keyboardVisible ? app.toolbars.allElementsBoundByIndex
+                .filter { $0.frame.height > 0 && $0.frame.minY > frame.minY + 100 && $0.frame.maxY <= keyboardTop + 1 }
+                .map { $0.frame.minY }.min() ?? keyboardTop : keyboardTop
+            let visibleBottom = min(frame.maxY - 80, min(keyboardToolbarTop, min(keyboardTop, accessoryTop))) - 24
             let editorBar = app.navigationBars["Add cheque"]
             let listBar = app.navigationBars["Cheques"]
             let navigationBottom = editorBar.exists ? editorBar.frame.maxY :
@@ -235,10 +244,17 @@ final class ShekatiUITests: XCTestCase {
                 XCTFail("The visible scroll area is too small to reveal the field")
                 return
             }
+            let centerInside = element.frame.midY >= visibleTop && element.frame.midY <= visibleBottom
+            let fullFrameInside = element.frame.minY >= visibleTop && element.frame.maxY <= visibleBottom
+            let visibleTarget = element.identifier.hasPrefix("cheque-row-") ? centerInside : fullFrameInside
+            if element.isHittable && visibleTarget { return }
             let distance = min(200, (visibleBottom - visibleTop) * 0.6)
             let origin = window.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
-            let start = origin.withOffset(CGVector(dx: frame.width / 2, dy: visibleBottom - frame.minY))
-            let end = origin.withOffset(CGVector(dx: frame.width / 2, dy: visibleBottom - distance - frame.minY))
+            let above = element.exists && element.frame.height > 0 && element.frame.midY < visibleTop
+            let startY = above ? visibleTop + 15 : visibleBottom
+            let endY = above ? startY + distance : startY - distance
+            let start = origin.withOffset(CGVector(dx: frame.width / 2, dy: startY - frame.minY))
+            let end = origin.withOffset(CGVector(dx: frame.width / 2, dy: endY - frame.minY))
             start.press(forDuration: 0.05, thenDragTo: end)
         }
         if !element.isHittable { captureDiagnostics(app, name: "Field remained offscreen after scrolling") }
