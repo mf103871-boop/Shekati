@@ -273,7 +273,8 @@ final class ShekatiUITests: XCTestCase {
             let above = targetExists && targetFrame.height > 0 && targetTop < visibleTop
             let delta = targetExists && targetFrame.height > 0 ?
                 (above ? visibleTop - targetTop : targetBottom - visibleBottom) : 100
-            let distance = min(min(140, (visibleBottom - visibleTop) * 0.4), max(24, delta * 0.7 + 12))
+            let distance = targetExists && targetFrame.height > 0 ?
+                min(min(140, (visibleBottom - visibleTop) * 0.4), max(24, delta * 0.7 + 12)) : (visibleBottom - visibleTop) * 0.65
             let origin = window.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
             let startY = above ? visibleTop + 15 : visibleBottom
             let endY = above ? startY + distance : startY - distance

@@ -394,7 +394,10 @@ final class EnhancementUITests: XCTestCase {
                 guard barFrame.height > 0, barFrame.intersects(frame) else { return nil }
                 return barFrame.maxY
             }.max() ?? frame.minY + 100
-            let top = max(frame.minY + 100, navigationBottom + 8)
+            let savedNotice = app.staticTexts["consecutiveChequeSaved"]
+            let noticeBottom = savedNotice.exists && savedNotice.frame.height > 0 && savedNotice.frame.intersects(frame) ?
+                savedNotice.frame.maxY : navigationBottom
+            let top = max(frame.minY + 100, max(navigationBottom, noticeBottom) + 8)
             let toolbarTop = app.toolbars.allElementsBoundByIndex.compactMap { toolbar -> CGFloat? in
                 guard toolbar.exists else { return nil }
                 let toolbarFrame = toolbar.frame
@@ -422,9 +425,10 @@ final class EnhancementUITests: XCTestCase {
             let above = targetExists && targetFrame.height > 0 && targetTop < top
             let delta = targetExists && targetFrame.height > 0 ?
                 (above ? top - targetTop : targetBottom - bottom) : 100
-            // Native evidence showed a 220-point gesture repeatedly jumping past a field.
-            // Short, slow drags approach its actual viewport gap without flinging the Form.
-            let distance = min(min(140, (bottom - top) * 0.4), max(24, delta * 0.7 + 12))
+            // Search a lazy Settings/Form section with a longer slow drag until it materializes.
+            // Once its frame exists, approach the exact gap without jumping past the target.
+            let distance = targetExists && targetFrame.height > 0 ?
+                min(min(140, (bottom - top) * 0.4), max(24, delta * 0.7 + 12)) : (bottom - top) * 0.65
             let origin = window.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
             let startY = above ? top + 15 : bottom
             let endY = above ? startY + distance : startY - distance

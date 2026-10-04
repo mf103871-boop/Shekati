@@ -54,6 +54,7 @@ struct ChequeEditorView: View {
     @State private var amountError: String?
     @State private var dateError: String?
     @State private var savedNotice = false
+    @State private var entrySequence = 0
     @State private var isResetting = false
     @State private var showingDuplicate = false
     @State private var duplicateIDs: [UUID] = []
@@ -127,13 +128,6 @@ struct ChequeEditorView: View {
 
     var body: some View {
         Form {
-            if savedNotice {
-                Section {
-                    Label(app.tr("Cheque saved. Enter the next cheque."), systemImage: "checkmark.circle.fill")
-                        .font(.subheadline).foregroundStyle(Theme.accent)
-                        .accessibilityIdentifier("consecutiveChequeSaved")
-                }
-            }
             essentialFields
 
             Section {
@@ -239,8 +233,22 @@ struct ChequeEditorView: View {
             }
 
         }
-        // Recreate the native Form container when language direction changes.
-        .id(app.preferences.language.rawValue)
+        // A new consecutive entry starts at the top instead of retaining the previous bank-row scroll.
+        .id(app.preferences.language.rawValue + "-" + String(entrySequence))
+        .safeAreaInset(edge: .top, spacing: 0) {
+            if savedNotice {
+                HStack(alignment: .top, spacing: 8) {
+                    Image(systemName: "checkmark.circle.fill").accessibilityHidden(true)
+                    Text(app.tr("Cheque saved. Enter the next cheque."))
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("consecutiveChequeSaved")
+                }
+                .font(.subheadline).foregroundStyle(Theme.accent)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 20).padding(.vertical, 10)
+                .background(Theme.background)
+            }
+        }
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle(app.tr(record == nil ? "Add cheque" : "Edit cheque"))
         .navigationBarTitleDisplayMode(.inline)
@@ -655,6 +663,7 @@ struct ChequeEditorView: View {
 
     private func resetForNextEntry() {
         isResetting = true
+        focusedField = nil
         if !keepEntryDetails { direction = .incoming; bank = ""; party = "" }
         amountText = ""; number = ""; branch = ""; accountReference = ""; notes = ""
         dueDate = Date(); issueDate = Date(); includeIssueDate = false
@@ -666,8 +675,9 @@ struct ChequeEditorView: View {
         amountError = nil; dateError = nil; errorMessage = nil
         duplicateIDs = []; pendingAddAnother = false
         dueDateNeedsReview = true; savedNotice = true; hasEdited = false
-        focusedField = .amount
+        entrySequence &+= 1
         DispatchQueue.main.async {
+            focusedField = .amount
             isResetting = false
             dueDateNeedsReview = true
             hasEdited = false
