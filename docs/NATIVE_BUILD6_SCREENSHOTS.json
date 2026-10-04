@@ -1,0 +1,560 @@
+{
+  "schemaVersion": 1,
+  "app": "Shekati | شيكاتي",
+  "build": 6,
+  "source": {
+    "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+    "workflowRunID": 37173315531,
+    "nativeJobID": 111350613605,
+    "artifactID": 11292218365,
+    "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+    "device": "iPhone Air",
+    "environment": "Native Xcode iPhone Air simulator captures",
+    "allSourceTestsPassed": true,
+    "iPhoneTests": {
+      "core": 29,
+      "hosted": 75,
+      "UI": 9,
+      "total": 113
+    },
+    "macCoreTests": 29
+  },
+  "captureNotes": [
+    "All screenshots are original PNG files copied byte for byte from the verified final all-pass native test artifact.",
+    "All cheque names, amounts, and banks shown are fictional test fixtures.",
+    "The UI-test fixture disables reminder days to avoid requesting notification permission during automation; screenshots preserve that actual state.",
+    "The large-text screenshot is a scrollable native view; content below the visible frame remains available by scrolling."
+  ],
+  "count": 23,
+  "screenshots": [
+    {
+      "name": "Arabic home",
+      "file": "screenshots/native-build6-arabic-empty-home.png",
+      "test": "ShekatiUITests/testArabicFirstRunAndEnglishLanguageSwitch()",
+      "testStatus": "passed",
+      "sha256": "928a10cfd52838cec768dcfaebde6e3bc995da6cd040da513fae2ab9a45315d0",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "854BB109-5158-43DF-986B-DD7242950B75.png",
+        "attachmentName": "Arabic home_0_0476285E-439D-42AE-8FA6-9AF440D534D1.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 178371
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Arabic simple home with cheques",
+      "file": "screenshots/native-build6-arabic-home.png",
+      "test": "ShekatiUITests/testArabicQuickEntryAndDirectionFiltersKeepChequesSeparate()",
+      "testStatus": "passed",
+      "sha256": "bbbd8aaffeef4b46bd3cceef847b8fdceb32217a99c3d3602783da9eebd6bc80",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "893ABCEC-2327-47E5-9D77-C669A36DA1CF.png",
+        "attachmentName": "Arabic simple home with cheques_0_7261B40A-381F-4F5A-BF7E-C714B0C0F10E.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 224299
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Arabic compact cheque table — mixed numbers",
+      "file": "screenshots/native-build6-arabic-table.png",
+      "test": "ShekatiUITests/testArabicQuickEntryAndDirectionFiltersKeepChequesSeparate()",
+      "testStatus": "passed",
+      "sha256": "0525dcc9315ccfcc0fa42c69f910137e8c3d62bd44c20b63a3ba7798ed006b03",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "7CA57812-8075-488B-ABCB-056B56FED848.png",
+        "attachmentName": "Arabic compact cheque table — mixed numbers_0_4836309B-B00D-4C99-ADDA-3F1314FA2A0D.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 269809
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Arabic quick cheque entry",
+      "file": "screenshots/native-build6-arabic-entry.png",
+      "test": "ShekatiUITests/testArabicQuickEntryAndDirectionFiltersKeepChequesSeparate()",
+      "testStatus": "passed",
+      "sha256": "77f4d775726e5a209a4227da5d6f9472cb47946133e9debca9639a78540b0455",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "39999A3A-EAAF-4ED4-AA42-16FFBF57B434.png",
+        "attachmentName": "Arabic quick cheque entry_0_CDDD2DBA-7595-47D4-A9A6-90F42F8C45A8.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 324417
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "English quick cheque entry",
+      "file": "screenshots/native-build6-english-entry.png",
+      "test": "ShekatiUITests/testAddChequePreservesLeadingZerosAndAppearsInList()",
+      "testStatus": "passed",
+      "sha256": "732a1126fe89516621078689e4358bd4961e8b23f1be1994f4d1440411cf2bae",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "1E00D40D-AAD5-4FBA-A928-512ED4055CCF.png",
+        "attachmentName": "English quick cheque entry_0_5AEE1A50-ED1B-4C81-A7C4-2D98800537D9.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 332198
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "English compact cheque table",
+      "file": "screenshots/native-build6-english-table.png",
+      "test": "ShekatiUITests/testAddChequePreservesLeadingZerosAndAppearsInList()",
+      "testStatus": "passed",
+      "sha256": "7361c9f3004b980a53542b6bdef2251c3d03d7ae4f73d67f468036dcd6cc5d0f",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "2D7ADD83-7817-4B96-9BB3-B9BCB0C5041E.png",
+        "attachmentName": "English compact cheque table_0_16E984CC-CA5C-4A6D-AE87-593EBB06F114.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 242201
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "English cheque details — leading zeros preserved",
+      "file": "screenshots/native-build6-english-detail.png",
+      "test": "ShekatiUITests/testAddChequePreservesLeadingZerosAndAppearsInList()",
+      "testStatus": "passed",
+      "sha256": "11a165fe4912e8352d9ad2786d8a4f58e91d83d765841179dd52832879ecc15c",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "80FB1E6F-9E91-47AB-B46F-2A0CE0751A6F.png",
+        "attachmentName": "English cheque details — leading zeros preserved_0_1AA72270-E5A8-47B2-BE25-17AC127D3D04.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 331544
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "English settings after language switch",
+      "file": "screenshots/native-build6-english-settings.png",
+      "test": "ShekatiUITests/testArabicFirstRunAndEnglishLanguageSwitch()",
+      "testStatus": "passed",
+      "sha256": "ff7426fa6119177d48ef298fcd5c41b569fe94f6ab29084080259776e401c590",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "E9E986F9-25A8-47DF-A6B5-58A45F06ACCF.png",
+        "attachmentName": "English settings after language switch_0_A7ABEA50-C1AA-49DE-A6E9-F631319CAA72.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 298293
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Accessibility large text cheque table",
+      "file": "screenshots/native-build6-large-text.png",
+      "test": "ShekatiUITests/testLargeTextKeepsChequeRowReadableAndNavigable()",
+      "testStatus": "passed",
+      "sha256": "e868545cc3e54a1696110f85f8a2a2db15db8cdacfcc446ec8e0ee6bc539fdba",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "BE540F2D-AA1B-4AA0-9762-8F0C5F1FCF12.png",
+        "attachmentName": "Accessibility large text cheque table_0_E255563B-8492-42CC-9C9D-2BF28A6AB2C6.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 447475
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 Arabic amount error beside the field",
+      "file": "screenshots/native-build6-arabic-amount-validation.png",
+      "test": "EnhancementUITests/testArabicAmountErrorAndQuickPeriodsKeepFilteringClearAndReversible()",
+      "testStatus": "passed",
+      "sha256": "f150986d11c458a8c91a76521d9bae2bfd1b54a81be5ba84721a55f5cd5bfb51",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "52C837F3-6915-4AB6-B11B-9B08D2A77BD4.png",
+        "attachmentName": "Build 6 Arabic amount error beside the field_0_D7E9803E-56F4-4808-82A3-9303D1C72DC3.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 339598
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 Arabic outstanding cheques and quick periods",
+      "file": "screenshots/native-build6-arabic-quick-periods.png",
+      "test": "EnhancementUITests/testArabicAmountErrorAndQuickPeriodsKeepFilteringClearAndReversible()",
+      "testStatus": "passed",
+      "sha256": "7d9507bfedfb4f73de6430927d8b3ebf7b84db66147e81619d946e89dc8b0a6c",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "04F9EE20-0A09-4086-B48B-D3B313DAC84E.png",
+        "attachmentName": "Build 6 Arabic outstanding cheques and quick periods_0_44970094-F3CF-4329-AC14-EBB5A2BBB200.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 241541
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 Arabic data and backup tools with fictional records",
+      "file": "screenshots/native-build6-arabic-data-tools.png",
+      "test": "EnhancementUITests/testArabicAmountErrorAndQuickPeriodsKeepFilteringClearAndReversible()",
+      "testStatus": "passed",
+      "sha256": "c71b620a8ed66f03011501d39aed6cf856065a60265aefb0ac8548bf678e88a3",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "4C656620-1527-4898-8855-E5A1EFFD124E.png",
+        "attachmentName": "Build 6 Arabic data and backup tools with fictional records_0_AB757245-0B0B-4D22-931E-3F22D46BA8F4.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 226337
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 English consecutive entry requires a new due date",
+      "file": "screenshots/native-build6-english-consecutive-date-review.png",
+      "test": "EnhancementUITests/testConsecutiveEntryKeepsChosenDetailsClearsPrivateFieldsAndRequiresDateReview()",
+      "testStatus": "passed",
+      "sha256": "97738a2d90359434bfd462ec72bb092de2924c5d594539cd57c9e9b076355b2c",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "81D1E88E-0E58-4F86-B6E9-C2EA91D6440C.png",
+        "attachmentName": "Build 6 English consecutive entry requires a new due date_0_2E52B9A9-43BB-4602-BEBE-272A8E954798.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 318267
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 English two cheques saved consecutively",
+      "file": "screenshots/native-build6-english-consecutive-cheques.png",
+      "test": "EnhancementUITests/testConsecutiveEntryKeepsChosenDetailsClearsPrivateFieldsAndRequiresDateReview()",
+      "testStatus": "passed",
+      "sha256": "f8a25af58b87b22891f7c40cd5737dc0799ee3496ca4b5606637473a6cee6629",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "99B5EC8F-219C-4120-B31C-76D990899ADA.png",
+        "attachmentName": "Build 6 English two cheques saved consecutively_0_41C3A844-30D1-4808-9A9B-54268C3B7DE5.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 273786
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 English probable duplicate warning",
+      "file": "screenshots/native-build6-english-duplicate-warning.png",
+      "test": "EnhancementUITests/testDuplicateWarningLetsUserReviewExistingChequeOrExplicitlySaveAnother()",
+      "testStatus": "passed",
+      "sha256": "855018d4baf5420d3b3034af2b580e1190f45119a744b74c8c9db14a8423dec4",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "2B765637-0277-424E-8A00-3EBF20BB93DA.png",
+        "attachmentName": "Build 6 English probable duplicate warning_0_9DF3F62A-5DDC-4875-9532-A7E6AEBC5F76.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 485086
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 English explicitly confirmed repeated cheque",
+      "file": "screenshots/native-build6-english-confirmed-duplicate.png",
+      "test": "EnhancementUITests/testDuplicateWarningLetsUserReviewExistingChequeOrExplicitlySaveAnother()",
+      "testStatus": "passed",
+      "sha256": "8ba7570b7fd2bf8b01528d12183fb05088540fdfecd231be9aed953ffa547af3",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "D015BBFC-0D42-41FB-BBBC-4D7BB8B97A1D.png",
+        "attachmentName": "Build 6 English explicitly confirmed repeated cheque_0_300F99AA-588A-4114-927C-81B2D61A77A6.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 275099
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 English payment action next to amount",
+      "file": "screenshots/native-build6-english-payment-action.png",
+      "test": "EnhancementUITests/testPrimarySettlementRecordsActualDateAndMovesChequeOutOfOutstandingButKeepsHistory()",
+      "testStatus": "passed",
+      "sha256": "b2343d8777cdd9fb9a25470c512bbd721382db288e49b59d901cfac1e9718c9b",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "BCDD5C8A-A5D8-49FA-8B47-831A943CD111.png",
+        "attachmentName": "Build 6 English payment action next to amount_0_6A106FE3-CEF9-4B0B-9F60-6308ADFD3D43.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 334328
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 English actual payment date saved",
+      "file": "screenshots/native-build6-english-payment-date.png",
+      "test": "EnhancementUITests/testPrimarySettlementRecordsActualDateAndMovesChequeOutOfOutstandingButKeepsHistory()",
+      "testStatus": "passed",
+      "sha256": "eac44926ee88bc7be60a9d78e9c0e7af66b7ae96fe660cf468f45dc43f5aabfb",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "A0E56ED1-B849-4868-AE9E-887CAF84DDB9.png",
+        "attachmentName": "Build 6 English actual payment date saved_0_D48B1C7E-E947-4C7E-B627-E4DC5250006F.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 321386
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 English paid cheque retained in history",
+      "file": "screenshots/native-build6-english-paid-history.png",
+      "test": "EnhancementUITests/testPrimarySettlementRecordsActualDateAndMovesChequeOutOfOutstandingButKeepsHistory()",
+      "testStatus": "passed",
+      "sha256": "664c443a549679602ebe9c66719229de3c4d35597937b61af5ece6003876efd9",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "F390D63B-4AD1-4AB8-8293-A154237E7484.png",
+        "attachmentName": "Build 6 English paid cheque retained in history_0_61306E95-232E-4AA5-9C42-4A3E8F8C4D6E.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 242789
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 English deleted cheque can be undone",
+      "file": "screenshots/native-build6-english-delete-undo.png",
+      "test": "EnhancementUITests/testSoftDeletionCanBeUndoneAndLaterRestoredFromSettingsTrash()",
+      "testStatus": "passed",
+      "sha256": "39c30d04ed4ff07dfbe06bdb4246e19496bcb96ccf712e954955db59e4b4c969",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "417F3386-C9C8-462C-B375-457DF8ED3DF7.png",
+        "attachmentName": "Build 6 English deleted cheque can be undone_0_51568E3A-48DD-44BD-A352-C53C598EA156.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 165797
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 English recently deleted cheque retains its details",
+      "file": "screenshots/native-build6-english-recently-deleted.png",
+      "test": "EnhancementUITests/testSoftDeletionCanBeUndoneAndLaterRestoredFromSettingsTrash()",
+      "testStatus": "passed",
+      "sha256": "db1d1529362f7b6cd8e59468cd6080174d9b5890fb4ee9ba2a424001f30f0ce0",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "A0A84EB3-5358-4BFB-B0C3-83F5B42EB4D4.png",
+        "attachmentName": "Build 6 English recently deleted cheque retains its details_0_2807AC6B-0B07-473F-A49F-EAFFD6C70E07.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 207968
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 English cheque restored from recently deleted",
+      "file": "screenshots/native-build6-english-restored-cheque.png",
+      "test": "EnhancementUITests/testSoftDeletionCanBeUndoneAndLaterRestoredFromSettingsTrash()",
+      "testStatus": "passed",
+      "sha256": "4ba1ff43730355f7f5b69bc65f21225d73cc4acf427c90a2abf0d3d5edaf7d88",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "153E6429-CB37-47B7-B6D6-1407F653DD2C.png",
+        "attachmentName": "Build 6 English cheque restored from recently deleted_0_F4384A4C-C07A-488B-8689-47AFC0278236.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 242181
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    },
+    {
+      "name": "Build 6 English data and backup tools with fictional records",
+      "file": "screenshots/native-build6-english-data-tools.png",
+      "test": "EnhancementUITests/testSoftDeletionCanBeUndoneAndLaterRestoredFromSettingsTrash()",
+      "testStatus": "passed",
+      "sha256": "7abb60cf9a855f0b4f98f10473a87d19f5606ba85709f30e2c9b37299349bbdb",
+      "source": {
+        "commit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+        "attachment": "6997B444-C58B-416B-B9D8-B654846DDE5B.png",
+        "attachmentName": "Build 6 English data and backup tools with fictional records_0_FBCCF473-E56F-4CA7-8424-6DB92CE02EB2.png"
+      },
+      "artifactSHA": "132ba833b83309c415d1350d5591b2c5302a361fa054b8fbecaf23440c10caec",
+      "device": "iPhone Air",
+      "size": {
+        "width": 1260,
+        "height": 2736,
+        "bytes": 213578
+      },
+      "format": "PNG",
+      "unmodified": true,
+      "exactBytesVerified": true,
+      "visualQA": "passed"
+    }
+  ]
+}

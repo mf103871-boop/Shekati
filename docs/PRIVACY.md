@@ -20,7 +20,9 @@
 
 القفل اختياري، ويستخدم مصادقة الجهاز المتاحة، مثل بصمة الوجه أو الإصبع أو رمز الجهاز. لا يتلقى التطبيق بيانات البصمة أو رمز الجهاز. القفل يحمي الوصول إلى واجهة التطبيق ويحجب معاينته، ولا يضيف كلمة مرور منفصلة لتشفير ملفات الشيكات.
 
-تبقى البيانات حتى تحذف السجلات. تُزامَن عمليات الحذف عبر iCloud عند نجاح المزامنة. يمكنك إدارة مساحة iCloud وحساب Apple من إعدادات الجهاز. حذف التطبيق من جهاز واحد قد لا يزيل البيانات الموجودة في iCloud أو نسخ Apple الاحتياطية. تخضع خدمات iCloud والنسخ الاحتياطي لخياراتك وسياسات Apple.
+حذف الشيك ينقله إلى «المحذوفة مؤخرًا» ويوقف تذكيراته. يمكن استعادته خلال 30 يومًا. بعد ذلك يبقى في السلة للحذف النهائي الذي تؤكده بنفسك؛ لا تُحذف السجلات تلقائيًا. تُزامَن حالة الحذف والاستعادة والحذف النهائي عبر iCloud عند نجاح المزامنة. يمكنك إدارة مساحة iCloud وحساب Apple من إعدادات الجهاز. حذف التطبيق من جهاز واحد قد لا يزيل البيانات الموجودة في iCloud أو نسخ Apple الاحتياطية. تخضع خدمات iCloud والنسخ الاحتياطي لخياراتك وسياسات Apple.
+
+يمكنك إنشاء نسخة احتياطية مشفّرة بكلمة مرور تختارها، تشمل معلومات الشيكات وصورها وإعدادات التذكير. تتم معالجة النسخة على الجهاز، وكلمة المرور لا تُحفظ ولا تُرسل إلى المطوّر ولا يمكن استرجاعها. تختار مكان حفظ الملف عبر تطبيق «الملفات» ومزوّد التخزين الذي تستخدمه. يمكنك كذلك تصدير CSV أو PDF بمعلومات مقروءة دون تشفير منفصل. ملفاتك المصدّرة تبقى في الأماكن التي اخترتها حتى تحذفها هناك، ولا تُحذف عند حذف السجل من شيكاتي. مشاركة الملف أو حفظه لدى مزوّد خارجي تتم باختيارك وتخضع لإعداداته وسياساته.
 
 عند التواصل للدعم، ترسل المعلومات التي تختار مشاركتها إلى `[CONTACT_EMAIL]`. اكتفِ بوصف المشكلة وإصدار التطبيق والنظام، وأخفِ بيانات الشيكات والحسابات من أي صور. ستُستخدم المعلومات المرسلة لمعالجة طلبك؛ تحدد الجهة المسؤولة مدة احتفاظها برسائل الدعم في السياسة المنشورة النهائية.
 
@@ -44,7 +46,9 @@ The camera is used when you request a cheque photograph. The photo picker lets y
 
 The optional lock uses available device authentication, including Face ID, Touch ID or the device passcode. The app does not receive biometric data or your passcode. The lock protects access to the app interface and covers its app-switcher preview; it does not add a separate password that encrypts cheque files.
 
-Records remain until you delete them. Deletions propagate through iCloud when syncing succeeds. You can manage iCloud storage and your Apple Account in device settings. Removing the app from one device may not remove records from iCloud or Apple's backups. iCloud and backup services are governed by your choices and Apple's policies.
+Deleting a cheque moves it to Recently Deleted and stops its reminders. You can restore it within 30 days. After that it remains in the trash for permanent deletion that you explicitly confirm; records are not automatically purged. Deletion state, restoration and permanent deletion propagate through iCloud when syncing succeeds. You can manage iCloud storage and your Apple Account in device settings. Removing the app from one device may not remove records from iCloud or Apple's backups. iCloud and backup services are governed by your choices and Apple's policies.
+
+You can create an encrypted backup with a password you choose, including cheque details, images and reminder settings. The backup is processed on your device. The password is not saved or sent to the developer and cannot be recovered. You select its destination through Files and your chosen storage provider. You can also export CSV or PDF containing readable details without separate encryption. Exported files remain at your chosen destinations until you delete them there; deleting a record in Shekati does not remove exported copies. Sharing or saving to an external provider is your choice and is subject to that provider's settings and policies.
 
 If you contact support, you send the information you choose to share to `[CONTACT_EMAIL]`. Describe the issue and app/OS version, and redact financial information in screenshots. The information is used to address your request; the operator must set a support-message retention period in the final published policy.
 
