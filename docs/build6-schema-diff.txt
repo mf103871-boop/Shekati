@@ -1,0 +1,88 @@
+--- PRODUCTION version - 29d97e20-bf7e-11f1-9e86-77cf5c188ba5 - 2026-10-03 11:00 PM
++++ DEVELOPMENT version - 78400b20-bfcd-11f1-8283-fffae33da546 - 2026-10-04 08:27 AM
+@@ -1,84 +1,85 @@
+ DEFINE SCHEMA
+ 
+     RECORD TYPE CD_AppConfiguration (
+         CD_createdAt            TIMESTAMP QUERYABLE SORTABLE,
+         CD_currencyCode         STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_currencyCode_ckAsset ASSET,
+         CD_entityName           STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_id                   STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_moveReceipt          BYTES QUERYABLE SORTABLE,
+         CD_moveReceipt_ckAsset  ASSET,
+         "___createTime"         TIMESTAMP,
+         "___createdBy"          REFERENCE,
+         "___etag"               STRING,
+         "___modTime"            TIMESTAMP,
+         "___modifiedBy"         REFERENCE,
+         "___recordID"           REFERENCE,
+         GRANT WRITE TO "_creator",
+         GRANT CREATE TO "_icloud",
+         GRANT READ TO "_world"
+     );
+ 
+     RECORD TYPE CD_ChequeRecord (
+         CD_accountReference         STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_accountReference_ckAsset ASSET,
+         CD_actualDateISO            STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_actualDateISO_ckAsset    ASSET,
+         CD_amountMinorUnits         INT64 QUERYABLE SORTABLE,
+         CD_backImageData            BYTES QUERYABLE SORTABLE,
+         CD_backImageData_ckAsset    ASSET,
+         CD_bank                     STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_bank_ckAsset             ASSET,
+         CD_branch                   STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_branch_ckAsset           ASSET,
+         CD_createdAt                TIMESTAMP QUERYABLE SORTABLE,
+         CD_currencyCode             STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_currencyCode_ckAsset     ASSET,
++        CD_deletedAt                TIMESTAMP QUERYABLE SORTABLE,
+         CD_directionRaw             STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_directionRaw_ckAsset     ASSET,
+         CD_dueDateISO               STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_dueDateISO_ckAsset       ASSET,
+         CD_entityName               STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_frontImageData           BYTES QUERYABLE SORTABLE,
+         CD_frontImageData_ckAsset   ASSET,
+         CD_id                       STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_issueDateISO             STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_issueDateISO_ckAsset     ASSET,
+         CD_manualRank               INT64 QUERYABLE SORTABLE,
+         CD_moveReceipt              BYTES QUERYABLE SORTABLE,
+         CD_moveReceipt_ckAsset      ASSET,
+         CD_notes                    STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_notes_ckAsset            ASSET,
+         CD_number                   STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_number_ckAsset           ASSET,
+         CD_party                    STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_party_ckAsset            ASSET,
+         CD_reminderHour             INT64 QUERYABLE SORTABLE,
+         CD_reminderMinute           INT64 QUERYABLE SORTABLE,
+         CD_reminderOffsets          BYTES QUERYABLE SORTABLE,
+         CD_reminderOffsets_ckAsset  ASSET,
+         CD_remindersEnabled         INT64 QUERYABLE SORTABLE,
+         CD_statusRaw                STRING QUERYABLE SEARCHABLE SORTABLE,
+         CD_statusRaw_ckAsset        ASSET,
+         "___createTime"             TIMESTAMP,
+         "___createdBy"              REFERENCE,
+         "___etag"                   STRING,
+         "___modTime"                TIMESTAMP,
+         "___modifiedBy"             REFERENCE,
+         "___recordID"               REFERENCE,
+         GRANT WRITE TO "_creator",
+         GRANT CREATE TO "_icloud",
+         GRANT READ TO "_world"
+     );
+ 
+     RECORD TYPE Users (
+         "___createTime" TIMESTAMP,
+         "___createdBy"  REFERENCE,
+         "___etag"       STRING,
+         "___modTime"    TIMESTAMP,
+         "___modifiedBy" REFERENCE,
+         "___recordID"   REFERENCE,
+         roles           LIST<INT64>,
+         GRANT WRITE TO "_creator",
+         GRANT READ TO "_world"
+     );

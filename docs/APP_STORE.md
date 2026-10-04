@@ -1,6 +1,6 @@
 # مواد المتجر | App Store material
 
-Publication draft for version 1.0.0. Replace operator/contact placeholders and check feature claims against physical-iPhone results before public submission. Build 6 at [source 7c5c1a9c](https://github.com/mf103871-boop/Shekati/commit/7c5c1a9c68b4a001fec2a51e8bf198c538089d57) passed all 113 iPhone scenarios and signed archive/export/upload in the [complete pipeline](https://github.com/mf103871-boop/Shekati/actions/runs/37173315531). Apple confirmed build 6 processing state `VALID` through its API at 03:33:14 UTC. Owner-group assignment and installation remain pending; the browser session requires sign-in. The new optional deletion field requires additive Production deployment before owner-group distribution; build 5 remains the last available owner beta. Public App Review has not been requested. Configuration items described as saved below were verified during the earlier account setup.
+Publication draft for version 1.0.0. Replace operator/contact placeholders and check feature claims against physical-iPhone results before public submission. Build 6 at [source 7c5c1a9c](https://github.com/mf103871-boop/Shekati/commit/7c5c1a9c68b4a001fec2a51e8bf198c538089d57) passed all 113 iPhone scenarios and signed archive/export/upload in the [complete pipeline](https://github.com/mf103871-boop/Shekati/actions/runs/37173315531). Apple confirmed processing state `VALID`; the build is now `IN_BETA_TESTING` in the existing internal owner group, verified at 08:38:59 UTC on 4 October; [distribution proof](build6-testflight-owner-state.json). The optional deletion field is deployed to Production with matching fields/indexes and no remaining schema differences; [schema proof](build6-schema-state.json). The owner reports build 6 installed and opened; [owner report](build6-device-state.json). The owner also reports synced status/last-sync time and correct single deletion/restoration. [Production save metadata](build6-private-save-state.json) independently confirms a successful private native cheque-save operation. Cross-device sync, camera/OCR and closed-app alerts remain unverified; the latest prior portal installation evidence is build 5. Public App Review has not been requested. Configuration items described as saved below were verified during the earlier account setup.
 
 Historical build **1.0.0 (5)** at [8f806ae](https://github.com/mf103871-boop/Shekati/commit/8f806ae2a3d370dcab6c1cc7597c9d4a8d503ce6) contains the simplified cheque interface. Its [native validation job](https://github.com/mf103871-boop/Shekati/actions/runs/37164184467/job/111323630876) passed 58 distinct iPhone tests and a separate 24-test macOS suite. Signed upload and owner-group assignment passed; [availability proof](screenshots/Shekati-TestFlight-build5.jpg). Historical screenshots below document that version; current enhancement screenshots and validation will be listed in [VALIDATION.md](VALIDATION.md).
 
@@ -13,7 +13,7 @@ Historical build **1.0.0 (5)** at [8f806ae](https://github.com/mf103871-boop/She
 | Local prices | Price schedule configured across 175 storefronts with corresponding local prices |
 | Primary category | Finance |
 | Secondary category | Productivity |
-| Device | iPhone only; signed build 5 archive and IPA family `[1]` guards passed |
+| Device | iPhone only; signed build 6 archive and IPA family `[1]` guards passed |
 | Mac and Apple Vision Pro availability | Unchecked and saved in App Store Connect |
 | Reduced school volume price | Unchecked and saved |
 | Paid Apps Agreement | Active, verified read-only; 25 September 2026–3 September 2027 |
@@ -21,11 +21,11 @@ Historical build **1.0.0 (5)** at [8f806ae](https://github.com/mf103871-boop/She
 | US Foreign Status and W-8BEN | Active, verified read-only |
 | DSA | Active, verified read-only |
 | Brazil tax form | Missing tax information; not changed during setup |
-| Internal testing group | `Shekati Owner Testing` attached to builds 5, 4 and 2: three builds and one owner tester, automatic distribution off |
-| Owner invitation | Sent on 3 October 2026; portal now reports `Installed 1.0.0 (5)` on 4 October, iPhone 17 Pro Max / iOS 26.6.1; physical runtime acceptance pending |
-| TestFlight build | Version 1.0.0, build 5 available; [portal proof](screenshots/Shekati-TestFlight-build5.jpg) |
-| Internal TestFlight readiness | Group Builds tab: build 5 `Testing`, `Expires in 90 days`; portal-reported installation confirmed, device acceptance pending |
-| iCloud schema | Original phone initialization/Production parity verified; [historical proof](screenshots/Shekati-iCloud-production-schema.jpg). New optional deletion field deployment and private runtime sync acceptance pending |
+| Internal testing group | `Shekati Owner Testing` now includes builds 6, 5, 4 and 2: four builds, existing owner tester and automatic distribution off; [API proof](build6-testflight-owner-state.json) |
+| Owner invitation | Sent on 3 October 2026; the last prior portal evidence reports `Installed 1.0.0 (5)` on 4 October, iPhone 17 Pro Max / iOS 26.6.1. No new invitation was sent by the build 6 association; the owner now reports build 6 opened; [owner report](build6-device-state.json). Further physical acceptance remains unverified |
+| TestFlight build | Version 1.0.0, build 6 assigned to owner group; [distribution proof](build6-testflight-owner-state.json) |
+| Internal TestFlight readiness | Apple API reports build 6 `IN_BETA_TESTING`, `VALID`, not expired; the owner reports build 6 installed and opened; further device acceptance pending |
+| iCloud schema | Optional `CD_deletedAt` Timestamp with Queryable/Sortable indexes deployed and parity verified; 41 cheque fields + 6 metadata, 64 + 13 = 77 indexes, zero remaining differences; [schema proof](build6-schema-state.json). Successful private native save operation verified; [metadata proof](build6-private-save-state.json). Owner reports synced status/last-sync time; cross-device import remains pending |
 | Minimum OS | iOS 17 |
 | Languages | Arabic and English |
 | Privacy-policy URL | `[ACTUAL_PUBLIC_PRIVACY_URL]` |

@@ -1,6 +1,6 @@
 # تحسينات شيكاتي | Shekati enhancements
 
-These changes implement the eight improvements requested after the cheque-only interface review. All 113 distinct iPhone scenarios passed and build 6 was signed and uploaded; [VALIDATION.md](VALIDATION.md) records evidence and the pending CloudKit distribution step. The existing HTML preview shows the earlier simplified design; use the native build to exercise these features.
+These changes implement the eight improvements requested after the cheque-only interface review. All 113 distinct iPhone scenarios passed and build 6 was signed and uploaded. The optional deletion field is deployed to Production and build 6 is now in internal owner testing; [VALIDATION.md](VALIDATION.md) records schema and distribution evidence. The owner reports build 6 installed and opened; [owner report](build6-device-state.json). The owner reports synced status/last-sync time and correct single deletion/restoration; [owner report](build6-device-state.json). [Production metadata](build6-private-save-state.json) independently confirms a successful private native cheque-save operation. Cross-device sync, camera/OCR and closed-app device alerts remain unverified. The existing HTML preview shows the earlier simplified design; use the native build to exercise these features.
 
 ## الاستخدام اليومي
 
@@ -34,7 +34,7 @@ These changes implement the eight improvements requested after the cheque-only i
 - Backup files are limited to 256 MB, with a conservative 160 MB image/text preflight before encoding and 20 MB per image. CSV is limited to 5,000 data rows and 10 MB. Large files are rejected explicitly; no partial backup is written.
 - Backup restoration merges by UUID in one save. Matching existing records remain intact unless the user explicitly enables replacement. Exported CSV is a data transfer format without images or per-cheque reminder settings; encrypted backup is the full recovery format.
 - The exported report freezes the filtered snapshots when it opens, so an iCloud update does not silently change a report being saved.
-- Private iCloud production must include the additive deletion field before the new beta is assigned. Physical sync, camera/OCR, closed-app notification delivery, snooze and authenticated notification routing remain device checks in [DEVICE_QA.md](DEVICE_QA.md).
+- The additive deletion field is deployed to Production before owner distribution. A successful native private save operation is verified, and the owner reports synced status and single restoration. Cross-device sync, camera/OCR, closed-app notification delivery, snooze and authenticated notification routing remain device checks in [DEVICE_QA.md](DEVICE_QA.md).
 - Update every participating iPhone to build 6 or newer before testing recently deleted records through iCloud. Build 5 does not understand the deletion marker and can still display/remind about a record moved to the trash by the newer app.
 
 ## Encryption declaration

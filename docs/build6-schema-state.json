@@ -1,0 +1,432 @@
+{
+  "verified": true,
+  "checkedAtUTC": "2026-10-04T08:33:51Z",
+  "method": "CloudKit Console UI: deployment diff, Changes Deployed, reloaded Production fields and Development comparison",
+  "container": "iCloud.com.mf103871.shekati",
+  "sourceCommit": "7c5c1a9c68b4a001fec2a51e8bf198c538089d57",
+  "addedField": {
+    "recordType": "CD_ChequeRecord",
+    "name": "CD_deletedAt",
+    "type": "TIMESTAMP",
+    "optionalInSource": true,
+    "singleFieldIndexes": [
+      "QUERYABLE",
+      "SORTABLE"
+    ]
+  },
+  "deploymentReview": {
+    "modifiedRecordTypes": 1,
+    "addedFields": 1,
+    "addedIndexes": 2,
+    "securityRoleChanges": 0,
+    "removedFields": 0
+  },
+  "deploymentResult": "Changes Deployed: The schema is deployed to Production.",
+  "postDeploymentReview": {
+    "recordTypes": 0,
+    "indexes": 0,
+    "securityRoles": 0
+  },
+  "chequeRecord": {
+    "recordFields": 41,
+    "metadataFields": 6,
+    "indexCount": 64,
+    "developmentAndProductionMatch": true,
+    "productionRows": [
+      [
+        [
+          "createdTimestampDATE/TIME",
+          "None"
+        ],
+        [
+          "createdUserRecordNameREFERENCE",
+          "None"
+        ],
+        [
+          "___etagSTRING",
+          "None"
+        ],
+        [
+          "modifiedTimestampDATE/TIME",
+          "None"
+        ],
+        [
+          "modifiedUserRecordNameREFERENCE",
+          "None"
+        ],
+        [
+          "recordNameREFERENCE",
+          "None"
+        ]
+      ],
+      [
+        [
+          "CD_accountReferenceSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_accountReference_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_actualDateISOSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_actualDateISO_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_amountMinorUnitsINT(64)",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_backImageDataBYTES",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_backImageData_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_bankSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_bank_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_branchSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_branch_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_createdAtDATE/TIME",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_currencyCodeSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_currencyCode_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_deletedAtDATE/TIME",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_directionRawSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_directionRaw_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_dueDateISOSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_dueDateISO_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_entityNameSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_frontImageDataBYTES",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_frontImageData_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_idSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_issueDateISOSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_issueDateISO_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_manualRankINT(64)",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_moveReceiptBYTES",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_moveReceipt_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_notesSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_notes_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_numberSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_number_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_partySTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_party_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_reminderHourINT(64)",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_reminderMinuteINT(64)",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_reminderOffsetsBYTES",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_reminderOffsets_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_remindersEnabledINT(64)",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_statusRawSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_statusRaw_ckAssetASSET",
+          "None"
+        ]
+      ]
+    ],
+    "developmentRows": [
+      [
+        [
+          "createdTimestampDATE/TIME",
+          "None"
+        ],
+        [
+          "createdUserRecordNameREFERENCE",
+          "None"
+        ],
+        [
+          "___etagSTRING",
+          "None"
+        ],
+        [
+          "modifiedTimestampDATE/TIME",
+          "None"
+        ],
+        [
+          "modifiedUserRecordNameREFERENCE",
+          "None"
+        ],
+        [
+          "recordNameREFERENCE",
+          "None"
+        ]
+      ],
+      [
+        [
+          "CD_accountReferenceSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_accountReference_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_actualDateISOSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_actualDateISO_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_amountMinorUnitsINT(64)",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_backImageDataBYTES",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_backImageData_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_bankSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_bank_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_branchSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_branch_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_createdAtDATE/TIME",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_currencyCodeSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_currencyCode_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_deletedAtDATE/TIME",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_directionRawSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_directionRaw_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_dueDateISOSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_dueDateISO_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_entityNameSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_frontImageDataBYTES",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_frontImageData_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_idSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_issueDateISOSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_issueDateISO_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_manualRankINT(64)",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_moveReceiptBYTES",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_moveReceipt_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_notesSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_notes_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_numberSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_number_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_partySTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_party_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_reminderHourINT(64)",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_reminderMinuteINT(64)",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_reminderOffsetsBYTES",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_reminderOffsets_ckAssetASSET",
+          "None"
+        ],
+        [
+          "CD_remindersEnabledINT(64)",
+          "Queryable, Sortable"
+        ],
+        [
+          "CD_statusRawSTRING",
+          "Queryable, Searchable, Sortable"
+        ],
+        [
+          "CD_statusRaw_ckAssetASSET",
+          "None"
+        ]
+      ]
+    ]
+  },
+  "appConfiguration": {
+    "recordFields": 7,
+    "metadataFields": 6,
+    "indexCount": 13,
+    "unchangedInReviewedDiff": true
+  },
+  "physicalDeviceSyncVerified": false,
+  "credentialsOrUserRecordsIncluded": false
+}
