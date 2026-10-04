@@ -237,19 +237,23 @@ final class ShekatiUITests: XCTestCase {
             let predictions = app.otherElements["Typing Predictions"].firstMatch
             let accessoryTop = keyboardVisible ?
                 (predictions.exists && predictions.frame.height > 0 ? predictions.frame.minY : keyboardTop - 60) : keyboardTop
-            // Native iOS 26 evidence: Next/Done starts at 519, above predictions at 567.
-            // A drag starting at 543 hits the toolbar rather than the scrolling Form.
-            let keyboardToolbarTop = keyboardVisible ? app.toolbars.allElementsBoundByIndex
-                .filter { $0.frame.height > 0 && $0.frame.minY > frame.minY + 100 && $0.frame.maxY <= keyboardTop + 1 }
-                .map { $0.frame.minY }.min() ?? keyboardTop : keyboardTop
-            let visibleBottom = min(frame.maxY - 80, min(keyboardToolbarTop, min(keyboardTop, accessoryTop))) - 24
             let navigationBottom = app.navigationBars.allElementsBoundByIndex.compactMap { bar -> CGFloat? in
                 guard bar.exists else { return nil }
                 let barFrame = bar.frame
                 guard barFrame.height > 0, barFrame.intersects(frame) else { return nil }
                 return barFrame.maxY
             }.max() ?? frame.minY + 100
-            let visibleTop = max(frame.minY + 100, navigationBottom + 20)
+            let visibleTop = max(frame.minY + 100, navigationBottom + 8)
+            let toolbarTop = app.toolbars.allElementsBoundByIndex.compactMap { toolbar -> CGFloat? in
+                guard toolbar.exists else { return nil }
+                let toolbarFrame = toolbar.frame
+                guard toolbarFrame.height > 0, toolbarFrame.intersects(frame), toolbarFrame.minY > visibleTop else { return nil }
+                return toolbarFrame.minY
+            }.min() ?? frame.maxY
+            let tabBar = app.tabBars.firstMatch
+            let tabBarTop = tabBar.exists && tabBar.frame.height > 0 && tabBar.frame.intersects(frame) ?
+                tabBar.frame.minY : frame.maxY
+            let visibleBottom = min(frame.maxY - 34, min(tabBarTop, min(toolbarTop, min(keyboardTop, accessoryTop)))) - 8
             guard visibleBottom > visibleTop + 40 else {
                 captureDiagnostics(app, name: "Insufficient visible scroll area")
                 XCTFail("The visible scroll area is too small to reveal the field")
@@ -263,14 +267,19 @@ final class ShekatiUITests: XCTestCase {
                 let visibleTarget = element.identifier.hasPrefix("cheque-row-") ? centerInside : fullFrameInside
                 if element.isHittable && visibleTarget { return }
             }
-            let distance = min(200, (visibleBottom - visibleTop) * 0.6)
+            let requireFullFrame = targetExists && !element.identifier.hasPrefix("cheque-row-")
+            let targetTop = requireFullFrame ? targetFrame.minY : targetFrame.midY
+            let targetBottom = requireFullFrame ? targetFrame.maxY : targetFrame.midY
+            let above = targetExists && targetFrame.height > 0 && targetTop < visibleTop
+            let delta = targetExists && targetFrame.height > 0 ?
+                (above ? visibleTop - targetTop : targetBottom - visibleBottom) : 100
+            let distance = min(min(140, (visibleBottom - visibleTop) * 0.4), max(24, delta * 0.7 + 12))
             let origin = window.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
-            let above = targetExists && targetFrame.height > 0 && targetFrame.midY < visibleTop
             let startY = above ? visibleTop + 15 : visibleBottom
             let endY = above ? startY + distance : startY - distance
             let start = origin.withOffset(CGVector(dx: frame.width / 2, dy: startY - frame.minY))
             let end = origin.withOffset(CGVector(dx: frame.width / 2, dy: endY - frame.minY))
-            start.press(forDuration: 0.05, thenDragTo: end)
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
         }
         captureDiagnostics(app, name: "Field remained offscreen after scrolling")
         XCTFail("Expected the field or cheque row to become visible after scrolling")

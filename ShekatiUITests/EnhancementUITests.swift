@@ -240,14 +240,24 @@ final class EnhancementUITests: XCTestCase {
 
     private func fill(_ app: XCUIApplication, amount: String, party: String, number: String) {
         fillField("amountField", value: amount, in: app)
-        fillField("partyField", value: party, in: app)
-        fillField("chequeNumberField", value: number, in: app)
+        for (identifier, value) in [("partyField", party), ("chequeNumberField", number)] {
+            let next = app.buttons["Next"].exists ? app.buttons["Next"] : app.buttons["التالي"]
+            XCTAssertTrue(next.waitForExistence(timeout: 5))
+            XCTAssertTrue(next.isHittable)
+            next.tap()
+            let field = app.textFields[identifier]
+            waitForKeyboardFocus(field, in: app)
+            field.typeText(value)
+        }
     }
 
     private func fillField(_ identifier: String, value: String, in app: XCUIApplication) {
+        // A focused Form scrolls again as the keyboard moves. Dismiss it before revealing
+        // a nonsequential field, then verify the newly selected input really receives focus.
+        hideKeyboard(in: app)
         let field = app.textFields[identifier]
-        XCTAssertTrue(field.waitForExistence(timeout: 5))
         reveal(field, in: app)
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
         field.tap()
         waitForKeyboardFocus(field, in: app)
         field.typeText(value)
@@ -265,8 +275,14 @@ final class EnhancementUITests: XCTestCase {
 
     private func hideKeyboard(in app: XCUIApplication, arabic: Bool = false) {
         guard app.keyboards.firstMatch.exists else { return }
-        let done = app.buttons[arabic ? "تم" : "Done"].firstMatch
-        if done.exists && done.isHittable { done.tap() }
+        let labels = arabic ? ["تم", "Done"] : ["Done", "تم"]
+        guard let done = labels.map({ app.buttons[$0].firstMatch }).first(where: { $0.exists && $0.isHittable }) else {
+            captureDiagnostics(app, "Build 6 keyboard Done control unavailable")
+            XCTFail("Expected a visible keyboard Done control before revealing another field")
+            return
+        }
+        done.tap()
+        waitForAbsence(app.keyboards.firstMatch)
     }
 
     private func isBlank(_ field: XCUIElement) -> Bool {
@@ -299,8 +315,8 @@ final class EnhancementUITests: XCTestCase {
 
     private func setSwitch(_ element: XCUIElement, enabled: Bool, in app: XCUIApplication) {
         let expected = enabled ? "1" : "0"
-        XCTAssertTrue(element.waitForExistence(timeout: 5))
         reveal(element, in: app, fullyVisible: true)
+        XCTAssertTrue(element.waitForExistence(timeout: 5))
         if (element.value as? String) == expected { return }
         captureDiagnostics(app, "Build 6 keep entry details switch \(expected) before tap")
         // iOS 26 exposes the label and switch as one wide accessibility element.
@@ -372,18 +388,25 @@ final class EnhancementUITests: XCTestCase {
             let keyboardTop = keyboardVisible ? keyboard.frame.minY : frame.maxY
             let accessoryTop = keyboardVisible ?
                 (predictions.exists && predictions.frame.height > 0 ? predictions.frame.minY : keyboardTop - 60) : keyboardTop
-            // Native evidence: the new Next/Done toolbar starts at 519, above predictions at 567.
-            let keyboardToolbarTop = keyboardVisible ? app.toolbars.allElementsBoundByIndex
-                .filter { $0.frame.height > 0 && $0.frame.minY > frame.minY + 100 && $0.frame.maxY <= keyboardTop + 1 }
-                .map { $0.frame.minY }.min() ?? keyboardTop : keyboardTop
             let navigationBottom = app.navigationBars.allElementsBoundByIndex.compactMap { bar -> CGFloat? in
                 guard bar.exists else { return nil }
                 let barFrame = bar.frame
                 guard barFrame.height > 0, barFrame.intersects(frame) else { return nil }
                 return barFrame.maxY
             }.max() ?? frame.minY + 100
-            let top = max(frame.minY + 100, navigationBottom + 20)
-            let bottom = min(frame.maxY - 85, min(keyboardToolbarTop, min(keyboardTop, accessoryTop))) - 24
+            let top = max(frame.minY + 100, navigationBottom + 8)
+            let toolbarTop = app.toolbars.allElementsBoundByIndex.compactMap { toolbar -> CGFloat? in
+                guard toolbar.exists else { return nil }
+                let toolbarFrame = toolbar.frame
+                guard toolbarFrame.height > 0, toolbarFrame.intersects(frame), toolbarFrame.minY > top else { return nil }
+                return toolbarFrame.minY
+            }.min() ?? frame.maxY
+            let tabBar = app.tabBars.firstMatch
+            let tabBarTop = tabBar.exists && tabBar.frame.height > 0 && tabBar.frame.intersects(frame) ?
+                tabBar.frame.minY : frame.maxY
+            // The last detail action can end at 836, just above a tab bar starting at 854.
+            // Use actual visible chrome rather than excluding an unreachable 109-point bottom strip.
+            let bottom = min(frame.maxY - 34, min(tabBarTop, min(toolbarTop, min(keyboardTop, accessoryTop)))) - 8
             guard bottom > top + 50 else { break }
             let targetExists = element.exists
             let targetFrame = targetExists ? element.frame : CGRect.null
@@ -393,14 +416,21 @@ final class EnhancementUITests: XCTestCase {
                 let requireFullFrame = fullyVisible || !element.identifier.hasPrefix("cheque-row-")
                 if element.isHittable && (requireFullFrame ? fullyInside : centerInside) { return }
             }
-            let distance = min(220, (bottom - top) * 0.65)
+            let requireFullFrame = targetExists && (fullyVisible || !element.identifier.hasPrefix("cheque-row-"))
+            let targetTop = requireFullFrame ? targetFrame.minY : targetFrame.midY
+            let targetBottom = requireFullFrame ? targetFrame.maxY : targetFrame.midY
+            let above = targetExists && targetFrame.height > 0 && targetTop < top
+            let delta = targetExists && targetFrame.height > 0 ?
+                (above ? top - targetTop : targetBottom - bottom) : 100
+            // Native evidence showed a 220-point gesture repeatedly jumping past a field.
+            // Short, slow drags approach its actual viewport gap without flinging the Form.
+            let distance = min(min(140, (bottom - top) * 0.4), max(24, delta * 0.7 + 12))
             let origin = window.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
-            let above = targetExists && targetFrame.height > 0 && targetFrame.midY < top
             let startY = above ? top + 15 : bottom
             let endY = above ? startY + distance : startY - distance
             let start = origin.withOffset(CGVector(dx: frame.width / 2, dy: startY - frame.minY))
             let end = origin.withOffset(CGVector(dx: frame.width / 2, dy: endY - frame.minY))
-            start.press(forDuration: 0.05, thenDragTo: end)
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
         }
         captureDiagnostics(app, "Build 6 enhancement field remained offscreen")
         XCTFail("Expected the control to become visible")
