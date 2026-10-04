@@ -5,6 +5,32 @@ enum Localization {
         language == .arabic ? arabic[key] ?? key : key
     }
 
+    /// Arabic day counts follow the CLDR plural categories: one, two, few (3–10), many (11–99) and other.
+    static func arabicDays(_ count: Int) -> String {
+        let value = abs(count)
+        switch (value, value % 100) {
+        case (1, _): return "يوم واحد"
+        case (2, _): return "يومان"
+        case (_, 3...10): return "\(value) أيام"
+        case (_, 11...99): return "\(value) يومًا"
+        default: return "\(value) يوم"
+        }
+    }
+
+    /// A reminder offset label such as "14 days before" the due date.
+    static func daysBefore(_ offset: Int, language: AppLanguage) -> String {
+        language == .arabic ? arabicDays(offset) + " قبل الاستحقاق" : "\(offset) days before"
+    }
+
+    /// Relative due-date wording for three or more days; today, tomorrow and two days use dedicated keys.
+    static func relativeDays(_ distance: Int, language: AppLanguage) -> String {
+        let count = abs(distance)
+        switch language {
+        case .arabic: return (distance < 0 ? "متأخر منذ " : "بعد ") + arabicDays(count)
+        case .english: return distance < 0 ? "Overdue by \(count) days" : "In \(count) days"
+        }
+    }
+
     static let arabic: [String: String] = [
         "Shekati": "شيكاتي",
         "Home": "الرئيسية",
@@ -174,7 +200,6 @@ enum Localization {
         "1 day before": "قبل يوم",
         "On due date": "في يوم الاستحقاق",
         "On the due date": "في يوم الاستحقاق",
-        "days before": "أيام قبل الاستحقاق",
         "Days before": "عدد الأيام قبل الاستحقاق",
         "Days before (1–365)": "أيام قبل الاستحقاق (١–٣٦٥)",
         "Enter a whole number of days from 1 to 365.": "أدخل عدد أيام صحيحًا من ١ إلى ٣٦٥.",
@@ -369,8 +394,6 @@ enum Localization {
         "Cheque report": "كشف الشيكات",
         "Deleted cheques can be restored for 30 days. Permanent deletion also syncs to iCloud. You can create an independent password-protected backup. CSV and PDF exports contain readable details; share them only when you choose.": "يمكن استرجاع الشيكات المحذوفة لمدة 30 يومًا. يتزامن الحذف النهائي مع iCloud أيضًا. يمكنك إنشاء نسخة احتياطية مستقلة محمية بكلمة مرور. تحتوي ملفات CSV وPDF المصدّرة على تفاصيل قابلة للقراءة؛ شاركها فقط عندما تختار ذلك.",
         "Tomorrow": "غدًا",
-        "Overdue by %d days": "متأخر منذ %d أيام",
-        "In %d days": "بعد %d أيام",
         "Restore reminder preferences": "استرجاع إعدادات التذكير",
         "This restores the default timing, daily summary and hidden notification details. Language and app lock stay as you set them on this iPhone.": "يسترجع هذا توقيت التذكيرات الافتراضي والملخص اليومي وإخفاء تفاصيل التنبيهات. تبقى اللغة وقفل التطبيق كما اخترتهما على هذا الآيفون.",
         "Issue date must not be after the due date or actual settlement date.": "يجب ألا يكون تاريخ الإصدار بعد تاريخ الاستحقاق أو تاريخ الصرف أو التحصيل الفعلي.",
@@ -379,6 +402,9 @@ enum Localization {
         "Overdue by 2 days": "متأخر منذ يومين",
         "In 2 days": "بعد يومين",
         "The actual payment or collection date cannot be before the issue date.": "لا يمكن أن يكون تاريخ الصرف أو التحصيل قبل تاريخ إصدار الشيك.",
-        "Reviewing CSV": "جارٍ مراجعة CSV"
+        "Reviewing CSV": "جارٍ مراجعة CSV",
+        "This cheque is no longer available": "هذا الشيك لم يعد متاحًا",
+        "It was permanently deleted, possibly from another device.": "حُذف نهائيًا، وربما من جهاز آخر.",
+        "This cheque was permanently deleted, possibly from another device. Your changes were not saved.": "حُذف هذا الشيك نهائيًا، وربما من جهاز آخر. لم تُحفظ التعديلات."
     ]
 }

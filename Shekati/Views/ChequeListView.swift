@@ -385,7 +385,8 @@ struct ChequeListView: View {
         let ordered = ChequeListEngine.reorderedIDs(
             all: global, visible: visibleIDs, from: source, to: destination
         )
-        let byID = Dictionary(uniqueKeysWithValues: records.map { ($0.id, $0) })
+        // Identifiers can repeat after the same backup is restored on two devices before they sync; never trap.
+        let byID = Dictionary(records.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         for (index, id) in ordered.enumerated() {
             let rank = app.preferences.ascending ? Int64(index) : Int64(ordered.count - index)
             if byID[id]?.manualRank != rank { byID[id]?.manualRank = rank }

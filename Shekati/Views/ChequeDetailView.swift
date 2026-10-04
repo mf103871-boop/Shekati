@@ -9,6 +9,9 @@ struct ChequeDetailView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     let record: ChequeRecord
+    /// Confirms the record still exists. This view can remain on another tab's navigation stack
+    /// after Recently Deleted (or another device) removes it, and a deleted model must not be read.
+    @Query private var liveRecords: [ChequeRecord]
     @State private var showingEditor = false
     @State private var showingStatus = false
     @State private var showingSettlement = false
@@ -16,9 +19,16 @@ struct ChequeDetailView: View {
     @State private var errorMessage: String?
     @State private var preview: ChequeImagePreview?
 
+    init(record: ChequeRecord) {
+        self.record = record
+        let id = record.id
+        _liveRecords = Query(filter: #Predicate<ChequeRecord> { $0.id == id })
+    }
+
     var body: some View {
         Group {
-            if record.deletedAt != nil { deletedCheque } else { activeDetail }
+            if liveRecords.isEmpty { removedCheque }
+            else if record.deletedAt != nil { deletedCheque } else { activeDetail }
         }
         .alert(app.tr("Could not save changes"), isPresented: Binding(
             get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }
@@ -250,6 +260,21 @@ struct ChequeDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
+    private var removedCheque: some View {
+        VStack(spacing: 18) {
+            Image(systemName: "trash.slash").font(.largeTitle).foregroundStyle(.secondary)
+            Text(app.tr("This cheque is no longer available")).font(.title3.weight(.semibold))
+                .multilineTextAlignment(.center)
+            Text(app.tr("It was permanently deleted, possibly from another device."))
+                .foregroundStyle(.secondary).multilineTextAlignment(.center)
+            Button(app.tr("Done")) { dismiss() }.buttonStyle(.bordered)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity).padding(24)
+        .background(Theme.background)
+        .navigationTitle(app.tr("Cheque"))
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
     private func detailLine(_ title: String, _ value: String) -> some View {
         LabeledContent {
             Text(value.isEmpty ? app.tr("Not provided") : value)
@@ -278,7 +303,7 @@ struct ChequeDetailView: View {
         if offset == 0 { return app.tr("On due date") }
         if offset == 1 { return app.tr("1 day before") }
         if offset == 3 { return app.tr("3 days before") }
-        return String(offset) + " " + app.tr("days before")
+        return Localization.daysBefore(offset, language: app.preferences.language)
     }
 
     private var reminderClock: String {

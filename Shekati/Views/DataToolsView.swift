@@ -148,12 +148,10 @@ private struct BackupRestoreView: View {
             if let message { Section { Text(message).foregroundStyle(.secondary) } }
         }.navigationTitle(app.tr("Restore backup"))
         .fileImporter(isPresented: $importing, allowedContentTypes: [.data]) { result in
-            do {
-                let url = try result.get()
-                encryptedData = try readTransferFile(url, maximumBytes: 256_000_000)
-                filename = url.lastPathComponent; payload = nil; preview = nil; message = nil; replaceExisting = false
-                restoreReminderPreferences = false
-            } catch { errorMessage = transferMessage(error, app: app) }
+            switch result {
+            case .success(let url): loadBackupFile(url)
+            case .failure(let error): errorMessage = transferMessage(error, app: app)
+            }
         }
         .confirmationDialog(app.tr("Restore this backup?"), isPresented: $confirmation, titleVisibility: .visible) {
             Button(app.tr("Restore")) { restore() }
@@ -165,6 +163,20 @@ private struct BackupRestoreView: View {
             } message: { Text(errorMessage ?? "") }
     }
 
+    private func loadBackupFile(_ url: URL) {
+        // A backup can be large; copy it off the main thread while showing progress.
+        busy = true; message = nil
+        Task {
+            do {
+                encryptedData = try await Task.detached(priority: .userInitiated) {
+                    try readTransferFile(url, maximumBytes: 256_000_000)
+                }.value
+                filename = url.lastPathComponent; payload = nil; preview = nil; replaceExisting = false
+                restoreReminderPreferences = false
+            } catch { errorMessage = transferMessage(error, app: app) }
+            busy = false
+        }
+    }
     private func review() {
         guard let encryptedData else { return }
         let enteredPassword = password
@@ -328,7 +340,9 @@ private func readTransferFile(_ url: URL, maximumBytes: Int) throws -> Data {
     defer { if scoped { url.stopAccessingSecurityScopedResource() } }
     let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
     guard size <= maximumBytes else { throw ChequeTransferError.invalidFile }
-    let bytes = try Data(contentsOf: url, options: .mappedIfSafe)
+    // Copy the bytes while the security scope is held. A memory-mapped file would be read later,
+    // after the scope ended, and a file modified or evicted underneath (iCloud Drive) could then fault.
+    let bytes = try Data(contentsOf: url)
     guard bytes.count <= maximumBytes else { throw ChequeTransferError.invalidFile }
     return bytes
 }

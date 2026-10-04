@@ -53,7 +53,7 @@ struct SettingsView: View {
                 let extra = preferences.reminderOffsets.filter { ![3, 1, 0].contains($0) }.sorted()
                 ForEach(extra, id: \.self) { offset in
                     HStack {
-                        Text("\(offset) " + app.tr("days before"))
+                        Text(Localization.daysBefore(offset, language: app.preferences.language))
                         Spacer()
                         Button(role: .destructive) { preferences.reminderOffsets.removeAll { $0 == offset } } label: {
                             Image(systemName: "minus.circle")

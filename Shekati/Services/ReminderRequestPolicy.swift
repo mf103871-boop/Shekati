@@ -11,8 +11,8 @@ enum ReminderRequestPolicy {
     /// array element, so user text containing separators cannot hide a change.
     /// No per-record hashing or money formatting runs while deriving this key.
     static func refreshKey(inputs: [ChequeReminderInput], settings: ReminderSettings,
-                           dayRevision: Int, authorizationStatus: Int) -> [[String]] {
-        let global = [String(dayRevision), String(authorizationStatus), settings.languageCode,
+                           dayRevision: Int, authorizationStatus: Int, mutationRevision: Int = 0) -> [[String]] {
+        let global = [String(dayRevision), String(authorizationStatus), String(mutationRevision), settings.languageCode,
                       String(settings.hour), String(settings.minute), String(settings.dailySummary),
                       String(settings.hideDetails), String(settings.offsets.count)] +
             settings.offsets.sorted().map(String.init)

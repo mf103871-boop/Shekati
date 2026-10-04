@@ -19,7 +19,8 @@ struct RootView: View {
                                 offsets: $0.reminderOffsets, hour: $0.reminderHour, minute: $0.reminderMinute)
         }
         return ReminderRequestPolicy.refreshKey(inputs: inputs, settings: app.reminderSettings,
-            dayRevision: dayRevision, authorizationStatus: app.notifications.authorizationStatus.rawValue)
+            dayRevision: dayRevision, authorizationStatus: app.notifications.authorizationStatus.rawValue,
+            mutationRevision: app.revision)
     }
 
     private var currencySignature: String {

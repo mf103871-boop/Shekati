@@ -27,6 +27,8 @@ final class AppState {
         notifications.onOpenCheque = { [weak self] id in self?.openedChequeID = id }
     }
 
+    /// Requests a reminder-queue rebuild. RootView keys its reschedule task on this value,
+    /// so Settings' "Refresh reminders" and every save path replenish the queue.
     func didMutate() { revision &+= 1 }
     func tr(_ key: String) -> String { preferences.tr(key) }
     func formatAmount(_ minor: Int64) -> String {
@@ -48,8 +50,7 @@ final class AppState {
         if distance == -1 { return tr("Overdue by 1 day") }
         if distance == -2 { return tr("Overdue by 2 days") }
         if distance == 2 { return tr("In 2 days") }
-        if distance < 0 { return String(format: tr("Overdue by %d days"), -distance) }
-        return String(format: tr("In %d days"), distance)
+        return Localization.relativeDays(distance, language: preferences.language)
     }
 
     func configureNotificationContext(container: ModelContainer) {
