@@ -44,7 +44,7 @@ struct ChequeEditorView: View {
     @State private var isReadingImage = false
     @State private var isSaving = false
     @State private var errorMessage: String?
-    @State private var hasEdited = false
+    @State private var cleanFormSignature: [String]?
     @State private var showingDiscard = false
     @State private var extraDetailsExpanded: Bool
     @State private var imagesExpanded: Bool
@@ -55,7 +55,6 @@ struct ChequeEditorView: View {
     @State private var dateError: String?
     @State private var savedNotice = false
     @State private var entrySequence = 0
-    @State private var isResetting = false
     @State private var showingDuplicate = false
     @State private var duplicateIDs: [UUID] = []
     @State private var pendingAddAnother = false
@@ -124,6 +123,11 @@ struct ChequeEditorView: View {
          selectedOffsets.map(String.init).joined(separator: ","),
          reminderTime.map { String($0.timeIntervalSince1970) } ?? "defaultTime",
          String(frontImageData?.hashValue ?? 0), String(backImageData?.hashValue ?? 0)]
+    }
+
+    private var hasEdited: Bool {
+        guard let cleanFormSignature else { return false }
+        return formSignature != cleanFormSignature
     }
 
     var body: some View {
@@ -290,7 +294,9 @@ struct ChequeEditorView: View {
             }
         }
         .interactiveDismissDisabled(hasEdited || busy)
-        .onChange(of: formSignature) { _, _ in if !isResetting { hasEdited = true } }
+        .onAppear {
+            if cleanFormSignature == nil { cleanFormSignature = formSignature }
+        }
         .onChange(of: amountText) { _, _ in amountError = nil }
         .onChange(of: frontPhoto) { _, item in
             Task { await loadPhoto(item, side: .front) }
@@ -662,7 +668,6 @@ struct ChequeEditorView: View {
     }
 
     private func resetForNextEntry() {
-        isResetting = true
         focusedField = nil
         if !keepEntryDetails { direction = .incoming; bank = ""; party = "" }
         amountText = ""; number = ""; branch = ""; accountReference = ""; notes = ""
@@ -674,13 +679,12 @@ struct ChequeEditorView: View {
         extraDetailsExpanded = keepEntryDetails && !bank.isEmpty
         amountError = nil; dateError = nil; errorMessage = nil
         duplicateIDs = []; pendingAddAnother = false
-        dueDateNeedsReview = true; savedNotice = true; hasEdited = false
+        dueDateNeedsReview = true; savedNotice = true
+        // Compare with this draft's values, independent of SwiftUI's onChange delivery order.
+        cleanFormSignature = formSignature
         entrySequence &+= 1
         DispatchQueue.main.async {
             focusedField = .amount
-            isResetting = false
-            dueDateNeedsReview = true
-            hasEdited = false
         }
     }
 
