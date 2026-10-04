@@ -11,6 +11,7 @@ struct ChequeDetailView: View {
     let record: ChequeRecord
     /// Confirms the record still exists. This view can remain on another tab's navigation stack
     /// after Recently Deleted (or another device) removes it, and a deleted model must not be read.
+    /// The match is by instance identity, so a duplicate id surviving elsewhere cannot mask this deletion.
     @Query private var liveRecords: [ChequeRecord]
     @State private var showingEditor = false
     @State private var showingStatus = false
@@ -27,7 +28,9 @@ struct ChequeDetailView: View {
 
     var body: some View {
         Group {
-            if liveRecords.isEmpty { removedCheque }
+            if !liveRecords.contains(where: { $0 === record || $0.persistentModelID == record.persistentModelID }) {
+                removedCheque
+            }
             else if record.deletedAt != nil { deletedCheque } else { activeDetail }
         }
         .alert(app.tr("Could not save changes"), isPresented: Binding(
