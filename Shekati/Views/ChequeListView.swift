@@ -46,41 +46,16 @@ struct ChequeListView: View {
                                       sort: app.preferences.sort, ascending: app.preferences.ascending, today: app.today)
         let byID = Dictionary(activeRecords.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         let visible = result.cheques.compactMap { byID[$0.id] }
-        VStack(spacing: 0) {
-            scopePicker
-                .padding(.horizontal, 16)
-                .padding(.top, 6)
-                .padding(.bottom, 10)
-            directionPicker
-                .padding(.horizontal, 16)
-                .padding(.bottom, 10)
-            periodChips
-                .padding(.bottom, 10)
-            if hasFilters || !filter.query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                Button(app.tr("Clear search and filters")) {
-                    filter = .init()
-                    editMode = .inactive
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                // One scrolling surface keeps large controls from squeezing the rows.
+                listContent(visible, activeCount: activeRecords.count, result: result, scrollsControls: true)
+            } else {
+                VStack(spacing: 0) {
+                    listControls(result, showsTableHeader: !visible.isEmpty)
+                    listContent(visible, activeCount: activeRecords.count, result: result, scrollsControls: false)
                 }
-                .font(.footnote)
-                .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 8)
-                .accessibilityIdentifier("clearActiveFilters")
             }
-            shownSummary(result)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 12)
-            if !visible.isEmpty {
-                ChequeTableHeaderView()
-                    .accessibilityIdentifier("chequeTableHeader")
-                    .padding(.leading, 16)
-                    // Match the row's content inset and the native disclosure indicator.
-                    .padding(.trailing, 36)
-                    .padding(.vertical, 9)
-                    .background(Theme.surface)
-                Divider()
-            }
-            listContent(visible, activeCount: activeRecords.count)
         }
             .background(Theme.background)
             .environment(\.editMode, $editMode)
@@ -149,8 +124,56 @@ struct ChequeListView: View {
         app.preferences.language == .arabic ? .rightToLeft : .leftToRight
     }
 
-    private func listContent(_ visible: [ChequeRecord], activeCount: Int) -> some View {
+    private func listControls(_ result: ChequeListResult, showsTableHeader: Bool) -> some View {
+        VStack(spacing: 0) {
+            scopePicker
+                .padding(.horizontal, 16)
+                .padding(.top, 6)
+                .padding(.bottom, 10)
+            directionPicker
+                .padding(.horizontal, 16)
+                .padding(.bottom, 10)
+            periodChips
+                .padding(.bottom, 10)
+            if hasFilters || !filter.query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                Button(app.tr("Clear search and filters")) {
+                    filter = .init()
+                    editMode = .inactive
+                }
+                // Keep this action independent of the other controls in the List row.
+                .buttonStyle(.borderless)
+                .font(.footnote)
+                .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 8)
+                .accessibilityIdentifier("clearActiveFilters")
+            }
+            shownSummary(result)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 12)
+            if showsTableHeader {
+                ChequeTableHeaderView()
+                    .accessibilityIdentifier("chequeTableHeader")
+                    .padding(.leading, 16)
+                    // Match the row's content inset and the native disclosure indicator.
+                    .padding(.trailing, 36)
+                    .padding(.vertical, 9)
+                    .background(Theme.surface)
+                Divider()
+            }
+        }
+    }
+
+    private func listContent(_ visible: [ChequeRecord], activeCount: Int, result: ChequeListResult,
+                             scrollsControls: Bool) -> some View {
         List {
+            if scrollsControls {
+                // An ordinary row (not a pinned Section header) is outside the movable ForEach.
+                listControls(result, showsTableHeader: !visible.isEmpty)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Theme.background)
+            }
             ForEach(Array(visible.enumerated()), id: \.element.id) { index, record in
                 rowLink(record)
                 .listRowSeparator(.visible)
@@ -174,6 +197,14 @@ struct ChequeListView: View {
                 guard app.preferences.sort == .manual else { return }
                 move(visibleIDs: visible.map(\.id), from: source, to: destination)
             }
+            if scrollsControls && visible.isEmpty {
+                emptyContent(activeCount: activeCount)
+                    .padding(28)
+                    .frame(maxWidth: .infinity)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Theme.background)
+            }
         }
         // Recreate the native list after a direction change without resetting the filter state.
         .id(app.preferences.language.rawValue)
@@ -181,31 +212,35 @@ struct ChequeListView: View {
         .scrollContentBackground(.hidden)
         .background(Theme.background)
         .overlay {
-            if visible.isEmpty {
-                VStack(spacing: 18) {
-                    EmptyStateView(
-                        title: app.tr(activeCount == 0 ? "No cheques yet" : "No matching cheques"),
-                        message: app.tr(activeCount == 0 ? "Add your first cheque to keep its details and reminders together." : "Try another search or clear the filters."),
-                        systemImage: activeCount == 0 ? "doc.text" : "line.3.horizontal.decrease.circle"
-                    )
-                    if activeCount == 0 {
-                        Button(app.tr("Add cheque")) { showingEditor = true }
-                            .buttonStyle(.borderedProminent)
-                            .disabled(app.currencyConflict || app.currencyCode.isEmpty)
-                    } else {
-                        Button(app.tr("Clear search and filters")) { filter = .init() }
-                            .buttonStyle(.bordered)
-                        if scope == .outstanding {
-                            Button(app.tr("Show all and history")) {
-                                filter = .init()
-                                setScope(.allRecords)
-                            }
-                            .buttonStyle(.bordered)
-                            .accessibilityIdentifier("showHistoryFromEmptyList")
-                        }
-                    }
-                }
+            if !scrollsControls && visible.isEmpty {
+                emptyContent(activeCount: activeCount)
                 .padding(28)
+            }
+        }
+    }
+
+    private func emptyContent(activeCount: Int) -> some View {
+        VStack(spacing: 18) {
+            EmptyStateView(
+                title: app.tr(activeCount == 0 ? "No cheques yet" : "No matching cheques"),
+                message: app.tr(activeCount == 0 ? "Add your first cheque to keep its details and reminders together." : "Try another search or clear the filters."),
+                systemImage: activeCount == 0 ? "doc.text" : "line.3.horizontal.decrease.circle"
+            )
+            if activeCount == 0 {
+                Button(app.tr("Add cheque")) { showingEditor = true }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(app.currencyConflict || app.currencyCode.isEmpty)
+            } else {
+                Button(app.tr("Clear search and filters")) { filter = .init() }
+                    .buttonStyle(.bordered)
+                if scope == .outstanding {
+                    Button(app.tr("Show all and history")) {
+                        filter = .init()
+                        setScope(.allRecords)
+                    }
+                    .buttonStyle(.bordered)
+                    .accessibilityIdentifier("showHistoryFromEmptyList")
+                }
             }
         }
     }

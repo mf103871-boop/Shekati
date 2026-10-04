@@ -116,12 +116,21 @@ final class ShekatiUITests: XCTestCase {
     }
 
     private func fillQuickCheque(in app: XCUIApplication, amount: String, party: String, number: String) {
-        for (identifier, text) in [("amountField", amount), ("partyField", party), ("chequeNumberField", number)] {
+        for (index, entry) in [("amountField", amount), ("partyField", party), ("chequeNumberField", number)].enumerated() {
+            let (identifier, text) = entry
             let field = app.textFields[identifier]
-            reveal(field, in: app)
-            field.tap()
+            if index == 0 {
+                reveal(field, in: app)
+                field.tap()
+            } else {
+                // Exercise the app's accepted keyboard navigation. SwiftUI materializes and focuses
+                // the next field even when its Form cell is outside the accessibility snapshot.
+                let next = app.buttons["Next"].exists ? app.buttons["Next"] : app.buttons["التالي"]
+                XCTAssertTrue(next.waitForExistence(timeout: 5))
+                next.tap()
+            }
             let focused = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-                field.debugDescription.contains("Keyboard Focused")
+                field.exists && field.debugDescription.contains("Keyboard Focused")
             }, object: field)
             let result = XCTWaiter.wait(for: [focused], timeout: 5)
             if result != .completed { captureDiagnostics(app, name: "Input did not receive keyboard focus") }
@@ -234,31 +243,37 @@ final class ShekatiUITests: XCTestCase {
                 .filter { $0.frame.height > 0 && $0.frame.minY > frame.minY + 100 && $0.frame.maxY <= keyboardTop + 1 }
                 .map { $0.frame.minY }.min() ?? keyboardTop : keyboardTop
             let visibleBottom = min(frame.maxY - 80, min(keyboardToolbarTop, min(keyboardTop, accessoryTop))) - 24
-            let editorBar = app.navigationBars["Add cheque"]
-            let listBar = app.navigationBars["Cheques"]
-            let navigationBottom = editorBar.exists ? editorBar.frame.maxY :
-                (listBar.exists ? listBar.frame.maxY : frame.minY + 100)
+            let navigationBottom = app.navigationBars.allElementsBoundByIndex.compactMap { bar -> CGFloat? in
+                guard bar.exists else { return nil }
+                let barFrame = bar.frame
+                guard barFrame.height > 0, barFrame.intersects(frame) else { return nil }
+                return barFrame.maxY
+            }.max() ?? frame.minY + 100
             let visibleTop = max(frame.minY + 100, navigationBottom + 20)
             guard visibleBottom > visibleTop + 40 else {
                 captureDiagnostics(app, name: "Insufficient visible scroll area")
                 XCTFail("The visible scroll area is too small to reveal the field")
                 return
             }
-            let centerInside = element.frame.midY >= visibleTop && element.frame.midY <= visibleBottom
-            let fullFrameInside = element.frame.minY >= visibleTop && element.frame.maxY <= visibleBottom
-            let visibleTarget = element.identifier.hasPrefix("cheque-row-") ? centerInside : fullFrameInside
-            if element.isHittable && visibleTarget { return }
+            let targetExists = element.exists
+            let targetFrame = targetExists ? element.frame : CGRect.null
+            if targetExists {
+                let centerInside = targetFrame.midY >= visibleTop && targetFrame.midY <= visibleBottom
+                let fullFrameInside = targetFrame.minY >= visibleTop && targetFrame.maxY <= visibleBottom
+                let visibleTarget = element.identifier.hasPrefix("cheque-row-") ? centerInside : fullFrameInside
+                if element.isHittable && visibleTarget { return }
+            }
             let distance = min(200, (visibleBottom - visibleTop) * 0.6)
             let origin = window.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
-            let above = element.exists && element.frame.height > 0 && element.frame.midY < visibleTop
+            let above = targetExists && targetFrame.height > 0 && targetFrame.midY < visibleTop
             let startY = above ? visibleTop + 15 : visibleBottom
             let endY = above ? startY + distance : startY - distance
             let start = origin.withOffset(CGVector(dx: frame.width / 2, dy: startY - frame.minY))
             let end = origin.withOffset(CGVector(dx: frame.width / 2, dy: endY - frame.minY))
             start.press(forDuration: 0.05, thenDragTo: end)
         }
-        if !element.isHittable { captureDiagnostics(app, name: "Field remained offscreen after scrolling") }
-        XCTAssertTrue(element.isHittable, "Expected the field or cheque row to become visible after scrolling")
+        captureDiagnostics(app, name: "Field remained offscreen after scrolling")
+        XCTFail("Expected the field or cheque row to become visible after scrolling")
     }
 
     private func captureDiagnostics(_ app: XCUIApplication, name: String) {

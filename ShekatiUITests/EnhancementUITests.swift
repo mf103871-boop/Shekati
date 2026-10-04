@@ -277,7 +277,7 @@ final class EnhancementUITests: XCTestCase {
 
     private func waitForKeyboardFocus(_ field: XCUIElement, in app: XCUIApplication) {
         let focused = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-            field.debugDescription.contains("Keyboard Focused")
+            field.exists && field.debugDescription.contains("Keyboard Focused")
         }, object: field)
         let result = XCTWaiter.wait(for: [focused], timeout: 5)
         if result != .completed { captureDiagnostics(app, "Build 6 input did not receive keyboard focus") }
@@ -376,30 +376,34 @@ final class EnhancementUITests: XCTestCase {
             let keyboardToolbarTop = keyboardVisible ? app.toolbars.allElementsBoundByIndex
                 .filter { $0.frame.height > 0 && $0.frame.minY > frame.minY + 100 && $0.frame.maxY <= keyboardTop + 1 }
                 .map { $0.frame.minY }.min() ?? keyboardTop : keyboardTop
-            let top = max(frame.minY + 100, app.navigationBars.firstMatch.frame.maxY + 20)
+            let navigationBottom = app.navigationBars.allElementsBoundByIndex.compactMap { bar -> CGFloat? in
+                guard bar.exists else { return nil }
+                let barFrame = bar.frame
+                guard barFrame.height > 0, barFrame.intersects(frame) else { return nil }
+                return barFrame.maxY
+            }.max() ?? frame.minY + 100
+            let top = max(frame.minY + 100, navigationBottom + 20)
             let bottom = min(frame.maxY - 85, min(keyboardToolbarTop, min(keyboardTop, accessoryTop))) - 24
             guard bottom > top + 50 else { break }
-            let fullyInside = element.frame.minY >= top && element.frame.maxY <= bottom
-            let centerInside = element.frame.midY >= top && element.frame.midY <= bottom
-            let requireFullFrame = fullyVisible || !element.identifier.hasPrefix("cheque-row-")
-            if element.isHittable && (requireFullFrame ? fullyInside : centerInside) { return }
+            let targetExists = element.exists
+            let targetFrame = targetExists ? element.frame : CGRect.null
+            if targetExists {
+                let fullyInside = targetFrame.minY >= top && targetFrame.maxY <= bottom
+                let centerInside = targetFrame.midY >= top && targetFrame.midY <= bottom
+                let requireFullFrame = fullyVisible || !element.identifier.hasPrefix("cheque-row-")
+                if element.isHittable && (requireFullFrame ? fullyInside : centerInside) { return }
+            }
             let distance = min(220, (bottom - top) * 0.65)
             let origin = window.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
-            let above = element.exists && element.frame.height > 0 && element.frame.midY < top
+            let above = targetExists && targetFrame.height > 0 && targetFrame.midY < top
             let startY = above ? top + 15 : bottom
             let endY = above ? startY + distance : startY - distance
             let start = origin.withOffset(CGVector(dx: frame.width / 2, dy: startY - frame.minY))
             let end = origin.withOffset(CGVector(dx: frame.width / 2, dy: endY - frame.minY))
             start.press(forDuration: 0.05, thenDragTo: end)
         }
-        if !element.isHittable {
-            capture(app, "Build 6 enhancement field remained offscreen")
-            let hierarchy = XCTAttachment(string: app.debugDescription)
-            hierarchy.name = "Build 6 enhancement accessibility hierarchy"
-            hierarchy.lifetime = .keepAlways
-            add(hierarchy)
-        }
-        XCTAssertTrue(element.isHittable, "Expected the control to become visible")
+        captureDiagnostics(app, "Build 6 enhancement field remained offscreen")
+        XCTFail("Expected the control to become visible")
     }
 
     private func capture(_ app: XCUIApplication, _ name: String) {
