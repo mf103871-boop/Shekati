@@ -390,11 +390,11 @@ struct ChequeEditorView: View {
             Text(amountError).font(.footnote).foregroundStyle(Theme.red)
                 .accessibilityIdentifier("amountValidationError")
         }
-        DatePicker(app.tr("Due date"), selection: $dueDate, displayedComponents: .date)
+        DatePicker(app.tr("Due date"), selection: Binding(
+            get: { dueDate },
+            set: { dueDate = $0; dueDateNeedsReview = false; dateError = nil }
+        ), displayedComponents: .date)
             .accessibilityIdentifier("dueDateField")
-            .onChange(of: dueDate) { _, _ in
-                if !isResetting { dueDateNeedsReview = false; dateError = nil }
-            }
         Text(app.formatDay(LocalDay(date: dueDate)) + " · " + app.relativeDueDate(LocalDay(date: dueDate)))
             .font(.footnote).foregroundStyle(.secondary)
         if dueDateNeedsReview {
