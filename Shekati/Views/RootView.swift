@@ -61,6 +61,8 @@ struct RootView: View {
                         Button(app.tr("Done")) { linkedRecord = nil }
                     } }
             }
+            .environment(\.locale, app.preferences.language.locale)
+            .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
         }
         .task(id: currencySignature) { reconcileCurrency() }
         .task(id: reminderSignature) {

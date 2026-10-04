@@ -144,7 +144,7 @@ struct ChequeEditorView: View {
             }
 
             Section {
-                DisclosureGroup(app.tr("More details"), isExpanded: $extraDetailsExpanded) {
+                DisclosureGroup(isExpanded: $extraDetailsExpanded) {
                     TextField(app.tr("Bank (optional)"), text: $bank)
                         .accessibilityIdentifier("bankField")
                     TextField(app.tr("Branch (optional)"), text: $branch)
@@ -156,8 +156,9 @@ struct ChequeEditorView: View {
                     }
                     TextField(app.tr("Notes (optional)"), text: $notes, axis: .vertical)
                         .lineLimit(3...8)
+                } label: {
+                    Text(app.tr("More details")).accessibilityIdentifier("extraChequeDetails")
                 }
-                .accessibilityIdentifier("extraChequeDetails")
             }
 
             Section {
@@ -178,8 +179,8 @@ struct ChequeEditorView: View {
                     }
                 } label: {
                     Label(app.tr("Scan or add photos"), systemImage: "camera")
+                        .accessibilityIdentifier("chequeImageOptions")
                 }
-                .accessibilityIdentifier("chequeImageOptions")
             } header: {
                 Text(app.tr("Cheque images"))
             } footer: {
@@ -189,7 +190,7 @@ struct ChequeEditorView: View {
             Section {
                 Toggle(app.tr("Reminders enabled"), isOn: $remindersEnabled)
                 if remindersEnabled {
-                    DisclosureGroup(app.tr("Reminder options"), isExpanded: $reminderOptionsExpanded) {
+                    DisclosureGroup(isExpanded: $reminderOptionsExpanded) {
                         Toggle(app.tr("Use default reminders"), isOn: $useDefaultReminders)
                         if useDefaultReminders {
                             Text(app.tr("The reminder days and time from Settings will be used."))
@@ -222,8 +223,9 @@ struct ChequeEditorView: View {
                                     .buttonStyle(.borderless)
                             }
                         }
+                    } label: {
+                        Text(app.tr("Reminder options")).accessibilityIdentifier("chequeReminderOptions")
                     }
-                    .accessibilityIdentifier("chequeReminderOptions")
                 }
             } header: {
                 Text(app.tr("Reminders"))
@@ -232,6 +234,8 @@ struct ChequeEditorView: View {
             }
 
         }
+        // Recreate the native Form container when language direction changes.
+        .id(app.preferences.language.rawValue)
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle(app.tr(record == nil ? "Add cheque" : "Edit cheque"))
         .navigationBarTitleDisplayMode(.inline)
@@ -278,6 +282,8 @@ struct ChequeEditorView: View {
                         ocrSuggestion = nil
                     }
                 }
+                .environment(\.locale, app.preferences.language.locale)
+                .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
             }
         }
         .alert(app.tr("Camera unavailable"), isPresented: $showingCameraHelp) {

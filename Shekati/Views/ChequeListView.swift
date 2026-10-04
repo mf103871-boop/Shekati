@@ -65,6 +65,7 @@ struct ChequeListView: View {
             .background(Theme.background)
             .environment(\.editMode, $editMode)
             .navigationTitle(app.tr("Cheques"))
+            .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $filter.query, prompt: Text(app.tr("Search number, bank or name")))
             .toolbar {
                 ChequeListToolbar(
@@ -81,18 +82,32 @@ struct ChequeListView: View {
             }
             .onChange(of: filter.direction) { _, _ in editMode = .inactive }
             .sheet(isPresented: $showingEditor) {
-                NavigationStack { ChequeEditorView() }
+                NavigationStack {
+                    ChequeEditorView()
+                        .environment(\.locale, app.preferences.language.locale)
+                        .environment(\.layoutDirection, sheetDirection)
+                }
+                .environment(\.locale, app.preferences.language.locale)
+                .environment(\.layoutDirection, sheetDirection)
             }
             .sheet(isPresented: $showingFilters) {
                 NavigationStack {
                     ChequeFilterSheet(initial: filter, banks: records.map(\.bank)) { filter = $0 }
+                        .environment(\.locale, app.preferences.language.locale)
+                        .environment(\.layoutDirection, sheetDirection)
                 }
+                .environment(\.locale, app.preferences.language.locale)
+                .environment(\.layoutDirection, sheetDirection)
             }
             .alert(app.tr("Could not save changes"), isPresented: Binding(
                 get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }
             )) {
                 Button(app.tr("OK"), role: .cancel) { errorMessage = nil }
             } message: { Text(errorMessage ?? "") }
+    }
+
+    private var sheetDirection: LayoutDirection {
+        app.preferences.language == .arabic ? .rightToLeft : .leftToRight
     }
 
     private var listContent: some View {
@@ -237,8 +252,12 @@ private struct ChequeListToolbar: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) { optionsMenu }
         ToolbarItem(placement: .topBarTrailing) {
-            Button { showingEditor = true } label: { Label(app.tr("Add"), systemImage: "plus") }
-                .labelStyle(.titleAndIcon)
+            Button { showingEditor = true } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "plus").accessibilityHidden(true)
+                    Text(app.tr("Add"))
+                }
+            }
                 .accessibilityLabel(app.tr("Add cheque"))
                 .disabled(app.currencyConflict || app.currencyCode.isEmpty)
         }
@@ -282,9 +301,8 @@ private struct ChequeListToolbar: ToolbarContent {
                 .accessibilityHint(app.tr("Drag cheques to change their order."))
             }
         } label: {
-            Label(app.tr("Filters and sort"), systemImage: hasFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+            Text(app.tr("Filters and sort"))
         }
-        .labelStyle(.titleAndIcon)
         .accessibilityLabel(app.tr("Filters and sort"))
     }
 

@@ -123,7 +123,13 @@ struct ChequeDetailView: View {
             }
         }
         .sheet(isPresented: $showingEditor) {
-            NavigationStack { ChequeEditorView(record: record) }
+            NavigationStack {
+                ChequeEditorView(record: record)
+                    .environment(\.locale, app.preferences.language.locale)
+                    .environment(\.layoutDirection, sheetDirection)
+            }
+            .environment(\.locale, app.preferences.language.locale)
+            .environment(\.layoutDirection, sheetDirection)
         }
         .sheet(isPresented: $showingSettlement) { settlementSheet }
         .sheet(item: $preview) { item in
@@ -132,6 +138,8 @@ struct ChequeDetailView: View {
                     Image(uiImage: item.image).resizable().scaledToFit().padding()
                 }
                 .background(Theme.background)
+                .environment(\.locale, app.preferences.language.locale)
+                .environment(\.layoutDirection, sheetDirection)
                 .navigationTitle(app.tr(item.title))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
@@ -140,6 +148,8 @@ struct ChequeDetailView: View {
                     }
                 }
             }
+            .environment(\.locale, app.preferences.language.locale)
+            .environment(\.layoutDirection, sheetDirection)
         }
         .confirmationDialog(app.tr("Change status"), isPresented: $showingStatus, titleVisibility: .visible) {
             Button(app.tr(record.direction == .incoming ? "Mark collected" : "Mark paid")) {
@@ -165,6 +175,10 @@ struct ChequeDetailView: View {
         } message: { Text(errorMessage ?? "") }
     }
 
+    private var sheetDirection: LayoutDirection {
+        app.preferences.language == .arabic ? .rightToLeft : .leftToRight
+    }
+
     private var settlementSheet: some View {
         NavigationStack {
             Form {
@@ -175,6 +189,8 @@ struct ChequeDetailView: View {
                     Text(app.tr("Choose the date the cheque actually cleared."))
                 }
             }
+            .environment(\.locale, app.preferences.language.locale)
+            .environment(\.layoutDirection, sheetDirection)
             .navigationTitle(app.tr(record.direction == .incoming ? "Mark collected" : "Mark paid"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -199,6 +215,8 @@ struct ChequeDetailView: View {
                 }
             }
         }
+        .environment(\.locale, app.preferences.language.locale)
+        .environment(\.layoutDirection, sheetDirection)
         .presentationDetents([.medium])
         .alert(app.tr("Could not save changes"), isPresented: Binding(
             get: { settlementError != nil }, set: { if !$0 { settlementError = nil } }

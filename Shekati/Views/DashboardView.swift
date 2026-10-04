@@ -128,7 +128,19 @@ struct DashboardView: View {
         .background(Theme.background)
         .navigationTitle(app.tr("Shekati"))
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showingEditor) { NavigationStack { ChequeEditorView() } }
+        .sheet(isPresented: $showingEditor) {
+            NavigationStack {
+                ChequeEditorView()
+                    .environment(\.locale, app.preferences.language.locale)
+                    .environment(\.layoutDirection, sheetDirection)
+            }
+            .environment(\.locale, app.preferences.language.locale)
+            .environment(\.layoutDirection, sheetDirection)
+        }
+    }
+
+    private var sheetDirection: LayoutDirection {
+        app.preferences.language == .arabic ? .rightToLeft : .leftToRight
     }
 
     private func totalRow(_ direction: ChequeDirection, metrics: DashboardMetrics) -> some View {

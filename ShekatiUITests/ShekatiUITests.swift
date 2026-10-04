@@ -39,12 +39,12 @@ final class ShekatiUITests: XCTestCase {
         reveal(party, in: app)
         party.tap()
         party.typeText("CI cheque")
-        let details = app.descendants(matching: .any).matching(identifier: "extraChequeDetails").firstMatch
+        let details = app.buttons["More details"]
         reveal(details, in: app)
         details.tap()
         let bank = app.textFields["bankField"]
-        XCTAssertTrue(bank.waitForExistence(timeout: 5))
         reveal(bank, in: app)
+        XCTAssertTrue(bank.exists)
         bank.tap()
         bank.typeText("Demo Bank")
         app.buttons["saveCheque"].tap()
@@ -79,6 +79,10 @@ final class ShekatiUITests: XCTestCase {
         XCTAssertTrue(app.textFields["partyField"].isHittable)
         XCTAssertTrue(app.textFields["chequeNumberField"].isHittable)
         XCTAssertFalse(app.textFields["bankField"].exists)
+        XCTAssertGreaterThan(app.staticTexts["المبلغ"].frame.midX, app.windows.firstMatch.frame.midX,
+                             "Arabic entry labels must use a right-to-left Form")
+        XCTAssertLessThan(app.buttons["saveCheque"].frame.midX, app.windows.firstMatch.frame.midX,
+                          "Arabic Save must use the trailing side of a right-to-left navigation bar")
         captureScreenshot(app, name: "Arabic quick cheque entry")
         fillQuickCheque(in: app, amount: "125.50", party: "Demo incoming", number: "000101")
         app.buttons["saveCheque"].tap()
