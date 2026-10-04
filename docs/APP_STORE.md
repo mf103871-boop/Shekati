@@ -1,8 +1,8 @@
 # مواد المتجر | App Store material
 
-Publication draft for version 1.0.0. Replace operator/contact placeholders and check feature claims against physical-iPhone results before public submission. The registered-phone setup completed and the CloudKit Production schema was deployed and verified on 4 October 2026. App Store Connect reports installation of regular build 2 on the owner's iPhone. Build 4 is now available in the internal group. Public App Review has not been requested; build 4 installation and device/private-sync acceptance remain unverified. Configuration items described as saved below are confirmed; the remaining publication fields are draft values.
+Publication draft for version 1.0.0. Replace operator/contact placeholders and check feature claims against physical-iPhone results before public submission. The registered-phone setup completed and the CloudKit Production schema was deployed and verified on 4 October 2026. Build 5 is available in the internal group, and App Store Connect now reports `Installed 1.0.0 (5)` on the owner's iPhone. This confirms portal-reported installation; physical UI, private-sync and device-notification acceptance remain unverified. Public App Review has not been requested. Configuration items described as saved below are confirmed; the remaining publication fields are draft values.
 
-Build **1.0.0 (4)** contains the sync-status correction, passed 56 iPhone scenarios and the separate 24-test macOS suite, and completed signed iPhone-only export/upload in [run 37161293969](https://github.com/mf103871-boop/Shekati/actions/runs/37161293969); [proof](screenshots/Shekati-build4-upload-success.jpg). Processing completed, and the group Builds tab confirms `Testing`, `Expires in 90 days`; [availability proof](screenshots/Shekati-TestFlight-build4.jpg). The native design screenshots below are from the earlier tested build 2.
+Build **1.0.0 (5)** at [8f806ae](https://github.com/mf103871-boop/Shekati/commit/8f806ae2a3d370dcab6c1cc7597c9d4a8d503ce6) contains the simplified cheque interface. The [native validation job](https://github.com/mf103871-boop/Shekati/actions/runs/37164184467/job/111323630876) passed 58 distinct iPhone tests (24 core, 30 hosted and 4 UI) and the separate 24-test macOS suite, all with zero failures. The [signed upload job](https://github.com/mf103871-boop/Shekati/actions/runs/37164184467/job/111324443434) passed archive at 00:18:01 UTC, export at 00:18:02 and upload at 00:19:04; [proof](screenshots/Shekati-build5-upload-success.jpg). The group Builds tab confirms `Testing`, `Expires in 90 days`; [availability proof](screenshots/Shekati-TestFlight-build5.jpg). The current native screenshots below come from this tested build's iPhone Air simulator.
 
 ## Store configuration
 
@@ -13,7 +13,7 @@ Build **1.0.0 (4)** contains the sync-status correction, passed 56 iPhone scenar
 | Local prices | Price schedule configured across 175 storefronts with corresponding local prices |
 | Primary category | Finance |
 | Secondary category | Productivity |
-| Device | iPhone only; signed build 4 archive and IPA family `[1]` guards passed |
+| Device | iPhone only; signed build 5 archive and IPA family `[1]` guards passed |
 | Mac and Apple Vision Pro availability | Unchecked and saved in App Store Connect |
 | Reduced school volume price | Unchecked and saved |
 | Paid Apps Agreement | Active, verified read-only; 25 September 2026–3 September 2027 |
@@ -21,10 +21,10 @@ Build **1.0.0 (4)** contains the sync-status correction, passed 56 iPhone scenar
 | US Foreign Status and W-8BEN | Active, verified read-only |
 | DSA | Active, verified read-only |
 | Brazil tax form | Missing tax information; not changed during setup |
-| Internal testing group | `Shekati Owner Testing` attached to builds 4 and 2: two builds and one owner tester, automatic distribution off |
-| Owner invitation | Sent on 3 October 2026; portal now reports `Installed 1.0.0 (2)` on 4 October; build 4 installation unconfirmed |
-| TestFlight build | Version 1.0.0, build 4 available; [portal proof](screenshots/Shekati-TestFlight-build4.jpg) |
-| Internal TestFlight readiness | Group Builds tab: build 4 `Testing`, `Expires in 90 days`; build 4 installation and device acceptance pending |
+| Internal testing group | `Shekati Owner Testing` attached to builds 5, 4 and 2: three builds and one owner tester, automatic distribution off |
+| Owner invitation | Sent on 3 October 2026; portal now reports `Installed 1.0.0 (5)` on 4 October, iPhone 17 Pro Max / iOS 26.6.1; physical runtime acceptance pending |
+| TestFlight build | Version 1.0.0, build 5 available; [portal proof](screenshots/Shekati-TestFlight-build5.jpg) |
+| Internal TestFlight readiness | Group Builds tab: build 5 `Testing`, `Expires in 90 days`; portal-reported installation confirmed, device acceptance pending |
 | iCloud schema | Phone initialization completed; Production deployment and all fields/indexes verified; [proof](screenshots/Shekati-iCloud-production-schema.jpg); private runtime sync acceptance pending |
 | Minimum OS | iOS 17 |
 | Languages | Arabic and English |
@@ -106,4 +106,10 @@ Provide `[REAL_REVIEW_CONTACT_NAME]`, `[REAL_REVIEW_CONTACT_EMAIL]` and `[REAL_R
 
 Capture actual iPhone screens in each language: dashboard, searchable cheque list, add-cheque form, cheque details with a fictional sample image, and reminder/privacy settings. Use fictional account names and numbers. Include a dark-mode example and demonstrate readable enlarged text. Do not use customer bank data. Check Apple's current upload dimensions when preparing final screenshots.
 
-Verified raw native build 2 simulator captures (1260×2736): [Arabic Home](screenshots/native-arabic-home.png), [English cheque detail](screenshots/native-english-detail.png), and [English Settings after changing language](screenshots/native-english-settings.png). The Settings capture confirms readable, unmirrored English and correct left-to-right layout. These demonstrate the native build; complete the final store screenshot set and device acceptance before public submission.
+Verified raw native **build 5** iPhone Air simulator captures (1260×2736):
+
+- Arabic: [empty Home](screenshots/native-build5-arabic-empty-home.png), [Home with fictional cheques](screenshots/native-build5-arabic-home.png), [compact cheque table](screenshots/native-build5-arabic-table.png) and [quick entry](screenshots/native-build5-arabic-entry.png).
+- English: [compact cheque table](screenshots/native-build5-english-table.png), [quick entry](screenshots/native-build5-english-entry.png), [cheque detail](screenshots/native-build5-english-detail.png) and [Settings after changing language](screenshots/native-build5-english-settings.png).
+- Accessibility: [labelled large-text layout](screenshots/native-build5-large-text.png).
+
+These nine captures document the simplified native interface and its mixed-number, language and large-text layouts. Complete the final store screenshot set and physical-device acceptance before public submission; historical build evidence remains in [validation results](VALIDATION.md).

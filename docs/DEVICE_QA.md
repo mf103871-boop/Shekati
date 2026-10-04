@@ -5,19 +5,23 @@ Record tester, app/build version, device model, iOS version, date, result and sc
 ## Entry, money and records
 
 - First launch: choose Arabic or English and one currency. Add an incoming and an outgoing cheque using only amount and due date. Save, close and reopen the app; both records and chosen currency remain.
+- At normal text size, opening Add cheque shows direction, amount, due date, payer/payee and cheque number together without scrolling. Optional bank, branch, account reference, issue date and notes stay under **More details**; expanding it must not clear the essential fields.
+- Save optional details, reopen Edit and verify **More details** expands automatically with the saved values. Collapse it, save another change and reopen; hidden details and front/back images remain intact.
 - Verify `001234` remains exactly `001234`. Edit all optional fields, attach front/back images, remove/replace an image, and confirm updates persist.
 - Test JPY whole values, USD two decimals and JOD three decimals. Try Arabic and Persian numerals and decimal separators. Reject zero, negative, excess decimals, mixed/grouped formats and overflow. Amount entry uses a decimal separator without thousands grouping.
-- Verify settlement defaults the actual date to today, supports another chosen date, and changes the label correctly for incoming/outgoing. Returning/cancelling a cheque does not assign a payment date. An overdue pending cheque remains pending.
+- Verify settlement defaults the actual date to today, supports another chosen date, and changes the label correctly for incoming/outgoing. Returning/cancelling a cheque does not assign a payment date. An overdue pending cheque remains pending. Rows must clearly show Pending, Collected/Paid, Returned and Cancelled; an overdue returned cheque shows both Returned and Overdue.
 - Verify cancellation/deletion, confirmation before delete, successful persistence after restart, and a meaningful error message if saving fails.
 
 ## Lists, dashboards and accessibility
 
-- Dashboard outstanding amounts include pending and returned cheques and exclude settled/cancelled ones. Today/next-seven-day/overdue counts agree with the lists opened from those cards.
-- Combine number/name/bank search, direction, status, bank and inclusive from/through dates; test empty results and filter reset.
+- Dashboard outstanding amounts include pending and returned cheques and exclude settled/cancelled ones. The two summary rows and today/next-seven-day/overdue rows open the matching lists, with totals/counts that agree.
+- Switch **All / Incoming / Outgoing** in the list and verify only the chosen direction appears. **Shown cheques** and **Shown amount** match the visible rows; currency conflicts hide totals and overflow shows a clear message.
+- Combine number/name/bank search, direction, status, bank and inclusive from/through dates; test empty results and filter reset. The labelled **Filters and sort** menu must expose filters, sort, ascending/descending order and manual reordering; changing direction must preserve other active filters.
 - Check every ascending and descending sort, save choice, reopen, and check ties do not jump randomly.
 - In manual sort with a filter, move a visible row. Remove the filter and check hidden rows retain their exact slots. Test a multi-row move and persistence after restart.
 - Exercise a fixture of 1,000 records. Search, scrolling, filtering and reordering must remain responsive on the oldest supported test iPhone; retain a measured result rather than assuming simulator speed.
-- Check Arabic RTL and English LTR, mixed Latin cheque numbers and Arabic names, system/light/dark appearance, VoiceOver, larger accessibility text and a smaller iPhone screen. Buttons and important labels must not clip.
+- Check Arabic RTL and English LTR: name/number stay in the logical leading column and amount/due date in the trailing column, aligned with their headings. Use mixed Arabic names and Latin numbers; cheque numbers retain leading zeros and amount/date strings remain readable without reversal.
+- Check system/light/dark appearance, VoiceOver, larger accessibility text and a smaller iPhone screen. At accessibility text sizes, cheque rows show labelled, stacked amount and due-date fields and remain tappable; entry fields, filter/sort actions and important labels must not clip.
 
 ## Camera and image suggestions
 
@@ -39,7 +43,7 @@ Record tester, app/build version, device model, iOS version, date, result and sc
 
 ## iCloud and release readiness
 
-Production schema deployment was verified on 4 October 2026; [Console proof](screenshots/Shekati-iCloud-production-schema.jpg). Regular Shekati **1.0.0 (4)** is available in TestFlight with status `Testing`; [proof](screenshots/Shekati-TestFlight-build4.jpg). App Store Connect reports build 2 installed on the owner's iPhone; update to build 4 before acceptance. Runtime checks below remain pending. If needed, open the app's **Previous Builds**, choose the version and install the available build; [Apple's instructions](https://beta.itunes.apple.com/). Do not uninstall the app or erase its data to perform this check.
+Production schema deployment was verified on 4 October 2026; [Console proof](screenshots/Shekati-iCloud-production-schema.jpg). The simplified interface acceptance target is **Shekati 1.0.0 (5)**. Its [pipeline](https://github.com/mf103871-boop/Shekati/actions/runs/37164184467) passed 24 macOS core tests, 58 distinct iPhone tests and signed iPhone-only archive/export/upload. Build 5 is available in the internal group with status `Testing`, `Expires in 90 days`; [proof](screenshots/Shekati-TestFlight-build5.jpg). App Store Connect now reports `Installed 1.0.0 (5)` on 4 October on the owner's iPhone 17 Pro Max running iOS 26.6.1. This is portal-reported installation, not confirmation of physical UI, private sync or device alerts. Record the actual build shown on the phone and complete the pending runtime checks below. If needed, open the app's **Previous Builds**, choose the version and install the available build; [Apple's instructions](https://beta.itunes.apple.com/). Do not uninstall the app or erase its data to perform this check.
 
 For an initial single-phone check, save one fictional incoming cheque with amount `1`, number `SYNC-TEST`, tomorrow's due date and reminders off while online. Record the save time, then inspect Settings. `iCloud available / iCloud متاح` checks account readiness; the **Check iCloud status** button does not force a sync. `Synced / تمت المزامنة` with a new **Last sync** timestamp means a successful import or export event, but does not alone prove every pending record was uploaded. Reopening the app and finding the row confirms local persistence only. Use Production **Logs**, restricted to the test interval and **PRIVATE** database, to verify successful save-operation metadata without opening financial record values. [Apple's Logs documentation](https://developer.apple.com/icloud/logs/) explains that logs show modifications and status, without changed record contents.
 

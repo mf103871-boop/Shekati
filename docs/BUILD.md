@@ -31,6 +31,14 @@ Simulator builds deliberately use local-only storage, including hosted unit-test
 
 Create a GitHub repository and place this folder's contents at its root, including the hidden `.github` directory. Enable Actions. The **Build and test iPhone app** workflow runs on pushes, pull requests, or manual dispatch. It runs core tests, generates the project, selects an available iPhone simulator, and executes the hosted integration tests and XCUITest target. Its `.xcresult` report is retained as a workflow artifact. These automated UI checks do not replace camera, real iCloud, biometric and closed-app notification checks on physical iPhones.
 
+For screenshot review on Windows, download **Shekati-native-ui-attachments** from the successful run and unzip it locally. CI exports the raw PNG attachments with `xcresulttool`; the separate **Shekati-simulator-test-report** contains the `.xcresult` report. On a Mac, the equivalent export command is:
+
+```sh
+xcrun xcresulttool export attachments --path build/Shekati.xcresult --output-path build/ui-attachments
+```
+
+The confirmed build 5 at [source 8f806ae2a3d3](https://github.com/mf103871-boop/Shekati/commit/8f806ae2a3d370dcab6c1cc7597c9d4a8d503ce6), [run 37164184467](https://github.com/mf103871-boop/Shekati/actions/runs/37164184467), passed 24 macOS core tests and 58 distinct iPhone scenarios (24 core, 30 hosted, 4 UI). Nine raw iPhone Air PNGs are saved as `docs/screenshots/native-build5-*.png`; [validation details](VALIDATION.md) include attachment artifact `11288454780` and its SHA-256.
+
 No Apple credentials are needed for that unsigned simulator check. Workflow execution still requires a repository and the owner's GitHub account; files alone do not start a remote build. GitHub's hosted macOS runners supply the build host, and private repositories may use paid minutes. See [GitHub-hosted runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
 
 ## 3. Configure an account-owned app and private iCloud container
@@ -71,6 +79,8 @@ Repeat for the provisioning profile and API private key, substituting the actual
 After the cloud production schema is deployed, manually run **Upload manually to TestFlight**. Supply the owned Bundle ID, actual container ID, ten-character Team ID, and a unique positive integer build number. The workflow first calls the full unsigned CI workflow for core, integration and UI tests; signing/upload starts only after it passes. It validates inputs/profile, imports credentials into a temporary keychain, generates a signed Release archive, exports the IPA, and uploads it for App Store Connect processing. Credentials are removed at the end, and no private IPA is published as an artifact.
 
 The workflow uploads a build only. It does not invite testers, submit for App Review, change the price, or release the app publicly. Configure TestFlight test information and internal/external testing in App Store Connect after processing; external testing may require Apple's beta review. See [Apple build uploads](https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds/) and [TestFlight overview](https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/).
+
+Build 5's [upload job 111324443434](https://github.com/mf103871-boop/Shekati/actions/runs/37164184467/job/111324443434) passed signed archive at 00:18:01 UTC, IPA export at 00:18:02 UTC and upload at 00:19:04 UTC with no errors. Archive and IPA device-family `[1]` guards passed. Processing completed, and `1.0.0 (5)` was manually added to the existing owner group as `Testing`, `Expires in 90 days`. A fresh portal view confirms `Installed 1.0.0 (5)` on 4 October; actual phone UI, private iCloud and notification QA remain unverified. See [TestFlight proof](screenshots/Shekati-TestFlight-build5.jpg) and [upload proof](screenshots/Shekati-build5-upload-success.jpg).
 
 ## 5. App Store release checklist
 
