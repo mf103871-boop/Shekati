@@ -24,7 +24,9 @@ struct ShekatiApp: App {
             testDefaults.removePersistentDomain(forName: "com.shekati.ui-testing")
             testDefaults.set(CommandLine.arguments.contains("--arabic") ? "ar" : "en", forKey: "language")
             testDefaults.set([Int](), forKey: "reminderOffsets")
-            _state = State(initialValue: AppState(localOnlyReason: "UI test storage", defaults: testDefaults))
+            let appState = AppState(localOnlyReason: "UI test storage", defaults: testDefaults)
+            if let built { appState.configureNotificationContext(container: built) }
+            _state = State(initialValue: appState)
             return
         }
         #if targetEnvironment(simulator)
@@ -48,7 +50,9 @@ struct ShekatiApp: App {
         } catch { failure = error.localizedDescription }
         container = built
         startupError = failure
-        _state = State(initialValue: AppState(localOnlyReason: fallbackReason))
+        let appState = AppState(localOnlyReason: fallbackReason)
+        if let built { appState.configureNotificationContext(container: built) }
+        _state = State(initialValue: appState)
     }
 
     var body: some Scene {

@@ -6,22 +6,14 @@ import ShekatiCore
 struct DashboardView: View {
     @Environment(AppState.self) private var app
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @Query private var records: [ChequeRecord]
+    @Query(filter: #Predicate<ChequeRecord> { $0.deletedAt == nil }) private var records: [ChequeRecord]
     @State private var showingEditor = false
 
-    private var metrics: DashboardMetrics {
-        DashboardMetrics(cheques: records.map(\.snapshot), today: app.today)
-    }
-
-    private var upcoming: [ChequeRecord] {
-        records.filter { $0.snapshot.isOutstanding }.sorted {
+    var body: some View {
+        let summary = DashboardMetrics(cheques: records.map(\.snapshot), today: app.today)
+        let nextCheques = records.filter { $0.snapshot.isOutstanding }.sorted {
             $0.dueDate == $1.dueDate ? $0.id.uuidString < $1.id.uuidString : $0.dueDate < $1.dueDate
         }.prefix(4).map { $0 }
-    }
-
-    var body: some View {
-        let summary = metrics
-        let nextCheques = upcoming
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 Button { showingEditor = true } label: {

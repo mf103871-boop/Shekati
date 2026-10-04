@@ -13,12 +13,21 @@ struct ChequeDetailView: View {
     @State private var showingStatus = false
     @State private var showingSettlement = false
     @State private var showingDelete = false
-    @State private var settlementDate = Date()
-    @State private var settlementError: String?
     @State private var errorMessage: String?
     @State private var preview: ChequeImagePreview?
 
     var body: some View {
+        Group {
+            if record.deletedAt != nil { deletedCheque } else { activeDetail }
+        }
+        .alert(app.tr("Could not save changes"), isPresented: Binding(
+            get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }
+        )) {
+            Button(app.tr("OK"), role: .cancel) { errorMessage = nil }
+        } message: { Text(errorMessage ?? "") }
+    }
+
+    private var activeDetail: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 VStack(alignment: .leading, spacing: 16) {
@@ -37,6 +46,16 @@ struct ChequeDetailView: View {
                     Divider()
                     LabeledContent(app.tr("Due date"), value: app.formatDay(record.dueDate))
                         .foregroundStyle(record.snapshot.isOverdue(on: app.today) ? Theme.red : Theme.navy)
+                    if record.snapshot.isOutstanding {
+                        Text(app.relativeDueDate(record.dueDate))
+                            .font(.subheadline).foregroundStyle(record.snapshot.isOverdue(on: app.today) ? Theme.red : .secondary)
+                        Button { showingSettlement = true } label: {
+                            Label(app.tr(record.direction == .incoming ? "Mark collected" : "Mark paid"), systemImage: "checkmark.circle")
+                                .frame(maxWidth: .infinity).padding(.vertical, 5)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .accessibilityIdentifier("primarySettlement")
+                    }
                     if let actual = record.actualDate {
                         LabeledContent(app.tr(record.direction == .incoming ? "Collection date" : "Payment date"),
                                        value: app.formatDay(actual))
@@ -69,6 +88,7 @@ struct ChequeDetailView: View {
                     Text(app.tr(record.remindersEnabled ? "Reminders enabled" : "Reminders disabled"))
                         .font(.subheadline)
                     if record.remindersEnabled {
+                        reminderCoverage
                         if record.reminderOffsets == nil {
                             Text(app.tr("Uses default reminders"))
                                 .font(.caption).foregroundStyle(.secondary)
@@ -131,7 +151,7 @@ struct ChequeDetailView: View {
             .environment(\.locale, app.preferences.language.locale)
             .environment(\.layoutDirection, sheetDirection)
         }
-        .sheet(isPresented: $showingSettlement) { settlementSheet }
+        .sheet(isPresented: $showingSettlement) { ChequeSettlementSheet(record: record) }
         .sheet(item: $preview) { item in
             NavigationStack {
                 ScrollView {
@@ -153,8 +173,6 @@ struct ChequeDetailView: View {
         }
         .confirmationDialog(app.tr("Change status"), isPresented: $showingStatus, titleVisibility: .visible) {
             Button(app.tr(record.direction == .incoming ? "Mark collected" : "Mark paid")) {
-                settlementDate = (record.actualDate ?? .today).date()
-                settlementError = nil
                 showingSettlement = true
             }
             Button(app.tr("Mark pending")) { transition(to: .pending) }
@@ -166,63 +184,70 @@ struct ChequeDetailView: View {
             Button(app.tr("Delete"), role: .destructive) { deleteRecord() }
             Button(app.tr("Cancel"), role: .cancel) { }
         } message: {
-            Text(app.tr("Its details, images and scheduled reminders will be removed."))
+            Text(app.tr("The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos."))
         }
-        .alert(app.tr("Could not save changes"), isPresented: Binding(
-            get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }
-        )) {
-            Button(app.tr("OK"), role: .cancel) { errorMessage = nil }
-        } message: { Text(errorMessage ?? "") }
     }
 
     private var sheetDirection: LayoutDirection {
         app.preferences.language == .arabic ? .rightToLeft : .leftToRight
     }
 
-    private var settlementSheet: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    DatePicker(app.tr(record.direction == .incoming ? "Collection date" : "Payment date"),
-                               selection: $settlementDate, in: ...Date(), displayedComponents: .date)
-                } footer: {
-                    Text(app.tr("Choose the date the cheque actually cleared."))
-                }
-            }
-            .environment(\.locale, app.preferences.language.locale)
-            .environment(\.layoutDirection, sheetDirection)
-            .navigationTitle(app.tr(record.direction == .incoming ? "Mark collected" : "Mark paid"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(app.tr("Cancel")) { showingSettlement = false }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(app.tr("Save")) {
-                        let day = LocalDay(date: settlementDate)
-                        guard day <= .today else {
-                            settlementError = app.tr("The actual payment or collection date cannot be in the future.")
-                            return
-                        }
-                        if transition(to: .settled, actualDate: day) {
-                            showingSettlement = false
-                        } else {
-                            settlementError = errorMessage
-                            errorMessage = nil
-                        }
-                    }
-                    .fontWeight(.semibold)
-                }
+    @ViewBuilder
+    private var reminderCoverage: some View {
+        if record.snapshot.isOutstanding {
+            if app.notifications.isDenied {
+                Text(app.tr("Notifications are off")).font(.subheadline).foregroundStyle(.orange)
+                NavigationLink(app.tr("Open reminder settings")) { SettingsView() }
+            } else if let next = app.notifications.nextReminderDate(for: record.id) {
+                LabeledContent(app.tr("Next scheduled reminder"), value: app.formatTimestamp(next))
+                    .font(.subheadline).accessibilityIdentifier("nextScheduledReminder")
+            } else if (record.reminderOffsets ?? app.preferences.reminderOffsets).isEmpty {
+                Text(app.tr(app.preferences.dailySummary ? "Daily summary is enabled; no individual reminder days are selected." : "No reminder days selected"))
+                    .font(.subheadline).foregroundStyle(.orange)
+                NavigationLink(app.tr("Open reminder settings")) { SettingsView() }
+            } else if !hasFutureReminderTime {
+                Text(app.tr("All individual reminder times for this cheque have passed."))
+                    .font(.subheadline).foregroundStyle(.secondary)
+                NavigationLink(app.tr("Open reminder settings")) { SettingsView() }
+            } else {
+                Text(app.tr("No upcoming reminder is currently scheduled for this cheque."))
+                    .font(.subheadline).foregroundStyle(.orange)
+                NavigationLink(app.tr("Open reminder settings")) { SettingsView() }
             }
         }
-        .environment(\.locale, app.preferences.language.locale)
-        .environment(\.layoutDirection, sheetDirection)
-        .presentationDetents([.medium])
-        .alert(app.tr("Could not save changes"), isPresented: Binding(
-            get: { settlementError != nil }, set: { if !$0 { settlementError = nil } }
-        )) {
-            Button(app.tr("OK"), role: .cancel) { settlementError = nil }
-        } message: { Text(settlementError ?? "") }
+    }
+
+    private var hasFutureReminderTime: Bool {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .current
+        let now = Date()
+        let hour = record.reminderHour ?? app.preferences.reminderHour
+        let minute = record.reminderMinute ?? app.preferences.reminderMinute
+        return (record.reminderOffsets ?? app.preferences.reminderOffsets).contains { offset in
+            guard (0...365).contains(offset) else { return false }
+            var parts = calendar.dateComponents([.year, .month, .day], from: record.dueDate.adding(days: -offset).date(calendar: calendar))
+            parts.hour = hour; parts.minute = minute
+            return calendar.date(from: parts).map { $0 > now } ?? false
+        }
+    }
+
+    private var deletedCheque: some View {
+        VStack(spacing: 18) {
+            Image(systemName: "trash").font(.largeTitle).foregroundStyle(.secondary)
+            Text(app.tr("Cheque moved to Recently Deleted")).font(.title3.weight(.semibold))
+                .multilineTextAlignment(.center)
+            Text(app.tr("You can restore its details and photos for 30 days."))
+                .foregroundStyle(.secondary).multilineTextAlignment(.center)
+            Button(app.tr("Undo deletion")) { restoreRecord() }
+                .buttonStyle(.borderedProminent)
+                .disabled(!record.canRestore(asOf: Date()))
+                .accessibilityIdentifier("undoChequeDeletion")
+            Button(app.tr("Done")) { dismiss() }.buttonStyle(.bordered)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity).padding(24)
+        .background(Theme.background)
+        .navigationTitle(app.tr("Recently Deleted"))
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private func detailLine(_ title: String, _ value: String) -> some View {
@@ -267,6 +292,7 @@ struct ChequeDetailView: View {
 
     @discardableResult
     private func transition(to status: ChequeStatus, actualDate: LocalDay? = nil) -> Bool {
+        guard record.deletedAt == nil else { return false }
         record.status = status
         record.actualDate = status == .settled ? actualDate : nil
         do {
@@ -281,14 +307,25 @@ struct ChequeDetailView: View {
     }
 
     private func deleteRecord() {
-        context.delete(record)
+        record.deletedAt = Date()
         do {
             try context.save()
             app.didMutate()
-            dismiss()
         } catch {
             context.rollback()
             errorMessage = app.tr("The cheque could not be deleted. Please try again.")
+        }
+    }
+
+    private func restoreRecord() {
+        guard record.canRestore(asOf: Date()) else { return }
+        record.deletedAt = nil
+        do {
+            try context.save()
+            app.didMutate()
+        } catch {
+            context.rollback()
+            errorMessage = app.tr("The cheque could not be restored. Please try again.")
         }
     }
 }

@@ -11,43 +11,63 @@ struct ChequeListView: View {
     @State private var filter: ChequeFilter
     @State private var showingFilters = false
     @State private var showingEditor = false
+    @State private var showingReport = false
+    @State private var reportCheques: [ChequeSnapshot] = []
+    @State private var settlingRecord: ChequeRecord?
+    @State private var scopeOverride: ChequeListScope?
     @State private var errorMessage: String?
     @State private var editMode: EditMode = .inactive
 
     init(initialFilter: ChequeFilter = .init()) {
-        _filter = State(initialValue: initialFilter)
-    }
-
-    private var visible: [ChequeRecord] {
-        let byID = Dictionary(uniqueKeysWithValues: records.map { ($0.id, $0) })
-        return ChequeListEngine.filteredAndSorted(
-            cheques: records.map(\.snapshot), filter: filter,
-            sort: app.preferences.sort, ascending: app.preferences.ascending, today: app.today
-        ).compactMap { byID[$0.id] }
+        var initial = initialFilter
+        initial.outstandingOnly = false
+        _filter = State(initialValue: initial)
+        _scopeOverride = State(initialValue: initialFilter.outstandingOnly || initialFilter.dateScope != .all ? .outstanding : nil)
     }
 
     private var hasFilters: Bool {
         filter.direction != nil || filter.status != nil || filter.bank != nil ||
-        filter.from != nil || filter.through != nil || filter.dateScope != .all || filter.outstandingOnly
+        filter.from != nil || filter.through != nil || filter.dateScope != .all
     }
 
-    private var shownTotal: Int64? {
-        var total: Int64 = 0
-        for record in visible {
-            let result = total.addingReportingOverflow(record.amountMinorUnits)
-            if result.overflow { return nil }
-            total = result.partialValue
-        }
-        return total
+    private var scope: ChequeListScope { scopeOverride ?? app.preferences.chequeListScope }
+
+    private var effectiveFilter: ChequeFilter {
+        var value = filter
+        value.outstandingOnly = scope == .outstanding
+        return value
     }
 
     var body: some View {
+        // Derive the filtered/sorted rows and exact totals once for this update.
+        // Deleted records remain in the global rank slots only, for safe restoration.
+        let activeRecords = records.filter { $0.deletedAt == nil }
+        let result = ChequeListResult(cheques: activeRecords.map(\.snapshot), filter: effectiveFilter,
+                                      sort: app.preferences.sort, ascending: app.preferences.ascending, today: app.today)
+        let byID = Dictionary(activeRecords.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        let visible = result.cheques.compactMap { byID[$0.id] }
         VStack(spacing: 0) {
-            directionPicker
+            scopePicker
                 .padding(.horizontal, 16)
                 .padding(.top, 6)
-                .padding(.bottom, 12)
-            shownSummary
+                .padding(.bottom, 10)
+            directionPicker
+                .padding(.horizontal, 16)
+                .padding(.bottom, 10)
+            periodChips
+                .padding(.bottom, 10)
+            if hasFilters || !filter.query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                Button(app.tr("Clear search and filters")) {
+                    filter = .init()
+                    editMode = .inactive
+                }
+                .font(.footnote)
+                .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 8)
+                .accessibilityIdentifier("clearActiveFilters")
+            }
+            shownSummary(result)
                 .padding(.horizontal, 16)
                 .padding(.bottom, 12)
             if !visible.isEmpty {
@@ -60,7 +80,7 @@ struct ChequeListView: View {
                     .background(Theme.surface)
                 Divider()
             }
-            listContent
+            listContent(visible, activeCount: activeRecords.count)
         }
             .background(Theme.background)
             .environment(\.editMode, $editMode)
@@ -74,7 +94,12 @@ struct ChequeListView: View {
                     showingFilters: $showingFilters,
                     showingEditor: $showingEditor,
                     editMode: $editMode,
-                    clearFilters: { filter = .init(query: filter.query) }
+                    clearFilters: { filter = .init(query: filter.query) },
+                    showReport: {
+                        reportCheques = result.cheques
+                        showingReport = true
+                    },
+                    canReport: !visible.isEmpty
                 )
             }
             .onChange(of: app.preferences.sort) { _, sort in
@@ -92,7 +117,21 @@ struct ChequeListView: View {
             }
             .sheet(isPresented: $showingFilters) {
                 NavigationStack {
-                    ChequeFilterSheet(initial: filter, banks: records.map(\.bank)) { filter = $0 }
+                    ChequeFilterSheet(initial: effectiveFilter, banks: activeRecords.map(\.bank)) { selected in
+                        setScope(selected.outstandingOnly ? .outstanding : .allRecords)
+                        filter = selected
+                        filter.outstandingOnly = false
+                    }
+                        .environment(\.locale, app.preferences.language.locale)
+                        .environment(\.layoutDirection, sheetDirection)
+                }
+                .environment(\.locale, app.preferences.language.locale)
+                .environment(\.layoutDirection, sheetDirection)
+            }
+            .sheet(item: $settlingRecord) { ChequeSettlementSheet(record: $0) }
+            .sheet(isPresented: $showingReport) {
+                NavigationStack {
+                    ChequeReportSheet(cheques: reportCheques)
                         .environment(\.locale, app.preferences.language.locale)
                         .environment(\.layoutDirection, sheetDirection)
                 }
@@ -110,23 +149,30 @@ struct ChequeListView: View {
         app.preferences.language == .arabic ? .rightToLeft : .leftToRight
     }
 
-    private var listContent: some View {
+    private func listContent(_ visible: [ChequeRecord], activeCount: Int) -> some View {
         List {
             ForEach(Array(visible.enumerated()), id: \.element.id) { index, record in
-                NavigationLink {
-                    ChequeDetailView(record: record)
-                } label: {
-                    ChequeRowView(record: record)
-                }
+                rowLink(record)
                 .listRowSeparator(.visible)
                 .listRowSeparatorTint(Color.primary.opacity(0.1))
                 .listRowBackground(index.isMultiple(of: 2) ? Theme.surface : Theme.accent.opacity(0.035))
                 .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                 .moveDisabled(app.preferences.sort != .manual)
+                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                    if record.snapshot.isOutstanding {
+                        Button {
+                            settlingRecord = record
+                        } label: {
+                            Label(app.tr(record.direction == .incoming ? "Mark collected" : "Mark paid"), systemImage: "checkmark.circle")
+                        }
+                        .tint(Theme.accent)
+                        .accessibilityIdentifier("settleCheque-\(record.id.uuidString)")
+                    }
+                }
             }
             .onMove { source, destination in
                 guard app.preferences.sort == .manual else { return }
-                move(from: source, to: destination)
+                move(visibleIDs: visible.map(\.id), from: source, to: destination)
             }
         }
         // Recreate the native list after a direction change without resetting the filter state.
@@ -138,22 +184,97 @@ struct ChequeListView: View {
             if visible.isEmpty {
                 VStack(spacing: 18) {
                     EmptyStateView(
-                        title: app.tr(records.isEmpty ? "No cheques yet" : "No matching cheques"),
-                        message: app.tr(records.isEmpty ? "Add your first cheque to keep its details and reminders together." : "Try another search or clear the filters."),
-                        systemImage: records.isEmpty ? "doc.text" : "line.3.horizontal.decrease.circle"
+                        title: app.tr(activeCount == 0 ? "No cheques yet" : "No matching cheques"),
+                        message: app.tr(activeCount == 0 ? "Add your first cheque to keep its details and reminders together." : "Try another search or clear the filters."),
+                        systemImage: activeCount == 0 ? "doc.text" : "line.3.horizontal.decrease.circle"
                     )
-                    if records.isEmpty {
+                    if activeCount == 0 {
                         Button(app.tr("Add cheque")) { showingEditor = true }
                             .buttonStyle(.borderedProminent)
                             .disabled(app.currencyConflict || app.currencyCode.isEmpty)
                     } else {
                         Button(app.tr("Clear search and filters")) { filter = .init() }
                             .buttonStyle(.bordered)
+                        if scope == .outstanding {
+                            Button(app.tr("Show all and history")) {
+                                filter = .init()
+                                setScope(.allRecords)
+                            }
+                            .buttonStyle(.bordered)
+                            .accessibilityIdentifier("showHistoryFromEmptyList")
+                        }
                     }
                 }
                 .padding(28)
             }
         }
+    }
+
+    @ViewBuilder
+    private func rowLink(_ record: ChequeRecord) -> some View {
+        if record.snapshot.isOutstanding {
+            detailLink(record)
+                .accessibilityAction(named: Text(app.tr(record.direction == .incoming ? "Mark collected" : "Mark paid"))) {
+                    settlingRecord = record
+                }
+        } else { detailLink(record) }
+    }
+
+    private func detailLink(_ record: ChequeRecord) -> some View {
+        NavigationLink { ChequeDetailView(record: record) } label: { ChequeRowView(record: record) }
+    }
+
+    private func setScope(_ value: ChequeListScope) {
+        scopeOverride = value
+        app.preferences.chequeListScope = value
+        editMode = .inactive
+    }
+
+    @ViewBuilder
+    private var scopePicker: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            scopeSelection.pickerStyle(.menu)
+        } else { scopeSelection.pickerStyle(.segmented) }
+    }
+
+    private var scopeSelection: some View {
+        Picker(app.tr("Show cheques"), selection: Binding(get: { scope }, set: { setScope($0) })) {
+            Text(app.tr("Outstanding")).tag(ChequeListScope.outstanding)
+            Text(app.tr("All and history")).tag(ChequeListScope.allRecords)
+        }
+        .accessibilityIdentifier("chequeHistoryScopePicker")
+    }
+
+    private var periodChips: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                periodChip("All dates", scope: .all)
+                periodChip("Today", scope: .today)
+                periodChip("Next 7 days", scope: .upcoming)
+                periodChip("Overdue", scope: .overdue)
+            }
+            .padding(.horizontal, 16)
+        }
+        .accessibilityIdentifier("chequePeriodChips")
+    }
+
+    private func periodChip(_ title: String, scope dateScope: ChequeDateScope) -> some View {
+        let selected = filter.dateScope == dateScope
+        return Button {
+            filter.dateScope = dateScope
+            if dateScope != .all { setScope(.outstanding) }
+            editMode = .inactive
+        } label: {
+            Text(app.tr(title)).font(.footnote.weight(.medium))
+                .padding(.horizontal, 12).padding(.vertical, 8)
+                .foregroundStyle(selected ? Color.white : Color.primary)
+                .background(selected ? Theme.accent : Theme.surface, in: Capsule())
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(selected ? .isSelected : [])
+        .accessibilityIdentifier("period-\(dateScope.rawValue)")
     }
 
     @ViewBuilder
@@ -174,57 +295,65 @@ struct ChequeListView: View {
         .accessibilityIdentifier("listDirectionPicker")
     }
 
-    private var shownSummary: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(alignment: .firstTextBaseline, spacing: 12) {
-                shownCount
-                Spacer(minLength: 8)
-                shownAmount.fixedSize(horizontal: true, vertical: false)
-            }
-            VStack(alignment: .leading, spacing: 8) {
-                shownCount
-                shownAmount.fixedSize(horizontal: false, vertical: true)
+    private func shownSummary(_ result: ChequeListResult) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            shownCount(result.cheques.count)
+            if !app.currencyConflict && !app.currencyCode.isEmpty && !result.totals.hasCurrencyConflict {
+                ViewThatFits(in: .horizontal) {
+                    HStack(alignment: .top, spacing: 16) {
+                        directionTotal(.incoming, totals: result.totals)
+                            .fixedSize(horizontal: true, vertical: false)
+                        Spacer(minLength: 8)
+                        directionTotal(.outgoing, totals: result.totals)
+                            .fixedSize(horizontal: true, vertical: false)
+                    }
+                    VStack(alignment: .leading, spacing: 6) {
+                        directionTotal(.incoming, totals: result.totals)
+                        directionTotal(.outgoing, totals: result.totals)
+                    }
+                }
             }
         }
     }
 
-    private var shownCount: some View {
+    private func shownCount(_ count: Int) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 5) {
-            Text(visible.count, format: .number).font(.subheadline.weight(.semibold)).monospacedDigit()
+            Text(count, format: .number).font(.subheadline.weight(.semibold)).monospacedDigit()
             Text(app.tr("Shown cheques")).font(.footnote).foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)
         .accessibilityIdentifier("shownChequeCount")
     }
 
-    @ViewBuilder
-    private var shownAmount: some View {
-        if !app.currencyConflict && !app.currencyCode.isEmpty {
-            VStack(alignment: .trailing, spacing: 3) {
-                Text(app.tr("Shown amount")).font(.footnote).foregroundStyle(.secondary)
-                if let total = shownTotal {
-                    AmountText(minorUnits: total).font(.subheadline.weight(.semibold))
-                        .environment(\.layoutDirection, .leftToRight)
-                } else {
-                    Text(app.tr("Total exceeds supported range")).font(.footnote).foregroundStyle(.orange)
-                }
+    private func directionTotal(_ direction: ChequeDirection, totals: ChequeDirectionTotals) -> some View {
+        let total = direction == .incoming ? totals.incomingMinorUnits : totals.outgoingMinorUnits
+        return VStack(alignment: .leading, spacing: 3) {
+            Text(app.tr(direction == .incoming ? "Shown incoming" : "Shown outgoing"))
+                .font(.footnote).foregroundStyle(.secondary)
+            if let total {
+                AmountText(minorUnits: total).font(.subheadline.weight(.semibold))
+                    .environment(\.layoutDirection, .leftToRight)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else {
+                Text(app.tr("Total exceeds supported range")).font(.footnote).foregroundStyle(.orange)
             }
-            .accessibilityElement(children: .combine)
-            .accessibilityIdentifier("shownChequeAmount")
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier(direction == .incoming ? "shownIncomingAmount" : "shownOutgoingAmount")
     }
 
-    private func move(from source: IndexSet, to destination: Int) {
+    private func move(visibleIDs: [UUID], from source: IndexSet, to destination: Int) {
         let global = ChequeListEngine.filteredAndSorted(
             cheques: records.map(\.snapshot), filter: .init(), sort: .manual,
             ascending: app.preferences.ascending
         ).map(\.id)
         let ordered = ChequeListEngine.reorderedIDs(
-            all: global, visible: visible.map(\.id), from: source, to: destination
+            all: global, visible: visibleIDs, from: source, to: destination
         )
         let byID = Dictionary(uniqueKeysWithValues: records.map { ($0.id, $0) })
         for (index, id) in ordered.enumerated() {
-            byID[id]?.manualRank = app.preferences.ascending ? Int64(index) : Int64(ordered.count - index)
+            let rank = app.preferences.ascending ? Int64(index) : Int64(ordered.count - index)
+            if byID[id]?.manualRank != rank { byID[id]?.manualRank = rank }
         }
         do {
             try context.save()
@@ -247,6 +376,8 @@ private struct ChequeListToolbar: ToolbarContent {
     @Binding var showingEditor: Bool
     @Binding var editMode: EditMode
     let clearFilters: () -> Void
+    let showReport: () -> Void
+    let canReport: Bool
 
     @ToolbarContentBuilder
     var body: some ToolbarContent {
@@ -265,6 +396,12 @@ private struct ChequeListToolbar: ToolbarContent {
 
     private var optionsMenu: some View {
         Menu {
+            Button(action: showReport) {
+                Label(app.tr("Export this list as PDF"), systemImage: "square.and.arrow.up")
+            }
+            .disabled(!canReport)
+            .accessibilityIdentifier("exportVisibleChequeReport")
+            Divider()
             Button {
                 editMode = .inactive
                 showingFilters = true

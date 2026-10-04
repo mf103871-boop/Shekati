@@ -50,8 +50,8 @@ struct ChequeRowView: View {
 
     private var title: String { record.party.isEmpty ? app.tr("Cheque") : record.party }
     private var amount: String {
-        CurrencyMath.format(minorUnits: record.amountMinorUnits, currencyCode: record.currencyCode,
-                            locale: app.preferences.language.locale)
+        DisplayFormatting.amount(minorUnits: record.amountMinorUnits, currencyCode: record.currencyCode,
+                                 locale: app.preferences.language.locale)
     }
     private var directionLabel: String { app.tr(record.direction == .incoming ? "Incoming" : "Outgoing") }
     private var overdue: Bool { record.snapshot.isOverdue(on: app.today) }
@@ -79,19 +79,17 @@ struct ChequeRowView: View {
         case .cancelled: return "xmark.circle"
         }
     }
-    private var shortDueDate: String {
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.locale = app.preferences.language.locale
-        formatter.dateFormat = "dd/MM/yyyy"
-        return formatter.string(from: record.dueDate.date())
+    private var shortDueDate: String { app.formatDay(record.dueDate) }
+    private var relativeDate: String? {
+        record.snapshot.isOutstanding ? app.relativeDueDate(record.dueDate) : nil
     }
 
     private var accessibleDescription: String {
         let number = record.number.isEmpty ? app.tr("Not provided") : record.number
         let numberDescription = "\(app.tr("No.")) \(number)"
         let dueDescription = "\(app.tr("Due date")) \(app.formatDay(record.dueDate))"
-        return [title, numberDescription, amount, dueDescription, statusLabel, directionLabel]
+        return [title, numberDescription, amount, dueDescription, relativeDate ?? "", statusLabel, directionLabel]
+            .filter { !$0.isEmpty }
             .joined(separator: ", ")
     }
 
@@ -180,6 +178,11 @@ struct ChequeRowView: View {
                 .monospacedDigit()
                 .foregroundStyle(overdue ? Theme.red : .secondary)
                 .environment(\.layoutDirection, .leftToRight)
+            if let relativeDate {
+                Text(relativeDate).font(.caption)
+                    .foregroundStyle(overdue ? Theme.red : .secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
     private var stackedFields: some View {
@@ -196,6 +199,11 @@ struct ChequeRowView: View {
                 .foregroundStyle(overdue ? Theme.red : .secondary)
                 .environment(\.layoutDirection, .leftToRight)
                 .fixedSize(horizontal: false, vertical: true)
+            if let relativeDate {
+                Text(relativeDate).font(.subheadline)
+                    .foregroundStyle(overdue ? Theme.red : .secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
     private var statusText: some View {

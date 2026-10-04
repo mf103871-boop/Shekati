@@ -26,7 +26,18 @@ struct ChequeReminderInput: Sendable {
     }
 }
 
-enum ReminderKind: String, Sendable { case cheque, dailySummary, replenishment }
+enum ReminderKind: String, Sendable { case cheque, snooze, dailySummary, replenishment }
+
+struct ReminderContext: Sendable {
+    var inputs: [ChequeReminderInput]
+    var settings: ReminderSettings
+}
+
+struct SnoozedCheque: Codable, Equatable, Sendable {
+    var chequeID: UUID
+    var fireDate: Date
+    var dueDateISO: String
+}
 
 struct PlannedReminder: Identifiable, Equatable, Sendable {
     var id: String
@@ -55,7 +66,8 @@ enum ReminderPlanner {
     static let summaryHorizonDays = 30
 
     static func makePlan(inputs: [ChequeReminderInput], settings: ReminderSettings,
-                         now: Date = Date(), calendar suppliedCalendar: Calendar = .current) -> ReminderPlan {
+                         now: Date = Date(), calendar suppliedCalendar: Calendar = .current,
+                         snoozed: [SnoozedCheque] = []) -> ReminderPlan {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = suppliedCalendar.timeZone
         let active = inputs.filter { $0.enabled && $0.snapshot.isOutstanding }
@@ -69,30 +81,21 @@ enum ReminderPlanner {
             var chequeSettings = settings
             chequeSettings.hour = input.hour ?? settings.hour
             chequeSettings.minute = input.minute ?? settings.minute
+            var sharedBody: String?
             for offset in Set(input.offsets ?? settings.offsets).filter({ (0...365).contains($0) }).sorted() {
                 let day = cheque.dueDate.adding(days: -offset, calendar: calendar)
                 guard let fireDate = fireDate(on: day, settings: chequeSettings, calendar: calendar), fireDate > now else { continue }
-                let number = cheque.number.isEmpty ? "" : " #\(cheque.number)"
-                let title: String
-                if arabic { title = offset == 0 ? "شيك يستحق اليوم" : "اقترب استحقاق شيك" }
-                else { title = offset == 0 ? "Cheque due today" : "Cheque due soon" }
-                let body: String
-                if settings.hideDetails {
-                    body = arabic ? "افتح شيكاتي لمراجعة تفاصيل التذكير." : "Open Shekati to review your reminder."
-                } else {
-                    let amount = CurrencyMath.format(minorUnits: cheque.amountMinorUnits,
-                                                     currencyCode: cheque.currencyCode,
-                                                     locale: Locale(identifier: arabic ? "ar" : "en"))
-                    let direction = arabic ? (cheque.direction == .incoming ? "وارد" : "صادر")
-                        : (cheque.direction == .incoming ? "Incoming" : "Outgoing")
-                    let suffix = cheque.party.isEmpty ? "" : " · \(cheque.party)"
-                    let due = cheque.dueDate.iso
-                    body = arabic ? "شيك \(direction)\(number) · \(amount)\(suffix) · الاستحقاق \(due)"
-                        : "\(direction) cheque\(number) · \(amount)\(suffix) · Due \(due)"
-                }
+                if sharedBody == nil { sharedBody = chequeContent(cheque: cheque, settings: settings, offset: offset).body }
                 candidates.append(PlannedReminder(id: "\(identifierPrefix)cheque.\(cheque.id.uuidString).\(offset)",
-                                                  fireDate: fireDate, title: title, body: body,
+                                                  fireDate: fireDate, title: chequeTitle(offset: offset, languageCode: settings.languageCode), body: sharedBody!,
                                                   chequeID: cheque.id, kind: .cheque))
+            }
+            if let snooze = snoozed.filter({ $0.chequeID == cheque.id && $0.dueDateISO == cheque.dueDate.iso && $0.fireDate > now })
+                .max(by: { $0.fireDate < $1.fireDate }) {
+                if sharedBody == nil { sharedBody = chequeContent(cheque: cheque, settings: settings, offset: nil).body }
+                candidates.append(PlannedReminder(id: "\(identifierPrefix)snooze.\(cheque.id.uuidString)",
+                                                  fireDate: snooze.fireDate, title: chequeTitle(offset: nil, languageCode: settings.languageCode), body: sharedBody!,
+                                                  chequeID: cheque.id, kind: .snooze))
             }
         }
 
@@ -145,6 +148,30 @@ enum ReminderPlanner {
         }
     }
 
+    static func chequeContent(cheque: ChequeSnapshot, settings: ReminderSettings, offset: Int?) -> (title: String, body: String) {
+        let arabic = settings.languageCode.hasPrefix("ar")
+        let title = chequeTitle(offset: offset, languageCode: settings.languageCode)
+        if settings.hideDetails {
+            return (title, arabic ? "افتح شيكاتي لمراجعة تفاصيل التذكير." : "Open Shekati to review your reminder.")
+        }
+        let number = cheque.number.isEmpty ? "" : " #\(cheque.number)"
+        let amount = CurrencyMath.format(minorUnits: cheque.amountMinorUnits, currencyCode: cheque.currencyCode,
+                                         locale: Locale(identifier: arabic ? "ar" : "en"))
+        let direction = arabic ? (cheque.direction == .incoming ? "وارد" : "صادر")
+            : (cheque.direction == .incoming ? "Incoming" : "Outgoing")
+        let suffix = cheque.party.isEmpty ? "" : " · \(cheque.party)"
+        let body = arabic ? "شيك \(direction)\(number) · \(amount)\(suffix) · الاستحقاق \(cheque.dueDate.iso)"
+            : "\(direction) cheque\(number) · \(amount)\(suffix) · Due \(cheque.dueDate.iso)"
+        return (title, body)
+    }
+
+    private static func chequeTitle(offset: Int?, languageCode: String) -> String {
+        let arabic = languageCode.hasPrefix("ar")
+        if offset == nil { return arabic ? "تذكير بشيك" : "Cheque reminder" }
+        if arabic { return offset == 0 ? "شيك يستحق اليوم" : "اقترب استحقاق شيك" }
+        return offset == 0 ? "Cheque due today" : "Cheque due soon"
+    }
+
     /// An add call succeeding is insufficient: the system's accepted queue must cover the intended dates.
     static func confirm(plan: ReminderPlan, acceptedDates: [String: Date]) -> ReminderAcceptanceReport {
         var count = 0
@@ -164,7 +191,7 @@ enum ReminderPlanner {
                       repeatedTimePolicy: .first, direction: .forward)
     }
 
-    private static func makeSummary(day: LocalDay, date: Date, inputs: [ChequeReminderInput],
+    static func makeSummary(day: LocalDay, date: Date, inputs: [ChequeReminderInput],
                                     settings: ReminderSettings, calendar: Calendar) -> PlannedReminder? {
         let due = inputs.filter { $0.snapshot.dueDate == day }.count
         let overdue = inputs.filter { $0.snapshot.dueDate < day }.count

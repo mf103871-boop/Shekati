@@ -26,6 +26,9 @@ final class ChequeRecord {
     var reminderOffsets: [Int]?
     var reminderHour: Int?
     var reminderMinute: Int?
+    // Optional addition keeps the existing entity and populated stores compatible.
+    // A tombstone is synced; removing it explicitly restores the original record.
+    var deletedAt: Date? = nil
 
     init(snapshot: ChequeSnapshot, frontImageData: Data? = nil,
          backImageData: Data? = nil, remindersEnabled: Bool = true,
@@ -63,6 +66,14 @@ final class ChequeRecord {
     var issueDate: LocalDay? {
         get { issueDateISO.flatMap(LocalDay.init(iso:)) }
         set { issueDateISO = newValue?.iso }
+    }
+
+    var isActive: Bool { deletedAt == nil }
+
+    func canRestore(asOf date: Date = Date()) -> Bool {
+        guard let deletedAt else { return false }
+        let elapsed = date.timeIntervalSince(deletedAt)
+        return elapsed >= 0 && elapsed < 30 * 24 * 60 * 60
     }
 
     var snapshot: ChequeSnapshot {

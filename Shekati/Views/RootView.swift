@@ -14,10 +14,10 @@ struct RootView: View {
     @State private var dayRevision = 0
 
     private var reminderSignature: String {
-        let values = records.sorted { $0.id.uuidString < $1.id.uuidString }.map {
+        let values = records.filter { $0.deletedAt == nil }.map {
             "\($0.id)|\($0.directionRaw)|\($0.statusRaw)|\($0.dueDateISO)|\($0.amountMinorUnits)|\($0.currencyCode)|\($0.number)|\($0.party)|\($0.remindersEnabled)|\(String(describing: $0.reminderOffsets))|\(String(describing: $0.reminderHour)):\(String(describing: $0.reminderMinute))"
         }
-        return "\(app.revision)|\(dayRevision)|\(app.preferences.notificationSignature)|" + values.joined(separator: ";")
+        return "\(dayRevision)|\(app.notifications.authorizationStatus.rawValue)|\(app.preferences.notificationSignature)|" + values.joined(separator: ";")
     }
 
     private var currencySignature: String {
@@ -66,15 +66,10 @@ struct RootView: View {
         }
         .task(id: currencySignature) { reconcileCurrency() }
         .task(id: reminderSignature) {
-            let inputs = records.map { ChequeReminderInput(snapshot: $0.snapshot,
+            let inputs = records.filter { $0.deletedAt == nil }.map { ChequeReminderInput(snapshot: $0.snapshot,
                                       enabled: $0.remindersEnabled, offsets: $0.reminderOffsets,
                                       hour: $0.reminderHour, minute: $0.reminderMinute) }
-            let prefs = app.preferences
-            let settings = ReminderSettings(offsets: prefs.reminderOffsets, hour: prefs.reminderHour,
-                                            minute: prefs.reminderMinute, dailySummary: prefs.dailySummary,
-                                            hideDetails: prefs.hideNotificationDetails,
-                                            languageCode: prefs.language.rawValue)
-            await app.notifications.reschedule(inputs: inputs, settings: settings)
+            await app.notifications.reschedule(inputs: inputs, settings: app.reminderSettings)
         }
         .task {
             app.lock.synchronize(enabled: app.preferences.appLockEnabled)

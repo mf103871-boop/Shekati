@@ -114,6 +114,12 @@ struct SettingsView: View {
                     .font(.footnote).foregroundStyle(.secondary)
                 Button(app.tr("Check iCloud status")) { Task { await app.sync.refresh() } }
             }
+            Section(app.tr("Your data")) {
+                NavigationLink(app.tr("Data and backup")) { DataToolsView() }
+                    .accessibilityIdentifier("dataTools")
+                NavigationLink(app.tr("Recently deleted")) { TrashView() }
+                    .accessibilityIdentifier("recentlyDeleted")
+            }
             Section(app.tr("About")) {
                 LabeledContent(app.tr("Version"), value: version)
                 Text(app.tr("All features included. One purchase. No subscription."))
@@ -158,7 +164,7 @@ struct SettingsView: View {
         })
     }
     private func requestPermissionIfNeeded() async {
-        guard records.contains(where: { $0.remindersEnabled && $0.snapshot.isOutstanding }) else { return }
+        guard records.contains(where: { $0.isActive && $0.remindersEnabled && $0.snapshot.isOutstanding }) else { return }
         await app.notifications.refreshAuthorization()
         if app.notifications.authorizationStatus == .notDetermined {
             await app.notifications.requestPermission()
@@ -222,7 +228,7 @@ private struct PrivacyPolicyView: View {
                 policy("Camera and text recognition", "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service.")
                 policy("Notifications", "Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts.")
                 policy("App lock", "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode.")
-                policy("Your control", "You can edit or delete individual cheques. Deletions also sync to iCloud. iCloud sync is not a separate backup of deleted records.")
+                policy("Your control", "Deleted cheques can be restored for 30 days. Permanent deletion also syncs to iCloud. You can create an independent password-protected backup. CSV and PDF exports contain readable details; share them only when you choose.")
                 policy("Analytics", "Shekati includes no advertising or third-party analytics SDK. Apple may provide store and crash diagnostics according to your Apple settings.")
             }.padding(24)
         }.navigationTitle(app.tr("Privacy policy")).background(Theme.background)

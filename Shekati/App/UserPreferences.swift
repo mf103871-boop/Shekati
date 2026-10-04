@@ -14,6 +14,11 @@ enum AppAppearance: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
+enum ChequeListScope: String, CaseIterable, Identifiable {
+    case outstanding, allRecords
+    var id: String { rawValue }
+}
+
 @MainActor @Observable
 final class UserPreferences {
     private let defaults: UserDefaults
@@ -21,6 +26,7 @@ final class UserPreferences {
     var appearance: AppAppearance { didSet { defaults.set(appearance.rawValue, forKey: "appearance") } }
     var sort: ChequeSort { didSet { defaults.set(sort.rawValue, forKey: "sort") } }
     var ascending: Bool { didSet { defaults.set(ascending, forKey: "ascending") } }
+    var chequeListScope: ChequeListScope { didSet { defaults.set(chequeListScope.rawValue, forKey: "chequeListScope") } }
     var reminderOffsets: [Int] { didSet { defaults.set(reminderOffsets, forKey: "reminderOffsets") } }
     var reminderHour: Int { didSet { defaults.set(reminderHour, forKey: "reminderHour") } }
     var reminderMinute: Int { didSet { defaults.set(reminderMinute, forKey: "reminderMinute") } }
@@ -35,6 +41,7 @@ final class UserPreferences {
         appearance = defaults.string(forKey: "appearance").flatMap(AppAppearance.init(rawValue:)) ?? .system
         sort = defaults.string(forKey: "sort").flatMap(ChequeSort.init(rawValue:)) ?? .dueDate
         ascending = (defaults.object(forKey: "ascending") as? Bool) ?? true
+        chequeListScope = defaults.string(forKey: "chequeListScope").flatMap(ChequeListScope.init(rawValue:)) ?? .outstanding
         reminderOffsets = defaults.array(forKey: "reminderOffsets") as? [Int] ?? [3, 1, 0]
         reminderHour = (defaults.object(forKey: "reminderHour") as? Int) ?? 9
         reminderMinute = (defaults.object(forKey: "reminderMinute") as? Int) ?? 0

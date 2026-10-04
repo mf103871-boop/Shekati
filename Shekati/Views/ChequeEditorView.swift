@@ -49,6 +49,19 @@ struct ChequeEditorView: View {
     @State private var extraDetailsExpanded: Bool
     @State private var imagesExpanded: Bool
     @State private var reminderOptionsExpanded: Bool
+    @State private var keepEntryDetails = false
+    @State private var dueDateNeedsReview = false
+    @State private var amountError: String?
+    @State private var dateError: String?
+    @State private var savedNotice = false
+    @State private var isResetting = false
+    @State private var showingDuplicate = false
+    @State private var duplicateIDs: [UUID] = []
+    @State private var pendingAddAnother = false
+    @State private var duplicatePreview: ChequeRecord?
+    @FocusState private var focusedField: EntryField?
+
+    private enum EntryField: Hashable { case amount, party, number, bank }
 
     init(record: ChequeRecord? = nil) {
         self.record = record
@@ -114,39 +127,22 @@ struct ChequeEditorView: View {
 
     var body: some View {
         Form {
-            Section {
-                Picker(app.tr("Direction"), selection: $direction) {
-                    Text(app.tr("Incoming")).tag(ChequeDirection.incoming)
-                    Text(app.tr("Outgoing")).tag(ChequeDirection.outgoing)
+            if savedNotice {
+                Section {
+                    Label(app.tr("Cheque saved. Enter the next cheque."), systemImage: "checkmark.circle.fill")
+                        .font(.subheadline).foregroundStyle(Theme.accent)
+                        .accessibilityIdentifier("consecutiveChequeSaved")
                 }
-                .pickerStyle(.segmented)
-                .accessibilityIdentifier("chequeDirectionPicker")
-                HStack {
-                    Text(app.tr("Amount"))
-                    Spacer(minLength: 12)
-                    TextField(app.tr("Required"), text: $amountText)
-                        .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                        .accessibilityLabel(app.tr("Amount"))
-                        .accessibilityIdentifier("amountField")
-                    Text(currency).font(.subheadline.weight(.medium)).foregroundStyle(.secondary)
-                }
-                DatePicker(app.tr("Due date"), selection: $dueDate, displayedComponents: .date)
-                    .accessibilityIdentifier("dueDateField")
-                TextField(app.tr(direction == .incoming ? "Payer (optional)" : "Payee (optional)"), text: $party)
-                    .accessibilityIdentifier("partyField")
-                TextField(app.tr("Cheque number (optional)"), text: $number)
-                    .textInputAutocapitalization(.never).autocorrectionDisabled()
-                    .accessibilityIdentifier("chequeNumberField")
-            } header: {
-                Text(app.tr("Cheque details"))
-            } footer: {
-                Text(app.tr("Enter a positive amount and the date written on the cheque."))
             }
+            essentialFields
 
             Section {
                 DisclosureGroup(isExpanded: $extraDetailsExpanded) {
                     TextField(app.tr("Bank (optional)"), text: $bank)
+                        .focused($focusedField, equals: .bank)
+                        .submitLabel(.done).onSubmit { focusedField = nil }
                         .accessibilityIdentifier("bankField")
+                    if focusedField == .bank { previousSuggestions(for: .bank) }
                     TextField(app.tr("Branch (optional)"), text: $branch)
                     TextField(app.tr("Account reference (optional)"), text: $accountReference)
                         .textInputAutocapitalization(.never).autocorrectionDisabled()
@@ -233,6 +229,15 @@ struct ChequeEditorView: View {
                 Text(app.tr("Reminders stop when a cheque is settled or cancelled. Past reminder times are skipped."))
             }
 
+            if record == nil {
+                Section {
+                    Toggle(app.tr("Keep type, bank and name for the next cheque"), isOn: $keepEntryDetails)
+                        .accessibilityIdentifier("keepEntryDetails")
+                } footer: {
+                    Text(app.tr("The next cheque always needs its own amount, number, photos and a reviewed due date."))
+                }
+            }
+
         }
         // Recreate the native Form container when language direction changes.
         .id(app.preferences.language.rawValue)
@@ -256,9 +261,29 @@ struct ChequeEditorView: View {
                 .accessibilityLabel(app.tr("Save cheque"))
                 .accessibilityIdentifier("saveCheque")
             }
+            if record == nil {
+                ToolbarItem(placement: .bottomBar) {
+                    Button(app.tr("Save and add another")) {
+                        focusedField = nil
+                        Task { await save(addAnother: true) }
+                    }
+                    .fontWeight(.semibold).disabled(busy)
+                    .accessibilityIdentifier("saveAndAddAnother")
+                }
+            }
+            ToolbarItemGroup(placement: .keyboard) {
+                if focusedField == .amount {
+                    Button(app.tr("Next")) { focusedField = .party }
+                } else if focusedField == .party {
+                    Button(app.tr("Next")) { focusedField = .number }
+                }
+                Spacer()
+                Button(app.tr("Done")) { focusedField = nil }
+            }
         }
         .interactiveDismissDisabled(hasEdited || busy)
-        .onChange(of: formSignature) { _, _ in hasEdited = true }
+        .onChange(of: formSignature) { _, _ in if !isResetting { hasEdited = true } }
+        .onChange(of: amountText) { _, _ in amountError = nil }
         .onChange(of: frontPhoto) { _, item in
             Task { await loadPhoto(item, side: .front) }
         }
@@ -286,6 +311,28 @@ struct ChequeEditorView: View {
                 .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
             }
         }
+        .sheet(item: $duplicatePreview) { existing in
+            NavigationStack {
+                ChequeDetailView(record: existing)
+                    .toolbar { ToolbarItem(placement: .topBarLeading) {
+                        Button(app.tr("Done")) { duplicatePreview = nil }
+                            .accessibilityIdentifier("closeDuplicatePreview")
+                    } }
+            }
+                .environment(\.locale, app.preferences.language.locale)
+                .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+        }
+        .alert(app.tr("Similar cheque found"), isPresented: $showingDuplicate) {
+            Button(app.tr("View existing cheque")) {
+                duplicatePreview = records.first { duplicateIDs.contains($0.id) && $0.deletedAt == nil }
+            }
+            Button(app.tr("Save anyway")) {
+                Task { await save(addAnother: pendingAddAnother, allowDuplicate: true) }
+            }
+            Button(app.tr("Keep editing"), role: .cancel) { }
+        } message: {
+            Text(app.tr("A similar cheque is already saved. Review it before adding another."))
+        }
         .alert(app.tr("Camera unavailable"), isPresented: $showingCameraHelp) {
             if AVCaptureDevice.authorizationStatus(for: .video) == .denied {
                 Button(app.tr("Open Settings")) {
@@ -305,6 +352,83 @@ struct ChequeEditorView: View {
             Button(app.tr("Discard"), role: .destructive) { dismiss() }
             Button(app.tr("Keep editing"), role: .cancel) { }
         } message: { Text(app.tr("Your unsaved changes will be lost.")) }
+    }
+
+    private var essentialFields: some View {
+    Section {
+        Picker(app.tr("Direction"), selection: $direction) {
+            Text(app.tr("Incoming")).tag(ChequeDirection.incoming)
+            Text(app.tr("Outgoing")).tag(ChequeDirection.outgoing)
+        }
+        .pickerStyle(.segmented)
+        .accessibilityIdentifier("chequeDirectionPicker")
+        HStack {
+            Text(app.tr("Amount"))
+            Spacer(minLength: 12)
+            TextField(app.tr("Required"), text: $amountText)
+                .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                .focused($focusedField, equals: .amount)
+                .accessibilityLabel(app.tr("Amount"))
+                .accessibilityIdentifier("amountField")
+            Text(currency).font(.subheadline.weight(.medium)).foregroundStyle(.secondary)
+        }
+        if let amountError {
+            Text(amountError).font(.footnote).foregroundStyle(Theme.red)
+                .accessibilityIdentifier("amountValidationError")
+        }
+        DatePicker(app.tr("Due date"), selection: $dueDate, displayedComponents: .date)
+            .accessibilityIdentifier("dueDateField")
+            .onChange(of: dueDate) { _, _ in
+                if !isResetting { dueDateNeedsReview = false; dateError = nil }
+            }
+        Text(app.formatDay(LocalDay(date: dueDate)) + " · " + app.relativeDueDate(LocalDay(date: dueDate)))
+            .font(.footnote).foregroundStyle(.secondary)
+        if dueDateNeedsReview {
+            Button(app.tr("Confirm this due date")) { dueDateNeedsReview = false; dateError = nil }
+                .accessibilityIdentifier("confirmNextChequeDate")
+            Text(app.tr("Review the due date for the next cheque."))
+                .font(.footnote).foregroundStyle(.orange)
+        }
+        if let dateError { Text(dateError).font(.footnote).foregroundStyle(Theme.red) }
+        TextField(app.tr(direction == .incoming ? "Payer (optional)" : "Payee (optional)"), text: $party)
+            .focused($focusedField, equals: .party)
+            .submitLabel(.next).onSubmit { focusedField = .number }
+            .accessibilityIdentifier("partyField")
+        if focusedField == .party { previousSuggestions(for: .party) }
+        TextField(app.tr("Cheque number (optional)"), text: $number)
+            .textInputAutocapitalization(.never).autocorrectionDisabled()
+            .focused($focusedField, equals: .number)
+            .submitLabel(.done).onSubmit { focusedField = nil }
+            .accessibilityIdentifier("chequeNumberField")
+    } header: {
+        Text(app.tr("Cheque details"))
+    } footer: {
+        Text(app.tr("Enter a positive amount and the date written on the cheque."))
+    }
+    }
+
+    @ViewBuilder
+    private func previousSuggestions(for field: EntryField) -> some View {
+        let active = records.filter { $0.deletedAt == nil }.sorted { $0.createdAt > $1.createdAt }
+        let values = field == .bank ? active.map(\.bank) : active.map(\.party)
+        let query = field == .bank ? bank : party
+        let choices = ChequeEntryAssistance.suggestions(from: values, matching: query)
+        if !choices.isEmpty {
+            VStack(alignment: .leading, spacing: 7) {
+                Text(app.tr("Used before")).font(.caption).foregroundStyle(.secondary)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(choices, id: \.self) { choice in
+                            Button(choice) {
+                                if field == .bank { bank = choice } else { party = choice }
+                            }
+                            .buttonStyle(.bordered).font(.subheadline)
+                            .accessibilityIdentifier(field == .bank ? "bankSuggestion" : "partySuggestion")
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @ViewBuilder
@@ -426,8 +550,12 @@ struct ChequeEditorView: View {
     }
 
     @MainActor
-    private func save() async {
+    private func save(addAnother: Bool = false, allowDuplicate: Bool = false) async {
         guard !isSaving else { return }
+        guard record?.deletedAt == nil else {
+            errorMessage = app.tr("Restore this cheque before changing it.")
+            return
+        }
         guard record != nil || (!app.currencyConflict && !app.currencyCode.isEmpty) else {
             errorMessage = app.tr("Resolve the currency setting before adding a cheque.")
             return
@@ -437,21 +565,29 @@ struct ChequeEditorView: View {
             return
         }
         guard let amount = CurrencyMath.parseMinorUnits(amountText, currencyCode: currency), amount > 0 else {
-            errorMessage = app.tr("Enter a valid amount greater than zero, using the currency’s decimal places.")
+            amountError = app.tr("Enter a valid amount greater than zero, using the currency’s decimal places.")
+            focusedField = .amount
+            return
+        }
+        if dueDateNeedsReview {
+            dateError = app.tr("Review the due date for the next cheque.")
+            focusedField = nil
             return
         }
         let due = LocalDay(date: dueDate)
         let issued = includeIssueDate ? LocalDay(date: issueDate) : nil
         if let issued, issued > due {
-            errorMessage = app.tr("The issue date must be on or before the due date.")
+            dateError = app.tr("The issue date must be on or before the due date.")
+            return
+        }
+        if let issued, let actual = record?.actualDate, issued > actual {
+            dateError = app.tr("The actual payment or collection date cannot be before the issue date.")
             return
         }
         if remindersEnabled && !useDefaultReminders && selectedOffsets.isEmpty {
             errorMessage = app.tr("Choose at least one reminder day, or turn reminders off.")
             return
         }
-        isSaving = true
-        defer { isSaving = false }
         let maxRank = records.map(\.manualRank).max() ?? -1
         let nextRank = maxRank.addingReportingOverflow(1)
         let snapshot = ChequeSnapshot(
@@ -467,6 +603,20 @@ struct ChequeEditorView: View {
             createdAt: record?.createdAt ?? Date(),
             manualRank: record?.manualRank ?? (nextRank.overflow ? Int64.max : nextRank.partialValue)
         )
+        if !allowDuplicate {
+            let matches = ChequeEntryAssistance.probableDuplicateIDs(
+                for: snapshot, among: records.filter { $0.deletedAt == nil }.map(\.snapshot), excluding: record?.id
+            )
+            if !matches.isEmpty {
+                duplicateIDs = matches
+                pendingAddAnother = addAnother
+                focusedField = nil
+                showingDuplicate = true
+                return
+            }
+        }
+        isSaving = true
+        defer { isSaving = false }
         let offsets = useDefaultReminders ? nil : selectedOffsets
         let clock = Calendar(identifier: .gregorian)
         let hour = useDefaultReminders ? nil : clock.component(.hour, from: effectiveReminderTime)
@@ -500,7 +650,28 @@ struct ChequeEditorView: View {
                 app.didMutate()
             }
         }
-        dismiss()
+        if addAnother && record == nil { resetForNextEntry() } else { dismiss() }
+    }
+
+    private func resetForNextEntry() {
+        isResetting = true
+        if !keepEntryDetails { direction = .incoming; bank = ""; party = "" }
+        amountText = ""; number = ""; branch = ""; accountReference = ""; notes = ""
+        dueDate = Date(); issueDate = Date(); includeIssueDate = false
+        frontImageData = nil; backImageData = nil; frontPhoto = nil; backPhoto = nil
+        remindersEnabled = true; useDefaultReminders = true
+        before3 = true; before1 = true; onDueDate = true; customOffsets = []; customDays = ""
+        reminderTime = nil; imagesExpanded = false; reminderOptionsExpanded = false
+        extraDetailsExpanded = keepEntryDetails && !bank.isEmpty
+        amountError = nil; dateError = nil; errorMessage = nil
+        duplicateIDs = []; pendingAddAnother = false
+        dueDateNeedsReview = true; savedNotice = true; hasEdited = false
+        focusedField = .amount
+        DispatchQueue.main.async {
+            isResetting = false
+            dueDateNeedsReview = true
+            hasEdited = false
+        }
     }
 
     private func reminderTitle(_ offset: Int) -> String {
