@@ -16,15 +16,19 @@ enum ReminderRequestPolicy {
                       String(settings.hour), String(settings.minute), String(settings.dailySummary),
                       String(settings.hideDetails), String(settings.offsets.count)] +
             settings.offsets.sorted().map(String.init)
-        let records = inputs.sorted { $0.snapshot.id.uuidString < $1.snapshot.id.uuidString }.map { input in
+        let ordered = inputs.sorted { $0.snapshot.id.uuidString < $1.snapshot.id.uuidString }
+        let records: [[String]] = ordered.map { input -> [String] in
             let cheque = input.snapshot
             let offsets = input.offsets ?? []
-            return [cheque.id.uuidString, cheque.direction.rawValue, cheque.status.rawValue,
-                    cheque.dueDate.iso, String(cheque.amountMinorUnits), cheque.currencyCode,
-                    cheque.number, cheque.party, String(input.enabled),
-                    input.offsets == nil ? "default" : "custom", String(offsets.count),
-                    input.hour.map(String.init) ?? "default", input.minute.map(String.init) ?? "default"] +
-                offsets.sorted().map(String.init)
+            var fields: [String] = [cheque.id.uuidString, cheque.direction.rawValue, cheque.status.rawValue,
+                                   cheque.dueDate.iso, String(cheque.amountMinorUnits), cheque.currencyCode,
+                                   cheque.number, cheque.party, String(input.enabled)]
+            fields.append(input.offsets == nil ? "default" : "custom")
+            fields.append(String(offsets.count))
+            fields.append(input.hour.map { String($0) } ?? "default")
+            fields.append(input.minute.map { String($0) } ?? "default")
+            fields.append(contentsOf: offsets.sorted().map { String($0) })
+            return fields
         }
         return [global] + records
     }
