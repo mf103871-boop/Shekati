@@ -53,7 +53,7 @@ struct SettingsView: View {
                 let extra = preferences.reminderOffsets.filter { ![3, 1, 0].contains($0) }.sorted()
                 ForEach(extra, id: \.self) { offset in
                     HStack {
-                        Text("\(offset) " + app.tr("days before"))
+                        Text(Localization.daysBefore(offset, language: app.preferences.language))
                         Spacer()
                         Button(role: .destructive) { preferences.reminderOffsets.removeAll { $0 == offset } } label: {
                             Image(systemName: "minus.circle")
@@ -135,7 +135,6 @@ struct SettingsView: View {
             .alert(app.tr("Device lock unavailable"), isPresented: $lockUnavailable) {
                 Button(app.tr("OK"), role: .cancel) {}
             } message: { Text(app.tr("Set a device passcode in iPhone Settings before enabling app lock.")) }
-            .onChange(of: preferences.notificationSignature) { _, _ in app.didMutate() }
             .onChange(of: preferences.reminderOffsets) { _, offsets in
                 if !offsets.isEmpty { Task { await requestPermissionIfNeeded() } }
             }

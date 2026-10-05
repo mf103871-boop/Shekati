@@ -60,6 +60,16 @@ final class ReminderEnhancementTests: XCTestCase {
         }
     }
 
+    func testRefreshKeyTracksManualRefreshRequests() {
+        let cheque = input(day: LocalDay(iso: "2026-10-05")!)
+        let baseline = refreshKey([cheque])
+        let refreshed = ReminderRequestPolicy.refreshKey(inputs: [cheque], settings: settings, dayRevision: 0,
+                                                         authorizationStatus: 2, mutationRevision: 1)
+        XCTAssertNotEqual(baseline, refreshed)
+        XCTAssertEqual(baseline, ReminderRequestPolicy.refreshKey(inputs: [cheque], settings: settings, dayRevision: 0,
+                                                                  authorizationStatus: 2, mutationRevision: 0))
+    }
+
     func testRefreshKeyTracksFinancialFieldsAndIndividualReminderOverrides() {
         let cheque = input(day: LocalDay(iso: "2026-10-05")!)
         let baseline = refreshKey([cheque])

@@ -5,10 +5,10 @@ import SwiftData
 struct TrashView: View {
     @Environment(AppState.self) private var app
     @Environment(\.modelContext) private var context
-    @Query(sort: \ChequeRecord.deletedAt, order: .reverse) private var records: [ChequeRecord]
+    @Query(filter: #Predicate<ChequeRecord> { $0.deletedAt != nil },
+           sort: \ChequeRecord.deletedAt, order: .reverse) private var deleted: [ChequeRecord]
     @State private var deleting: ChequeRecord?
     @State private var errorMessage: String?
-    private var deleted: [ChequeRecord] { records.filter { !$0.isActive } }
 
     var body: some View {
         List {

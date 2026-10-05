@@ -53,8 +53,10 @@ final class EnhancementUITests: XCTestCase {
 
     func testDuplicateWarningLetsUserReviewExistingChequeOrExplicitlySaveAnother() {
         let app = launch()
-        addCheque(app, amount: "125.50", party: "Duplicate demo", number: "000301", bank: "Demo Duplicate Bank")
+        addCheque(app, amount: "125.50", party: "Duplicate demo", number: "000301", bank: "Demo Duplicate Bank",
+                  outgoing: true)
         openEditor(app)
+        app.segmentedControls["chequeDirectionPicker"].buttons["Outgoing"].tap()
         fill(app, amount: "125.50", party: "Duplicate demo", number: "000301")
         setBank("Demo Duplicate Bank", in: app)
         hideKeyboard(in: app)
@@ -75,7 +77,7 @@ final class EnhancementUITests: XCTestCase {
         waitForEditorDismissal(app)
         app.tabBars.buttons["Cheques"].tap()
         XCTAssertTrue(row(number: "000301", in: app).waitForExistence(timeout: 5))
-        assertShownCount(2, in: app)
+        assertRowCount(2, number: "000301", in: app)
         capture(app, "Build 6 English explicitly confirmed repeated cheque")
     }
 
@@ -106,17 +108,17 @@ final class EnhancementUITests: XCTestCase {
         capture(app, "Build 6 English actual payment date saved")
         goBack(in: app)
         XCTAssertTrue(app.navigationBars["Cheques"].waitForExistence(timeout: 5))
-        waitForAbsence(row(number: "000401", in: app))
-        app.segmentedControls["chequeHistoryScopePicker"].buttons["All and history"].tap()
-        let history = row(number: "000401", in: app)
-        XCTAssertTrue(history.waitForExistence(timeout: 5))
-        XCTAssertTrue(history.label.contains("Paid"))
-        capture(app, "Build 6 English paid cheque retained in history")
+        let paid = row(number: "000401", in: app)
+        XCTAssertTrue(paid.waitForExistence(timeout: 5))
+        let markedPaid = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label CONTAINS %@", "Paid"), object: paid)
+        XCTAssertEqual(XCTWaiter.wait(for: [markedPaid], timeout: 5), .completed,
+                       "A paid outgoing cheque stays in the sheet and reads as paid")
+        capture(app, "English paid cheque kept in the outgoing sheet")
     }
 
     func testSoftDeletionCanBeUndoneAndLaterRestoredFromSettingsTrash() {
         let app = launch()
-        addCheque(app, amount: "150.00", party: "Restore demo", number: "000501")
+        addCheque(app, amount: "150.00", party: "Restore demo", number: "000501", outgoing: true)
         app.tabBars.buttons["Cheques"].tap()
         let cheque = row(number: "000501", in: app)
         XCTAssertTrue(cheque.waitForExistence(timeout: 5))
@@ -134,7 +136,7 @@ final class EnhancementUITests: XCTestCase {
         deleteCurrentCheque(in: app)
         app.buttons["Done"].tap()
         XCTAssertTrue(app.navigationBars["Cheques"].waitForExistence(timeout: 5))
-        waitForAbsence(cheque)
+        waitForRowRemoval(cheque, in: app)
         app.tabBars.buttons["Settings"].tap()
         let trash = app.descendants(matching: .any).matching(identifier: "recentlyDeleted").firstMatch
         reveal(trash, in: app)
@@ -192,12 +194,19 @@ final class EnhancementUITests: XCTestCase {
         app.buttons["saveCheque"].tap()
         waitForEditorDismissal(app)
         app.tabBars.buttons["الشيكات"].tap()
+        XCTAssertTrue(app.staticTexts["لا توجد شيكات صادرة"].waitForExistence(timeout: 5))
+        XCTAssertFalse(row(number: "000601", in: app).exists, "The cheques sheet lists outgoing cheques only")
+        app.tabBars.buttons["الرئيسية"].tap()
+        let dueToday = app.descendants(matching: .any).matching(identifier: "dashboardScope-today").firstMatch
+        XCTAssertTrue(dueToday.waitForExistence(timeout: 5))
+        reveal(dueToday, in: app)
+        dueToday.tap()
         XCTAssertTrue(row(number: "000601", in: app).waitForExistence(timeout: 5))
         app.buttons["period-today"].tap()
         XCTAssertTrue(row(number: "000601", in: app).exists)
         XCTAssertTrue(app.buttons["clearActiveFilters"].exists)
         app.segmentedControls["listDirectionPicker"].buttons["صادر"].tap()
-        waitForAbsence(row(number: "000601", in: app))
+        waitForRowRemoval(row(number: "000601", in: app), in: app)
         app.buttons["clearActiveFilters"].tap()
         XCTAssertTrue(row(number: "000601", in: app).waitForExistence(timeout: 5))
         capture(app, "Build 6 Arabic outstanding cheques and quick periods")
@@ -329,19 +338,15 @@ final class EnhancementUITests: XCTestCase {
         XCTAssertEqual(element.value as? String, expected)
     }
 
-    private func assertShownCount(_ expected: Int, in app: XCUIApplication) {
-        let count = app.descendants(matching: .any).matching(identifier: "shownChequeCount").firstMatch
-        XCTAssertTrue(count.waitForExistence(timeout: 5))
+    /// Counts distinct cheque rows, so an accessibility wrapper sharing a row's identifier is not a second record.
+    private func assertRowCount(_ expected: Int, number: String, in app: XCUIApplication) {
+        let query = rows(number: number, in: app)
         let matchesCount = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-            let ascii = String(count.label.map { character in
-                character.wholeNumberValue.map { Character(String($0)) } ?? character
-            })
-            let numbers = ascii.components(separatedBy: CharacterSet.decimalDigits.inverted).compactMap(Int.init)
-            return numbers == [expected]
-        }, object: count)
+            Set(query.allElementsBoundByIndex.map(\.identifier)).count == expected
+        }, object: nil)
         let result = XCTWaiter.wait(for: [matchesCount], timeout: 5)
-        if result != .completed { captureDiagnostics(app, "Build 6 displayed cheque count did not match \(expected)") }
-        XCTAssertEqual(result, .completed, "The visible list summary must show \(expected) records; accessibility wrapper nodes are not records")
+        if result != .completed { captureDiagnostics(app, "Sheet row count did not match \(expected)") }
+        XCTAssertEqual(result, .completed, "The outgoing sheet must list \(expected) cheques numbered \(number)")
     }
 
     private func rows(number: String, in app: XCUIApplication) -> XCUIElementQuery {
@@ -355,7 +360,20 @@ final class EnhancementUITests: XCTestCase {
 
     private func waitForAbsence(_ element: XCUIElement) {
         let expectation = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: element)
-        XCTAssertEqual(XCTWaiter.wait(for: [expectation], timeout: 10), .completed)
+        let result = XCTWaiter.wait(for: [expectation], timeout: 10)
+        if result != .completed { captureDiagnostics(XCUIApplication(), "Build 6 element still present after wait") }
+        XCTAssertEqual(result, .completed, "Expected \(element) to disappear")
+    }
+
+    /// A row that left the filtered list while its detail screen was pushed can linger in the
+    /// accessibility tree as an invisible, non-hittable collection cell until the next layout pass.
+    /// The screen is static during this wait, so treat a non-hittable row as removed; the lists in
+    /// these flows hold one or two rows, so a merely scrolled-away row cannot satisfy this.
+    private func waitForRowRemoval(_ row: XCUIElement, in app: XCUIApplication) {
+        let removed = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in !row.exists || !row.isHittable }, object: row)
+        let result = XCTWaiter.wait(for: [removed], timeout: 10)
+        if result != .completed { captureDiagnostics(app, "Build 6 cheque row still visible after removal") }
+        XCTAssertEqual(result, .completed, "Expected the cheque row to leave the visible list")
     }
 
     private func deleteCurrentCheque(in app: XCUIApplication) {

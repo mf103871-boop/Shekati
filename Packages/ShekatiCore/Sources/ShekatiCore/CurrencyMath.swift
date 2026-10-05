@@ -66,6 +66,16 @@ public enum CurrencyMath {
         return (minorUnits < 0 ? "-" : "") + magnitude
     }
 
+    /// Spreadsheet-style text: Western digits, no symbol or grouping, no trailing fractional zeros.
+    /// `950.000` JOD becomes `950` and `731.250` becomes `731.25`.
+    public static func plain(minorUnits: Int64, currencyCode: String) -> String {
+        var text = editable(minorUnits: minorUnits, currencyCode: currencyCode)
+        guard text.contains(".") else { return text }
+        while text.hasSuffix("0") { text.removeLast() }
+        if text.hasSuffix(".") { text.removeLast() }
+        return text
+    }
+
     private static func powerOfTen(_ exponent: Int) -> Decimal {
         (0..<exponent).reduce(Decimal(1)) { value, _ in value * 10 }
     }

@@ -15,6 +15,9 @@ xcuserdata/
 .build/
 .swiftpm/
 Shekati.xcodeproj/
+Tools/SchemaBootstrap/ShekatiSchemaBootstrap.xcodeproj/
+*.cer
+*.pem
 .env
 .env.*
 !*.example

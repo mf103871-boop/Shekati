@@ -29,6 +29,7 @@ final class ShekatiUITests: XCTestCase {
         XCTAssertTrue(app.textFields["chequeNumberField"].isHittable)
         XCTAssertFalse(app.textFields["bankField"].exists)
         captureScreenshot(app, name: "English quick cheque entry")
+        app.segmentedControls["chequeDirectionPicker"].buttons["Outgoing"].tap()
         amount.tap()
         amount.typeText("125.50")
         let number = app.textFields["chequeNumberField"]
@@ -58,6 +59,9 @@ final class ShekatiUITests: XCTestCase {
         XCTAssertTrue(row.waitForExistence(timeout: 5))
         XCTAssertTrue(row.label.contains("CI cheque"))
         XCTAssertTrue(row.label.contains("000182"))
+        XCTAssertTrue(app.staticTexts["outgoingTableTitle"].exists)
+        XCTAssertLessThan(app.staticTexts["Value"].frame.midX, app.windows.firstMatch.frame.midX,
+                          "English sheet starts with the value column on the left")
         reveal(row, in: app)
         captureScreenshot(app, name: "English compact cheque table")
         row.tap()
@@ -72,7 +76,7 @@ final class ShekatiUITests: XCTestCase {
         app.buttons["Cancel"].tap()
     }
 
-    func testArabicQuickEntryAndDirectionFiltersKeepChequesSeparate() {
+    func testArabicQuickEntryAndOutgoingSheetListsOnlyOutgoingCheques() {
         let app = launch(arabic: true)
         app.buttons["addCheque"].tap()
         XCTAssertTrue(app.textFields["amountField"].waitForExistence(timeout: 5))
@@ -99,20 +103,19 @@ final class ShekatiUITests: XCTestCase {
         app.tabBars.buttons["الشيكات"].tap()
         let incoming = chequeRow(in: app, named: "Demo incoming")
         let outgoing = chequeRow(in: app, named: "Demo outgoing")
-        XCTAssertTrue(incoming.waitForExistence(timeout: 5))
         XCTAssertTrue(outgoing.waitForExistence(timeout: 5))
-        captureScreenshot(app, name: "Arabic compact cheque table — mixed numbers")
-        let directions = app.segmentedControls["listDirectionPicker"]
-        XCTAssertTrue(directions.exists)
-        directions.buttons["صادر"].tap()
-        XCTAssertTrue(outgoing.waitForExistence(timeout: 5))
-        XCTAssertFalse(incoming.exists, "Outgoing filter must hide incoming cheques")
-        directions.buttons["وارد"].tap()
-        XCTAssertTrue(incoming.waitForExistence(timeout: 5))
-        XCTAssertFalse(outgoing.exists, "Incoming filter must hide outgoing cheques")
-        directions.buttons["الكل"].tap()
-        XCTAssertTrue(incoming.waitForExistence(timeout: 5))
-        XCTAssertTrue(outgoing.waitForExistence(timeout: 5))
+        XCTAssertTrue(outgoing.label.contains("000102"))
+        XCTAssertTrue(outgoing.label.contains("760"), "The sheet shows plain amounts such as 760")
+        XCTAssertFalse(incoming.exists, "The cheques sheet lists outgoing cheques only")
+        let title = app.staticTexts["outgoingTableTitle"]
+        XCTAssertTrue(title.exists)
+        XCTAssertEqual(title.label, "شيكات مؤجلة")
+        let window = app.windows.firstMatch.frame
+        XCTAssertGreaterThan(app.staticTexts["القيمة"].frame.midX, window.midX,
+                             "Arabic sheet starts with the value column on the right")
+        XCTAssertLessThan(app.staticTexts["رصيد"].frame.midX, window.midX,
+                          "Arabic sheet ends with the balance column on the left")
+        captureScreenshot(app, name: "Arabic outgoing cheques sheet")
     }
 
     private func fillQuickCheque(in app: XCUIApplication, amount: String, party: String, number: String) {
@@ -143,6 +146,7 @@ final class ShekatiUITests: XCTestCase {
         let app = launch(largeText: true)
         app.buttons["addCheque"].tap()
         XCTAssertTrue(app.textFields["amountField"].waitForExistence(timeout: 5))
+        app.segmentedControls["chequeDirectionPicker"].buttons["Outgoing"].tap()
         fillQuickCheque(in: app, amount: "9999.50", party: "Large text demo", number: "000999")
         app.buttons["saveCheque"].tap()
         allowNotificationPromptIfPresented()
@@ -153,10 +157,11 @@ final class ShekatiUITests: XCTestCase {
         XCTAssertTrue(row.label.contains("000999"))
         reveal(row, in: app)
         let window = app.windows.firstMatch.frame
-        XCTAssertGreaterThan(row.frame.height, 160,
-                             "Accessibility text size should use the labelled, stacked row layout")
-        XCTAssertGreaterThanOrEqual(row.frame.minX, window.minX)
-        XCTAssertLessThanOrEqual(row.frame.maxX, window.maxX)
+        XCTAssertTrue(row.isHittable)
+        // The five sheet columns span the screen width; allow sub-point pixel rounding.
+        XCTAssertGreaterThanOrEqual(row.frame.minX, window.minX - 1)
+        XCTAssertLessThanOrEqual(row.frame.maxX, window.maxX + 1)
+        XCTAssertGreaterThan(row.frame.width, window.width * 0.9)
         captureScreenshot(app, name: "Accessibility large text cheque table")
         row.tap()
         XCTAssertTrue(app.navigationBars["Cheque"].waitForExistence(timeout: 5))

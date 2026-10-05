@@ -45,7 +45,7 @@ struct ChequeBackupEntry: Codable, Equatable, Sendable {
     @MainActor func makeRecord() -> ChequeRecord {
         let record = ChequeRecord(snapshot: snapshot, frontImageData: frontImageData,
                                   backImageData: backImageData, remindersEnabled: remindersEnabled,
-                                  reminderOffsets: reminderOffsets, reminderHour: reminderHour,
+                                  reminderOffsets: reminderOffsets.map(deduplicatedOffsets), reminderHour: reminderHour,
                                   reminderMinute: reminderMinute)
         record.deletedAt = deletedAt
         return record
@@ -56,10 +56,18 @@ struct ChequeBackupEntry: Codable, Equatable, Sendable {
         record.frontImageData = frontImageData
         record.backImageData = backImageData
         record.remindersEnabled = remindersEnabled
-        record.reminderOffsets = reminderOffsets
+        record.reminderOffsets = reminderOffsets.map(deduplicatedOffsets)
         record.reminderHour = reminderHour
         record.reminderMinute = reminderMinute
         record.deletedAt = deletedAt
+    }
+
+    /// Backups may repeat reminder days. Previews and restores compare this form with stored
+    /// records, so a record that was normalised on restore is reported as unchanged.
+    var normalized: ChequeBackupEntry {
+        var copy = self
+        copy.reminderOffsets = reminderOffsets.map(deduplicatedOffsets)
+        return copy
     }
 }
 
@@ -82,10 +90,17 @@ struct GlobalReminderBackup: Codable, Equatable, Sendable {
         self.dailySummary = dailySummary; self.hideDetails = hideDetails
     }
     @MainActor func apply(to preferences: UserPreferences) {
-        preferences.reminderOffsets = offsets
+        preferences.reminderOffsets = deduplicatedOffsets(offsets)
         preferences.reminderHour = hour; preferences.reminderMinute = minute
         preferences.dailySummary = dailySummary; preferences.hideNotificationDetails = hideDetails
     }
+}
+
+/// Keeps the first occurrence of each reminder day. Backups may carry repeated values, which would
+/// otherwise appear as duplicate rows in Settings and in cheque details.
+private func deduplicatedOffsets(_ offsets: [Int]) -> [Int] {
+    var seen: Set<Int> = []
+    return offsets.filter { seen.insert($0).inserted }
 }
 
 struct ChequeBackupPayload: Codable, Sendable {
@@ -145,7 +160,7 @@ enum ChequeTransferService {
         let byID = Dictionary(existing.map { ($0.id, ChequeBackupEntry(record: $0)) }, uniquingKeysWith: { first, _ in first })
         var preview = BackupRestorePreview(newCount: 0, identicalCount: 0, changedCount: 0,
                                           recentlyDeletedCount: payload.records.filter { $0.deletedAt != nil }.count)
-        for entry in payload.records {
+        for entry in payload.records.map(\.normalized) {
             if let old = byID[entry.snapshot.id] {
                 if old == entry { preview.identicalCount += 1 }
                 else { preview.changedCount += 1 }
@@ -164,7 +179,7 @@ enum ChequeTransferService {
         let byID = Dictionary(existing.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         var changed = 0
         do {
-            for entry in payload.records {
+            for entry in payload.records.map(\.normalized) {
                 if let record = byID[entry.snapshot.id] {
                     if replaceExisting && ChequeBackupEntry(record: record) != entry {
                         entry.apply(to: record); changed += 1

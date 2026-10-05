@@ -13,6 +13,10 @@ struct ChequeEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @Query private var records: [ChequeRecord]
     let record: ChequeRecord?
+    /// Captured at init. save() confirms the record still exists through the identifier before
+    /// touching the model, and body reads the currency from here rather than from the record.
+    private let recordID: UUID?
+    private let recordCurrency: String?
 
     @State private var direction: ChequeDirection
     @State private var amountText: String
@@ -44,7 +48,7 @@ struct ChequeEditorView: View {
     @State private var isReadingImage = false
     @State private var isSaving = false
     @State private var errorMessage: String?
-    @State private var cleanFormSignature: [String]?
+    @State private var cleanForm: FormSnapshot?
     @State private var showingDiscard = false
     @State private var extraDetailsExpanded: Bool
     @State private var imagesExpanded: Bool
@@ -65,6 +69,8 @@ struct ChequeEditorView: View {
 
     init(record: ChequeRecord? = nil) {
         self.record = record
+        recordID = record?.id
+        recordCurrency = record?.currencyCode
         let offsets = record?.reminderOffsets ?? [3, 1, 0]
         _direction = State(initialValue: record?.direction ?? .incoming)
         _amountText = State(initialValue: record.map {
@@ -102,7 +108,7 @@ struct ChequeEditorView: View {
         }
     }
 
-    private var currency: String { record?.currencyCode ?? app.currencyCode }
+    private var currency: String { recordCurrency ?? app.currencyCode }
     private var busy: Bool { isSaving || isReadingImage }
     private var effectiveReminderTime: Date {
         reminderTime ?? Self.clockDate(hour: app.preferences.reminderHour, minute: app.preferences.reminderMinute)
@@ -115,19 +121,27 @@ struct ChequeEditorView: View {
         return offsets.sorted(by: >)
     }
 
-    private var formSignature: [String] {
-        [direction.rawValue, amountText, LocalDay(date: dueDate).iso,
-         String(includeIssueDate), LocalDay(date: issueDate).iso,
-         number, bank, branch, party, accountReference, notes,
-         String(remindersEnabled), String(useDefaultReminders),
-         selectedOffsets.map(String.init).joined(separator: ","),
-         reminderTime.map { String($0.timeIntervalSince1970) } ?? "defaultTime",
-         String(frontImageData?.hashValue ?? 0), String(backImageData?.hashValue ?? 0)]
+    /// Images compare byte for byte. `Data.hashValue` covers only the length and a short prefix,
+    /// so two photos of equal size from the same JPEG pipeline could read as unchanged.
+    private struct FormSnapshot: Equatable {
+        var fields: [String]
+        var frontImage: Data?
+        var backImage: Data?
+    }
+
+    private var formSnapshot: FormSnapshot {
+        FormSnapshot(fields: [direction.rawValue, amountText, LocalDay(date: dueDate).iso,
+                              String(includeIssueDate), LocalDay(date: issueDate).iso,
+                              number, bank, branch, party, accountReference, notes,
+                              String(remindersEnabled), String(useDefaultReminders),
+                              selectedOffsets.map(String.init).joined(separator: ","),
+                              reminderTime.map { String($0.timeIntervalSince1970) } ?? "defaultTime"],
+                     frontImage: frontImageData, backImage: backImageData)
     }
 
     private var hasEdited: Bool {
-        guard let cleanFormSignature else { return false }
-        return formSignature != cleanFormSignature
+        guard let cleanForm else { return false }
+        return formSnapshot != cleanForm
     }
 
     var body: some View {
@@ -201,7 +215,7 @@ struct ChequeEditorView: View {
                             Toggle(app.tr("On due date"), isOn: $onDueDate)
                             ForEach(customOffsets.sorted(by: >), id: \.self) { offset in
                                 HStack {
-                                    Text(String(offset) + " " + app.tr("days before"))
+                                    Text(Localization.daysBefore(offset, language: app.preferences.language))
                                     Spacer()
                                     Button(role: .destructive) { customOffsets.remove(offset) } label: {
                                         Image(systemName: "minus.circle")
@@ -295,7 +309,7 @@ struct ChequeEditorView: View {
         }
         .interactiveDismissDisabled(hasEdited || busy)
         .onAppear {
-            if cleanFormSignature == nil { cleanFormSignature = formSignature }
+            if cleanForm == nil { cleanForm = formSnapshot }
         }
         .onChange(of: amountText) { _, _ in amountError = nil }
         .onChange(of: frontPhoto) { _, item in
@@ -566,6 +580,11 @@ struct ChequeEditorView: View {
     @MainActor
     private func save(addAnother: Bool = false, allowDuplicate: Bool = false) async {
         guard !isSaving else { return }
+        if let recordID, !records.contains(where: { $0.id == recordID }) {
+            // Permanently deleted, possibly on another device. Its model must not be read or updated.
+            errorMessage = app.tr("This cheque was permanently deleted, possibly from another device. Your changes were not saved.")
+            return
+        }
         guard record?.deletedAt == nil else {
             errorMessage = app.tr("Restore this cheque before changing it.")
             return
@@ -681,7 +700,7 @@ struct ChequeEditorView: View {
         duplicateIDs = []; pendingAddAnother = false
         dueDateNeedsReview = true; savedNotice = true
         // Compare with this draft's values, independent of SwiftUI's onChange delivery order.
-        cleanFormSignature = formSignature
+        cleanForm = formSnapshot
         entrySequence &+= 1
         DispatchQueue.main.async {
             focusedField = .amount
@@ -692,7 +711,7 @@ struct ChequeEditorView: View {
         if offset == 0 { return app.tr("On due date") }
         if offset == 1 { return app.tr("1 day before") }
         if offset == 3 { return app.tr("3 days before") }
-        return String(offset) + " " + app.tr("days before")
+        return Localization.daysBefore(offset, language: app.preferences.language)
     }
 
     private static func clockDate(hour: Int, minute: Int) -> Date {

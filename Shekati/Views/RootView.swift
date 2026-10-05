@@ -10,7 +10,10 @@ struct RootView: View {
     @Query private var records: [ChequeRecord]
     @Query(sort: \AppConfiguration.createdAt) private var configurations: [AppConfiguration]
     @State private var selectedTab = 0
-    @State private var linkedRecord: ChequeRecord?
+    /// A deep link keeps only the identifier. The record is resolved from the live query when the
+    /// sheet renders, so a cheque purged while the sheet is open is never read.
+    private struct LinkedCheque: Identifiable { let id: UUID }
+    @State private var linkedCheque: LinkedCheque?
     @State private var dayRevision = 0
 
     private var reminderSignature: [[String]] {
@@ -19,7 +22,8 @@ struct RootView: View {
                                 offsets: $0.reminderOffsets, hour: $0.reminderHour, minute: $0.reminderMinute)
         }
         return ReminderRequestPolicy.refreshKey(inputs: inputs, settings: app.reminderSettings,
-            dayRevision: dayRevision, authorizationStatus: app.notifications.authorizationStatus.rawValue)
+            dayRevision: dayRevision, authorizationStatus: app.notifications.authorizationStatus.rawValue,
+            mutationRevision: app.revision)
     }
 
     private var currencySignature: String {
@@ -38,7 +42,7 @@ struct RootView: View {
                             DashboardView()
                         }.tabItem { Label(app.tr("Home"), systemImage: "square.grid.2x2") }.tag(0)
                         NavigationStack {
-                            ChequeListView()
+                            OutgoingChequeTableView()
                         }.tabItem { Label(app.tr("Cheques"), systemImage: "list.bullet.rectangle") }.tag(1)
                         NavigationStack { SettingsView() }
                             .tabItem { Label(app.tr("Settings"), systemImage: "slider.horizontal.3") }.tag(2)
@@ -53,15 +57,22 @@ struct RootView: View {
                 VStack(spacing: 16) { BrandMark(); Text(app.tr("Shekati")).font(.title.bold()) }
             }
         }
-        .sheet(item: $linkedRecord, onDismiss: {
+        .sheet(item: $linkedCheque, onDismiss: {
             if let id = app.openedChequeID { app.notifications.acknowledgeOpenCheque(id) }
             app.openedChequeID = nil
-        }) { record in
+        }) { item in
             NavigationStack {
-                ChequeDetailView(record: record)
-                    .toolbar { ToolbarItem(placement: .cancellationAction) {
-                        Button(app.tr("Done")) { linkedRecord = nil }
-                    } }
+                Group {
+                    if let record = records.first(where: { $0.id == item.id }) {
+                        ChequeDetailView(record: record)
+                    } else {
+                        ContentUnavailableView(app.tr("This cheque is no longer available"), systemImage: "trash.slash",
+                                               description: Text(app.tr("It was permanently deleted, possibly from another device.")))
+                    }
+                }
+                .toolbar { ToolbarItem(placement: .cancellationAction) {
+                    Button(app.tr("Done")) { linkedCheque = nil }
+                } }
             }
             .environment(\.locale, app.preferences.language.locale)
             .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
@@ -139,7 +150,7 @@ struct RootView: View {
 
     private func presentPendingLink() {
         guard !app.lock.isLocked, scenePhase == .active, let id = app.openedChequeID else { return }
-        if let record = records.first(where: { $0.id == id }) { linkedRecord = record }
+        if records.contains(where: { $0.id == id }) { linkedCheque = LinkedCheque(id: id) }
         else {
             // A link can arrive before the CloudKit import. Keep it until records arrive.
             selectedTab = 1

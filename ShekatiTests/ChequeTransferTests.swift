@@ -343,6 +343,38 @@ final class ChequeTransferTests: XCTestCase {
         }
     }
 
+    func testRestoredReminderOffsetsKeepEachDayOnce() throws {
+        let suite = "Shekati-transfer-tests-\(UUID().uuidString)"
+        let local = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { local.removePersistentDomain(forName: suite) }
+        let preferences = UserPreferences(defaults: local)
+        GlobalReminderBackup(offsets: [3, 3, 1, 0, 1], hour: 9, minute: 0, dailySummary: false, hideDetails: false)
+            .apply(to: preferences)
+        XCTAssertEqual(preferences.reminderOffsets, [3, 1, 0])
+        var entry = ChequeBackupEntry(snapshot: ChequeSnapshot(direction: .incoming, amountMinorUnits: 1_000,
+                                                                currencyCode: "JOD", dueDate: LocalDay(iso: "2026-10-20")!))
+        entry.reminderOffsets = [7, 7, 0, 7]
+        let created = entry.makeRecord()
+        XCTAssertEqual(created.reminderOffsets, [7, 0])
+        entry.reminderOffsets = [1, 1]
+        entry.apply(to: created)
+        XCTAssertEqual(created.reminderOffsets, [1])
+        entry.reminderOffsets = nil
+        entry.apply(to: created)
+        XCTAssertNil(created.reminderOffsets)
+
+        entry.reminderOffsets = [7, 7, 0]
+        let context = try makeContext()
+        let payload = ChequeBackupPayload(currencyCode: "JOD", records: [entry])
+        XCTAssertEqual(try ChequeTransferService.restore(payload, into: context), 1)
+        let stored = try XCTUnwrap(context.fetch(FetchDescriptor<ChequeRecord>()).first)
+        XCTAssertEqual(stored.reminderOffsets, [7, 0])
+        // Reviewing the same file again must report the normalised record as unchanged.
+        let again = try ChequeTransferService.preview(payload, existing: [stored])
+        XCTAssertEqual(again.identicalCount, 1); XCTAssertEqual(again.changedCount, 0)
+        XCTAssertEqual(try ChequeTransferService.restore(payload, into: context, replaceExisting: true), 0)
+    }
+
     private func makeRecord() -> ChequeRecord {
         ChequeRecord(snapshot: ChequeSnapshot(direction: .outgoing, amountMinorUnits: 12_345,
             currencyCode: "JOD", dueDate: LocalDay(iso: "2026-10-20")!,
