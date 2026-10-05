@@ -13,7 +13,8 @@ The [interface simplification notes](docs/UI_SIMPLIFICATION.md) record the chequ
 - Incoming/outgoing cheques, due dates and actual settlement dates. Pending and returned cheques remain outstanding; settled entries show Collected or Paid.
 - Quick manual entry, expandable optional details, front/back attachments and on-device Vision suggestions reviewed before saving.
 - Consecutive entry with optional retained details, keyboard navigation, previous-name/bank suggestions and a duplicate review before deliberate repeated entry.
-- Search, combined filters, persistent ascending/descending sorts and manual order preserving hidden rows.
+- The Cheques tab is a display-only sheet of every outgoing cheque, matching the owner's postdated-cheques workbook: value with a data bar, payee, cheque number, cheque date and the balance still owed from each row onward. Paid rows are green, a returned or missing number is red and the balance column is yellow.
+- Home's totals and date links open filtered lists with search, combined filters, persistent ascending/descending sorts and manual order preserving hidden rows.
 - Saved outstanding/history scope, relative due dates, date shortcuts and separate incoming/outgoing totals of the visible rows.
 - One chosen currency, exact minor-unit amounts and civil dates. Currency conflicts hide combined totals.
 - Local reminders by default at 09:00, three days and one day before due date and on due date; per-cheque days/time and an optional daily summary.

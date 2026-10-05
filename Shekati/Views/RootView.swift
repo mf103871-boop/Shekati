@@ -42,7 +42,7 @@ struct RootView: View {
                             DashboardView()
                         }.tabItem { Label(app.tr("Home"), systemImage: "square.grid.2x2") }.tag(0)
                         NavigationStack {
-                            ChequeListView()
+                            OutgoingChequeTableView()
                         }.tabItem { Label(app.tr("Cheques"), systemImage: "list.bullet.rectangle") }.tag(1)
                         NavigationStack { SettingsView() }
                             .tabItem { Label(app.tr("Settings"), systemImage: "slider.horizontal.3") }.tag(2)

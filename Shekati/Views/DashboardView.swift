@@ -203,6 +203,7 @@ struct DashboardView: View {
             .padding(.horizontal, 14).padding(.vertical, 10)
             .contentShape(Rectangle())
             .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("dashboardScope-\(scope.rawValue)")
         }
         .buttonStyle(.plain)
     }

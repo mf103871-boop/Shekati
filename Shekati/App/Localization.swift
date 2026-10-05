@@ -405,6 +405,14 @@ enum Localization {
         "Reviewing CSV": "جارٍ مراجعة CSV",
         "This cheque is no longer available": "هذا الشيك لم يعد متاحًا",
         "It was permanently deleted, possibly from another device.": "حُذف نهائيًا، وربما من جهاز آخر.",
-        "This cheque was permanently deleted, possibly from another device. Your changes were not saved.": "حُذف هذا الشيك نهائيًا، وربما من جهاز آخر. لم تُحفظ التعديلات."
+        "This cheque was permanently deleted, possibly from another device. Your changes were not saved.": "حُذف هذا الشيك نهائيًا، وربما من جهاز آخر. لم تُحفظ التعديلات.",
+        "Postdated cheques": "شيكات مؤجلة",
+        "Value": "القيمة",
+        "Pay to": "دائن الشيك",
+        "Cheque no.": "رقم الشيك",
+        "Cheque date": "تاريخ الصرف",
+        "Balance": "رصيد",
+        "No outgoing cheques": "لا توجد شيكات صادرة",
+        "Outgoing cheques you add appear here in date order.": "تظهر هنا الشيكات الصادرة التي تضيفها مرتبة حسب التاريخ."
     ]
 }
