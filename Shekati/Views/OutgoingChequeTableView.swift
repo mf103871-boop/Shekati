@@ -36,8 +36,6 @@ struct OutgoingChequeTableView: View {
                 }
             }
         }
-        // A five-column sheet cannot grow without limit on an iPhone; numbers also shrink to fit.
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .background(Color(uiColor: .systemBackground))
         .navigationTitle(app.tr("Cheques"))
         .navigationBarTitleDisplayMode(.inline)
@@ -96,7 +94,7 @@ private struct SheetCell<Content: View>: View {
                         .accessibilityHidden(true)
                 }
             }
-            .background(fill ?? OutgoingChequeStyle.cell)
+            .background(fill ?? OutgoingChequeStyle.cell, ignoresSafeAreaEdges: [])
             .border(OutgoingChequeStyle.grid, width: 0.5)
     }
 }
@@ -111,7 +109,7 @@ private struct OutgoingChequeTableHeader: View {
                 .font(.subheadline.bold())
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, minHeight: 30)
-                .background(OutgoingChequeStyle.title)
+                .background(OutgoingChequeStyle.title, ignoresSafeAreaEdges: [])
                 .border(OutgoingChequeStyle.grid, width: 0.5)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityIdentifier("outgoingTableTitle")
@@ -124,7 +122,8 @@ private struct OutgoingChequeTableHeader: View {
             }
             .fixedSize(horizontal: false, vertical: true)
         }
-        .background(OutgoingChequeStyle.cell)
+        .background(OutgoingChequeStyle.cell, ignoresSafeAreaEdges: [])
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
     private func heading(_ key: String, span: Int) -> some View {
@@ -179,6 +178,8 @@ private struct OutgoingChequeRow: View {
             }
         }
         .fixedSize(horizontal: false, vertical: true)
+        // A five-column sheet cannot grow without limit on an iPhone; numbers also shrink to fit.
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .opacity(cancelled ? 0.55 : 1)
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
@@ -199,7 +200,7 @@ private struct OutgoingChequeRow: View {
             .font(.footnote)
             .monospacedDigit()
             .lineLimit(1)
-            .minimumScaleFactor(0.5)
+            .minimumScaleFactor(0.3)
             .environment(\.layoutDirection, .leftToRight)
     }
 
