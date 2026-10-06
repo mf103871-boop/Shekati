@@ -110,8 +110,16 @@ struct NumericTextField: UIViewRepresentable {
         }
 
         @objc func next() {
-            parent.nextAction?()
+            guard let action = parent.nextAction else { done(); return }
+            // Finish UIKit's end-editing transaction before SwiftUI requests the next
+            // native responder. Otherwise its pending FocusState target can be cleared
+            // by the old numeric responder's resignation in the same transaction.
+            parent.isFocused = false
             field?.resignFirstResponder()
+            DispatchQueue.main.async { [weak self] in
+                guard self?.field?.window != nil else { return }
+                action()
+            }
         }
 
         @objc func done() {

@@ -301,8 +301,7 @@ final class EnhancementUITests: XCTestCase {
             XCTAssertTrue(next.isHittable)
             next.tap()
             let field = app.textFields[identifier]
-            waitForKeyboardFocus(field, in: app)
-            field.typeText(value)
+            typeAndAssert(value, into: field, in: app)
         }
     }
 
@@ -314,8 +313,7 @@ final class EnhancementUITests: XCTestCase {
         reveal(field, in: app)
         XCTAssertTrue(field.waitForExistence(timeout: 5))
         field.tap()
-        waitForKeyboardFocus(field, in: app)
-        field.typeText(value)
+        typeAndAssert(value, into: field, in: app)
     }
 
     /// A numeric keyboard has no alphabet keys. Paste exercises the real field-validation path
@@ -325,7 +323,7 @@ final class EnhancementUITests: XCTestCase {
         hideKeyboard(in: app, arabic: true)
         reveal(field, in: app)
         field.tap()
-        waitForKeyboardFocus(field, in: app)
+        waitForKeyboardReady(field, in: app)
         UIPasteboard.general.string = value
         field.press(forDuration: 1.1)
         let pastePredicate = NSPredicate(format: "label IN %@", ["Paste", "لصق"])
@@ -345,7 +343,17 @@ final class EnhancementUITests: XCTestCase {
     private func assertValue(_ expected: String, in field: XCUIElement) {
         let canonical = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", expected), object: field)
         XCTAssertEqual(XCTWaiter.wait(for: [canonical], timeout: 5), .completed,
-                       "Numeric fields must display their accepted English-digit value immediately")
+                       "The intended field must display the exact accepted value")
+    }
+
+    private func typeAndAssert(_ text: String, into field: XCUIElement, in app: XCUIApplication) {
+        waitForKeyboardReady(field, in: app)
+        let value = (field.value as? String) ?? ""
+        let existing = value == field.placeholderValue ? "" : value
+        // No tap here: Next itself must focus this target. typeText fails if it lacks keyboard
+        // focus, and the exact value assertion proves that the intended field received the text.
+        field.typeText(text)
+        assertValue(existing + text, in: field)
     }
 
     private func setBank(_ value: String, in app: XCUIApplication) {
@@ -376,19 +384,19 @@ final class EnhancementUITests: XCTestCase {
         return value.isEmpty || value == placeholder
     }
 
-    private func waitForKeyboardFocus(_ field: XCUIElement, in app: XCUIApplication) {
-        let focused = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-            field.exists && field.debugDescription.contains("Keyboard Focused")
+    private func waitForKeyboardReady(_ field: XCUIElement, in app: XCUIApplication) {
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            field.exists && field.isEnabled && app.keyboards.firstMatch.exists
         }, object: field)
-        let result = XCTWaiter.wait(for: [focused], timeout: 5)
-        if result != .completed { captureDiagnostics(app, "Build 6 input did not receive keyboard focus") }
-        XCTAssertEqual(result, .completed, "The selected field must receive focus before typing")
+        let result = XCTWaiter.wait(for: [ready], timeout: 5)
+        if result != .completed { captureDiagnostics(app, "Input or keyboard was not ready") }
+        XCTAssertEqual(result, .completed, "The target field and keyboard must be ready before typing")
     }
 
     private func typeSecure(_ field: XCUIElement, value: String, in app: XCUIApplication) {
         reveal(field, in: app)
         field.tap()
-        waitForKeyboardFocus(field, in: app)
+        waitForKeyboardReady(field, in: app)
         field.typeText(value)
     }
 

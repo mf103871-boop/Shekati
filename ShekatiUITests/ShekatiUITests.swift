@@ -132,13 +132,21 @@ final class ShekatiUITests: XCTestCase {
                 XCTAssertTrue(next.waitForExistence(timeout: 5))
                 next.tap()
             }
-            let focused = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-                field.exists && field.debugDescription.contains("Keyboard Focused")
+            let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                field.exists && field.isEnabled && app.keyboards.firstMatch.exists
             }, object: field)
-            let result = XCTWaiter.wait(for: [focused], timeout: 5)
-            if result != .completed { captureDiagnostics(app, name: "Input did not receive keyboard focus") }
-            XCTAssertEqual(result, .completed, "Expected the chosen field to receive focus before typing")
+            let result = XCTWaiter.wait(for: [ready], timeout: 5)
+            if result != .completed { captureDiagnostics(app, name: "Input or keyboard was not ready") }
+            XCTAssertEqual(result, .completed, "Expected the target field and keyboard to be ready before typing")
+            let value = (field.value as? String) ?? ""
+            let existing = value == field.placeholderValue ? "" : value
+            // Do not retap after Next. typeText requires real keyboard focus, and the exact
+            // target value below proves the navigation delivered input to the intended field.
             field.typeText(text)
+            let received = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", existing + text),
+                                                     object: field)
+            XCTAssertEqual(XCTWaiter.wait(for: [received], timeout: 5), .completed,
+                           "The field reached by keyboard navigation must receive exactly the supplied text")
         }
     }
 
