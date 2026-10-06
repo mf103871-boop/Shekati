@@ -63,7 +63,10 @@ struct ChequeEditorView: View {
     @State private var duplicateIDs: [UUID] = []
     @State private var pendingAddAnother = false
     @State private var duplicatePreview: ChequeRecord?
-    @FocusState private var focusedField: EntryField?
+    // UIKit numeric inputs manage their own first responder. Their focus must use ordinary
+    // state: SwiftUI clears FocusState values with no registered `.focused` native field.
+    @State private var focusedField: EntryField?
+    @FocusState private var nativeFocusedField: EntryField?
 
     private enum EntryField: Hashable { case amount, party, number, bank, customDays }
 
@@ -159,7 +162,7 @@ struct ChequeEditorView: View {
             Section {
                 DisclosureGroup(isExpanded: $extraDetailsExpanded) {
                     TextField(app.tr("Bank (optional)"), text: $bank.westernDigits)
-                        .focused($focusedField, equals: .bank)
+                        .focused($nativeFocusedField, equals: .bank)
                         .submitLabel(.done).onSubmit { focusedField = nil }
                         .accessibilityIdentifier("bankField")
                     if focusedField == .bank { previousSuggestions(for: .bank) }
@@ -326,6 +329,18 @@ struct ChequeEditorView: View {
         .onAppear {
             if cleanForm == nil { cleanForm = formSnapshot }
         }
+        .onChange(of: focusedField) { _, field in
+            let nativeTarget = field == .party || field == .bank ? field : nil
+            if nativeFocusedField != nativeTarget { nativeFocusedField = nativeTarget }
+        }
+        .onChange(of: nativeFocusedField) { previous, field in
+            if let field {
+                focusedField = field
+            } else if focusedField == previous && (previous == .party || previous == .bank) {
+                // Clear only the field that ended, preserving numeric and native handoffs.
+                focusedField = nil
+            }
+        }
         .onChange(of: amountText) { _, _ in amountError = nil }
         .onChange(of: frontPhoto) { _, item in
             Task { await loadPhoto(item, side: .front) }
@@ -439,7 +454,7 @@ struct ChequeEditorView: View {
         }
         if let dateError { Text(dateError).font(.footnote).foregroundStyle(Theme.red) }
         TextField(app.tr(direction == .incoming ? "Payer (optional)" : "Payee (optional)"), text: $party.westernDigits)
-            .focused($focusedField, equals: .party)
+            .focused($nativeFocusedField, equals: .party)
             .submitLabel(.next).onSubmit { focusedField = .number }
             .accessibilityIdentifier("partyField")
         if focusedField == .party { previousSuggestions(for: .party) }

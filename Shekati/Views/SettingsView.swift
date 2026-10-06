@@ -11,7 +11,7 @@ struct SettingsView: View {
     @State private var showCurrencies = false
     @State private var lockUnavailable = false
     @State private var customOffset = ""
-    @FocusState private var reminderDaysFocused: Bool
+    @State private var reminderDaysFocused = false
 
     var body: some View {
         @Bindable var preferences = app.preferences
