@@ -38,4 +38,17 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(Localization.text("Cancel", language: .english), "Cancel")
         XCTAssertEqual(Localization.text("Unknown key", language: .arabic), "Unknown key")
     }
+
+    func testAllLocalizedHelpUsesWesternDigits() {
+        for key in Localization.arabic.keys {
+            for language in AppLanguage.allCases {
+                let text = Localization.text(key, language: language)
+                for scalar in text.unicodeScalars where CharacterSet.decimalDigits.contains(scalar) {
+                    XCTAssertTrue((48...57).contains(scalar.value), key)
+                }
+            }
+        }
+        XCTAssertEqual(Localization.text("Days before (1–365)", language: .arabic), "أيام قبل الاستحقاق (1–365)")
+        XCTAssertEqual(Localization.text("Example ١۲３", language: .english), "Example 123")
+    }
 }

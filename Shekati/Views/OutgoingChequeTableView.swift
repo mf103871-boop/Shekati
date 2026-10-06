@@ -145,7 +145,7 @@ private struct OutgoingChequeRow: View {
     let showsBalance: Bool
 
     private var cheque: ChequeSnapshot { row.cheque }
-    private var number: String { cheque.number.trimmingCharacters(in: .whitespacesAndNewlines) }
+    private var number: String { NumericInput.latinDigits(cheque.number.trimmingCharacters(in: .whitespacesAndNewlines)) }
     private var amount: String { CurrencyMath.plain(minorUnits: cheque.amountMinorUnits, currencyCode: cheque.currencyCode) }
     private var date: String { OutgoingChequeLedger.dateText(cheque.dueDate) }
     private var balance: String {
@@ -162,7 +162,7 @@ private struct OutgoingChequeRow: View {
         HStack(spacing: 0) {
             amountCell
             SheetCell(span: OutgoingChequeColumn.payee, fill: rowFill) {
-                Text(cheque.party.isEmpty ? "—" : cheque.party)
+                Text(cheque.party.isEmpty ? "—" : NumericInput.latinDigits(cheque.party))
                     .font(.footnote.weight(.medium))
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
@@ -214,7 +214,7 @@ private struct OutgoingChequeRow: View {
     }
 
     private var accessibleDescription: String {
-        let title = cheque.party.isEmpty ? app.tr("Cheque") : cheque.party
+        let title = cheque.party.isEmpty ? app.tr("Cheque") : NumericInput.latinDigits(cheque.party)
         return [title,
                 "\(app.tr("No.")) \(number.isEmpty ? app.tr("Not provided") : number)",
                 "\(amount) \(cheque.currencyCode)",

@@ -6,7 +6,8 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     case arabic = "ar"
     case english = "en"
     var id: String { rawValue }
-    var locale: Locale { Locale(identifier: rawValue == "ar" ? "ar" : "en") }
+    // Keep Arabic wording and layout while requesting Western digits in system controls.
+    var locale: Locale { Locale(identifier: rawValue == "ar" ? "ar@numbers=latn" : "en@numbers=latn") }
 }
 
 enum AppAppearance: String, CaseIterable, Identifiable {

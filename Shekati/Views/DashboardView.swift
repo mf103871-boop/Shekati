@@ -193,7 +193,7 @@ struct DashboardView: View {
                 Text(app.tr(key)).font(.body).foregroundStyle(.primary)
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 8)
-                Text(count.formatted(.number.locale(app.preferences.language.locale)))
+                Text(DisplayFormatting.count(count, locale: app.preferences.language.locale))
                     .font(.body.weight(.semibold)).monospacedDigit()
                     .foregroundStyle(Theme.navy).fixedSize()
                 Image(systemName: "chevron.forward")

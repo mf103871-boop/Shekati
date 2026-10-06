@@ -62,9 +62,9 @@ enum ChequeOCRParser {
         let number = unique(labelValues("(?:che(?:que|ck)\\s*(?:number|no\\.?|#)|رقم\\s*الشيك|رقم\\s*شيك)", in: normalized)
             .compactMap { value -> String? in
                 let candidate = value.trimmingCharacters(in: .whitespacesAndNewlines)
-                guard candidate.count <= 32, candidate.contains(where: \.isNumber),
-                      candidate.range(of: "^[A-Za-z0-9 /-]+$", options: .regularExpression) != nil else { return nil }
-                return candidate
+                guard candidate.count <= 32, let digits = NumericInput.integer(candidate),
+                      !digits.isEmpty else { return nil }
+                return digits
             })
         let bank = unique(labelValues("(?:bank(?:\\s*name)?|اسم\\s*البنك|البنك)", in: normalized).compactMap(cleanName))
         let payers = labelValues("(?:payer|drawer|paid\\s*by|اسم\\s*الساحب|اسم\\s*الدافع|الساحب|الدافع)", in: normalized).compactMap(cleanName)
@@ -85,10 +85,8 @@ enum ChequeOCRParser {
 
     private static func normalizeDigits(_ text: String) -> String {
         var result = ""
-        for scalar in text.unicodeScalars {
+        for scalar in NumericInput.latinDigits(text).unicodeScalars {
             switch scalar.value {
-            case 0x0660...0x0669: result.append(String(scalar.value - 0x0660))
-            case 0x06F0...0x06F9: result.append(String(scalar.value - 0x06F0))
             case 0x066B: result.append(".")
             case 0x066C: result.append(",")
             case 0x200E, 0x200F, 0x061C: break

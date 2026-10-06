@@ -154,12 +154,12 @@ enum ReminderPlanner {
         if settings.hideDetails {
             return (title, arabic ? "افتح شيكاتي لمراجعة تفاصيل التذكير." : "Open Shekati to review your reminder.")
         }
-        let number = cheque.number.isEmpty ? "" : " #\(cheque.number)"
+        let number = cheque.number.isEmpty ? "" : " #\(NumericInput.latinDigits(cheque.number))"
         let amount = CurrencyMath.format(minorUnits: cheque.amountMinorUnits, currencyCode: cheque.currencyCode,
                                          locale: Locale(identifier: arabic ? "ar" : "en"))
         let direction = arabic ? (cheque.direction == .incoming ? "وارد" : "صادر")
             : (cheque.direction == .incoming ? "Incoming" : "Outgoing")
-        let suffix = cheque.party.isEmpty ? "" : " · \(cheque.party)"
+        let suffix = cheque.party.isEmpty ? "" : " · \(NumericInput.latinDigits(cheque.party))"
         let body = arabic ? "شيك \(direction)\(number) · \(amount)\(suffix) · الاستحقاق \(cheque.dueDate.iso)"
             : "\(direction) cheque\(number) · \(amount)\(suffix) · Due \(cheque.dueDate.iso)"
         return (title, body)

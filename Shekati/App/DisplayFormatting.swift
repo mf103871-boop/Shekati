@@ -25,7 +25,7 @@ enum DisplayFormatting {
         }
         let divisor = (0..<CurrencyMath.fractionDigits(for: currencyCode)).reduce(Decimal(1)) { value, _ in value * 10 }
         let value = NSDecimalNumber(decimal: Decimal(minorUnits) / divisor)
-        return formatter.string(from: value) ?? CurrencyMath.editable(minorUnits: minorUnits, currencyCode: currencyCode)
+        return NumericInput.latinDigits(formatter.string(from: value) ?? CurrencyMath.editable(minorUnits: minorUnits, currencyCode: currencyCode))
     }
 
     static func day(_ day: LocalDay, locale: Locale, zone: TimeZone = .current) -> String {
@@ -43,7 +43,7 @@ enum DisplayFormatting {
         }
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = zone
-        return formatter.string(from: day.date(calendar: calendar))
+        return NumericInput.latinDigits(formatter.string(from: day.date(calendar: calendar)))
     }
 
     static func timestamp(_ date: Date, locale: Locale, zone: TimeZone = .current) -> String {
@@ -60,6 +60,10 @@ enum DisplayFormatting {
             timestamps[key] = created
             formatter = created
         }
-        return formatter.string(from: date)
+        return NumericInput.latinDigits(formatter.string(from: date))
+    }
+
+    static func count(_ value: Int, locale: Locale) -> String {
+        NumericInput.latinDigits(value.formatted(.number.locale(locale)))
     }
 }

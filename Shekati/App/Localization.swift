@@ -1,8 +1,9 @@
 import Foundation
+import ShekatiCore
 
 enum Localization {
     static func text(_ key: String, language: AppLanguage) -> String {
-        language == .arabic ? arabic[key] ?? key : key
+        NumericInput.latinDigits(language == .arabic ? arabic[key] ?? key : key)
     }
 
     /// Arabic day counts follow the CLDR plural categories: one, two, few (3–10), many (11–99) and other.
@@ -113,7 +114,7 @@ enum Localization {
         "Outstanding cheques": "شيكات غير مسدّدة",
         "Outstanding only": "غير المسدّدة فقط",
         "Due today": "تستحق اليوم",
-        "Within 7 days": "خلال ٧ أيام",
+        "Within 7 days": "خلال 7 أيام",
         "Next 7 days": "الأيام السبعة القادمة",
         "Next cheques": "الشيكات القادمة",
         "See all": "عرض الكل",
@@ -196,13 +197,13 @@ enum Localization {
         "Uses default reminders": "يستخدم التذكيرات الافتراضية",
         "Uses default reminder time": "يستخدم وقت التذكير الافتراضي",
         "The reminder days and time from Settings will be used.": "سيتم استخدام أيام التذكير ووقته من الإعدادات.",
-        "3 days before": "قبل ٣ أيام",
+        "3 days before": "قبل 3 أيام",
         "1 day before": "قبل يوم",
         "On due date": "في يوم الاستحقاق",
         "On the due date": "في يوم الاستحقاق",
         "Days before": "عدد الأيام قبل الاستحقاق",
-        "Days before (1–365)": "أيام قبل الاستحقاق (١–٣٦٥)",
-        "Enter a whole number of days from 1 to 365.": "أدخل عدد أيام صحيحًا من ١ إلى ٣٦٥.",
+        "Days before (1–365)": "أيام قبل الاستحقاق (1–365)",
+        "Enter a whole number of days from 1 to 365.": "أدخل عدد أيام صحيحًا من 1 إلى 365.",
         "Choose at least one reminder day, or turn reminders off.": "اختر يوم تذكير واحدًا على الأقل، أو عطّل التذكيرات.",
         "No reminder days selected": "لم تُحدد أيام للتذكير",
         "Remove reminder": "إزالة التذكير",

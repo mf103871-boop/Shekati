@@ -52,6 +52,21 @@ final class CurrencyMathTests: XCTestCase {
         XCTAssertTrue(english.contains("123.456"), english)
         XCTAssertTrue(english.contains("JOD"), english)
         let arabic = CurrencyMath.format(minorUnits: 100, currencyCode: "USD", locale: Locale(identifier: "ar_JO"))
-        XCTAssertFalse(arabic.isEmpty)
+        XCTAssertEqual(String(arabic.filter { $0.isASCII && $0.isNumber }), "100")
+    }
+
+    func testWesternCurrencyDigitsRetainZeroTwoAndThreeDecimalPrecision() {
+        for locale in [Locale(identifier: "ar_JO"), Locale(identifier: "ar_SA"), Locale(identifier: "en_US")] {
+            for (code, minorUnits, expectedDigits) in [("JPY", Int64(1234), "1234"),
+                                                      ("USD", Int64(123400), "123400"),
+                                                      ("JOD", Int64(1234000), "1234000")] {
+                let displayed = CurrencyMath.format(minorUnits: minorUnits, currencyCode: code, locale: locale)
+                XCTAssertEqual(String(displayed.filter { $0.isASCII && $0.isNumber }), expectedDigits,
+                               "Currency precision must be retained for \(code), \(locale.identifier)")
+                for scalar in displayed.unicodeScalars where CharacterSet.decimalDigits.contains(scalar) {
+                    XCTAssertTrue((48...57).contains(scalar.value), displayed)
+                }
+            }
+        }
     }
 }

@@ -48,7 +48,7 @@ struct ChequeRowView: View {
     @ScaledMetric(relativeTo: .subheadline) private var amountMinimum: CGFloat = 146
     let record: ChequeRecord
 
-    private var title: String { record.party.isEmpty ? app.tr("Cheque") : record.party }
+    private var title: String { record.party.isEmpty ? app.tr("Cheque") : NumericInput.latinDigits(record.party) }
     private var amount: String {
         DisplayFormatting.amount(minorUnits: record.amountMinorUnits, currencyCode: record.currencyCode,
                                  locale: app.preferences.language.locale)
@@ -85,7 +85,7 @@ struct ChequeRowView: View {
     }
 
     private var accessibleDescription: String {
-        let number = record.number.isEmpty ? app.tr("Not provided") : record.number
+        let number = record.number.isEmpty ? app.tr("Not provided") : NumericInput.latinDigits(record.number)
         let numberDescription = "\(app.tr("No.")) \(number)"
         let dueDescription = "\(app.tr("Due date")) \(app.formatDay(record.dueDate))"
         return [title, numberDescription, amount, dueDescription, relativeDate ?? "", statusLabel, directionLabel]
@@ -160,7 +160,7 @@ struct ChequeRowView: View {
     private var numberText: some View {
         HStack(alignment: .firstTextBaseline, spacing: 4) {
             Text(app.tr("No."))
-            Text(record.number.isEmpty ? "—" : record.number)
+            Text(record.number.isEmpty ? "—" : NumericInput.latinDigits(record.number))
                 .monospacedDigit()
                 .environment(\.layoutDirection, .leftToRight)
                 .lineLimit(2)

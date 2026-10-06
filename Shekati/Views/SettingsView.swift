@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 import LocalAuthentication
 import UserNotifications
+import ShekatiCore
 
 @MainActor
 struct SettingsView: View {
@@ -10,6 +11,7 @@ struct SettingsView: View {
     @State private var showCurrencies = false
     @State private var lockUnavailable = false
     @State private var customOffset = ""
+    @FocusState private var reminderDaysFocused: Bool
 
     var body: some View {
         @Bindable var preferences = app.preferences
@@ -62,7 +64,12 @@ struct SettingsView: View {
                     }
                 }
                 HStack {
-                    TextField(app.tr("Days before"), text: $customOffset).keyboardType(.numberPad)
+                    NumericTextField(title: app.tr("Days before"), text: $customOffset,
+                                     keyboardType: .numberPad, isFocused: Binding(
+                                        get: { reminderDaysFocused }, set: { reminderDaysFocused = $0 }),
+                                     identifier: "defaultReminderDaysField", doneTitle: app.tr("Done")) { proposed, _ in
+                        NumericInput.integer(proposed)
+                    }
                     Button(app.tr("Add")) {
                         if let value = customOffsetValue, (0...365).contains(value) {
                             preferences.reminderOffsets = Array(Set(preferences.reminderOffsets + [value])).sorted(by: >)
@@ -71,9 +78,12 @@ struct SettingsView: View {
                     }.disabled(customOffsetValue.map { !(0...365).contains($0) } ?? true)
                 }
                 DatePicker(app.tr("Reminder time"), selection: timeBinding, displayedComponents: .hourAndMinute)
+                    .environment(\.locale, Locale(identifier: "en_GB"))
+                    .environment(\.calendar, Calendar(identifier: .gregorian))
                 Toggle(app.tr("Daily summary"), isOn: $preferences.dailySummary)
                 Toggle(app.tr("Hide notification details"), isOn: $preferences.hideNotificationDetails)
-                LabeledContent(app.tr("Scheduled notifications"), value: app.notifications.scheduledCount.formatted())
+                LabeledContent(app.tr("Scheduled notifications"), value: DisplayFormatting.count(
+                    app.notifications.scheduledCount, locale: app.preferences.language.locale))
                 if app.notifications.authorizationStatus != .notDetermined,
                    !app.notifications.isDenied, let date = app.notifications.firstUncoveredDate {
                     VStack(alignment: .leading, spacing: 6) {
@@ -145,21 +155,19 @@ struct SettingsView: View {
 
     private var version: String { (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String) ?? "1.0" }
     private var customOffsetValue: Int? {
-        let normalized = customOffset.trimmingCharacters(in: .whitespacesAndNewlines).map { character in
-            guard let digit = character.wholeNumberValue, (0...9).contains(digit) else { return character }
-            return Character(String(digit))
-        }
-        return Int(String(normalized))
+        NumericInput.integer(customOffset).flatMap(Int.init)
     }
     private var timeBinding: Binding<Date> {
         Binding(get: {
-            var components = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            let calendar = Calendar(identifier: .gregorian)
+            var components = calendar.dateComponents([.year, .month, .day], from: Date())
             components.hour = app.preferences.reminderHour
             components.minute = app.preferences.reminderMinute
-            return Calendar.current.date(from: components) ?? Date()
+            return calendar.date(from: components) ?? Date()
         }, set: { date in
-            app.preferences.reminderHour = Calendar.current.component(.hour, from: date)
-            app.preferences.reminderMinute = Calendar.current.component(.minute, from: date)
+            let calendar = Calendar(identifier: .gregorian)
+            app.preferences.reminderHour = calendar.component(.hour, from: date)
+            app.preferences.reminderMinute = calendar.component(.minute, from: date)
         })
     }
     private func requestPermissionIfNeeded() async {

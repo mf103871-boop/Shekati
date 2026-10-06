@@ -65,7 +65,7 @@ struct ChequeEditorView: View {
     @State private var duplicatePreview: ChequeRecord?
     @FocusState private var focusedField: EntryField?
 
-    private enum EntryField: Hashable { case amount, party, number, bank }
+    private enum EntryField: Hashable { case amount, party, number, bank, customDays }
 
     init(record: ChequeRecord? = nil) {
         self.record = record
@@ -79,7 +79,8 @@ struct ChequeEditorView: View {
         _dueDate = State(initialValue: record?.dueDate.date() ?? Date())
         _includeIssueDate = State(initialValue: record?.issueDate != nil)
         _issueDate = State(initialValue: record?.issueDate?.date() ?? Date())
-        _number = State(initialValue: record?.number ?? "")
+        // Preserve legacy prefixes and punctuation while showing all stored digit glyphs in Latin.
+        _number = State(initialValue: NumericInput.latinDigits(record?.number ?? ""))
         _bank = State(initialValue: record?.bank ?? "")
         _branch = State(initialValue: record?.branch ?? "")
         _party = State(initialValue: record?.party ?? "")
@@ -109,6 +110,13 @@ struct ChequeEditorView: View {
     }
 
     private var currency: String { recordCurrency ?? app.currencyCode }
+    private var fractionDigits: Int { CurrencyMath.fractionDigits(for: currency) }
+    private func numericFocus(_ field: EntryField) -> Binding<Bool> {
+        Binding(get: { focusedField == field }, set: { active in
+            if active { focusedField = field }
+            else if focusedField == field { focusedField = nil }
+        })
+    }
     private var busy: Bool { isSaving || isReadingImage }
     private var effectiveReminderTime: Date {
         reminderTime ?? Self.clockDate(hour: app.preferences.reminderHour, minute: app.preferences.reminderMinute)
@@ -150,19 +158,21 @@ struct ChequeEditorView: View {
 
             Section {
                 DisclosureGroup(isExpanded: $extraDetailsExpanded) {
-                    TextField(app.tr("Bank (optional)"), text: $bank)
+                    TextField(app.tr("Bank (optional)"), text: $bank.westernDigits)
                         .focused($focusedField, equals: .bank)
                         .submitLabel(.done).onSubmit { focusedField = nil }
                         .accessibilityIdentifier("bankField")
                     if focusedField == .bank { previousSuggestions(for: .bank) }
-                    TextField(app.tr("Branch (optional)"), text: $branch)
-                    TextField(app.tr("Account reference (optional)"), text: $accountReference)
+                    TextField(app.tr("Branch (optional)"), text: $branch.westernDigits)
+                    TextField(app.tr("Account reference (optional)"), text: $accountReference.westernDigits)
                         .textInputAutocapitalization(.never).autocorrectionDisabled()
                     Toggle(app.tr("Add issue date"), isOn: $includeIssueDate)
                     if includeIssueDate {
                         DatePicker(app.tr("Issue date"), selection: $issueDate, displayedComponents: .date)
+                            .environment(\.locale, Locale(identifier: "en_GB"))
+                            .environment(\.calendar, Calendar(identifier: .gregorian))
                     }
-                    TextField(app.tr("Notes (optional)"), text: $notes, axis: .vertical)
+                    TextField(app.tr("Notes (optional)"), text: $notes.westernDigits, axis: .vertical)
                         .lineLimit(3...8)
                 } label: {
                     Text(app.tr("More details")).accessibilityIdentifier("extraChequeDetails")
@@ -210,6 +220,8 @@ struct ChequeEditorView: View {
                             DatePicker(app.tr("Reminder time"), selection: Binding(
                                 get: { effectiveReminderTime }, set: { reminderTime = $0 }
                             ), displayedComponents: .hourAndMinute)
+                                .environment(\.locale, Locale(identifier: "en_GB"))
+                                .environment(\.calendar, Calendar(identifier: .gregorian))
                             Toggle(app.tr("3 days before"), isOn: $before3)
                             Toggle(app.tr("1 day before"), isOn: $before1)
                             Toggle(app.tr("On due date"), isOn: $onDueDate)
@@ -225,8 +237,11 @@ struct ChequeEditorView: View {
                                 }
                             }
                             HStack {
-                                TextField(app.tr("Days before (1–365)"), text: $customDays)
-                                    .keyboardType(.numberPad)
+                                NumericTextField(title: app.tr("Days before (1–365)"), text: $customDays,
+                                                 keyboardType: .numberPad, isFocused: numericFocus(.customDays),
+                                                 identifier: "chequeReminderDaysField", doneTitle: app.tr("Done")) { proposed, _ in
+                                    NumericInput.integer(proposed)
+                                }
                                 Button(app.tr("Add")) { addCustomReminder() }
                                     .buttonStyle(.borderless)
                             }
@@ -298,13 +313,13 @@ struct ChequeEditorView: View {
                 }
             }
             ToolbarItemGroup(placement: .keyboard) {
-                if focusedField == .amount {
-                    Button(app.tr("Next")) { focusedField = .party }
-                } else if focusedField == .party {
-                    Button(app.tr("Next")) { focusedField = .number }
+                if focusedField == .party || focusedField == .bank {
+                    if focusedField == .party {
+                        Button(app.tr("Next")) { focusedField = .number }
+                    }
+                    Spacer()
+                    Button(app.tr("Done")) { focusedField = nil }
                 }
-                Spacer()
-                Button(app.tr("Done")) { focusedField = nil }
             }
         }
         .interactiveDismissDisabled(hasEdited || busy)
@@ -393,11 +408,14 @@ struct ChequeEditorView: View {
         HStack {
             Text(app.tr("Amount"))
             Spacer(minLength: 12)
-            TextField(app.tr("Required"), text: $amountText)
-                .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                .focused($focusedField, equals: .amount)
-                .accessibilityLabel(app.tr("Amount"))
-                .accessibilityIdentifier("amountField")
+            NumericTextField(title: app.tr("Required"), text: $amountText,
+                             keyboardType: fractionDigits == 0 ? .numberPad : .decimalPad,
+                             isFocused: numericFocus(.amount), identifier: "amountField",
+                             accessibilityTitle: app.tr("Amount"), textAlignment: .right,
+                             nextTitle: app.tr("Next"), doneTitle: app.tr("Done"),
+                             nextAction: { focusedField = .party }) { proposed, _ in
+                NumericInput.decimal(proposed, fractionDigits: fractionDigits)
+            }
             Text(currency).font(.subheadline.weight(.medium)).foregroundStyle(.secondary)
         }
         if let amountError {
@@ -408,6 +426,8 @@ struct ChequeEditorView: View {
             get: { dueDate },
             set: { dueDate = $0; dueDateNeedsReview = false; dateError = nil }
         ), displayedComponents: .date)
+            .environment(\.locale, Locale(identifier: "en_GB"))
+            .environment(\.calendar, Calendar(identifier: .gregorian))
             .accessibilityIdentifier("dueDateField")
         Text(app.formatDay(LocalDay(date: dueDate)) + " · " + app.relativeDueDate(LocalDay(date: dueDate)))
             .font(.footnote).foregroundStyle(.secondary)
@@ -418,16 +438,20 @@ struct ChequeEditorView: View {
                 .font(.footnote).foregroundStyle(.orange)
         }
         if let dateError { Text(dateError).font(.footnote).foregroundStyle(Theme.red) }
-        TextField(app.tr(direction == .incoming ? "Payer (optional)" : "Payee (optional)"), text: $party)
+        TextField(app.tr(direction == .incoming ? "Payer (optional)" : "Payee (optional)"), text: $party.westernDigits)
             .focused($focusedField, equals: .party)
             .submitLabel(.next).onSubmit { focusedField = .number }
             .accessibilityIdentifier("partyField")
         if focusedField == .party { previousSuggestions(for: .party) }
-        TextField(app.tr("Cheque number (optional)"), text: $number)
-            .textInputAutocapitalization(.never).autocorrectionDisabled()
-            .focused($focusedField, equals: .number)
-            .submitLabel(.done).onSubmit { focusedField = nil }
-            .accessibilityIdentifier("chequeNumberField")
+        NumericTextField(title: app.tr("Cheque number (optional)"), text: $number,
+                         keyboardType: .numberPad, isFocused: numericFocus(.number),
+                         identifier: "chequeNumberField", doneTitle: app.tr("Done")) { proposed, current in
+            if let accepted = NumericInput.integer(proposed) { return accepted }
+            // Older cheques may contain letters. Opening their editor must not erase them.
+            // Let the owner remove legacy characters, but never introduce new ones.
+            let normalized = NumericInput.latinDigits(proposed)
+            return Self.isDeletion(normalized, from: current) ? normalized : nil
+        }
     } header: {
         Text(app.tr("Cheque details"))
     } footer: {
@@ -447,8 +471,9 @@ struct ChequeEditorView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         ForEach(choices, id: \.self) { choice in
-                            Button(choice) {
-                                if field == .bank { bank = choice } else { party = choice }
+                            Button(NumericInput.latinDigits(choice)) {
+                                if field == .bank { bank = NumericInput.latinDigits(choice) }
+                                else { party = NumericInput.latinDigits(choice) }
                             }
                             .buttonStyle(.bordered).font(.subheadline)
                             .accessibilityIdentifier(field == .bank ? "bankSuggestion" : "partySuggestion")
@@ -501,11 +526,8 @@ struct ChequeEditorView: View {
     }
 
     private func addCustomReminder() {
-        let ascii = String(customDays.trimmingCharacters(in: .whitespacesAndNewlines).map { character in
-            guard let digit = character.wholeNumberValue, (0...9).contains(digit) else { return character }
-            return Character(String(digit))
-        })
-        guard let days = Int(ascii), (1...365).contains(days) else {
+        guard let normalized = NumericInput.integer(customDays), let days = Int(normalized),
+              (1...365).contains(days) else {
             errorMessage = app.tr("Enter a whole number of days from 1 to 365.")
             return
         }
@@ -567,13 +589,15 @@ struct ChequeEditorView: View {
     }
 
     private func applyOCR(_ suggestion: OCRSuggestion, selected: Set<OCRField>) {
-        if selected.contains(.number), let value = suggestion.number { number = value }
+        if selected.contains(.number), let value = suggestion.number,
+           let accepted = NumericInput.integer(value) { number = accepted }
         if selected.contains(.bank), let value = suggestion.bank {
             bank = value
             extraDetailsExpanded = true
         }
         if selected.contains(.party), let value = suggestion.party { party = value }
-        if selected.contains(.amount), let value = suggestion.amountText { amountText = value }
+        if selected.contains(.amount), let value = suggestion.amountText,
+           let accepted = NumericInput.decimal(value, fractionDigits: fractionDigits) { amountText = accepted }
         if selected.contains(.dueDate), let value = suggestion.dueDate { dueDate = value.date() }
     }
 
@@ -721,6 +745,14 @@ struct ChequeEditorView: View {
         components.minute = min(59, max(0, minute))
         return calendar.date(from: components) ?? Date()
     }
+
+    private static func isDeletion(_ proposed: String, from current: String) -> Bool {
+        guard proposed.count < current.count else { return false }
+        var remaining = proposed.makeIterator()
+        var next = remaining.next()
+        for character in current where character == next { next = remaining.next() }
+        return next == nil
+    }
 }
 
 private enum AttachmentSide: Equatable { case front, back }
@@ -774,7 +806,7 @@ private struct OCRReviewSheet: View {
             if !suggestion.recognizedText.isEmpty {
                 Section {
                     DisclosureGroup(app.tr("Recognized text")) {
-                        Text(suggestion.recognizedText).font(.caption).textSelection(.enabled)
+                        Text(NumericInput.latinDigits(suggestion.recognizedText)).font(.caption).textSelection(.enabled)
                     }
                 }
             }
@@ -799,7 +831,8 @@ private struct OCRReviewSheet: View {
         )) {
             VStack(alignment: .leading, spacing: 5) {
                 Text(app.tr(title)).font(.caption).foregroundStyle(.secondary)
-                Text(value).font(.body).textSelection(.enabled)
+                Text(NumericInput.latinDigits(value))
+                    .font(.body).textSelection(.enabled)
             }
         }
     }

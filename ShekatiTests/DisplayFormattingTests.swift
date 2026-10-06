@@ -13,9 +13,11 @@ final class DisplayFormattingTests: XCTestCase {
             for code in codes {
                 for locale in locales {
                     for value in amounts {
-                        XCTAssertEqual(DisplayFormatting.amount(minorUnits: value, currencyCode: code, locale: locale),
+                        let displayed = DisplayFormatting.amount(minorUnits: value, currencyCode: code, locale: locale)
+                        XCTAssertEqual(displayed,
                                        CurrencyMath.format(minorUnits: value, currencyCode: code, locale: locale),
                                        "Exact money display must be preserved for \(code), \(locale.identifier), \(value)")
+                        assertWesternDigits(displayed)
                     }
                 }
             }
@@ -43,11 +45,7 @@ final class DisplayFormattingTests: XCTestCase {
         for locale in locales {
             let actual = DisplayFormatting.day(day, locale: locale, zone: zone)
             XCTAssertEqual(actual, freshDay(day, locale: locale, zone: zone))
-            let numeric = String(actual.compactMap { character -> Character? in
-                if let digit = character.wholeNumberValue { return Character(String(digit)) }
-                return character == "/" ? character : nil
-            })
-            XCTAssertEqual(numeric, "04/10/2026", "The user's calendar must not change the cheque's civil date")
+            XCTAssertEqual(actual, "04/10/2026", "The user's calendar must not change the cheque's civil date or digit style")
         }
     }
 
@@ -64,8 +62,46 @@ final class DisplayFormattingTests: XCTestCase {
                 formatter.timeZone = zone
                 formatter.dateStyle = .medium
                 formatter.timeStyle = .short
-                XCTAssertEqual(DisplayFormatting.timestamp(instant, locale: locale, zone: zone), formatter.string(from: instant))
+                let displayed = DisplayFormatting.timestamp(instant, locale: locale, zone: zone)
+                XCTAssertEqual(displayed, NumericInput.latinDigits(formatter.string(from: instant)))
+                assertWesternDigits(displayed)
             }
+        }
+    }
+
+    func testCountsUseWesternDigitsForArabicDeviceLocales() {
+        for locale in [Locale(identifier: "ar_JO"), Locale(identifier: "ar_SA"), Locale(identifier: "en_US"), AppLanguage.arabic.locale] {
+            for count in [0, 1, 1234, 12_345_678] {
+                let displayed = DisplayFormatting.count(count, locale: locale)
+                assertWesternDigits(displayed)
+                XCTAssertEqual(String(displayed.filter { $0.isASCII && $0.isNumber }), String(count))
+            }
+        }
+    }
+
+    func testArabicAppLocaleKeepsArabicLanguageAndWesternDigits() throws {
+        XCTAssertEqual(AppLanguage.arabic.locale.language.languageCode?.identifier, "ar")
+        XCTAssertEqual(AppLanguage.arabic.locale.numberingSystem.identifier, "latn")
+        let day = try XCTUnwrap(LocalDay(iso: "2026-10-06"))
+        XCTAssertEqual(DisplayFormatting.day(day, locale: AppLanguage.arabic.locale), "06/10/2026")
+        XCTAssertEqual(Localization.text("Within 7 days", language: .arabic), "خلال 7 أيام")
+    }
+
+    func testReminderRendersLegacyChequeDigitsWithoutChangingTheRecord() throws {
+        let cheque = ChequeSnapshot(direction: .outgoing, amountMinorUnits: 123_456, currencyCode: "JOD",
+                                    dueDate: try XCTUnwrap(LocalDay(iso: "2026-10-06")), number: "٠٠۱۲٣۴")
+        let settings = ReminderSettings(offsets: [0], hour: 9, minute: 0, dailySummary: false,
+                                        hideDetails: false, languageCode: "ar")
+        let content = ReminderPlanner.chequeContent(cheque: cheque, settings: settings, offset: 0)
+        XCTAssertTrue(content.body.contains("#001234"), content.body)
+        XCTAssertTrue(content.body.contains("2026-10-06"), content.body)
+        assertWesternDigits(content.body)
+        XCTAssertEqual(cheque.number, "٠٠۱۲٣۴", "Display normalization must not rewrite an existing record")
+    }
+
+    private func assertWesternDigits(_ text: String, file: StaticString = #filePath, line: UInt = #line) {
+        for scalar in text.unicodeScalars where CharacterSet.decimalDigits.contains(scalar) {
+            XCTAssertTrue((48...57).contains(scalar.value), "Non-Western digit in \(text)", file: file, line: line)
         }
     }
 
@@ -77,6 +113,6 @@ final class DisplayFormattingTests: XCTestCase {
         formatter.dateFormat = "dd/MM/yyyy"
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = zone
-        return formatter.string(from: day.date(calendar: calendar))
+        return NumericInput.latinDigits(formatter.string(from: day.date(calendar: calendar)))
     }
 }

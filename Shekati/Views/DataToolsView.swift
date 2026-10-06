@@ -49,7 +49,7 @@ private struct BackupCreationView: View {
     var body: some View {
         Form {
             Section {
-                LabeledContent(app.tr("Saved cheques"), value: records.count.formatted())
+                LabeledContent(app.tr("Saved cheques"), value: DisplayFormatting.count(records.count, locale: app.preferences.language.locale))
                 LabeledContent(app.tr("Currency"), value: app.currencyCode)
                 SecureField(app.tr("Backup password"), text: $password).textContentType(.newPassword)
                     .disabled(busy)
@@ -118,7 +118,7 @@ private struct BackupRestoreView: View {
         Form {
             Section {
                 Button(app.tr("Choose backup file")) { importing = true }.disabled(busy)
-                if !filename.isEmpty { Text(filename).font(.footnote).lineLimit(2) }
+                if !filename.isEmpty { Text(NumericInput.latinDigits(filename)).font(.footnote).lineLimit(2) }
                 SecureField(app.tr("Backup password"), text: $password).disabled(busy)
                 Button(app.tr("Review backup")) { review() }
                     .disabled(encryptedData == nil || password.isEmpty || busy)
@@ -127,10 +127,10 @@ private struct BackupRestoreView: View {
             if let preview, let payload {
                 Section(app.tr("Restore preview")) {
                     LabeledContent(app.tr("Currency"), value: payload.currencyCode)
-                    LabeledContent(app.tr("New cheques"), value: preview.newCount.formatted())
-                    LabeledContent(app.tr("Unchanged cheques"), value: preview.identicalCount.formatted())
-                    LabeledContent(app.tr("Existing cheques with changes"), value: preview.changedCount.formatted())
-                    LabeledContent(app.tr("Deleted records in backup"), value: preview.recentlyDeletedCount.formatted())
+                    LabeledContent(app.tr("New cheques"), value: DisplayFormatting.count(preview.newCount, locale: app.preferences.language.locale))
+                    LabeledContent(app.tr("Unchanged cheques"), value: DisplayFormatting.count(preview.identicalCount, locale: app.preferences.language.locale))
+                    LabeledContent(app.tr("Existing cheques with changes"), value: DisplayFormatting.count(preview.changedCount, locale: app.preferences.language.locale))
+                    LabeledContent(app.tr("Deleted records in backup"), value: DisplayFormatting.count(preview.recentlyDeletedCount, locale: app.preferences.language.locale))
                     if preview.changedCount > 0 {
                         Toggle(app.tr("Replace matching existing cheques"), isOn: $replaceExisting)
                         Text(app.tr("Off by default. New cheques are added; existing cheques remain unchanged. Turn on only to replace matching records with this backup's contents."))
@@ -200,7 +200,7 @@ private struct BackupRestoreView: View {
             if restoreReminderPreferences { payload.globalReminders?.apply(to: app.preferences) }
             app.currencyCode = payload.currencyCode; app.didMutate()
             Task { await app.requestNotificationPermissionIfNeeded() }
-            message = app.tr("Backup restored") + ": " + count.formatted()
+            message = app.tr("Backup restored") + ": " + DisplayFormatting.count(count, locale: app.preferences.language.locale)
             self.payload = nil; preview = nil; encryptedData = nil; password = ""
         } catch { errorMessage = transferMessage(error, app: app) }
     }
@@ -246,9 +246,9 @@ private struct CSVTransferView: View {
             }
             if let preview {
                 Section(app.tr("Import preview")) {
-                    LabeledContent(app.tr("Valid rows"), value: preview.rows.count.formatted())
-                    LabeledContent(app.tr("Rows with errors"), value: preview.issues.count.formatted())
-                    LabeledContent(app.tr("Possible duplicates"), value: preview.duplicateCount.formatted())
+                    LabeledContent(app.tr("Valid rows"), value: DisplayFormatting.count(preview.rows.count, locale: app.preferences.language.locale))
+                    LabeledContent(app.tr("Rows with errors"), value: DisplayFormatting.count(preview.issues.count, locale: app.preferences.language.locale))
+                    LabeledContent(app.tr("Possible duplicates"), value: DisplayFormatting.count(preview.duplicateCount, locale: app.preferences.language.locale))
                     if preview.duplicateCount > 0 { Toggle(app.tr("Include possible duplicates"), isOn: $includeDuplicates) }
                     Button(app.tr("Import reviewed rows") + " (\(selectedCount))") { confirmation = true }
                         .disabled(selectedCount == 0 || loading)
@@ -258,8 +258,9 @@ private struct CSVTransferView: View {
                 Section(app.tr("Rows")) {
                     ForEach(Array(preview.rows.prefix(200))) { row in
                         VStack(alignment: .leading, spacing: 3) {
-                            Text("\(row.line). \(row.snapshot.party.isEmpty ? row.snapshot.number : row.snapshot.party)")
-                            Text(row.snapshot.number + " · " + app.formatAmount(row.snapshot.amountMinorUnits) + " · " + row.snapshot.dueDate.iso)
+                            Text(DisplayFormatting.count(row.line, locale: app.preferences.language.locale) + ". " +
+                                 NumericInput.latinDigits(row.snapshot.party.isEmpty ? row.snapshot.number : row.snapshot.party))
+                            Text(NumericInput.latinDigits(row.snapshot.number) + " · " + app.formatAmount(row.snapshot.amountMinorUnits) + " · " + row.snapshot.dueDate.iso)
                                 .font(.caption).foregroundStyle(.secondary)
                             if row.isProbableDuplicate { Text(app.tr("Possible duplicate")).font(.caption).foregroundStyle(.orange) }
                         }
@@ -269,7 +270,8 @@ private struct CSVTransferView: View {
                 if !preview.issues.isEmpty {
                     Section(app.tr("Rows with errors")) {
                         ForEach(Array(preview.issues.prefix(200))) { issue in
-                            Text("\(issue.line): " + app.tr(issue.message)).font(.footnote).foregroundStyle(.red)
+                            Text(DisplayFormatting.count(issue.line, locale: app.preferences.language.locale) + ": " + app.tr(issue.message))
+                                .font(.footnote).foregroundStyle(.red)
                         }
                     }
                 }
@@ -330,7 +332,7 @@ private struct CSVTransferView: View {
             let count = try ChequeTransferService.restore(payload, into: context)
             app.didMutate(); self.preview = nil
             Task { await app.requestNotificationPermissionIfNeeded() }
-            message = app.tr("Cheques imported") + ": " + count.formatted()
+            message = app.tr("Cheques imported") + ": " + DisplayFormatting.count(count, locale: app.preferences.language.locale)
         } catch { errorMessage = transferMessage(error, app: app) }
     }
 }

@@ -53,7 +53,7 @@ public enum CurrencyMath {
         formatter.minimumFractionDigits = digits
         formatter.maximumFractionDigits = digits
         let decimal = Decimal(minorUnits) / powerOfTen(digits)
-        return formatter.string(from: NSDecimalNumber(decimal: decimal)) ?? "\(editable(minorUnits: minorUnits, currencyCode: currencyCode)) \(currencyCode.uppercased())"
+        return NumericInput.latinDigits(formatter.string(from: NSDecimalNumber(decimal: decimal)) ?? "\(editable(minorUnits: minorUnits, currencyCode: currencyCode)) \(currencyCode.uppercased())")
     }
 
     public static func editable(minorUnits: Int64, currencyCode: String) -> String {

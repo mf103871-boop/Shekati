@@ -53,6 +53,18 @@ final class ChequeOCRParserTests: XCTestCase {
         XCTAssertEqual(value.dueDate?.iso, "2026-10-25")
     }
 
+    func testSuggestedChequeNumbersAreDigitsOnlyAndKeepLeadingZeros() {
+        for input in ["A000123", "000-123", "000/123", "000 123", "+000123", "000123!"] {
+            XCTAssertNil(ChequeOCRParser.parse(text: "Cheque No: " + input, currencyCode: "USD").number, input)
+        }
+        let text = "رقم الشيك: ۰۰۰۱۲۳\nالمبلغ: ۲۵٫۵۰"
+        let value = ChequeOCRParser.parse(text: text, currencyCode: "USD")
+        XCTAssertEqual(value.number, "000123")
+        XCTAssertEqual(value.amountText, "25.50")
+        XCTAssertEqual(value.recognizedText, text, "Raw OCR evidence stays intact; the numeric suggestion is normalized")
+        XCTAssertEqual(ChequeOCRParser.parse(text: "Cheque No: ０００１２３", currencyCode: "USD").number, "000123")
+    }
+
     func testIncomingAndOutgoingUseTheCorrectCounterpartyRole() {
         let text = "Payer: Buyer Company\nPayee: Seller Company"
         XCTAssertEqual(ChequeOCRParser.parse(text: text, currencyCode: "USD", direction: .incoming).party, "Buyer Company")

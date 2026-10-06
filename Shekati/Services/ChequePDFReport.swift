@@ -92,10 +92,10 @@ enum ChequePDFReport {
             let attributes: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: UIColor.black,
                                                               .paragraphStyle: paragraph]
             if result.length > 0 { result.append(NSAttributedString(string: "\n", attributes: attributes)) }
-            result.append(NSAttributedString(string: text, attributes: attributes))
+            result.append(NSAttributedString(string: NumericInput.latinDigits(text), attributes: attributes))
         }
         append(cheque.party.isEmpty ? (arabic ? "شيك" : "Cheque") : cheque.party, font: .boldSystemFont(ofSize: 13))
-        if !cheque.number.isEmpty { append("#" + cheque.number, font: .systemFont(ofSize: 10)) }
+        if !cheque.number.isEmpty { append("#" + NumericInput.latinDigits(cheque.number), font: .systemFont(ofSize: 10)) }
         if !cheque.bank.isEmpty { append(cheque.bank, font: .systemFont(ofSize: 10)) }
         let direction = cheque.direction == .incoming ? (arabic ? "وارد" : "Incoming") : (arabic ? "صادر" : "Outgoing")
         append(direction + " · " + status(cheque, arabic: arabic), font: .systemFont(ofSize: 10))
@@ -136,7 +136,7 @@ enum ChequePDFReport {
         paragraph.alignment = arabic ? .right : .left
         paragraph.baseWritingDirection = arabic ? .rightToLeft : .leftToRight
         paragraph.lineBreakMode = .byWordWrapping
-        (text as NSString).draw(in: rect, withAttributes: [.font: font, .foregroundColor: UIColor.black,
+        (NumericInput.latinDigits(text) as NSString).draw(in: rect, withAttributes: [.font: font, .foregroundColor: UIColor.black,
                                                         .paragraphStyle: paragraph])
     }
 

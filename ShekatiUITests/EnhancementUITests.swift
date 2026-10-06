@@ -1,8 +1,54 @@
 import XCTest
+import UIKit
 
 /// User-visible workflows use isolated memory and fictional records. No cloud/notification promise is inferred.
 final class EnhancementUITests: XCTestCase {
     override func setUpWithError() throws { continueAfterFailure = false }
+
+    @MainActor
+    func testArabicNumericFieldsNormalizePastedDigitsAndRejectLettersSymbolsAndExcessPrecision() {
+        let app = launch(arabic: true)
+        openEditor(app)
+        app.segmentedControls["chequeDirectionPicker"].buttons["صادر"].tap()
+
+        let amount = app.textFields["amountField"]
+        paste("١٢٥٫٥٠", into: amount, in: app)
+        assertValue("125.50", in: amount)
+        paste("ABC#", into: amount, in: app)
+        assertValue("125.50", in: amount)
+        amount.coordinate(withNormalizedOffset: CGVector(dx: 0.98, dy: 0.5)).tap()
+        amount.typeText("9")
+        assertValue("125.50", in: amount) // USD must not silently round a third fractional digit.
+
+        fillField("partyField", value: "Numeric input demo", in: app)
+        hideKeyboard(in: app, arabic: true)
+        let number = app.textFields["chequeNumberField"]
+        paste("٠٠٠٨١٢", into: number, in: app)
+        assertValue("000812", in: number)
+        paste("ABC#.", into: number, in: app)
+        assertValue("000812", in: number)
+        hideKeyboard(in: app, arabic: true)
+
+        let date = app.descendants(matching: .any).matching(identifier: "dueDateField").firstMatch
+        XCTAssertTrue(date.exists)
+        let pickerText = ([date] + date.descendants(matching: .any).allElementsBoundByIndex)
+            .map { $0.label + " " + (($0.value as? String) ?? "") }.joined(separator: " ")
+        XCTAssertFalse(pickerText.unicodeScalars.contains { (0x0660...0x0669).contains($0.value) ||
+            (0x06F0...0x06F9).contains($0.value) }, "Date controls must use English digits in the Arabic interface")
+        capture(app, "Arabic numeric entry keeps leading zeros and English digits")
+        app.buttons["saveCheque"].tap()
+        waitForEditorDismissal(app)
+        app.tabBars.buttons["الشيكات"].tap()
+        let saved = row(number: "000812", in: app)
+        XCTAssertTrue(saved.waitForExistence(timeout: 5))
+        XCTAssertTrue(saved.label.contains("125.5"))
+        reveal(saved, in: app)
+        saved.tap()
+        app.buttons["تعديل"].tap()
+        XCTAssertTrue(amount.waitForExistence(timeout: 5))
+        assertValue("125.50", in: amount)
+        assertValue("000812", in: number)
+    }
 
     func testConsecutiveEntryKeepsChosenDetailsClearsPrivateFieldsAndRequiresDateReview() {
         let app = launch()
@@ -270,6 +316,36 @@ final class EnhancementUITests: XCTestCase {
         field.tap()
         waitForKeyboardFocus(field, in: app)
         field.typeText(value)
+    }
+
+    /// A numeric keyboard has no alphabet keys. Paste exercises the real field-validation path
+    /// for both Arabic numerals and invalid external input instead of relying on keyboard layout.
+    @MainActor
+    private func paste(_ value: String, into field: XCUIElement, in app: XCUIApplication) {
+        hideKeyboard(in: app, arabic: true)
+        reveal(field, in: app)
+        field.tap()
+        waitForKeyboardFocus(field, in: app)
+        UIPasteboard.general.string = value
+        field.press(forDuration: 1.1)
+        let pastePredicate = NSPredicate(format: "label IN %@", ["Paste", "لصق"])
+        let pasteButton = app.buttons.matching(pastePredicate).firstMatch
+        let pasteMenuItem = app.menuItems.matching(pastePredicate).firstMatch
+        let visiblePaste = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            pasteButton.exists || pasteMenuItem.exists
+        }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [visiblePaste], timeout: 5), .completed,
+                       "The standard text-editing menu must expose Paste")
+        (pasteButton.exists ? pasteButton : pasteMenuItem).tap()
+        let permission = app.alerts.buttons.matching(NSPredicate(
+            format: "label IN %@", ["Allow Paste", "السماح باللصق"])).firstMatch
+        if permission.waitForExistence(timeout: 1) { permission.tap() }
+    }
+
+    private func assertValue(_ expected: String, in field: XCUIElement) {
+        let canonical = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", expected), object: field)
+        XCTAssertEqual(XCTWaiter.wait(for: [canonical], timeout: 5), .completed,
+                       "Numeric fields must display their accepted English-digit value immediately")
     }
 
     private func setBank(_ value: String, in app: XCUIApplication) {

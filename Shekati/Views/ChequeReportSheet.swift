@@ -13,7 +13,7 @@ struct ChequeReportSheet: View {
     var body: some View {
         Form {
             Section {
-                LabeledContent(app.tr("Shown cheques"), value: cheques.count.formatted())
+                LabeledContent(app.tr("Shown cheques"), value: DisplayFormatting.count(cheques.count, locale: app.preferences.language.locale))
                 Text(app.tr("The report includes the cheques and order shown in your filtered list."))
                     .foregroundStyle(.secondary)
                 Button(app.tr("Save PDF report")) {

@@ -94,7 +94,7 @@ struct CurrencyPickerView: View {
                 Text(app.tr("Currency cannot change while any saved cheque exists, including history."))
             }
         }.navigationTitle(app.tr("Currency"))
-            .searchable(text: $query, prompt: app.tr("Search currencies"))
+            .searchable(text: $query.westernDigits, prompt: app.tr("Search currencies"))
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button(app.tr("Cancel")) { dismiss() } } }
             .alert(app.tr("Could not save changes."), isPresented: Binding(
                 get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {

@@ -61,7 +61,7 @@ struct ChequeListView: View {
             .environment(\.editMode, $editMode)
             .navigationTitle(app.tr("Cheques"))
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $filter.query, prompt: Text(app.tr("Search number, bank or name")))
+            .searchable(text: $filter.query.westernDigits, prompt: Text(app.tr("Search number, bank or name")))
             .toolbar {
                 ChequeListToolbar(
                     canReorder: app.preferences.sort == .manual && !visible.isEmpty,
@@ -353,7 +353,8 @@ struct ChequeListView: View {
 
     private func shownCount(_ count: Int) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 5) {
-            Text(count, format: .number).font(.subheadline.weight(.semibold)).monospacedDigit()
+            Text(DisplayFormatting.count(count, locale: app.preferences.language.locale))
+                .font(.subheadline.weight(.semibold)).monospacedDigit()
             Text(app.tr("Shown cheques")).font(.footnote).foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)
@@ -547,6 +548,8 @@ private struct ChequeFilterSheet: View {
                         get: { (draft.from ?? .today).date() },
                         set: { draft.from = LocalDay(date: $0) }
                     ), displayedComponents: .date)
+                        .environment(\.locale, Locale(identifier: "en_GB"))
+                        .environment(\.calendar, Calendar(identifier: .gregorian))
                 }
                 Toggle(app.tr("Through date"), isOn: Binding(
                     get: { draft.through != nil }, set: { draft.through = $0 ? .today : nil }
@@ -556,6 +559,8 @@ private struct ChequeFilterSheet: View {
                         get: { (draft.through ?? .today).date() },
                         set: { draft.through = LocalDay(date: $0) }
                     ), displayedComponents: .date)
+                        .environment(\.locale, Locale(identifier: "en_GB"))
+                        .environment(\.calendar, Calendar(identifier: .gregorian))
                 }
             }
         }

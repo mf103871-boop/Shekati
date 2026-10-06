@@ -55,7 +55,7 @@ struct ChequeDetailView: View {
                                              locale: app.preferences.language.locale))
                         .font(.largeTitle.bold()).lineLimit(1).minimumScaleFactor(0.65)
                         .foregroundStyle(record.direction == .incoming ? Theme.accent : Theme.navy)
-                    if !record.party.isEmpty { Text(record.party).font(.title3.weight(.medium)) }
+                    if !record.party.isEmpty { Text(NumericInput.latinDigits(record.party)).font(.title3.weight(.medium)) }
                     Divider()
                     LabeledContent(app.tr("Due date"), value: app.formatDay(record.dueDate))
                         .foregroundStyle(record.snapshot.isOverdue(on: app.today) ? Theme.red : Theme.navy)
@@ -91,7 +91,7 @@ struct ChequeDetailView: View {
                     if !record.notes.isEmpty {
                         Divider()
                         Text(app.tr("Notes")).font(.subheadline.weight(.medium))
-                        Text(record.notes).font(.subheadline).textSelection(.enabled)
+                        Text(NumericInput.latinDigits(record.notes)).font(.subheadline).textSelection(.enabled)
                     }
                 }
                 .padding(20).background(Theme.surface, in: RoundedRectangle(cornerRadius: 22))
@@ -280,7 +280,7 @@ struct ChequeDetailView: View {
 
     private func detailLine(_ title: String, _ value: String) -> some View {
         LabeledContent {
-            Text(value.isEmpty ? app.tr("Not provided") : value)
+            Text(value.isEmpty ? app.tr("Not provided") : NumericInput.latinDigits(value))
                 .foregroundStyle(value.isEmpty ? .secondary : .primary)
                 .multilineTextAlignment(.trailing).textSelection(.enabled)
         } label: { Text(app.tr(title)) }
@@ -315,7 +315,7 @@ struct ChequeDetailView: View {
         components.hour = record.reminderHour ?? app.preferences.reminderHour
         components.minute = record.reminderMinute ?? app.preferences.reminderMinute
         let date = calendar.date(from: components) ?? Date()
-        return date.formatted(.dateTime.hour().minute().locale(app.preferences.language.locale))
+        return NumericInput.latinDigits(date.formatted(.dateTime.hour().minute().locale(app.preferences.language.locale)))
     }
 
     @discardableResult

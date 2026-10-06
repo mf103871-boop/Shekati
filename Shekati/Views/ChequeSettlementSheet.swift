@@ -23,6 +23,8 @@ struct ChequeSettlementSheet: View {
                 Section {
                     DatePicker(app.tr(record.direction == .incoming ? "Collection date" : "Payment date"),
                                selection: $actualDate, in: ...Date(), displayedComponents: .date)
+                        .environment(\.locale, Locale(identifier: "en_GB"))
+                        .environment(\.calendar, Calendar(identifier: .gregorian))
                         .accessibilityIdentifier("actualSettlementDate")
                     Text(app.formatDay(LocalDay(date: actualDate)))
                         .font(.footnote).foregroundStyle(.secondary)
