@@ -154,12 +154,17 @@ final class EnhancementUITests: XCTestCase {
         capture(app, "Build 6 English actual payment date saved")
         goBack(in: app)
         XCTAssertTrue(app.navigationBars["Cheques"].waitForExistence(timeout: 5))
+        waitForRowRemoval(cheque, in: app)
+        let scopes = app.segmentedControls["outgoingPaymentScopePicker"]
+        XCTAssertTrue(scopes.waitForExistence(timeout: 5))
+        XCTAssertTrue(scopes.buttons["Cheques"].isSelected)
+        scopes.buttons["Paid cheques"].tap()
         let paid = row(number: "000401", in: app)
         XCTAssertTrue(paid.waitForExistence(timeout: 5))
         let markedPaid = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label CONTAINS %@", "Paid"), object: paid)
         XCTAssertEqual(XCTWaiter.wait(for: [markedPaid], timeout: 5), .completed,
-                       "A paid outgoing cheque stays in the sheet and reads as paid")
-        capture(app, "English paid cheque kept in the outgoing sheet")
+                       "A paid outgoing cheque leaves the primary list and remains in Paid cheques")
+        capture(app, "English paid cheque retained in its separate history")
     }
 
     func testSoftDeletionCanBeUndoneAndLaterRestoredFromSettingsTrash() {

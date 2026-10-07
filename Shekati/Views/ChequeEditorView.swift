@@ -17,6 +17,7 @@ struct ChequeEditorView: View {
     /// touching the model, and body reads the currency from here rather than from the record.
     private let recordID: UUID?
     private let recordCurrency: String?
+    private let defaultDirection: ChequeDirection
 
     @State private var direction: ChequeDirection
     @State private var amountText: String
@@ -70,16 +71,18 @@ struct ChequeEditorView: View {
 
     private enum EntryField: Hashable { case amount, party, number, bank, customDays }
 
-    init(record: ChequeRecord? = nil) {
+    init(record: ChequeRecord? = nil, initialDirection: ChequeDirection? = nil,
+         initialDueDate: LocalDay? = nil) {
         self.record = record
         recordID = record?.id
         recordCurrency = record?.currencyCode
+        defaultDirection = initialDirection ?? .incoming
         let offsets = record?.reminderOffsets ?? [3, 1, 0]
-        _direction = State(initialValue: record?.direction ?? .incoming)
+        _direction = State(initialValue: record?.direction ?? initialDirection ?? .incoming)
         _amountText = State(initialValue: record.map {
             CurrencyMath.editable(minorUnits: $0.amountMinorUnits, currencyCode: $0.currencyCode)
         } ?? "")
-        _dueDate = State(initialValue: record?.dueDate.date() ?? Date())
+        _dueDate = State(initialValue: record?.dueDate.date() ?? initialDueDate?.date() ?? Date())
         _includeIssueDate = State(initialValue: record?.issueDate != nil)
         _issueDate = State(initialValue: record?.issueDate?.date() ?? Date())
         // Preserve legacy prefixes and punctuation while showing all stored digit glyphs in Latin.
@@ -446,6 +449,7 @@ struct ChequeEditorView: View {
             .accessibilityIdentifier("dueDateField")
         Text(app.formatDay(LocalDay(date: dueDate)) + " · " + app.relativeDueDate(LocalDay(date: dueDate)))
             .font(.footnote).foregroundStyle(.secondary)
+            .accessibilityIdentifier("plannedDueDateSummary")
         if dueDateNeedsReview {
             Button(app.tr("Confirm this due date")) { dueDateNeedsReview = false; dateError = nil }
                 .accessibilityIdentifier("confirmNextChequeDate")
@@ -727,7 +731,7 @@ struct ChequeEditorView: View {
 
     private func resetForNextEntry() {
         focusedField = nil
-        if !keepEntryDetails { direction = .incoming; bank = ""; party = "" }
+        if !keepEntryDetails { direction = defaultDirection; bank = ""; party = "" }
         amountText = ""; number = ""; branch = ""; accountReference = ""; notes = ""
         dueDate = Date(); issueDate = Date(); includeIssueDate = false
         frontImageData = nil; backImageData = nil; frontPhoto = nil; backPhoto = nil

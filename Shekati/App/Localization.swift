@@ -414,6 +414,25 @@ enum Localization {
         "Cheque date": "تاريخ الصرف",
         "Balance": "رصيد",
         "No outgoing cheques": "لا توجد شيكات صادرة",
-        "Outgoing cheques you add appear here in date order.": "تظهر هنا الشيكات الصادرة التي تضيفها مرتبة حسب التاريخ."
+        "Outgoing cheques you add appear here in date order.": "تظهر هنا الشيكات الصادرة التي تضيفها مرتبة حسب التاريخ.",
+        "Paid cheques": "المصروفة",
+        "Free due dates": "الأيام الخالية",
+        "Free days": "الأيام الخالية",
+        "Select": "تحديد",
+        "Select all": "تحديد الكل",
+        "Clear selection": "إلغاء التحديد",
+        "Selected": "محدّد",
+        "Not selected": "غير محدّد",
+        "Selected cheques": "الشيكات المحددة",
+        "Selected total": "مجموع المحدد",
+        "Select cheques in one currency": "حدّد شيكات بعملة واحدة",
+        "Total unavailable": "المجموع غير متاح",
+        "No paid cheques": "لا توجد شيكات مصروفة",
+        "Paid cheques appear here with their details and payment dates.": "تظهر هنا الشيكات المصروفة مع تفاصيلها وتاريخ صرفها.",
+        "Days with no unpaid outgoing cheques due, across all banks. Choose a period of up to 366 days.": "أيام لا تستحق فيها شيكات صادرة غير مسددة، في جميع البنوك. اختر فترة لا تتجاوز 366 يومًا.",
+        "Choose a date range from today, with the end on or after the start, up to 366 days.": "اختر فترة تبدأ اليوم أو بعده وتنتهي في يوم البداية أو بعده، وبحد أقصى 366 يومًا.",
+        "No free days in this period. Try another date range.": "لا توجد أيام خالية في هذه الفترة. جرّب فترة أخرى.",
+        "Add an outgoing cheque on this day": "إضافة شيك صادر يستحق في هذا اليوم",
+        "Tap a day to add an outgoing cheque with this due date.": "اضغط على يوم لإضافة شيك صادر بهذا الاستحقاق."
     ]
 }

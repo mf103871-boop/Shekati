@@ -2,43 +2,168 @@ import SwiftUI
 import SwiftData
 import ShekatiCore
 
-/// The Cheques tab: every outgoing cheque laid out like the owner's "postdated cheques" sheet.
-/// Columns, from the leading edge (the right in Arabic): value with a data bar, payee, cheque
-/// number, cheque date and the balance still owed from that row onward. Display only; a row
-/// opens its cheque. Paid rows are green, a returned or missing number is red, the balance is yellow.
+/// The outgoing ledger keeps paid records in their own tab without deleting their history.
 @MainActor
 struct OutgoingChequeTableView: View {
     @Environment(AppState.self) private var app
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Query(filter: #Predicate<ChequeRecord> { $0.deletedAt == nil && $0.directionRaw == "outgoing" })
     private var records: [ChequeRecord]
+    @State private var showsPaid = false
+    @State private var isSelecting = false
+    @State private var selectedIDs: Set<UUID> = []
+    @State private var showingFreeDays = false
+    @State private var showingEditor = false
 
     var body: some View {
-        let ledger = OutgoingChequeLedger(cheques: records.map(\.snapshot))
         let byID = Dictionary(records.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        let snapshots = byID.values.filter { showsPaid ? $0.status == .settled : $0.status != .settled }.map(\.snapshot)
+        let ledger = OutgoingChequeLedger(cheques: snapshots)
+        let visibleIDs = Set(ledger.rows.map(\.id))
+        let selected = ChequeSelectionSummary(cheques: snapshots, selectedIDs: selectedIDs)
+        VStack(spacing: 0) {
+            scopePicker.padding(.horizontal, 16).padding(.top, 8)
+            listActions(visibleIDs: visibleIDs).padding(.horizontal, 16).padding(.vertical, 8)
+            if isSelecting {
+                selectionActions(visibleIDs: visibleIDs).padding(.horizontal, 16).padding(.bottom, 8)
+            }
+            tableContent(ledger, byID: byID)
+        }
+        .background(Color(uiColor: .systemBackground))
+        .navigationTitle(app.tr("Cheques"))
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    endSelection()
+                    showingEditor = true
+                } label: { Image(systemName: "plus") }
+                .accessibilityLabel(app.tr("Add cheque"))
+                .accessibilityIdentifier("addOutgoingCheque")
+                .disabled(app.currencyConflict || app.currencyCode.isEmpty)
+            }
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if isSelecting { ChequeSelectionSummaryView(summary: selected) }
+        }
+        .onChange(of: showsPaid) { _, _ in endSelection() }
+        .onChange(of: visibleIDs) { _, ids in selectedIDs.formIntersection(ids) }
+        .sheet(isPresented: $showingFreeDays) { ChequeFreeDaysView() }
+        .sheet(isPresented: $showingEditor) {
+            NavigationStack { ChequeEditorView(initialDirection: .outgoing) }
+                .environment(\.locale, app.preferences.language.locale)
+                .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+        }
+    }
+
+    @ViewBuilder private var scopePicker: some View {
+        if dynamicTypeSize.isAccessibilitySize { scopeSelection.pickerStyle(.menu) }
+        else { scopeSelection.pickerStyle(.segmented) }
+    }
+
+    private var scopeSelection: some View {
+        Picker(app.tr("Show cheques"), selection: $showsPaid) {
+            Text(app.tr("Cheques")).tag(false)
+            Text(app.tr("Paid cheques")).tag(true)
+        }
+        .accessibilityIdentifier("outgoingPaymentScopePicker")
+    }
+
+    private func listActions(visibleIDs: Set<UUID>) -> some View {
+        ViewThatFits(in: .horizontal) {
+            HStack {
+                freeDaysButton.fixedSize(horizontal: true, vertical: false)
+                Spacer(minLength: 12)
+                selectionButton(visibleIDs: visibleIDs).fixedSize(horizontal: true, vertical: false)
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                freeDaysButton
+                selectionButton(visibleIDs: visibleIDs)
+            }.frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .font(.subheadline)
+    }
+
+    private var freeDaysButton: some View {
+        Button {
+            endSelection()
+            showingFreeDays = true
+        } label: { Label(app.tr("Free due dates"), systemImage: "calendar.badge.plus").frame(minHeight: 44) }
+        .buttonStyle(.borderless)
+        .accessibilityIdentifier("freeChequeDaysButton")
+    }
+
+    private func selectionButton(visibleIDs: Set<UUID>) -> some View {
+        Button(app.tr(isSelecting ? "Done" : "Select")) {
+            if isSelecting { endSelection() }
+            else { selectedIDs.removeAll(); isSelecting = true }
+        }
+        .fontWeight(.semibold)
+        .frame(minHeight: 44)
+        .buttonStyle(.borderless)
+        .disabled(visibleIDs.isEmpty && !isSelecting)
+        .accessibilityIdentifier("selectChequesButton")
+    }
+
+    private func selectionActions(visibleIDs: Set<UUID>) -> some View {
+        HStack {
+            Button(app.tr("Select all")) { selectedIDs = visibleIDs }
+                .accessibilityIdentifier("selectAllChequesButton")
+                .disabled(visibleIDs.isEmpty || selectedIDs == visibleIDs)
+            Spacer(minLength: 12)
+            Button(app.tr("Clear selection")) { selectedIDs.removeAll() }
+                .accessibilityIdentifier("clearSelectedChequesButton")
+                .disabled(selectedIDs.isEmpty)
+        }
+        .font(.footnote)
+        .buttonStyle(.borderless)
+        .frame(minHeight: 44)
+    }
+
+    private func endSelection() {
+        isSelecting = false
+        selectedIDs.removeAll()
+    }
+
+    private func tableContent(_ ledger: OutgoingChequeLedger, byID: [UUID: ChequeRecord]) -> some View {
         ScrollView {
             LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                 Section {
                     ForEach(ledger.rows) { row in
                         if let record = byID[row.id] {
-                            NavigationLink { ChequeDetailView(record: record) } label: {
-                                OutgoingChequeRow(row: row, showsBalance: !ledger.hasCurrencyConflict)
+                            if isSelecting {
+                                Button {
+                                    if selectedIDs.contains(row.id) { selectedIDs.remove(row.id) }
+                                    else { selectedIDs.insert(row.id) }
+                                } label: {
+                                    OutgoingChequeRow(row: row, showsBalance: !ledger.hasCurrencyConflict,
+                                        showsPaidDates: showsPaid, isSelecting: true, isSelected: selectedIDs.contains(row.id))
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityAddTraits(selectedIDs.contains(row.id) ? .isSelected : [])
+                                .accessibilityValue(app.tr(selectedIDs.contains(row.id) ? "Selected" : "Not selected"))
+                            } else {
+                                NavigationLink { ChequeDetailView(record: record) } label: {
+                                    OutgoingChequeRow(row: row, showsBalance: !ledger.hasCurrencyConflict, showsPaidDates: showsPaid)
+                                }
+                                .buttonStyle(.plain)
                             }
-                            .buttonStyle(.plain)
                         }
                     }
                     if ledger.rows.isEmpty {
-                        ContentUnavailableView(app.tr("No outgoing cheques"), systemImage: "doc.text",
-                                               description: Text(app.tr("Outgoing cheques you add appear here in date order.")))
+                        ContentUnavailableView(app.tr(showsPaid ? "No paid cheques" : "No outgoing cheques"),
+                                               systemImage: showsPaid ? "checkmark.circle" : "doc.text",
+                                               description: Text(app.tr(showsPaid
+                                                ? "Paid cheques appear here with their details and payment dates."
+                                                : "Outgoing cheques you add appear here in date order.")))
                             .padding(.top, 32)
                     }
                 } header: {
-                    OutgoingChequeTableHeader()
+                    OutgoingChequeTableHeader(showsPaidDates: showsPaid, isSelecting: isSelecting)
                 }
             }
         }
-        .background(Color(uiColor: .systemBackground))
-        .navigationTitle(app.tr("Cheques"))
-        .navigationBarTitleDisplayMode(.inline)
+        .accessibilityIdentifier("outgoingChequeTable")
     }
 }
 
@@ -102,10 +227,12 @@ private struct SheetCell<Content: View>: View {
 @MainActor
 private struct OutgoingChequeTableHeader: View {
     @Environment(AppState.self) private var app
+    var showsPaidDates = false
+    var isSelecting = false
 
     var body: some View {
         VStack(spacing: 0) {
-            Text(app.tr("Postdated cheques"))
+            Text(app.tr(showsPaidDates ? "Paid cheques" : "Postdated cheques"))
                 .font(.subheadline.bold())
                 .foregroundStyle(.black)
                 .frame(maxWidth: .infinity, minHeight: 30)
@@ -118,7 +245,7 @@ private struct OutgoingChequeTableHeader: View {
                 heading("Pay to", span: OutgoingChequeColumn.payee)
                 heading("Cheque no.", span: OutgoingChequeColumn.number)
                 heading("Cheque date", span: OutgoingChequeColumn.date)
-                heading("Balance", span: OutgoingChequeColumn.balance)
+                heading(isSelecting ? "Select" : (showsPaidDates ? "Payment date" : "Balance"), span: OutgoingChequeColumn.balance)
             }
             .fixedSize(horizontal: false, vertical: true)
         }
@@ -143,11 +270,15 @@ private struct OutgoingChequeRow: View {
     @Environment(AppState.self) private var app
     let row: OutgoingChequeLedger.Row
     let showsBalance: Bool
+    var showsPaidDates = false
+    var isSelecting = false
+    var isSelected = false
 
     private var cheque: ChequeSnapshot { row.cheque }
     private var number: String { NumericInput.latinDigits(cheque.number.trimmingCharacters(in: .whitespacesAndNewlines)) }
     private var amount: String { CurrencyMath.plain(minorUnits: cheque.amountMinorUnits, currencyCode: cheque.currencyCode) }
     private var date: String { OutgoingChequeLedger.dateText(cheque.dueDate) }
+    private var paymentDate: String { cheque.actualDate.map(OutgoingChequeLedger.dateText) ?? "—" }
     private var balance: String {
         guard showsBalance, let remaining = row.remainingMinorUnits else { return "—" }
         return CurrencyMath.plain(minorUnits: remaining, currencyCode: cheque.currencyCode)
@@ -173,8 +304,16 @@ private struct OutgoingChequeRow: View {
             SheetCell(span: OutgoingChequeColumn.date, fill: rowFill) {
                 numeric(date)
             }
-            SheetCell(span: OutgoingChequeColumn.balance, fill: OutgoingChequeStyle.balance) {
-                numeric(balance)
+            if isSelecting {
+                SheetCell(span: OutgoingChequeColumn.balance) {
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                        .font(.title3).foregroundStyle(Theme.accent)
+                        .accessibilityHidden(true)
+                }
+            } else {
+                SheetCell(span: OutgoingChequeColumn.balance, fill: showsPaidDates ? rowFill : OutgoingChequeStyle.balance) {
+                    numeric(showsPaidDates ? paymentDate : balance)
+                }
             }
         }
         .fixedSize(horizontal: false, vertical: true)
@@ -182,6 +321,7 @@ private struct OutgoingChequeRow: View {
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .opacity(cancelled ? 0.55 : 1)
         .contentShape(Rectangle())
+        .overlay { if isSelecting && isSelected { Rectangle().strokeBorder(Theme.accent, lineWidth: 2).allowsHitTesting(false) } }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(accessibleDescription))
         .accessibilityIdentifier("cheque-row-\(cheque.id.uuidString)")
@@ -220,6 +360,6 @@ private struct OutgoingChequeRow: View {
                 "\(amount) \(cheque.currencyCode)",
                 "\(app.tr("Due date")) \(date)",
                 statusLabel,
-                "\(app.tr("Balance")) \(balance)"].joined(separator: ", ")
+                showsPaidDates ? "\(app.tr("Payment date")) \(paymentDate)" : "\(app.tr("Balance")) \(balance)"].joined(separator: ", ")
     }
 }
