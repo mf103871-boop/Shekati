@@ -155,7 +155,7 @@ final class LedgerToolsUITests: XCTestCase {
 
     private func hideKeyboard(in app: XCUIApplication) {
         guard app.keyboards.firstMatch.exists else { return }
-        let done = app.buttons["Done"].allElementsBoundByIndex.first { $0.isHittable }
+        let done = app.buttons.matching(identifier: "Done").allElementsBoundByIndex.first { $0.isHittable }
         XCTAssertNotNil(done, "The keyboard must offer Done")
         done?.tap()
         waitForAbsence(app.keyboards.firstMatch)
