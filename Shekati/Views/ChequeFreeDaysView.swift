@@ -86,7 +86,6 @@ struct ChequeFreeDaysView: View {
                                 }
                                 .buttonStyle(.plain)
                                 .disabled(!canAddCheque)
-                                .accessibilityElement(children: .ignore)
                                 .accessibilityLabel(weekday(day, calendar: calendar) + " · " + app.formatDay(day))
                                 .accessibilityHint(app.tr("Add an outgoing cheque on this day"))
                                 .accessibilityIdentifier("freeDay-" + day.iso)
