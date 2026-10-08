@@ -236,13 +236,61 @@ final class ResponsiveLayoutUITests: XCTestCase {
     }
 
     private func type(_ text: String, into field: XCUIElement, expected: String, in app: XCUIApplication) {
+        var previousFrame = CGRect.null
+        var previousKeyboardFrame = CGRect.null
+        var stableSince: Date?
         let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-            field.exists && field.isEnabled && app.keyboards.firstMatch.exists
+            let keyboard = app.keyboards.firstMatch
+            guard field.exists && field.isEnabled && keyboard.exists else {
+                stableSince = nil
+                return false
+            }
+            let window = app.windows.firstMatch.frame
+            let frame = field.frame
+            let keyboardFrame = keyboard.frame
+            let navigationBottom = app.navigationBars.allElementsBoundByIndex.map(\.frame)
+                .filter { $0.height > 0 && $0.intersects(window) }.map(\.maxY).max() ?? window.minY
+            let predictions = app.otherElements["Typing Predictions"].firstMatch
+            let accessoryTop = predictions.exists && predictions.frame.height > 0 ?
+                min(keyboardFrame.minY, predictions.frame.minY) : keyboardFrame.minY - 48
+            let toolbarTop = app.toolbars.allElementsBoundByIndex.map(\.frame)
+                .filter { $0.height > 0 && $0.intersects(window) && $0.minY > navigationBottom }
+                .map(\.minY).min() ?? keyboardFrame.minY
+            let visibleBottom = min(accessoryTop, toolbarTop)
+            guard frame.width > 0 && frame.height > 0 && keyboardFrame.height > 0 &&
+                frame.minX >= window.minX - 1 && frame.maxX <= window.maxX + 1 &&
+                frame.minY >= navigationBottom && frame.maxY <= visibleBottom && field.isHittable else {
+                stableSince = nil
+                return false
+            }
+            if frame != previousFrame || keyboardFrame != previousKeyboardFrame || stableSince == nil {
+                previousFrame = frame
+                previousKeyboardFrame = keyboardFrame
+                stableSince = Date()
+                return false
+            }
+            return Date().timeIntervalSince(stableSince!) >= 0.5
         }, object: nil)
-        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 8), .completed)
+        // Next must focus and scroll its target above the keyboard before typing begins.
+        // Do not retap or drag a focused field: either can move the insertion point.
+        let readiness = XCTWaiter.wait(for: [ready], timeout: 15)
+        if readiness != .completed { inputDiagnostics(field, in: app, stage: "Target did not settle above keyboard") }
+        XCTAssertEqual(readiness, .completed, "The focused field must become fully visible and stable before typing")
         field.typeText(text)
         let accepted = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", expected), object: field)
-        XCTAssertEqual(XCTWaiter.wait(for: [accepted], timeout: 5), .completed)
+        let received = XCTWaiter.wait(for: [accepted], timeout: 5)
+        if received != .completed { inputDiagnostics(field, in: app, stage: "Exact input was not received") }
+        XCTAssertEqual(received, .completed, "The intended field must receive exactly the supplied fixture text")
+    }
+
+    private func inputDiagnostics(_ field: XCUIElement, in app: XCUIApplication, stage: String) {
+        let exists = field.exists
+        let value = exists ? String(describing: field.value) : "<missing>"
+        let fixtureState = XCTAttachment(string: "Field: \(field.identifier)\nExists: \(exists)\nValue: \(value)")
+        fixtureState.name = stage + " — isolated fixture field value"
+        fixtureState.lifetime = .keepAlways
+        add(fixtureState)
+        diagnostics(app, stage)
     }
 
     private func dismissKeyboard(in app: XCUIApplication, arabic: Bool) {

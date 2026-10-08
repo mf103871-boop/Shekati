@@ -196,13 +196,17 @@ struct OutgoingChequeTableView: View {
                             }
                         }
                         .frame(width: width, height: tableGeometry.size.height)
+                        .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
                     }
-                    .defaultScrollAnchor(.topLeading)
+                    // Use a physical scroll axis with an explicit starting edge. The
+                    // sheet itself retains the selected language's column direction.
+                    .defaultScrollAnchor(app.preferences.language == .arabic ? .topTrailing : .topLeading)
                     .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
+                    .environment(\.layoutDirection, .leftToRight)
+                    .accessibilityIdentifier("outgoingChequeTable")
                 }
             }
         }
-        .accessibilityIdentifier("outgoingChequeTable")
     }
 
     private func readableWidth(for ledger: OutgoingChequeLedger) -> CGFloat {
