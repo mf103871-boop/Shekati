@@ -160,6 +160,7 @@ struct ChequeEditorView: View {
     }
 
     var body: some View {
+        ScrollViewReader { scrollProxy in
         Form {
             essentialFields
 
@@ -169,6 +170,7 @@ struct ChequeEditorView: View {
                         .focused($nativeFocusedField, equals: .bank)
                         .submitLabel(.done).onSubmit { focusedField = nil }
                         .accessibilityIdentifier("bankField")
+                        .id(EntryField.bank)
                     if focusedField == .bank { previousSuggestions(for: .bank) }
                     TextField(app.tr("Branch (optional)"), text: $branch.westernDigits)
                     TextField(app.tr("Account reference (optional)"), text: $accountReference.westernDigits)
@@ -252,6 +254,7 @@ struct ChequeEditorView: View {
                                 Button(app.tr("Add")) { addCustomReminder() }
                                     .buttonStyle(.borderless)
                             }
+                            .id(EntryField.customDays)
                         }
                     } label: {
                         Text(app.tr("Reminder options")).accessibilityIdentifier("chequeReminderOptions")
@@ -336,6 +339,7 @@ struct ChequeEditorView: View {
         .onChange(of: focusedField) { _, field in
             let nativeTarget = field == .party || field == .bank ? field : nil
             if nativeFocusedField != nativeTarget { nativeFocusedField = nativeTarget }
+            revealFocusedField(using: scrollProxy)
         }
         .onChange(of: nativeFocusedField) { previous, field in
             if let field {
@@ -346,6 +350,11 @@ struct ChequeEditorView: View {
             }
         }
         .onChange(of: amountText) { _, _ in amountError = nil }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardDidChangeFrameNotification)) { _ in
+            // Numeric and alphabetic keyboards have different prediction/accessory
+            // heights. Reposition after the final frame, including device rotation.
+            revealFocusedField(using: scrollProxy)
+        }
         .onChange(of: frontPhoto) { _, item in
             Task { await loadPhoto(item, side: .front) }
         }
@@ -414,6 +423,21 @@ struct ChequeEditorView: View {
             Button(app.tr("Discard"), role: .destructive) { dismiss() }
             Button(app.tr("Keep editing"), role: .cancel) { }
         } message: { Text(app.tr("Your unsaved changes will be lost.")) }
+        }
+    }
+
+    private func revealFocusedField(using proxy: ScrollViewProxy) {
+        guard let field = focusedField else { return }
+        let sequence = entrySequence
+        Task { @MainActor in
+            // Let the Form include any newly visible suggestions and let SwiftUI
+            // apply the native focus handoff before resolving the row's position.
+            await Task.yield()
+            guard focusedField == field, entrySequence == sequence else { return }
+            withAnimation(.easeOut(duration: 0.2)) {
+                proxy.scrollTo(field, anchor: .center)
+            }
+        }
     }
 
     private var essentialFields: some View {
@@ -435,6 +459,7 @@ struct ChequeEditorView: View {
             }
             Text(currency).font(.subheadline.weight(.medium)).foregroundStyle(.secondary)
         }
+        .id(EntryField.amount)
         if let amountError {
             Text(amountError).font(.footnote).foregroundStyle(Theme.red)
                 .accessibilityIdentifier("amountValidationError")
@@ -460,6 +485,7 @@ struct ChequeEditorView: View {
             .focused($nativeFocusedField, equals: .party)
             .submitLabel(.next).onSubmit { focusedField = .number }
             .accessibilityIdentifier("partyField")
+            .id(EntryField.party)
         if focusedField == .party { previousSuggestions(for: .party) }
         NumericTextField(title: app.tr("Cheque number (optional)"), text: $number,
                          keyboardType: .numberPad, isFocused: numericFocus(.number),
@@ -470,6 +496,7 @@ struct ChequeEditorView: View {
             let normalized = NumericInput.latinDigits(proposed)
             return Self.isDeletion(normalized, from: current) ? normalized : nil
         }
+        .id(EntryField.number)
     } header: {
         Text(app.tr("Cheque details"))
     } footer: {
