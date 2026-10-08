@@ -92,11 +92,28 @@ final class ResponsiveLayoutUITests: XCTestCase {
         app.buttons["saveCheque"].tap()
         waitForAbsence(app.buttons["saveCheque"])
         rotate(.portrait, in: app)
+        // The total row combines its VoiceOver children, so assert the public row's complete
+        // value rather than relying on an identifier hidden inside that combined element.
+        let dashboardTotal = element("dashboardTotal-outgoing", in: app)
+        reveal(dashboardTotal, in: app)
+        assertVisibleBounds(dashboardTotal, in: app)
+        XCTAssertEqual(dashboardTotal.label.filter { "0123456789".contains($0) }, "123456789012",
+                       "The dashboard must expose the complete precise amount with English digits")
         capture(app, "06 large amount dashboard portrait")
 
         let chequesTab = app.tabBars.buttons[arabic ? "الشيكات" : "Cheques"]
         assertVisibleBounds(chequesTab, in: app)
         chequesTab.tap()
+        if !largeText {
+            // The title belongs to the viewport while the wide columns scroll underneath it.
+            let title = app.staticTexts["outgoingTableTitle"]
+            XCTAssertTrue(title.waitForExistence(timeout: 5))
+            assertVisibleBounds(title, in: app)
+            // Both reading directions must initially expose the value column without a pan.
+            let valueHeading = app.staticTexts[arabic ? "القيمة" : "Value"]
+            XCTAssertTrue(valueHeading.waitForExistence(timeout: 5))
+            assertVisibleBounds(valueHeading, in: app)
+        }
         let row = chequeRow(in: app)
         reveal(row, in: app, allowHorizontalScroll: !largeText)
         XCTAssertTrue(row.label.contains(chequeNumber))
@@ -215,15 +232,7 @@ final class ResponsiveLayoutUITests: XCTestCase {
     }
 
     private func rotate(_ orientation: UIDeviceOrientation, in app: XCUIApplication) {
-        XCUIDevice.shared.orientation = orientation
-        let landscape = orientation == .landscapeLeft || orientation == .landscapeRight
-        let changed = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-            let frame = app.windows.firstMatch.frame
-            return frame.width > 0 && (landscape ? frame.width > frame.height : frame.height > frame.width)
-        }, object: nil)
-        let result = XCTWaiter.wait(for: [changed], timeout: 8)
-        if result != .completed { diagnostics(app, "Orientation did not change") }
-        XCTAssertEqual(result, .completed, "The app must actually support the requested iPhone orientation")
+        rotateIPhone(to: orientation, in: app)
     }
 
     private func type(_ text: String, into field: XCUIElement, expected: String, in app: XCUIApplication) {
@@ -290,13 +299,15 @@ final class ResponsiveLayoutUITests: XCTestCase {
             let keyboardTop = keyboard.exists && keyboard.frame.height > 0 ? keyboard.frame.minY - 48 : frame.maxY
             let bottom = min(frame.maxY - 4, min(bottomBar, keyboardTop)) - 4
             let targetFrame = target.exists ? target.frame : CGRect.null
-            if target.exists && target.isHittable {
+            if target.exists {
                 let fitsHeight = targetFrame.height <= bottom - top
                 let verticallyVisible = fitsHeight ? targetFrame.minY >= top && targetFrame.maxY <= bottom :
                     targetFrame.midY >= top && targetFrame.midY <= bottom
                 let horizontallyVisible = allowHorizontalScroll ||
                     (targetFrame.minX >= frame.minX - 1 && targetFrame.maxX <= frame.maxX + 1)
-                if verticallyVisible && horizontallyVisible { return }
+                // XCUITest can throw while resolving an offscreen button's activation point.
+                // Check measured visibility first, scroll it into view, then require hittability.
+                if verticallyVisible && horizontallyVisible && target.isHittable { return }
             }
             guard bottom > top + 24 else { break }
             let above = target.exists && targetFrame.height > 0 && targetFrame.minY < top
@@ -315,10 +326,8 @@ final class ResponsiveLayoutUITests: XCTestCase {
 
     private func capture(_ app: XCUIApplication, _ label: String) {
         let window = app.windows.firstMatch.frame
-        let attachment = XCTAttachment(screenshot: app.screenshot())
-        attachment.name = "\(name) — \(Int(window.width))x\(Int(window.height))pt — \(label)"
-        attachment.lifetime = .keepAlways
-        add(attachment)
+        attachNativeScreenshot(in: app,
+            name: "\(name) — \(Int(window.width))x\(Int(window.height))pt — \(label)")
     }
 
     private func diagnostics(_ app: XCUIApplication, _ label: String) {

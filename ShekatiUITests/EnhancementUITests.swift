@@ -3,7 +3,12 @@ import UIKit
 
 /// User-visible workflows use isolated memory and fictional records. No cloud/notification promise is inferred.
 final class EnhancementUITests: XCTestCase {
-    override func setUpWithError() throws { continueAfterFailure = false }
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+        XCUIDevice.shared.orientation = .portrait
+    }
+
+    override func tearDownWithError() throws { XCUIDevice.shared.orientation = .portrait }
 
     @MainActor
     func testArabicNumericFieldsNormalizePastedDigitsAndRejectLettersSymbolsAndExcessPrecision() {
@@ -49,6 +54,12 @@ final class EnhancementUITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["selectedChequeCount"].label, "1")
         XCTAssertTrue(app.staticTexts["selectedChequeAmount"].label.contains("125.50"))
         capture(app, "Arabic outgoing selection total and paid history controls")
+        rotate(.landscapeRight, in: app)
+        assertArabicSelection(in: app)
+        XCTAssertTrue(saved.isHittable)
+        capture(app, "App Store Arabic native landscape — selected cheque total 125.50")
+        rotate(.portrait, in: app)
+        assertArabicSelection(in: app)
         app.buttons["selectChequesButton"].tap()
         saved.tap()
         app.buttons["تعديل"].tap()
@@ -418,6 +429,21 @@ final class EnhancementUITests: XCTestCase {
                        "Encrypted backup saving must reflect both the minimum length and confirmation match")
     }
 
+    private func assertArabicSelection(in app: XCUIApplication) {
+        let count = app.staticTexts["selectedChequeCount"]
+        let amount = app.staticTexts["selectedChequeAmount"]
+        let unchanged = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            count.exists && amount.exists && count.label == "1" && amount.label.contains("125.50")
+        }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [unchanged], timeout: 5), .completed,
+                       "Rotation must preserve the Arabic selection count and exact total")
+        XCTAssertTrue(count.isHittable && amount.isHittable)
+    }
+
+    private func rotate(_ orientation: UIDeviceOrientation, in app: XCUIApplication) {
+        rotateIPhone(to: orientation, in: app)
+    }
+
     private func setSwitch(_ element: XCUIElement, enabled: Bool, in app: XCUIApplication) {
         let expected = enabled ? "1" : "0"
         reveal(element, in: app, fullyVisible: true)
@@ -555,10 +581,7 @@ final class EnhancementUITests: XCTestCase {
     }
 
     private func capture(_ app: XCUIApplication, _ name: String) {
-        let attachment = XCTAttachment(screenshot: app.screenshot())
-        attachment.name = name
-        attachment.lifetime = .keepAlways
-        add(attachment)
+        attachNativeScreenshot(in: app, name: name)
     }
 
     private func captureDiagnostics(_ app: XCUIApplication, _ name: String) {

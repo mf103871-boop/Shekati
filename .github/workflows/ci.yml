@@ -54,6 +54,7 @@ jobs:
           xcodebuild test -project Shekati.xcodeproj -scheme Shekati \
             -destination "$SIMULATOR_DESTINATION" \
             -derivedDataPath DerivedData -resultBundlePath build/Shekati.xcresult \
+            -skip-testing:ShekatiUITests/ResponsiveLayoutUITests \
             CODE_SIGNING_ALLOWED=NO
       - name: Export native UI attachments
         if: always()

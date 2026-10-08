@@ -408,6 +408,7 @@ enum Localization {
         "It was permanently deleted, possibly from another device.": "حُذف نهائيًا، وربما من جهاز آخر.",
         "This cheque was permanently deleted, possibly from another device. Your changes were not saved.": "حُذف هذا الشيك نهائيًا، وربما من جهاز آخر. لم تُحفظ التعديلات.",
         "Postdated cheques": "شيكات مؤجلة",
+        "Swipe to see all columns": "اسحب لرؤية جميع الأعمدة",
         "Value": "القيمة",
         "Pay to": "دائن الشيك",
         "Cheque no.": "رقم الشيك",

@@ -6,6 +6,7 @@ on:
       - 'Tools/ScreenAudit/**'
       - 'Shekati/**'
       - 'ShekatiUITests/ResponsiveLayoutUITests.swift'
+      - 'ShekatiUITests/NativeScreenCapture.swift'
       - 'project.yml'
   pull_request:
     paths:
@@ -13,6 +14,7 @@ on:
       - 'Tools/ScreenAudit/**'
       - 'Shekati/**'
       - 'ShekatiUITests/ResponsiveLayoutUITests.swift'
+      - 'ShekatiUITests/NativeScreenCapture.swift'
       - 'project.yml'
   workflow_dispatch:
 permissions:
@@ -53,6 +55,7 @@ jobs:
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
           xcrun simctl boot "$SIMULATOR_UDID"
           xcrun simctl bootstatus "$SIMULATOR_UDID" -b
+          xcrun simctl ui "$SIMULATOR_UDID" appearance light
           xcrun simctl status_bar "$SIMULATOR_UDID" override --time '9:41' --dataNetwork wifi --wifiMode active --wifiBars 3 --batteryState charged --batteryLevel 100
       - name: Exercise Arabic and English in portrait and landscape
         env:

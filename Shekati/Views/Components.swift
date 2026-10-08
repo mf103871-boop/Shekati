@@ -80,6 +80,34 @@ struct AmountText: View {
     }
 }
 
+/// A monetary value must never wrap between its integer and fractional digits.
+/// Keep the preferred font; long values use a separate currency label and can pan.
+@MainActor
+struct ReadableCurrencyAmount: View {
+    let minorUnits: Int64
+    let currencyCode: String
+    let formatted: String
+
+    var body: some View {
+        ViewThatFits(in: .horizontal) {
+            Text(formatted).fixedSize(horizontal: true, vertical: false)
+            VStack(alignment: .leading, spacing: 4) {
+                ScrollView(.horizontal) {
+                    Text(CurrencyMath.editable(minorUnits: minorUnits, currencyCode: currencyCode))
+                        .fixedSize(horizontal: true, vertical: false)
+                }
+                .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
+                Text(currencyCode).font(.subheadline)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .monospacedDigit()
+        .environment(\.layoutDirection, .leftToRight)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(formatted)
+    }
+}
+
 @MainActor
 struct StatusPill: View {
     @Environment(AppState.self) private var app

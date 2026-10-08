@@ -1,8 +1,14 @@
 import XCTest
+import UIKit
 
 /// Exercises real entry and navigation against isolated in-memory data; no stored user cheques are used.
 final class LedgerToolsUITests: XCTestCase {
-    override func setUpWithError() throws { continueAfterFailure = false }
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+        XCUIDevice.shared.orientation = .portrait
+    }
+
+    override func tearDownWithError() throws { XCUIDevice.shared.orientation = .portrait }
 
     func testSelectionTotalsPaidHistoryAndCreatingChequeOnFreeDueDate() {
         let app = launch()
@@ -19,6 +25,12 @@ final class LedgerToolsUITests: XCTestCase {
         secondCheque.tap()
         assertSelection(count: "2", amount: "100.00", in: app)
         capture(app, "Two selected outgoing cheques total exactly 100.00")
+        rotate(.landscapeLeft, in: app)
+        assertSelection(count: "2", amount: "100.00", in: app)
+        XCTAssertTrue(firstCheque.isHittable && secondCheque.isHittable)
+        capture(app, "App Store English native landscape — two selected cheques total 100.00")
+        rotate(.portrait, in: app)
+        assertSelection(count: "2", amount: "100.00", in: app)
         firstCheque.tap()
         assertSelection(count: "1", amount: "74.50", in: app)
         app.buttons["selectChequesButton"].tap()
@@ -171,6 +183,10 @@ final class LedgerToolsUITests: XCTestCase {
                        "The footer must recompute the selected count and currency-precise sum")
     }
 
+    private func rotate(_ orientation: UIDeviceOrientation, in app: XCUIApplication) {
+        rotateIPhone(to: orientation, in: app)
+    }
+
     private func row(number: String, in app: XCUIApplication) -> XCUIElement {
         app.descendants(matching: .any).matching(NSPredicate(
             format: "identifier BEGINSWITH %@ AND label CONTAINS %@", "cheque-row-", number)).firstMatch
@@ -234,9 +250,6 @@ final class LedgerToolsUITests: XCTestCase {
     }
 
     private func capture(_ app: XCUIApplication, _ name: String) {
-        let attachment = XCTAttachment(screenshot: app.screenshot())
-        attachment.name = name
-        attachment.lifetime = .keepAlways
-        add(attachment)
+        attachNativeScreenshot(in: app, name: name)
     }
 }

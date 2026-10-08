@@ -55,10 +55,11 @@ struct ChequeDetailView: View {
                             StatusPill(snapshot: record.snapshot)
                         }
                     }
-                    Text(CurrencyMath.format(minorUnits: record.amountMinorUnits, currencyCode: record.currencyCode,
-                                             locale: app.preferences.language.locale))
-                        .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
-                        .environment(\.layoutDirection, .leftToRight)
+                    ReadableCurrencyAmount(minorUnits: record.amountMinorUnits, currencyCode: record.currencyCode,
+                                           formatted: CurrencyMath.format(minorUnits: record.amountMinorUnits,
+                                                                          currencyCode: record.currencyCode,
+                                                                          locale: app.preferences.language.locale))
+                        .font(.largeTitle.bold())
                         .foregroundStyle(record.direction == .incoming ? Theme.accent : Theme.navy)
                     if !record.party.isEmpty { Text(NumericInput.latinDigits(record.party)).font(.title3.weight(.medium)) }
                     Divider()

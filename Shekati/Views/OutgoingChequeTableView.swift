@@ -170,23 +170,37 @@ struct OutgoingChequeTableView: View {
 
     private func tableContent(_ ledger: OutgoingChequeLedger, byID: [UUID: ChequeRecord]) -> some View {
         GeometryReader { geometry in
+            let width = ledger.rows.isEmpty ? geometry.size.width : max(geometry.size.width, readableWidth(for: ledger))
             // Keep the sheet's text readable. Narrow displays pan horizontally instead
             // of reducing dates and amounts to tiny fractions of the preferred font.
-            ScrollView(.horizontal) {
-                ScrollView {
-                    LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-                        Section {
-                            ledgerRows(ledger, byID: byID)
-                            if ledger.rows.isEmpty { emptyLedger }
-                        } header: {
-                            OutgoingChequeTableHeader(showsPaidDates: showsPaid, isSelecting: isSelecting)
-                        }
-                    }
+            VStack(spacing: 0) {
+                if width > geometry.size.width + 1 {
+                    Label(app.tr("Swipe to see all columns"), systemImage: "arrow.left.and.right")
+                        .font(.caption).foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 16).padding(.vertical, 4)
+                        .accessibilityIdentifier("ledgerHorizontalScrollHint")
                 }
-                .frame(width: ledger.rows.isEmpty ? geometry.size.width : max(geometry.size.width, readableWidth(for: ledger)),
-                       height: geometry.size.height)
+                OutgoingChequeTableTitle(showsPaidDates: showsPaid)
+                GeometryReader { tableGeometry in
+                    ScrollView(.horizontal) {
+                        ScrollView {
+                            LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                                Section {
+                                    ledgerRows(ledger, byID: byID)
+                                    if ledger.rows.isEmpty { emptyLedger }
+                                } header: {
+                                    OutgoingChequeTableHeader(showsPaidDates: showsPaid, isSelecting: isSelecting)
+                                }
+                            }
+                        }
+                        .frame(width: width, height: tableGeometry.size.height)
+                    }
+                    .defaultScrollAnchor(.topLeading)
+                    .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
+                }
             }
-            .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
         }
         .accessibilityIdentifier("outgoingChequeTable")
     }
@@ -324,21 +338,29 @@ private struct SheetCell<Content: View>: View {
 }
 
 @MainActor
+private struct OutgoingChequeTableTitle: View {
+    @Environment(AppState.self) private var app
+    var showsPaidDates = false
+
+    var body: some View {
+        Text(app.tr(showsPaidDates ? "Paid cheques" : "Postdated cheques"))
+            .font(.subheadline.bold())
+            .foregroundStyle(.black)
+            .frame(maxWidth: .infinity, minHeight: 30)
+            .background(OutgoingChequeStyle.title, ignoresSafeAreaEdges: [])
+            .border(OutgoingChequeStyle.grid, width: 0.5)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityIdentifier("outgoingTableTitle")
+    }
+}
+
+@MainActor
 private struct OutgoingChequeTableHeader: View {
     @Environment(AppState.self) private var app
     var showsPaidDates = false
     var isSelecting = false
 
     var body: some View {
-        VStack(spacing: 0) {
-            Text(app.tr(showsPaidDates ? "Paid cheques" : "Postdated cheques"))
-                .font(.subheadline.bold())
-                .foregroundStyle(.black)
-                .frame(maxWidth: .infinity, minHeight: 30)
-                .background(OutgoingChequeStyle.title, ignoresSafeAreaEdges: [])
-                .border(OutgoingChequeStyle.grid, width: 0.5)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityIdentifier("outgoingTableTitle")
             HStack(spacing: 0) {
                 heading("Value", span: OutgoingChequeColumn.amount)
                 heading("Pay to", span: OutgoingChequeColumn.payee)
@@ -347,7 +369,6 @@ private struct OutgoingChequeTableHeader: View {
                 heading(isSelecting ? "Select" : (showsPaidDates ? "Payment date" : "Balance"), span: OutgoingChequeColumn.balance)
             }
             .fixedSize(horizontal: false, vertical: true)
-        }
         .background(OutgoingChequeStyle.cell, ignoresSafeAreaEdges: [])
     }
 

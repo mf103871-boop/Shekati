@@ -139,14 +139,18 @@ struct DashboardView: View {
         NavigationLink {
             ChequeListView(initialFilter: ChequeFilter(direction: direction, outstandingOnly: true))
         } label: {
-            HStack(spacing: 12) {
+            Group {
                 if dynamicTypeSize.isAccessibilitySize {
-                    VStack(alignment: .leading, spacing: 4) {
-                        totalLabel(direction)
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(spacing: 12) {
+                            totalLabel(direction)
+                            Spacer(minLength: 0)
+                            totalChevron
+                        }
                         totalValue(direction, metrics: metrics)
                     }
-                    Spacer(minLength: 0)
                 } else {
+                    HStack(spacing: 12) {
                     ViewThatFits(in: .horizontal) {
                         HStack(alignment: .firstTextBaseline) {
                             totalLabel(direction).fixedSize()
@@ -159,9 +163,9 @@ struct DashboardView: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
+                        totalChevron
+                    }
                 }
-                Image(systemName: "chevron.forward")
-                    .font(.caption).foregroundStyle(.secondary).accessibilityHidden(true)
             }
             .frame(maxWidth: .infinity, minHeight: 28, alignment: .leading)
             .padding(.horizontal, 14).padding(.vertical, 10)
@@ -169,6 +173,12 @@ struct DashboardView: View {
             .accessibilityElement(children: .combine)
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("dashboardTotal-" + direction.rawValue)
+    }
+
+    private var totalChevron: some View {
+        Image(systemName: "chevron.forward")
+            .font(.caption).foregroundStyle(.secondary).accessibilityHidden(true)
     }
 
     private func totalLabel(_ direction: ChequeDirection) -> some View {
@@ -179,9 +189,12 @@ struct DashboardView: View {
     @ViewBuilder
     private func totalValue(_ direction: ChequeDirection, metrics: DashboardMetrics) -> some View {
         if !app.currencyConflict && !app.currencyCode.isEmpty && !metrics.hasAmountOverflow {
-            Text(app.formatAmount(direction == .incoming ? metrics.incomingMinorUnits : metrics.outgoingMinorUnits))
-                .font(.body.weight(.semibold)).monospacedDigit()
+            let amount = direction == .incoming ? metrics.incomingMinorUnits : metrics.outgoingMinorUnits
+            let formatted = app.formatAmount(amount)
+            ReadableCurrencyAmount(minorUnits: amount, currencyCode: app.currencyCode, formatted: formatted)
+                .font(.body.weight(.semibold))
                 .foregroundStyle(Theme.navy)
+                .accessibilityIdentifier("dashboardAmount-" + direction.rawValue)
         } else {
             Text("—").font(.body.weight(.semibold)).foregroundStyle(.secondary)
         }

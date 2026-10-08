@@ -346,10 +346,7 @@ final class ShekatiUITests: XCTestCase {
     }
 
     private func captureScreenshot(_ app: XCUIApplication, name: String) {
-        let screenshot = XCTAttachment(screenshot: app.screenshot())
-        screenshot.name = name
-        screenshot.lifetime = .keepAlways
-        add(screenshot)
+        attachNativeScreenshot(in: app, name: name)
     }
 
     private func allowNotificationPromptIfPresented() {
