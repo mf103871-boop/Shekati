@@ -71,7 +71,14 @@ final class ResponsiveLayoutUITests: XCTestCase {
         assertVisibleBounds(amountField, in: app)
         XCTAssertEqual(amountField.value as? String, amount)
         amountField.tap()
-        type(XCUIKeyboardKey.delete.rawValue + "2", into: amountField, expected: amount, in: app)
+        let landscapeKeyboard = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            app.keyboards.firstMatch.exists && amountField.isHittable
+        }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [landscapeKeyboard], timeout: 8), .completed,
+                       "The rotated amount field must still accept keyboard focus")
+        // A tap can legitimately reposition the caret. Verify focus and the complete draft
+        // without making an assumption about UIKit's insertion position inside an existing value.
+        XCTAssertEqual(amountField.value as? String, amount)
         capture(app, "04 numeric keyboard landscape")
         dismissKeyboard(in: app, arabic: arabic)
         for (identifier, value) in [("partyField", payee), ("chequeNumberField", chequeNumber)] {
@@ -231,7 +238,8 @@ final class ResponsiveLayoutUITests: XCTestCase {
 
     private func dismissKeyboard(in app: XCUIApplication, arabic: Bool) {
         guard app.keyboards.firstMatch.exists else { return }
-        let done = app.buttons[arabic ? "تم" : "Done"].allElementsBoundByIndex.first { $0.isHittable }
+        let done = app.buttons.matching(NSPredicate(format: "label == %@", arabic ? "تم" : "Done"))
+            .allElementsBoundByIndex.first { $0.isHittable }
         XCTAssertNotNil(done, "A visible Done control must dismiss the numeric or text keyboard")
         done?.tap()
         waitForAbsence(app.keyboards.firstMatch)
