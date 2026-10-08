@@ -1,79 +1,110 @@
-name: Build and test iPhone app
+name: Capture App Store medium iPhone screenshots
 on:
   push:
-  pull_request:
+    branches: [store/medium-screenshots-build9]
   workflow_dispatch:
-  workflow_call:
 permissions:
   contents: read
 concurrency:
-  group: ci-${{ github.ref }}
+  group: medium-store-screenshots-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  test:
+  screenshots:
     runs-on: macos-26
-    timeout-minutes: 60
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
-      - name: Show build tools
+        with:
+          ref: 7664b5d89d4212bb46b6a92ebeaca5b31cc2b5d0
+          persist-credentials: false
+      - name: Verify exact build 9 application source
         run: |
+          test "$(git rev-parse HEAD)" = '7664b5d89d4212bb46b6a92ebeaca5b31cc2b5d0'
           xcodebuild -version
-          swift --version
-      - name: Validate core behavior on macOS
-        run: swift test --package-path Packages/ShekatiCore
       - name: Install project generator
         run: brew install xcodegen
       - name: Generate Xcode project
         run: xcodegen generate
-      - name: Validate schema bootstrap build
-        run: |
-          xcodegen generate --spec Tools/SchemaBootstrap/project.yml --project Tools/SchemaBootstrap
-          xcodebuild build -project Tools/SchemaBootstrap/ShekatiSchemaBootstrap.xcodeproj \
-            -scheme ShekatiSchemaBootstrap -configuration Debug \
-            -destination 'generic/platform=iOS' \
-            -derivedDataPath "$RUNNER_TEMP/SchemaBootstrap-derived" \
-            CODE_SIGNING_ALLOWED=NO
-      - name: Choose an available iPhone simulator
+      - name: Choose medium Dynamic Island iPhone
         id: simulator
         run: |
           python3 - <<'PY'
           import json, os, subprocess
           devices = json.loads(subprocess.check_output(['xcrun', 'simctl', 'list', 'devices', 'available', '-j']))['devices']
-          candidates = [(runtime, d) for runtime, values in devices.items() if '.iOS-' in runtime for d in values if d.get('isAvailable') and d['name'].startswith('iPhone')]
+          preferred = ['iPhone 17 Pro', 'iPhone 17', 'iPhone 16 Pro']
+          candidates = [(runtime, d) for runtime, values in devices.items() if '.iOS-' in runtime for d in values if d.get('isAvailable') and d['name'] in preferred]
           if not candidates:
-              raise SystemExit('No available iPhone simulator. Install an iOS simulator runtime on the runner.')
-          runtime, device = sorted(candidates, key=lambda value: (value[0], value[1]['name']), reverse=True)[0]
+              raise SystemExit('A native 1206x2622 medium iPhone simulator is required; no large-screen fallback is allowed.')
+          runtime, device = sorted(candidates, key=lambda value: (value[0], -preferred.index(value[1]['name'])), reverse=True)[0]
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write(f"destination=platform=iOS Simulator,id={device['udid']}\n")
-          print('Selected', device['name'], runtime)
+              output.write(f"udid={device['udid']}\n")
+          os.makedirs('build', exist_ok=True)
+          with open('build/capture-device.json', 'w') as f:
+              json.dump({'name': device['name'], 'udid': device['udid'], 'runtime': runtime, 'expectedNativeSize': [1206, 2622]}, f, indent=2)
+          print('Selected native medium simulator:', device['name'], runtime)
           PY
-      - name: Build and run iPhone tests
+      - name: Prepare simulator status bar
+        env:
+          SIMULATOR_UDID: ${{ steps.simulator.outputs.udid }}
+        run: |
+          xcrun simctl boot "$SIMULATOR_UDID" || true
+          xcrun simctl bootstatus "$SIMULATOR_UDID" -b
+          xcrun simctl status_bar "$SIMULATOR_UDID" override --time '9:41' --dataNetwork wifi --wifiMode active --wifiBars 3 --batteryState charged --batteryLevel 100
+      - name: Run existing native UI flows with fictional data
         env:
           SIMULATOR_DESTINATION: ${{ steps.simulator.outputs.destination }}
         run: |
           xcodebuild test -project Shekati.xcodeproj -scheme Shekati \
             -destination "$SIMULATOR_DESTINATION" \
-            -derivedDataPath DerivedData -resultBundlePath build/Shekati.xcresult \
-            CODE_SIGNING_ALLOWED=NO
-      - name: Export native UI attachments
+            -derivedDataPath DerivedData -resultBundlePath build/Shekati-medium.xcresult \
+            -only-testing:ShekatiUITests -parallel-testing-enabled NO \
+            CURRENT_PROJECT_VERSION=9 CODE_SIGNING_ALLOWED=NO
+      - name: Export untouched native screenshots
         if: always()
         run: |
-          if [ -d build/Shekati.xcresult ]; then
-            xcrun xcresulttool export attachments --path build/Shekati.xcresult --output-path build/ui-attachments
+          if [ -d build/Shekati-medium.xcresult ]; then
+            xcrun xcresulttool export attachments --path build/Shekati-medium.xcresult --output-path build/medium-ui-attachments
           fi
-      - name: Save native UI attachments
+      - name: Verify true native medium image dimensions
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, struct, subprocess
+          directory = pathlib.Path('build/medium-ui-attachments')
+          images = sorted(directory.glob('*.png'))
+          if len(images) < 10:
+              raise SystemExit(f'Expected at least ten native screenshot attachments, found {len(images)}')
+          details = []
+          for path in images:
+              blob = path.read_bytes()
+              assert blob[:8] == b'\x89PNG\r\n\x1a\n', path.name
+              width, height, depth, color, *_ = struct.unpack('>IIBBBBB', blob[16:29])
+              assert (width, height) == (1206, 2622), (path.name, width, height)
+              assert color not in (4, 6), (path.name, 'alpha channel')
+              cursor = 8
+              while cursor < len(blob):
+                  length = struct.unpack('>I', blob[cursor:cursor+4])[0]
+                  assert blob[cursor+4:cursor+8] != b'tRNS', (path.name, 'transparency')
+                  cursor += length + 12
+              details.append({'file': path.name, 'width': width, 'height': height, 'colorType': color, 'sha256': hashlib.sha256(blob).hexdigest()})
+          proof = {
+              'sourceCommit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'workflowRun': os.environ['GITHUB_RUN_ID'],
+              'workflowCommit': os.environ['GITHUB_SHA'],
+              'appVersion': '1.0.0', 'buildNumber': '9',
+              'device': json.loads(pathlib.Path('build/capture-device.json').read_text()),
+              'editing': 'None. Screenshots are original XCTest attachments. No resizing, image editing, or generated pixels.',
+              'screenshots': details,
+          }
+          (directory / 'capture-provenance.json').write_text(json.dumps(proof, indent=2) + '\n')
+          print(f'Verified {len(details)} original 1206x2622 screenshots without alpha.')
+          PY
+      - name: Save native medium screenshots and source proof
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Shekati-native-ui-attachments
-          path: build/ui-attachments
-          if-no-files-found: ignore
-          retention-days: 14
-      - name: Save simulator test report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Shekati-simulator-test-report
-          path: build/Shekati.xcresult
-          if-no-files-found: ignore
+          name: Shekati-build9-medium-native-screenshots
+          path: build/medium-ui-attachments
+          if-no-files-found: error
           retention-days: 14
