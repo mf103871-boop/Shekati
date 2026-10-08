@@ -170,7 +170,7 @@ final class LedgerToolsUITests: XCTestCase {
         let done = app.buttons.matching(identifier: "Done").allElementsBoundByIndex.first { $0.isHittable }
         XCTAssertNotNil(done, "The keyboard must offer Done")
         done?.tap()
-        waitForAbsence(app.keyboards.firstMatch)
+        waitForAbsence(app.keyboards.firstMatch, timeout: 30)
     }
 
     private func assertSelection(count: String, amount: String, in app: XCUIApplication) {
@@ -205,9 +205,9 @@ final class LedgerToolsUITests: XCTestCase {
         return formatter.string(from: date)
     }
 
-    private func waitForAbsence(_ element: XCUIElement) {
+    private func waitForAbsence(_ element: XCUIElement, timeout: TimeInterval = 10) {
         let gone = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: element)
-        XCTAssertEqual(XCTWaiter.wait(for: [gone], timeout: 10), .completed)
+        XCTAssertEqual(XCTWaiter.wait(for: [gone], timeout: timeout), .completed)
     }
 
     private func waitForRowRemoval(_ row: XCUIElement) {
@@ -234,7 +234,7 @@ final class LedgerToolsUITests: XCTestCase {
             let tabBar = app.tabBars.firstMatch
             let bottom = min(frame.maxY - 34, min(keyboardTop, tabBar.exists ? tabBar.frame.minY : frame.maxY)) - 8
             let target = element.exists ? element.frame : CGRect.null
-            if element.exists && element.isHittable && target.minY >= top && target.maxY <= bottom { return }
+            if element.exists && target.minY >= top && target.maxY <= bottom && element.isHittable { return }
             guard bottom > top + 50 else { break }
             let above = element.exists && target.height > 0 && target.minY < top
             let delta = element.exists && target.height > 0 ? (above ? top - target.minY : target.maxY - bottom) : 100

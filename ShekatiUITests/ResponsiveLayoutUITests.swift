@@ -60,14 +60,16 @@ final class ResponsiveLayoutUITests: XCTestCase {
             type(text, into: app.textFields[identifier], expected: text, in: app)
         }
         dismissKeyboard(in: app, arabic: arabic)
-        reveal(amountField, in: app)
+        // The editor centres each focused row. At accessibility sizes the earlier amount
+        // cell can be recycled after advancing to the number, so search back toward it.
+        reveal(amountField, in: app, searchToward: .earlier)
         assertVisibleBounds(amountField, in: app)
         assertVisibleBounds(app.buttons["saveCheque"], in: app)
         capture(app, "03 long cheque entry portrait")
 
         // Rotation while editing must preserve every draft value and leave input usable.
         rotate(.landscapeLeft, in: app)
-        reveal(amountField, in: app)
+        reveal(amountField, in: app, searchToward: .earlier)
         assertVisibleBounds(amountField, in: app)
         XCTAssertEqual(amountField.value as? String, amount)
         amountField.tap()
@@ -122,7 +124,7 @@ final class ResponsiveLayoutUITests: XCTestCase {
         if largeText { assertVisibleBounds(row, in: app, requireFullHeight: false) }
         capture(app, "07 long cheque ledger portrait")
         let select = app.buttons["selectChequesButton"]
-        reveal(select, in: app)
+        reveal(select, in: app, searchToward: .earlier)
         select.tap()
         let selectAll = app.buttons["selectAllChequesButton"]
         reveal(selectAll, in: app)
@@ -130,15 +132,15 @@ final class ResponsiveLayoutUITests: XCTestCase {
         assertSelection(in: app)
         capture(app, "08 selected large amount portrait")
         rotate(.landscapeLeft, in: app)
-        assertSelection(in: app)
+        assertSelection(in: app, returningFromTotal: true)
         capture(app, "09 selected large amount landscape left")
         rotate(.landscapeRight, in: app)
-        assertSelection(in: app)
+        assertSelection(in: app, returningFromTotal: true)
         capture(app, "10 selected large amount landscape right")
-        reveal(select, in: app)
+        reveal(select, in: app, searchToward: .earlier)
         select.tap()
         let freeDays = app.buttons["freeChequeDaysButton"]
-        reveal(freeDays, in: app)
+        reveal(freeDays, in: app, searchToward: .earlier)
         assertVisibleBounds(freeDays, in: app)
         freeDays.tap()
         XCTAssertTrue(app.buttons["closeFreeDays"].waitForExistence(timeout: 5))
@@ -193,9 +195,11 @@ final class ResponsiveLayoutUITests: XCTestCase {
         capture(app, "16 backup tools landscape")
     }
 
-    private func assertSelection(in app: XCUIApplication) {
+    private func assertSelection(in app: XCUIApplication, returningFromTotal: Bool = false) {
         let count = element("selectedChequeCount", in: app)
-        reveal(count, in: app)
+        // The first visit comes from Select all above the summary; later visits return
+        // from its amount below. Lazy accessibility rows need the correct search direction.
+        reveal(count, in: app, searchToward: returningFromTotal ? .earlier : .later)
         XCTAssertEqual(count.label, "1")
         let total = element("selectedChequeAmount", in: app)
         reveal(total, in: app)
@@ -223,11 +227,14 @@ final class ResponsiveLayoutUITests: XCTestCase {
             let option = app.buttons[title].firstMatch
             XCTAssertTrue(option.waitForExistence(timeout: 5) && option.isHittable)
             option.tap()
-            let selected = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-                picker.exists && ([picker.label, picker.value as? String ?? ""].joined(separator: " ")).contains(title)
-            }, object: nil)
-            XCTAssertEqual(XCTWaiter.wait(for: [selected], timeout: 5), .completed,
-                           "The menu must expose the chosen outgoing direction as its current value")
+            // UIKit temporarily replaces the picker accessibility element while dismissing
+            // its menu. Match the chosen value in one snapshot rather than reading exists,
+            // label and value from three potentially different animation frames.
+            let selectedPicker = app.buttons.matching(identifier: "chequeDirectionPicker")
+                .matching(NSPredicate(format: "label CONTAINS %@ OR value CONTAINS %@", title, title)).firstMatch
+            let selected = selectedPicker.waitForExistence(timeout: 10)
+            if !selected { diagnostics(app, "Direction menu did not expose the chosen outgoing value") }
+            XCTAssertTrue(selected, "The menu must expose the chosen outgoing direction as its current value")
         }
     }
 
@@ -285,8 +292,9 @@ final class ResponsiveLayoutUITests: XCTestCase {
 
     private func inputDiagnostics(_ field: XCUIElement, in app: XCUIApplication, stage: String) {
         let exists = field.exists
+        let identifier = exists ? field.identifier : "<not in the current accessibility tree>"
         let value = exists ? String(describing: field.value) : "<missing>"
-        let fixtureState = XCTAttachment(string: "Field: \(field.identifier)\nExists: \(exists)\nValue: \(value)")
+        let fixtureState = XCTAttachment(string: "Field: \(identifier)\nExists: \(exists)\nValue: \(value)")
         fixtureState.name = stage + " — isolated fixture field value"
         fixtureState.lifetime = .keepAlways
         add(fixtureState)
@@ -299,7 +307,7 @@ final class ResponsiveLayoutUITests: XCTestCase {
             .allElementsBoundByIndex.first { $0.isHittable }
         XCTAssertNotNil(done, "A visible Done control must dismiss the numeric or text keyboard")
         done?.tap()
-        waitForAbsence(app.keyboards.firstMatch)
+        waitForAbsence(app.keyboards.firstMatch, timeout: 30)
     }
 
     private func element(_ identifier: String, in app: XCUIApplication) -> XCUIElement {
@@ -311,9 +319,9 @@ final class ResponsiveLayoutUITests: XCTestCase {
             format: "identifier BEGINSWITH %@ AND label CONTAINS %@", "cheque-row-", chequeNumber)).firstMatch
     }
 
-    private func waitForAbsence(_ element: XCUIElement) {
+    private func waitForAbsence(_ element: XCUIElement, timeout: TimeInterval = 10) {
         let gone = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: element)
-        XCTAssertEqual(XCTWaiter.wait(for: [gone], timeout: 10), .completed)
+        XCTAssertEqual(XCTWaiter.wait(for: [gone], timeout: timeout), .completed)
     }
 
     private func assertVisibleBounds(_ element: XCUIElement, in app: XCUIApplication, requireFullHeight: Bool = true) {
@@ -330,11 +338,17 @@ final class ResponsiveLayoutUITests: XCTestCase {
         }
     }
 
+    private enum VerticalSearchDirection { case earlier, later }
+
     /// Use measured navigation/keyboard/toolbars rather than portrait-only fixed top/bottom offsets.
     /// Content can be intentionally wider for the horizontally scrolling spreadsheet, but controls
     /// and accessibility cards still have to fit the viewport.
-    private func reveal(_ target: XCUIElement, in app: XCUIApplication, allowHorizontalScroll: Bool = false) {
+    private func reveal(_ target: XCUIElement, in app: XCUIApplication,
+                        allowHorizontalScroll: Bool = false, searchToward: VerticalSearchDirection = .later,
+                        file: StaticString = #filePath, line: UInt = #line) {
         let window = app.windows.firstMatch
+        var searchEarlier = searchToward == .earlier
+        var targetDescription: String?
         for _ in 0..<16 {
             let frame = window.frame
             let navigationBottom = app.navigationBars.allElementsBoundByIndex.map(\.frame)
@@ -346,8 +360,14 @@ final class ResponsiveLayoutUITests: XCTestCase {
             let keyboard = app.keyboards.firstMatch
             let keyboardTop = keyboard.exists && keyboard.frame.height > 0 ? keyboard.frame.minY - 48 : frame.maxY
             let bottom = min(frame.maxY - 4, min(bottomBar, keyboardTop)) - 4
-            let targetFrame = target.exists ? target.frame : CGRect.null
-            if target.exists {
+            let exists = target.exists
+            let targetFrame = exists ? target.frame : CGRect.null
+            let hasFrame = !targetFrame.isNull && !targetFrame.isEmpty
+            if exists && targetDescription == nil {
+                let identifier = target.identifier
+                targetDescription = identifier.isEmpty ? target.label : identifier
+            }
+            if hasFrame {
                 let fitsHeight = targetFrame.height <= bottom - top
                 let verticallyVisible = fitsHeight ? targetFrame.minY >= top && targetFrame.maxY <= bottom :
                     targetFrame.midY >= top && targetFrame.midY <= bottom
@@ -356,11 +376,14 @@ final class ResponsiveLayoutUITests: XCTestCase {
                 // XCUITest can throw while resolving an offscreen button's activation point.
                 // Check measured visibility first, scroll it into view, then require hittability.
                 if verticallyVisible && horizontallyVisible && target.isHittable { return }
+                searchEarlier = (fitsHeight ? targetFrame.minY : targetFrame.midY) < top
             }
             guard bottom > top + 24 else { break }
-            let above = target.exists && targetFrame.height > 0 && targetFrame.minY < top
+            // SwiftUI recycles offscreen Form/List/LazyVStack rows. An absent target has
+            // no usable frame; retain the direction from its last frame or the call site.
+            let above = searchEarlier
             let targetEdge = targetFrame.height > bottom - top ? targetFrame.midY : (above ? targetFrame.minY : targetFrame.maxY)
-            let gap = target.exists ? (above ? top - targetEdge : targetEdge - bottom) : bottom - top
+            let gap = hasFrame ? (above ? top - targetEdge : targetEdge - bottom) : bottom - top
             let distance = min((bottom - top) * 0.65, max(24, gap * 0.75 + 8))
             let origin = window.coordinate(withNormalizedOffset: .zero)
             let startY = above ? top + 4 : bottom - 4
@@ -368,8 +391,10 @@ final class ResponsiveLayoutUITests: XCTestCase {
             let end = origin.withOffset(CGVector(dx: frame.width / 2, dy: startY + (above ? distance : -distance) - frame.minY))
             start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
         }
-        diagnostics(app, "Unreachable control " + target.identifier)
-        XCTFail("Expected \(target.identifier) to be reachable inside the rotated viewport")
+        // Reading identifier on a recycled element throws before screenshot/tree capture.
+        let description = targetDescription ?? "requested control (not in the current accessibility tree)"
+        diagnostics(app, "Unreachable control " + description)
+        XCTFail("Expected \(description) to be reachable inside the rotated viewport", file: file, line: line)
     }
 
     private func capture(_ app: XCUIApplication, _ label: String) {

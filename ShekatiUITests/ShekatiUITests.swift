@@ -37,7 +37,7 @@ final class ShekatiUITests: XCTestCase {
         number.tap()
         number.typeText("000182")
         let party = app.textFields["partyField"]
-        reveal(party, in: app)
+        reveal(party, in: app, searchEarlierIfAbsent: true)
         party.tap()
         party.typeText("CI cheque")
         let details = app.buttons["More details"]
@@ -198,11 +198,11 @@ final class ShekatiUITests: XCTestCase {
             let option = app.buttons[title].firstMatch
             XCTAssertTrue(option.waitForExistence(timeout: 5) && option.isHittable)
             option.tap()
-            let selected = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-                picker.exists && ([picker.label, picker.value as? String ?? ""].joined(separator: " ")).contains(title)
-            }, object: nil)
-            XCTAssertEqual(XCTWaiter.wait(for: [selected], timeout: 5), .completed,
-                           "The accessibility menu must expose its selected outgoing value")
+            let selectedPicker = app.buttons.matching(identifier: "chequeDirectionPicker")
+                .matching(NSPredicate(format: "label CONTAINS %@ OR value CONTAINS %@", title, title)).firstMatch
+            let selected = selectedPicker.waitForExistence(timeout: 10)
+            if !selected { captureDiagnostics(app, name: "Direction menu did not expose the chosen outgoing value") }
+            XCTAssertTrue(selected, "The accessibility menu must expose its selected outgoing value")
         }
     }
 
@@ -210,8 +210,15 @@ final class ShekatiUITests: XCTestCase {
         let table = app.descendants(matching: .any).matching(identifier: "outgoingChequeTable").firstMatch
         let window = app.windows.firstMatch.frame
         for _ in 0..<5 {
-            if heading.exists && heading.isHittable &&
-                heading.frame.minX >= window.minX - 1 && heading.frame.maxX <= window.maxX + 1 { return }
+            if heading.exists {
+                let frame = heading.frame
+                // iOS 26 can throw resolving an activation point for a column outside
+                // the horizontal viewport. Pan first, then require a real visible hit point.
+                if frame.width > 0 && frame.height > 0 &&
+                    frame.minX >= window.minX - 1 && frame.maxX <= window.maxX + 1 &&
+                    frame.minY >= window.minY - 1 && frame.maxY <= window.maxY + 1 &&
+                    heading.isHittable { return }
+            }
             // In Arabic the last column sits to the left; drag the sheet right to reveal it.
             if arabic { table.swipeRight() } else { table.swipeLeft() }
         }
@@ -271,8 +278,9 @@ final class ShekatiUITests: XCTestCase {
 
     /// Container hit-testing can be false while its fields remain interactive on iOS 26.
     /// Use window coordinates bounded by the active navigation bar and software keyboard instead.
-    private func reveal(_ element: XCUIElement, in app: XCUIApplication) {
+    private func reveal(_ element: XCUIElement, in app: XCUIApplication, searchEarlierIfAbsent: Bool = false) {
         let window = app.windows.firstMatch
+        var searchEarlier = searchEarlierIfAbsent
         guard window.exists else {
             captureDiagnostics(app, name: "No app window while revealing field")
             XCTFail("Expected the app window to exist")
@@ -316,12 +324,13 @@ final class ShekatiUITests: XCTestCase {
                 let centerInside = targetFrame.midY >= visibleTop && targetFrame.midY <= visibleBottom
                 let fullFrameInside = targetFrame.minY >= visibleTop && targetFrame.maxY <= visibleBottom
                 let visibleTarget = element.identifier.hasPrefix("cheque-row-") ? centerInside : fullFrameInside
-                if element.isHittable && visibleTarget { return }
+                if visibleTarget && element.isHittable { return }
             }
             let requireFullFrame = targetExists && !element.identifier.hasPrefix("cheque-row-")
             let targetTop = requireFullFrame ? targetFrame.minY : targetFrame.midY
             let targetBottom = requireFullFrame ? targetFrame.maxY : targetFrame.midY
-            let above = targetExists && targetFrame.height > 0 && targetTop < visibleTop
+            if targetExists && targetFrame.height > 0 { searchEarlier = targetTop < visibleTop }
+            let above = searchEarlier
             let delta = targetExists && targetFrame.height > 0 ?
                 (above ? visibleTop - targetTop : targetBottom - visibleBottom) : 100
             let distance = targetExists && targetFrame.height > 0 ?

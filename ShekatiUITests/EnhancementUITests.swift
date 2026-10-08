@@ -89,14 +89,14 @@ final class EnhancementUITests: XCTestCase {
         XCTAssertTrue(app.buttons["confirmNextChequeDate"].exists)
         capture(app, "Build 6 English consecutive entry requires a new due date")
 
-        fillField("amountField", value: "40.00", in: app)
+        fillField("amountField", value: "40.00", in: app, searchEarlierIfAbsent: true)
         fillField("chequeNumberField", value: "000202", in: app)
         hideKeyboard(in: app)
         app.buttons["saveCheque"].tap()
         XCTAssertTrue(app.buttons["saveCheque"].exists, "A new cheque must not save before its due date is reviewed")
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label == %@", "Review the due date for the next cheque.")).firstMatch.exists)
         let confirmDate = app.buttons["confirmNextChequeDate"]
-        reveal(confirmDate, in: app)
+        reveal(confirmDate, in: app, searchEarlierIfAbsent: true)
         confirmDate.tap()
         setSwitch(keep, enabled: false, in: app)
         app.buttons["saveAndAddAnother"].tap()
@@ -224,7 +224,7 @@ final class EnhancementUITests: XCTestCase {
         if !app.navigationBars["Settings"].exists { goBack(in: app) }
         XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
         let tools = app.descendants(matching: .any).matching(identifier: "dataTools").firstMatch
-        reveal(tools, in: app)
+        reveal(tools, in: app, searchEarlierIfAbsent: true)
         tools.tap()
         XCTAssertTrue(app.navigationBars["Data and backup"].waitForExistence(timeout: 5))
         capture(app, "Build 6 English data and backup tools with fictional records")
@@ -238,7 +238,8 @@ final class EnhancementUITests: XCTestCase {
         typeSecure(password, value: "short", in: app)
         typeSecure(confirmation, value: "short", in: app)
         assertEnabled(saveBackup, expected: false) // Matching but fewer than ten characters.
-        typeSecure(password, value: String(repeating: XCUIKeyboardKey.delete.rawValue, count: 5) + "DemoPass1234", in: app)
+        typeSecure(password, value: String(repeating: XCUIKeyboardKey.delete.rawValue, count: 5) + "DemoPass1234",
+                   in: app, searchEarlierIfAbsent: true)
         assertEnabled(saveBackup, expected: false) // Long password but confirmation still differs.
         typeSecure(confirmation, value: String(repeating: XCUIKeyboardKey.delete.rawValue, count: 5) + "DemoPass1234", in: app)
         assertEnabled(saveBackup, expected: true)
@@ -328,12 +329,13 @@ final class EnhancementUITests: XCTestCase {
         }
     }
 
-    private func fillField(_ identifier: String, value: String, in app: XCUIApplication) {
+    private func fillField(_ identifier: String, value: String, in app: XCUIApplication,
+                           searchEarlierIfAbsent: Bool = false) {
         // A focused Form scrolls again as the keyboard moves. Dismiss it before revealing
         // a nonsequential field, then verify the newly selected input really receives focus.
         hideKeyboard(in: app)
         let field = app.textFields[identifier]
-        reveal(field, in: app)
+        reveal(field, in: app, searchEarlierIfAbsent: searchEarlierIfAbsent)
         XCTAssertTrue(field.waitForExistence(timeout: 5))
         field.tap()
         typeAndAssert(value, into: field, in: app)
@@ -398,7 +400,9 @@ final class EnhancementUITests: XCTestCase {
             return
         }
         done.tap()
-        waitForAbsence(app.keyboards.firstMatch)
+        // Hosted XCUITest snapshots can take over nine seconds even after the native
+        // recording shows dismissal. Keep the strict absence check and allow it to finish.
+        waitForAbsence(app.keyboards.firstMatch, timeout: 30)
     }
 
     private func isBlank(_ field: XCUIElement) -> Bool {
@@ -416,8 +420,9 @@ final class EnhancementUITests: XCTestCase {
         XCTAssertEqual(result, .completed, "The target field and keyboard must be ready before typing")
     }
 
-    private func typeSecure(_ field: XCUIElement, value: String, in app: XCUIApplication) {
-        reveal(field, in: app)
+    private func typeSecure(_ field: XCUIElement, value: String, in app: XCUIApplication,
+                            searchEarlierIfAbsent: Bool = false) {
+        reveal(field, in: app, searchEarlierIfAbsent: searchEarlierIfAbsent)
         field.tap()
         waitForKeyboardReady(field, in: app)
         field.typeText(value)
@@ -480,9 +485,9 @@ final class EnhancementUITests: XCTestCase {
 
     private func waitForEditorDismissal(_ app: XCUIApplication) { waitForAbsence(app.buttons["saveCheque"]) }
 
-    private func waitForAbsence(_ element: XCUIElement) {
+    private func waitForAbsence(_ element: XCUIElement, timeout: TimeInterval = 10) {
         let expectation = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: element)
-        let result = XCTWaiter.wait(for: [expectation], timeout: 10)
+        let result = XCTWaiter.wait(for: [expectation], timeout: timeout)
         if result != .completed { captureDiagnostics(XCUIApplication(), "Build 6 element still present after wait") }
         XCTAssertEqual(result, .completed, "Expected \(element) to disappear")
     }
@@ -517,8 +522,10 @@ final class EnhancementUITests: XCTestCase {
 
     /// Coordinate scrolling stays above the keyboard and below the active navigation bar.
     /// It supports both lower Settings rows and fields temporarily above the current scroll position.
-    private func reveal(_ element: XCUIElement, in app: XCUIApplication, fullyVisible: Bool = false) {
+    private func reveal(_ element: XCUIElement, in app: XCUIApplication, fullyVisible: Bool = false,
+                        searchEarlierIfAbsent: Bool = false) {
         let window = app.windows.firstMatch
+        var searchEarlier = searchEarlierIfAbsent
         XCTAssertTrue(window.exists)
         for _ in 0..<12 {
             let frame = window.frame
@@ -557,12 +564,15 @@ final class EnhancementUITests: XCTestCase {
                 let fullyInside = targetFrame.minY >= top && targetFrame.maxY <= bottom
                 let centerInside = targetFrame.midY >= top && targetFrame.midY <= bottom
                 let requireFullFrame = fullyVisible || !element.identifier.hasPrefix("cheque-row-")
-                if element.isHittable && (requireFullFrame ? fullyInside : centerInside) { return }
+                if (requireFullFrame ? fullyInside : centerInside) && element.isHittable { return }
             }
             let requireFullFrame = targetExists && (fullyVisible || !element.identifier.hasPrefix("cheque-row-"))
             let targetTop = requireFullFrame ? targetFrame.minY : targetFrame.midY
             let targetBottom = requireFullFrame ? targetFrame.maxY : targetFrame.midY
-            let above = targetExists && targetFrame.height > 0 && targetTop < top
+            // Focus centering can recycle earlier Form rows; preserve the caller's
+            // known direction until a real frame is available to guide the gesture.
+            if targetExists && targetFrame.height > 0 { searchEarlier = targetTop < top }
+            let above = searchEarlier
             let delta = targetExists && targetFrame.height > 0 ?
                 (above ? top - targetTop : targetBottom - bottom) : 100
             // Search a lazy Settings/Form section with a longer slow drag until it materializes.
