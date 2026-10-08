@@ -11,6 +11,7 @@ struct ChequeEditorView: View {
     @Environment(AppState.self) private var app
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Query private var records: [ChequeRecord]
     let record: ChequeRecord?
     /// Captured at init. save() confirms the record still exists through the identifier before
@@ -417,19 +418,17 @@ struct ChequeEditorView: View {
 
     private var essentialFields: some View {
     Section {
-        Picker(app.tr("Direction"), selection: $direction) {
-            Text(app.tr("Incoming")).tag(ChequeDirection.incoming)
-            Text(app.tr("Outgoing")).tag(ChequeDirection.outgoing)
-        }
-        .pickerStyle(.segmented)
-        .accessibilityIdentifier("chequeDirectionPicker")
-        HStack {
+        directionPicker
+        let amountLayout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+            : AnyLayout(HStackLayout(spacing: 8))
+        amountLayout {
             Text(app.tr("Amount"))
-            Spacer(minLength: 12)
+            if !dynamicTypeSize.isAccessibilitySize { Spacer(minLength: 12) }
             NumericTextField(title: app.tr("Required"), text: $amountText,
                              keyboardType: fractionDigits == 0 ? .numberPad : .decimalPad,
                              isFocused: numericFocus(.amount), identifier: "amountField",
-                             accessibilityTitle: app.tr("Amount"), textAlignment: .right,
+                             accessibilityTitle: app.tr("Amount"), textAlignment: dynamicTypeSize.isAccessibilitySize ? .left : .right,
                              nextTitle: app.tr("Next"), doneTitle: app.tr("Done"),
                              nextAction: { focusedField = .party }) { proposed, _ in
                 NumericInput.decimal(proposed, fractionDigits: fractionDigits)
@@ -478,6 +477,19 @@ struct ChequeEditorView: View {
     }
     }
 
+    @ViewBuilder private var directionPicker: some View {
+        if dynamicTypeSize.isAccessibilitySize { directionSelection.pickerStyle(.menu) }
+        else { directionSelection.pickerStyle(.segmented) }
+    }
+
+    private var directionSelection: some View {
+        Picker(app.tr("Direction"), selection: $direction) {
+            Text(app.tr("Incoming")).tag(ChequeDirection.incoming)
+            Text(app.tr("Outgoing")).tag(ChequeDirection.outgoing)
+        }
+        .accessibilityIdentifier("chequeDirectionPicker")
+    }
+
     @ViewBuilder
     private func previousSuggestions(for field: EntryField) -> some View {
         let active = records.filter { $0.deletedAt == nil }.sorted { $0.createdAt > $1.createdAt }
@@ -514,7 +526,10 @@ struct ChequeEditorView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .accessibilityLabel(app.tr("Cheque image"))
             }
-            HStack(spacing: 18) {
+            let attachmentLayout = dynamicTypeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+                : AnyLayout(HStackLayout(spacing: 18))
+            attachmentLayout {
                 Button {
                     let status = AVCaptureDevice.authorizationStatus(for: .video)
                     guard DocumentScanner.isSupported, status != .denied, status != .restricted else {
@@ -523,14 +538,14 @@ struct ChequeEditorView: View {
                     }
                     scanSide = side
                     showingScanner = true
-                } label: { Label(app.tr("Scan"), systemImage: "camera") }
+                } label: { Label(app.tr("Scan"), systemImage: "camera").frame(minHeight: 44) }
                 .buttonStyle(.borderless)
                 PhotosPicker(selection: selection, matching: .images) {
-                    Label(photosTitle, systemImage: "photo")
+                    Label(photosTitle, systemImage: "photo").frame(minHeight: 44)
                 }
                 .buttonStyle(.borderless)
                 if data != nil {
-                    Spacer(minLength: 0)
+                    if !dynamicTypeSize.isAccessibilitySize { Spacer(minLength: 0) }
                     Button(role: .destructive) {
                         if side == .front { frontImageData = nil } else { backImageData = nil }
                     } label: { Image(systemName: "trash") }

@@ -44,20 +44,25 @@ struct ChequeDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 VStack(alignment: .leading, spacing: 16) {
-                    HStack {
-                        Label(app.tr(record.direction == .incoming ? "Incoming cheque" : "Outgoing cheque"),
-                              systemImage: record.direction == .incoming ? "arrow.down.left" : "arrow.up.right")
-                            .font(.subheadline.weight(.medium)).foregroundStyle(Theme.accent)
-                        Spacer()
-                        StatusPill(snapshot: record.snapshot)
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 12) {
+                            directionLabel.fixedSize(horizontal: true, vertical: false)
+                            Spacer(minLength: 0)
+                            StatusPill(snapshot: record.snapshot).fixedSize(horizontal: true, vertical: false)
+                        }
+                        VStack(alignment: .leading, spacing: 8) {
+                            directionLabel
+                            StatusPill(snapshot: record.snapshot)
+                        }
                     }
                     Text(CurrencyMath.format(minorUnits: record.amountMinorUnits, currencyCode: record.currencyCode,
                                              locale: app.preferences.language.locale))
-                        .font(.largeTitle.bold()).lineLimit(1).minimumScaleFactor(0.65)
+                        .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
+                        .environment(\.layoutDirection, .leftToRight)
                         .foregroundStyle(record.direction == .incoming ? Theme.accent : Theme.navy)
                     if !record.party.isEmpty { Text(NumericInput.latinDigits(record.party)).font(.title3.weight(.medium)) }
                     Divider()
-                    LabeledContent(app.tr("Due date"), value: app.formatDay(record.dueDate))
+                    ResponsiveValueRow(title: app.tr("Due date"), value: app.formatDay(record.dueDate))
                         .foregroundStyle(record.snapshot.isOverdue(on: app.today) ? Theme.red : Theme.navy)
                     if record.snapshot.isOutstanding {
                         Text(app.relativeDueDate(record.dueDate))
@@ -70,11 +75,11 @@ struct ChequeDetailView: View {
                         .accessibilityIdentifier("primarySettlement")
                     }
                     if let actual = record.actualDate {
-                        LabeledContent(app.tr(record.direction == .incoming ? "Collection date" : "Payment date"),
+                        ResponsiveValueRow(title: app.tr(record.direction == .incoming ? "Collection date" : "Payment date"),
                                        value: app.formatDay(actual))
                     }
                     if let issue = record.issueDate {
-                        LabeledContent(app.tr("Issue date"), value: app.formatDay(issue))
+                        ResponsiveValueRow(title: app.tr("Issue date"), value: app.formatDay(issue))
                     }
                 }
                 .padding(20).background(Theme.surface, in: RoundedRectangle(cornerRadius: 22))
@@ -86,7 +91,7 @@ struct ChequeDetailView: View {
                     if !record.branch.isEmpty { detailLine("Branch", record.branch) }
                     detailLine(record.direction == .incoming ? "Payer" : "Payee", record.party)
                     if !record.accountReference.isEmpty { detailLine("Account reference", record.accountReference) }
-                    LabeledContent(app.tr("Date added"), value: app.formatDay(LocalDay(date: record.createdAt)))
+                    ResponsiveValueRow(title: app.tr("Date added"), value: app.formatDay(LocalDay(date: record.createdAt)))
                         .font(.subheadline)
                     if !record.notes.isEmpty {
                         Divider()
@@ -110,7 +115,7 @@ struct ChequeDetailView: View {
                         Text(effectiveOffsets.isEmpty ? app.tr("No reminder days selected") :
                              effectiveOffsets.sorted(by: >).map(reminderTitle).joined(separator: " · "))
                             .font(.caption).foregroundStyle(.secondary)
-                        LabeledContent(app.tr("Reminder time"), value: reminderClock)
+                        ResponsiveValueRow(title: app.tr("Reminder time"), value: reminderClock)
                             .font(.subheadline)
                         if record.reminderOffsets != nil && (record.reminderHour == nil || record.reminderMinute == nil) {
                             Text(app.tr("Uses default reminder time"))
@@ -205,6 +210,13 @@ struct ChequeDetailView: View {
         app.preferences.language == .arabic ? .rightToLeft : .leftToRight
     }
 
+    private var directionLabel: some View {
+        Label(app.tr(record.direction == .incoming ? "Incoming cheque" : "Outgoing cheque"),
+              systemImage: record.direction == .incoming ? "arrow.down.left" : "arrow.up.right")
+            .font(.subheadline.weight(.medium)).foregroundStyle(Theme.accent)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
     @ViewBuilder
     private var reminderCoverage: some View {
         if record.snapshot.isOutstanding {
@@ -212,7 +224,7 @@ struct ChequeDetailView: View {
                 Text(app.tr("Notifications are off")).font(.subheadline).foregroundStyle(.orange)
                 NavigationLink(app.tr("Open reminder settings")) { SettingsView() }
             } else if let next = app.notifications.nextReminderDate(for: record.id) {
-                LabeledContent(app.tr("Next scheduled reminder"), value: app.formatTimestamp(next))
+                ResponsiveValueRow(title: app.tr("Next scheduled reminder"), value: app.formatTimestamp(next))
                     .font(.subheadline).accessibilityIdentifier("nextScheduledReminder")
             } else if (record.reminderOffsets ?? app.preferences.reminderOffsets).isEmpty {
                 Text(app.tr(app.preferences.dailySummary ? "Daily summary is enabled; no individual reminder days are selected." : "No reminder days selected"))
@@ -245,6 +257,7 @@ struct ChequeDetailView: View {
     }
 
     private var deletedCheque: some View {
+        ScrollView {
         VStack(spacing: 18) {
             Image(systemName: "trash").font(.largeTitle).foregroundStyle(.secondary)
             Text(app.tr("Cheque moved to Recently Deleted")).font(.title3.weight(.semibold))
@@ -257,13 +270,15 @@ struct ChequeDetailView: View {
                 .accessibilityIdentifier("undoChequeDeletion")
             Button(app.tr("Done")) { dismiss() }.buttonStyle(.bordered)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity).padding(24)
+        .frame(maxWidth: .infinity).padding(24)
+        }
         .background(Theme.background)
         .navigationTitle(app.tr("Recently Deleted"))
         .navigationBarTitleDisplayMode(.inline)
     }
 
     private var removedCheque: some View {
+        ScrollView {
         VStack(spacing: 18) {
             Image(systemName: "trash.slash").font(.largeTitle).foregroundStyle(.secondary)
             Text(app.tr("This cheque is no longer available")).font(.title3.weight(.semibold))
@@ -272,19 +287,18 @@ struct ChequeDetailView: View {
                 .foregroundStyle(.secondary).multilineTextAlignment(.center)
             Button(app.tr("Done")) { dismiss() }.buttonStyle(.bordered)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity).padding(24)
+        .frame(maxWidth: .infinity).padding(24)
+        }
         .background(Theme.background)
         .navigationTitle(app.tr("Cheque"))
         .navigationBarTitleDisplayMode(.inline)
     }
 
     private func detailLine(_ title: String, _ value: String) -> some View {
-        LabeledContent {
-            Text(value.isEmpty ? app.tr("Not provided") : NumericInput.latinDigits(value))
-                .foregroundStyle(value.isEmpty ? .secondary : .primary)
-                .multilineTextAlignment(.trailing).textSelection(.enabled)
-        } label: { Text(app.tr(title)) }
-        .font(.subheadline)
+        ResponsiveValueRow(title: app.tr(title),
+                           value: value.isEmpty ? app.tr("Not provided") : NumericInput.latinDigits(value))
+            .foregroundStyle(value.isEmpty ? .secondary : .primary)
+            .font(.subheadline).textSelection(.enabled)
     }
 
     @ViewBuilder private func imageButton(_ data: Data, title: String) -> some View {

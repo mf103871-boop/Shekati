@@ -1,0 +1,98 @@
+name: Verify iPhone screen layouts
+on:
+  push:
+    paths:
+      - '.github/workflows/screen-layout.yml'
+      - 'Tools/ScreenAudit/**'
+      - 'Shekati/**'
+      - 'ShekatiUITests/ResponsiveLayoutUITests.swift'
+      - 'project.yml'
+  pull_request:
+    paths:
+      - '.github/workflows/screen-layout.yml'
+      - 'Tools/ScreenAudit/**'
+      - 'Shekati/**'
+      - 'ShekatiUITests/ResponsiveLayoutUITests.swift'
+      - 'project.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: screen-layout-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  layout:
+    name: Native layout (${{ matrix.size }})
+    runs-on: macos-26
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        size: [small, medium, large]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Show source and build tools
+        run: |
+          git rev-parse HEAD
+          xcodebuild -version
+      - name: Install project generator
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Create native iPhone simulator
+        id: simulator
+        env:
+          SCREEN_SIZE: ${{ matrix.size }}
+        run: python3 Tools/ScreenAudit/select_simulator.py
+      - name: Prepare simulator
+        env:
+          SIMULATOR_UDID: ${{ steps.simulator.outputs.udid }}
+        run: |
+          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
+          xcrun simctl boot "$SIMULATOR_UDID"
+          xcrun simctl bootstatus "$SIMULATOR_UDID" -b
+          xcrun simctl status_bar "$SIMULATOR_UDID" override --time '9:41' --dataNetwork wifi --wifiMode active --wifiBars 3 --batteryState charged --batteryLevel 100
+      - name: Exercise Arabic and English in portrait and landscape
+        env:
+          SIMULATOR_DESTINATION: ${{ steps.simulator.outputs.destination }}
+        run: |
+          set -o pipefail
+          xcodebuild test -project Shekati.xcodeproj -scheme Shekati \
+            -destination "$SIMULATOR_DESTINATION" \
+            -derivedDataPath DerivedData -resultBundlePath build/ScreenLayout.xcresult \
+            -only-testing:ShekatiUITests/ResponsiveLayoutUITests \
+            -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 \
+            CODE_SIGNING_ALLOWED=NO | tee build/screen-layout.log
+      - name: Export native screenshots and test summary
+        if: always()
+        run: |
+          if [ -d build/ScreenLayout.xcresult ]; then
+            xcrun xcresulttool export attachments --path build/ScreenLayout.xcresult --output-path build/ui-attachments
+            xcrun xcresulttool get test-results summary --path build/ScreenLayout.xcresult > build/test-summary.json
+          fi
+      - name: Verify original screenshot dimensions and orientation coverage
+        if: success()
+        run: python3 Tools/ScreenAudit/verify_capture.py
+      - name: Save original screenshots and audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Shekati-screen-layout-${{ matrix.size }}
+          path: |
+            build/ui-attachments
+            build/capture-device.json
+            build/capture-provenance.json
+            build/test-summary.json
+            build/screen-layout.log
+          if-no-files-found: error
+          retention-days: 14
+      - name: Save simulator test result
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Shekati-screen-layout-${{ matrix.size }}-xcresult
+          path: build/ScreenLayout.xcresult
+          if-no-files-found: ignore
+          retention-days: 7

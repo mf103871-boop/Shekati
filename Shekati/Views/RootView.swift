@@ -128,11 +128,12 @@ struct RootView: View {
     }
 
     private var lockScreen: some View {
+        GeometryReader { geometry in
+        ScrollView {
         VStack(spacing: 24) {
-            Spacer()
             BrandMark()
-            Text(app.tr("Your cheques, protected")).font(.title2.bold())
-            Text(app.tr("Unlock to view your records")).foregroundStyle(.secondary)
+            Text(app.tr("Your cheques, protected")).font(.title2.bold()).multilineTextAlignment(.center)
+            Text(app.tr("Unlock to view your records")).foregroundStyle(.secondary).multilineTextAlignment(.center)
             Button {
                 Task { await app.lock.unlock() }
             } label: {
@@ -143,8 +144,9 @@ struct RootView: View {
                 Text(app.tr("Could not unlock. Try again using biometrics or your device passcode."))
                     .font(.footnote).foregroundStyle(.secondary)
             }
-            Spacer()
-        }.padding(32).frame(maxWidth: .infinity, maxHeight: .infinity)
+        }.padding(32).frame(maxWidth: .infinity, minHeight: geometry.size.height)
+        }
+        }
             .background(Theme.background.ignoresSafeArea())
     }
 

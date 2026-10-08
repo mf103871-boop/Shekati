@@ -22,6 +22,39 @@ private struct ShekatiCard: ViewModifier {
 
 extension View { @MainActor func shekatiCard() -> some View { modifier(ShekatiCard()) } }
 
+/// Keeps long values visible in narrow windows and at accessibility text sizes.
+@MainActor
+struct ResponsiveValueRow: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    let title: String
+    let value: String
+
+    var body: some View {
+        Group {
+            if dynamicTypeSize.isAccessibilitySize { stacked }
+            else {
+                ViewThatFits(in: .horizontal) {
+                    HStack(alignment: .firstTextBaseline, spacing: 12) {
+                        Text(title).fixedSize(horizontal: true, vertical: false)
+                        Spacer(minLength: 0)
+                        Text(value).fixedSize(horizontal: true, vertical: false)
+                    }
+                    stacked
+                }
+            }
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    private var stacked: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title).foregroundStyle(.secondary)
+            Text(value).fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
 @MainActor
 struct EmptyStateView: View {
     let title: String

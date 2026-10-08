@@ -7,6 +7,9 @@ import ShekatiCore
 struct OutgoingChequeTableView: View {
     @Environment(AppState.self) private var app
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @ScaledMetric(relativeTo: .footnote) private var minimumTableWidth: CGFloat = 620
+    @ScaledMetric(relativeTo: .footnote) private var digitWidth: CGFloat = 8
     @Query(filter: #Predicate<ChequeRecord> { $0.deletedAt == nil && $0.directionRaw == "outgoing" })
     private var records: [ChequeRecord]
     @State private var showsPaid = false
@@ -21,13 +24,24 @@ struct OutgoingChequeTableView: View {
         let ledger = OutgoingChequeLedger(cheques: snapshots)
         let visibleIDs = Set(ledger.rows.map(\.id))
         let selected = ChequeSelectionSummary(cheques: snapshots, selectedIDs: selectedIDs)
-        VStack(spacing: 0) {
-            scopePicker.padding(.horizontal, 16).padding(.top, 8)
-            listActions(visibleIDs: visibleIDs).padding(.horizontal, 16).padding(.vertical, 8)
-            if isSelecting {
-                selectionActions(visibleIDs: visibleIDs).padding(.horizontal, 16).padding(.bottom, 8)
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                accessibleContent(ledger, byID: byID, visibleIDs: visibleIDs, selected: selected)
+            } else {
+                VStack(spacing: 0) {
+                    if verticalSizeClass == .compact {
+                        compactControls(visibleIDs: visibleIDs)
+                            .padding(.horizontal, 16).padding(.vertical, 4)
+                    } else {
+                        scopePicker.padding(.horizontal, 16).padding(.top, 8)
+                        listActions(visibleIDs: visibleIDs).padding(.horizontal, 16).padding(.vertical, 8)
+                        if isSelecting {
+                            selectionActions(visibleIDs: visibleIDs).padding(.horizontal, 16).padding(.bottom, 8)
+                        }
+                    }
+                    tableContent(ledger, byID: byID)
+                }
             }
-            tableContent(ledger, byID: byID)
         }
         .background(Color(uiColor: .systemBackground))
         .navigationTitle(app.tr("Cheques"))
@@ -44,7 +58,9 @@ struct OutgoingChequeTableView: View {
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if isSelecting { ChequeSelectionSummaryView(summary: selected) }
+            if isSelecting && !dynamicTypeSize.isAccessibilitySize {
+                ChequeSelectionSummaryView(summary: selected, compact: verticalSizeClass == .compact)
+            }
         }
         .onChange(of: showsPaid) { _, _ in endSelection() }
         .onChange(of: visibleIDs) { _, ids in selectedIDs.formIntersection(ids) }
@@ -67,6 +83,28 @@ struct OutgoingChequeTableView: View {
             Text(app.tr("Paid cheques")).tag(true)
         }
         .accessibilityIdentifier("outgoingPaymentScopePicker")
+    }
+
+    private func compactControls(visibleIDs: Set<UUID>) -> some View {
+        HStack(spacing: 16) {
+            scopeSelection.pickerStyle(.menu).labelsHidden()
+            Spacer(minLength: 0)
+            freeDaysButton
+            selectionButton(visibleIDs: visibleIDs)
+            if isSelecting {
+                Menu {
+                    Button(app.tr("Select all")) { selectedIDs = visibleIDs }
+                        .disabled(visibleIDs.isEmpty || selectedIDs == visibleIDs)
+                        .accessibilityIdentifier("selectAllChequesButton")
+                    Button(app.tr("Clear selection")) { selectedIDs.removeAll() }
+                        .disabled(selectedIDs.isEmpty)
+                        .accessibilityIdentifier("clearSelectedChequesButton")
+                } label: { Image(systemName: "ellipsis.circle").frame(minWidth: 44, minHeight: 44) }
+                .accessibilityLabel(app.tr("Selected cheques"))
+                .accessibilityIdentifier("chequeSelectionActions")
+            }
+        }
+        .font(.subheadline)
     }
 
     private func listActions(visibleIDs: Set<UUID>) -> some View {
@@ -106,12 +144,17 @@ struct OutgoingChequeTableView: View {
     }
 
     private func selectionActions(visibleIDs: Set<UUID>) -> some View {
-        HStack {
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4))
+            : AnyLayout(HStackLayout(spacing: 12))
+        return layout {
             Button(app.tr("Select all")) { selectedIDs = visibleIDs }
+                .frame(minHeight: 44)
                 .accessibilityIdentifier("selectAllChequesButton")
                 .disabled(visibleIDs.isEmpty || selectedIDs == visibleIDs)
-            Spacer(minLength: 12)
+            if !dynamicTypeSize.isAccessibilitySize { Spacer(minLength: 12) }
             Button(app.tr("Clear selection")) { selectedIDs.removeAll() }
+                .frame(minHeight: 44)
                 .accessibilityIdentifier("clearSelectedChequesButton")
                 .disabled(selectedIDs.isEmpty)
         }
@@ -126,10 +169,80 @@ struct OutgoingChequeTableView: View {
     }
 
     private func tableContent(_ ledger: OutgoingChequeLedger, byID: [UUID: ChequeRecord]) -> some View {
+        GeometryReader { geometry in
+            // Keep the sheet's text readable. Narrow displays pan horizontally instead
+            // of reducing dates and amounts to tiny fractions of the preferred font.
+            ScrollView(.horizontal) {
+                ScrollView {
+                    LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                        Section {
+                            ledgerRows(ledger, byID: byID)
+                            if ledger.rows.isEmpty { emptyLedger }
+                        } header: {
+                            OutgoingChequeTableHeader(showsPaidDates: showsPaid, isSelecting: isSelecting)
+                        }
+                    }
+                }
+                .frame(width: ledger.rows.isEmpty ? geometry.size.width : max(geometry.size.width, readableWidth(for: ledger)),
+                       height: geometry.size.height)
+            }
+            .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
+        }
+        .accessibilityIdentifier("outgoingChequeTable")
+    }
+
+    private func readableWidth(for ledger: OutgoingChequeLedger) -> CGFloat {
+        var width = minimumTableWidth
+        for row in ledger.rows {
+            let fields: [(String, Int)] = [
+                (NumericInput.latinDigits(row.cheque.number), OutgoingChequeColumn.number),
+                (CurrencyMath.plain(minorUnits: row.cheque.amountMinorUnits, currencyCode: row.cheque.currencyCode), OutgoingChequeColumn.amount),
+                (showsPaid ? "00/00/0000" : row.remainingMinorUnits.map {
+                    CurrencyMath.plain(minorUnits: $0, currencyCode: row.cheque.currencyCode)
+                } ?? "—", OutgoingChequeColumn.balance)
+            ]
+            for (text, span) in fields {
+                // Unusually long references can wrap; never allocate an unbounded sheet.
+                width = max(width, (CGFloat(min(text.count, 28)) * digitWidth + 12) * 100 / CGFloat(span))
+            }
+        }
+        return width
+    }
+
+    private func accessibleContent(_ ledger: OutgoingChequeLedger, byID: [UUID: ChequeRecord],
+                                   visibleIDs: Set<UUID>, selected: ChequeSelectionSummary) -> some View {
         ScrollView {
-            LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-                Section {
-                    ForEach(ledger.rows) { row in
+            LazyVStack(alignment: .leading, spacing: 12) {
+                scopePicker
+                listActions(visibleIDs: visibleIDs)
+                if isSelecting {
+                    selectionActions(visibleIDs: visibleIDs)
+                    // The total scrolls with the controls so it cannot cover the whole
+                    // ledger at the largest text sizes or in a short landscape window.
+                    ChequeSelectionSummaryView(summary: selected)
+                }
+                Text(app.tr(showsPaid ? "Paid cheques" : "Postdated cheques"))
+                    .font(.headline).accessibilityAddTraits(.isHeader)
+                    .accessibilityIdentifier("outgoingTableTitle")
+                ledgerRows(ledger, byID: byID)
+                if ledger.rows.isEmpty { emptyLedger }
+            }
+            .padding(16)
+        }
+        .accessibilityIdentifier("outgoingChequeTable")
+    }
+
+    private var emptyLedger: some View {
+        ContentUnavailableView(app.tr(showsPaid ? "No paid cheques" : "No outgoing cheques"),
+                               systemImage: showsPaid ? "checkmark.circle" : "doc.text",
+                               description: Text(app.tr(showsPaid
+                                ? "Paid cheques appear here with their details and payment dates."
+                                : "Outgoing cheques you add appear here in date order.")))
+            .padding(.top, 32)
+    }
+
+    private func ledgerRows(_ ledger: OutgoingChequeLedger, byID: [UUID: ChequeRecord]) -> some View {
+        ForEach(ledger.rows) { row in
                         if let record = byID[row.id] {
                             if isSelecting {
                                 Button {
@@ -149,21 +262,7 @@ struct OutgoingChequeTableView: View {
                                 .buttonStyle(.plain)
                             }
                         }
-                    }
-                    if ledger.rows.isEmpty {
-                        ContentUnavailableView(app.tr(showsPaid ? "No paid cheques" : "No outgoing cheques"),
-                                               systemImage: showsPaid ? "checkmark.circle" : "doc.text",
-                                               description: Text(app.tr(showsPaid
-                                                ? "Paid cheques appear here with their details and payment dates."
-                                                : "Outgoing cheques you add appear here in date order.")))
-                            .padding(.top, 32)
-                    }
-                } header: {
-                    OutgoingChequeTableHeader(showsPaidDates: showsPaid, isSelecting: isSelecting)
-                }
-            }
         }
-        .accessibilityIdentifier("outgoingChequeTable")
     }
 }
 
@@ -203,7 +302,7 @@ private struct SheetCell<Content: View>: View {
             .foregroundStyle(fill == nil ? Color.primary : Color.black)
             .padding(.horizontal, 4)
             .padding(.vertical, 5)
-            .frame(maxWidth: .infinity, minHeight: 24, maxHeight: .infinity, alignment: alignment)
+            .frame(maxWidth: .infinity, minHeight: 44, maxHeight: .infinity, alignment: alignment)
             .containerRelativeFrame(.horizontal, count: 100, span: span, spacing: 0)
             .background(alignment: .leading) {
                 if bar > 0 {
@@ -250,7 +349,6 @@ private struct OutgoingChequeTableHeader: View {
             .fixedSize(horizontal: false, vertical: true)
         }
         .background(OutgoingChequeStyle.cell, ignoresSafeAreaEdges: [])
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
     private func heading(_ key: String, span: Int) -> some View {
@@ -258,8 +356,7 @@ private struct OutgoingChequeTableHeader: View {
             Text(app.tr(key))
                 .font(.caption.bold())
                 .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .minimumScaleFactor(0.7)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .accessibilityAddTraits(.isHeader)
     }
@@ -268,6 +365,7 @@ private struct OutgoingChequeTableHeader: View {
 @MainActor
 private struct OutgoingChequeRow: View {
     @Environment(AppState.self) private var app
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let row: OutgoingChequeLedger.Row
     let showsBalance: Bool
     var showsPaidDates = false
@@ -290,6 +388,19 @@ private struct OutgoingChequeRow: View {
     private var cancelled: Bool { cheque.status == .cancelled }
 
     var body: some View {
+        Group {
+            if dynamicTypeSize.isAccessibilitySize { accessibleFields }
+            else { sheetFields }
+        }
+        .opacity(cancelled ? 0.55 : 1)
+        .contentShape(Rectangle())
+        .overlay { if isSelecting && isSelected { Rectangle().strokeBorder(Theme.accent, lineWidth: 2).allowsHitTesting(false) } }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(accessibleDescription))
+        .accessibilityIdentifier("cheque-row-\(cheque.id.uuidString)")
+    }
+
+    private var sheetFields: some View {
         HStack(spacing: 0) {
             amountCell
             SheetCell(span: OutgoingChequeColumn.payee, fill: rowFill) {
@@ -317,14 +428,36 @@ private struct OutgoingChequeRow: View {
             }
         }
         .fixedSize(horizontal: false, vertical: true)
-        // A five-column sheet cannot grow without limit on an iPhone; numbers also shrink to fit.
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
-        .opacity(cancelled ? 0.55 : 1)
-        .contentShape(Rectangle())
-        .overlay { if isSelecting && isSelected { Rectangle().strokeBorder(Theme.accent, lineWidth: 2).allowsHitTesting(false) } }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(accessibleDescription))
-        .accessibilityIdentifier("cheque-row-\(cheque.id.uuidString)")
+    }
+
+    private var accessibleFields: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(cheque.party.isEmpty ? app.tr("Cheque") : NumericInput.latinDigits(cheque.party))
+                .font(.headline).fixedSize(horizontal: false, vertical: true)
+            accessibleField("Cheque number", value: number.isEmpty ? "—" : number)
+            accessibleField("Amount", value: amount + " " + cheque.currencyCode)
+            accessibleField("Due date", value: date)
+            accessibleField(showsPaidDates ? "Payment date" : "Balance", value: showsPaidDates ? paymentDate : balance)
+            Text(statusLabel).font(.subheadline)
+                .foregroundStyle(cheque.status == .returned || cheque.isOverdue(on: app.today) ? Theme.red : Theme.accent)
+            if isSelecting {
+                Label(app.tr(isSelected ? "Selected" : "Not selected"),
+                      systemImage: isSelected ? "checkmark.circle.fill" : "circle")
+                    .font(.subheadline).foregroundStyle(Theme.accent)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(Theme.surface, in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func accessibleField(_ title: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(app.tr(title)).font(.caption).foregroundStyle(.secondary)
+            Text(value).font(.body).monospacedDigit()
+                .environment(\.layoutDirection, .leftToRight)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 
     private var amountCell: some View {
@@ -334,13 +467,12 @@ private struct OutgoingChequeRow: View {
         }
     }
 
-    /// Numbers keep their left-to-right order and shrink rather than truncate in a narrow column.
+    /// Numbers keep their left-to-right order and may wrap unusually long references.
     private func numeric(_ text: String) -> some View {
         Text(text)
             .font(.footnote)
             .monospacedDigit()
-            .lineLimit(1)
-            .minimumScaleFactor(0.3)
+            .fixedSize(horizontal: false, vertical: true)
             .environment(\.layoutDirection, .leftToRight)
     }
 

@@ -54,12 +54,15 @@ private struct PrivacyShieldView: View {
     @Environment(AppState.self) private var app
     let inactive: Bool
     var body: some View {
+        GeometryReader { geometry in
+        ScrollView {
         VStack(spacing: 24) {
-            Spacer()
             BrandMark()
-            Text(app.tr(inactive ? "Shekati" : "Your cheques, protected")).font(.title2.bold())
+            Text(app.tr(inactive ? "Shekati" : "Your cheques, protected"))
+                .font(.title2.bold()).fixedSize(horizontal: false, vertical: true)
             if !inactive {
-                Text(app.tr("Unlock to view your records")).foregroundStyle(.secondary)
+                Text(app.tr("Unlock to view your records"))
+                    .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
                 Button {
                     Task { await app.lock.unlock() }
                 } label: {
@@ -70,10 +73,14 @@ private struct PrivacyShieldView: View {
                 if app.lock.errorMessage != nil {
                     Text(app.tr("Could not unlock. Try again using biometrics or your device passcode."))
                         .font(.footnote).foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            Spacer()
-        }.padding(32).frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .multilineTextAlignment(.center)
+        .padding(32).frame(maxWidth: .infinity, minHeight: geometry.size.height)
+        }
+        }
             .background(Theme.background.ignoresSafeArea())
     }
 }

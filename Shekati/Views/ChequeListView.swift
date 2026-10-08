@@ -7,6 +7,7 @@ struct ChequeListView: View {
     @Environment(AppState.self) private var app
     @Environment(\.modelContext) private var context
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     @Query private var records: [ChequeRecord]
     @State private var filter: ChequeFilter
     @State private var showingFilters = false
@@ -47,7 +48,7 @@ struct ChequeListView: View {
         let byID = Dictionary(activeRecords.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         let visible = result.cheques.compactMap { byID[$0.id] }
         Group {
-            if dynamicTypeSize.isAccessibilitySize {
+            if dynamicTypeSize.isAccessibilitySize || verticalSizeClass == .compact {
                 // One scrolling surface keeps large controls from squeezing the rows.
                 listContent(visible, activeCount: activeRecords.count, result: result, scrollsControls: true)
             } else {

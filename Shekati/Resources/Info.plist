@@ -19,7 +19,7 @@
     <key>UIApplicationSupportsIndirectInputEvents</key><true/>
     <key>UIBackgroundModes</key><array><string>remote-notification</string></array>
     <key>UILaunchScreen</key><dict/>
-    <key>UISupportedInterfaceOrientations</key><array><string>UIInterfaceOrientationPortrait</string></array>
+    <key>UISupportedInterfaceOrientations</key><array><string>UIInterfaceOrientationPortrait</string><string>UIInterfaceOrientationLandscapeLeft</string><string>UIInterfaceOrientationLandscapeRight</string></array>
     <key>ITSAppUsesNonExemptEncryption</key><false/>
     <key>ShekatiCloudContainerIdentifier</key><string>$(SHEKATI_ICLOUD_CONTAINER)</string>
 </dict>

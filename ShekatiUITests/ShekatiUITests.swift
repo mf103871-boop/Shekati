@@ -29,7 +29,7 @@ final class ShekatiUITests: XCTestCase {
         XCTAssertTrue(app.textFields["chequeNumberField"].isHittable)
         XCTAssertFalse(app.textFields["bankField"].exists)
         captureScreenshot(app, name: "English quick cheque entry")
-        app.segmentedControls["chequeDirectionPicker"].buttons["Outgoing"].tap()
+        selectOutgoing(in: app)
         amount.tap()
         amount.typeText("125.50")
         let number = app.textFields["chequeNumberField"]
@@ -94,7 +94,7 @@ final class ShekatiUITests: XCTestCase {
         waitForEditorDismissal(in: app)
         app.buttons["addCheque"].tap()
         XCTAssertTrue(app.textFields["amountField"].waitForExistence(timeout: 5))
-        app.segmentedControls["chequeDirectionPicker"].buttons["صادر"].tap()
+        selectOutgoing(in: app, arabic: true)
         fillQuickCheque(in: app, amount: "760.00", party: "Demo outgoing", number: "000102")
         app.buttons["saveCheque"].tap()
         allowNotificationPromptIfPresented()
@@ -113,9 +113,11 @@ final class ShekatiUITests: XCTestCase {
         let window = app.windows.firstMatch.frame
         XCTAssertGreaterThan(app.staticTexts["القيمة"].frame.midX, window.midX,
                              "Arabic sheet starts with the value column on the right")
+        captureScreenshot(app, name: "Arabic outgoing cheques sheet — leading columns")
+        revealSheetHeading(app.staticTexts["رصيد"], arabic: true, in: app)
         XCTAssertLessThan(app.staticTexts["رصيد"].frame.midX, window.midX,
                           "Arabic sheet ends with the balance column on the left")
-        captureScreenshot(app, name: "Arabic outgoing cheques sheet")
+        captureScreenshot(app, name: "Arabic outgoing cheques sheet — balance reached by horizontal scrolling")
     }
 
     private func fillQuickCheque(in app: XCUIApplication, amount: String, party: String, number: String) {
@@ -154,7 +156,7 @@ final class ShekatiUITests: XCTestCase {
         let app = launch(largeText: true)
         app.buttons["addCheque"].tap()
         XCTAssertTrue(app.textFields["amountField"].waitForExistence(timeout: 5))
-        app.segmentedControls["chequeDirectionPicker"].buttons["Outgoing"].tap()
+        selectOutgoing(in: app)
         fillQuickCheque(in: app, amount: "9999.50", party: "Large text demo", number: "000999")
         app.buttons["saveCheque"].tap()
         allowNotificationPromptIfPresented()
@@ -166,7 +168,7 @@ final class ShekatiUITests: XCTestCase {
         reveal(row, in: app)
         let window = app.windows.firstMatch.frame
         XCTAssertTrue(row.isHittable)
-        // The five sheet columns span the screen width; allow sub-point pixel rounding.
+        // Accessibility text uses readable cards; no part of a card may extend outside the screen.
         XCTAssertGreaterThanOrEqual(row.frame.minX, window.minX - 1)
         XCTAssertLessThanOrEqual(row.frame.maxX, window.maxX + 1)
         XCTAssertGreaterThan(row.frame.width, window.width * 0.9)
@@ -179,6 +181,42 @@ final class ShekatiUITests: XCTestCase {
         app.descendants(matching: .any).matching(NSPredicate(
             format: "identifier BEGINSWITH %@ AND label CONTAINS %@", "cheque-row-", name
         )).firstMatch
+    }
+
+    private func selectOutgoing(in app: XCUIApplication, arabic: Bool = false) {
+        let title = arabic ? "صادر" : "Outgoing"
+        let segmented = app.segmentedControls["chequeDirectionPicker"]
+        if segmented.exists {
+            let option = segmented.buttons[title]
+            reveal(option, in: app)
+            option.tap()
+            XCTAssertTrue(option.isSelected)
+        } else {
+            let picker = app.descendants(matching: .any).matching(identifier: "chequeDirectionPicker").firstMatch
+            reveal(picker, in: app)
+            picker.tap()
+            let option = app.buttons[title].firstMatch
+            XCTAssertTrue(option.waitForExistence(timeout: 5) && option.isHittable)
+            option.tap()
+            let selected = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                picker.exists && ([picker.label, picker.value as? String ?? ""].joined(separator: " ")).contains(title)
+            }, object: nil)
+            XCTAssertEqual(XCTWaiter.wait(for: [selected], timeout: 5), .completed,
+                           "The accessibility menu must expose its selected outgoing value")
+        }
+    }
+
+    private func revealSheetHeading(_ heading: XCUIElement, arabic: Bool, in app: XCUIApplication) {
+        let table = app.descendants(matching: .any).matching(identifier: "outgoingChequeTable").firstMatch
+        let window = app.windows.firstMatch.frame
+        for _ in 0..<5 {
+            if heading.exists && heading.isHittable &&
+                heading.frame.minX >= window.minX - 1 && heading.frame.maxX <= window.maxX + 1 { return }
+            // In Arabic the last column sits to the left; drag the sheet right to reveal it.
+            if arabic { table.swipeRight() } else { table.swipeLeft() }
+        }
+        captureDiagnostics(app, name: "Spreadsheet trailing column could not be reached")
+        XCTFail("Horizontal scrolling must expose the complete trailing heading")
     }
 
     private func waitForEditorDismissal(in app: XCUIApplication) {
