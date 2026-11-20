@@ -3,6 +3,19 @@ import XCTest
 @testable import ShekatiCore
 
 final class CurrencyMathTests: XCTestCase {
+    func testCompactDisplayKeepsSignAndFullMinorUnitsWithLocalizedSeparator() {
+        let german = Locale(identifier: "de_DE")
+        XCTAssertEqual(CurrencyMath.compactDisplay(minorUnits: -123_456_789_012, currencyCode: "USD", locale: german),
+                       "-1234567890,12")
+        XCTAssertEqual(CurrencyMath.compactDisplay(minorUnits: .min, currencyCode: "JOD", locale: german),
+                       "-9223372036854775,808")
+        XCTAssertEqual(CurrencyMath.compactDisplay(minorUnits: .min, currencyCode: "JPY", locale: german),
+                       "-9223372036854775808")
+        let arabic = Locale(identifier: "ar_JO")
+        XCTAssertEqual(CurrencyMath.compactDisplay(minorUnits: -1, currencyCode: "JOD", locale: arabic),
+                       "-0" + (arabic.decimalSeparator ?? ".") + "001")
+    }
+
     func testZeroTwoThreeAndFourDecimalCurrencies() {
         XCTAssertEqual(CurrencyMath.fractionDigits(for: "JPY"), 0)
         XCTAssertEqual(CurrencyMath.fractionDigits(for: "usd"), 2)

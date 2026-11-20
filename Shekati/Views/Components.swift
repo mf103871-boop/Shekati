@@ -89,7 +89,7 @@ struct AmountText: View {
 }
 
 /// A monetary value must never wrap between its integer and fractional digits.
-/// Keep the preferred font; long values use a separate currency label and can pan.
+/// Prefer the user's font. When space is tight, keep the signed number intact and put the currency below it.
 @MainActor
 struct ReadableCurrencyAmount: View {
     @AppStorage("shekati.hideAmounts") private var hidden = false
@@ -99,24 +99,37 @@ struct ReadableCurrencyAmount: View {
     let formatted: String
 
     var body: some View {
-        if hidden { Text("••••").accessibilityLabel(app.tr("Amounts hidden")) } else {
-        ViewThatFits(in: .horizontal) {
-            Text(formatted).fixedSize(horizontal: true, vertical: false)
-            VStack(alignment: .leading, spacing: 4) {
-                ScrollView(.horizontal) {
-                    Text(CurrencyMath.editable(minorUnits: minorUnits, currencyCode: currencyCode))
-                        .fixedSize(horizontal: true, vertical: false)
+        if hidden {
+            Text("••••").accessibilityLabel(app.tr("Amounts hidden"))
+        } else {
+            ViewThatFits(in: .horizontal) {
+                Text(verbatim: formatted)
+                    .fixedSize(horizontal: true, vertical: false)
+                    .environment(\.layoutDirection, .leftToRight)
+                VStack(alignment: .leading, spacing: 4) {
+                    ViewThatFits(in: .horizontal) {
+                        signedNumber
+                        signedNumber.font(.body.weight(.semibold))
+                        signedNumber.font(.body.weight(.semibold)).dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                        ScrollView(.horizontal) { signedNumber.font(.body.weight(.semibold)) }
+                            .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
+                            .environment(\.layoutDirection, .leftToRight)
+                    }
+                    Text(verbatim: currencyCode).font(.subheadline)
                 }
-                .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
-                Text(currencyCode).font(.subheadline)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .monospacedDigit()
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(formatted)
         }
-        .monospacedDigit()
-        .environment(\.layoutDirection, .leftToRight)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(formatted)
-        }
+    }
+
+    private var signedNumber: some View {
+        Text(verbatim: CurrencyMath.compactDisplay(minorUnits: minorUnits, currencyCode: currencyCode,
+                                                   locale: app.preferences.language.locale))
+            .fixedSize(horizontal: true, vertical: false)
+            .environment(\.layoutDirection, .leftToRight)
     }
 }
 
