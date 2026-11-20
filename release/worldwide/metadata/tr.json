@@ -1,0 +1,26 @@
+{
+  "locale": "tr",
+  "applicationLocale": "tr",
+  "name": "Shekati",
+  "subtitle": "Çek takibi",
+  "keywords": "Çekler,Banka hesapları,takvim,hatırlatmalar",
+  "description": "Gelen ve giden çekleri kaydet, ödenme tarihlerini görün ve çek resimlerini bir arada tut.\n\nÜcretsiz planda bir banka hesabı, on aktif çek, el girişi, takvim ve hatırlatmalar yer alıyor.\n\nShekati Plus daha fazla hesap, sınırsız aktif çekler, çek taraması, onaylamalar, kısmi düzenlemeler, değiştirmeler ve nakit akışı tahminleri ekler.\n\nAylık veya yıllık bir abonelik seçin. Yerel fiyatınız satın almaktan önce gösterilir. Apple Hesabınızda iptal edilmedikçe abonelikler otomatik olarak yenilenir.\n\nBir abonelik sona erdikten sonra mevcut çekleri okuyabilir, kapatır ve ihraç edebilirsiniz.\n\nKullanım Şartları\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nGizlilik politikası\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Aylık",
+      "description": "Sınırsız çek"
+    },
+    "annual": {
+      "name": "Shekati Plus · Yıllık",
+      "description": "Sınırsız çek"
+    }
+  },
+  "screenshotHeadings": [
+    "Hesabınız",
+    "Çeki kayıtları",
+    "Taranan detayları gözden geçir · Shekati Plus",
+    "Çeki detayları",
+    "Süreç"
+  ]
+}

@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "Сфотографуйте чек, щоб перевірити розпізнані дані.";
+"NSFaceIDUsageDescription" = "Використовуйте Face ID, щоб відкрити реєстр чеків.";

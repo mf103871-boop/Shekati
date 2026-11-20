@@ -1,0 +1,26 @@
+{
+  "locale": "pl",
+  "applicationLocale": "pl",
+  "name": "Shekati",
+  "subtitle": "Ewidencja czeków",
+  "keywords": "Czeki,Konta bankowe,kalendarz,Przypomnienia",
+  "description": "Zapisuj przychodzące i wychodzące czeki, zobacz ich terminy płatności i przechowuj razem obrazy czeków.\n\nDarmowy plan obejmuje jedno konto bankowe, dziesięć aktywnych czeków, ręczne wprowadzanie danych, kalendarz i przypomnienia.\n\nShekati Plus dodaje więcej kont, nieograniczone aktywne czeki, skanowanie czeków, zatwierdzenia, rozliczenia częściowe, zastępstwa i prognozy przepływów pieniężnych.\n\nWybierz subskrypcję miesięczną lub roczną. Cena lokalna jest wyświetlana przed zakupem, a subskrypcje są odnawiane automatycznie do momentu anulowania na koncie Apple ID.\n\nMożesz odczytać, zamknąć i wyeksportować istniejące czeki po zakończeniu subskrypcji.\n\nWarunki użytkowania\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolityka prywatności |\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Miesięcznie",
+      "description": "Nieograniczona liczba czeków"
+    },
+    "annual": {
+      "name": "Shekati Plus · Rocznie",
+      "description": "Nieograniczona liczba czeków"
+    }
+  },
+  "screenshotHeadings": [
+    "Twoje konto",
+    "Rejestracja czeków",
+    "Przejrzyj zeskanowane szczegóły · Shekati Plus",
+    "Szczegóły dotyczące czeku",
+    "Terminy płatności"
+  ]
+}

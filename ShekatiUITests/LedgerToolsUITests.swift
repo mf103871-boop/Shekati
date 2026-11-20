@@ -14,7 +14,7 @@ final class LedgerToolsUITests: XCTestCase {
         let app = launch()
         addOutgoingCheque(app, amount: "25.50", party: "Ledger A", number: "000901")
         addOutgoingCheque(app, amount: "74.50", party: "Ledger B", number: "000902")
-        app.tabBars.buttons["Cheques"].tap()
+        openMoreDestination("outgoingLedgerLink", in: app)
         let firstCheque = row(number: "000901", in: app)
         let secondCheque = row(number: "000902", in: app)
         XCTAssertTrue(firstCheque.waitForExistence(timeout: 5))
@@ -37,11 +37,7 @@ final class LedgerToolsUITests: XCTestCase {
 
         // Paying is a dated action. The original record leaves the primary scope and remains in history.
         firstCheque.tap()
-        XCTAssertTrue(app.buttons["primarySettlement"].waitForExistence(timeout: 5))
-        app.buttons["primarySettlement"].tap()
-        XCTAssertTrue(element("actualSettlementDate", in: app).waitForExistence(timeout: 5))
-        app.buttons["confirmSettlement"].tap()
-        waitForAbsence(app.buttons["confirmSettlement"])
+        recordBankSettlement(in: app)
         let paymentDate = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Payment date,")).firstMatch
         XCTAssertTrue(paymentDate.waitForExistence(timeout: 5))
         goBack(in: app)
@@ -83,7 +79,7 @@ final class LedgerToolsUITests: XCTestCase {
         XCTAssertTrue(app.segmentedControls["chequeDirectionPicker"].buttons["Outgoing"].isSelected)
         let plannedDate = app.staticTexts["plannedDueDateSummary"]
         XCTAssertTrue(plannedDate.exists)
-        XCTAssertTrue(plannedDate.label.contains(dateText(tomorrow, format: "dd/MM/yyyy")),
+        XCTAssertTrue(plannedDate.label.contains(localizedDueDate(tomorrow)),
                       "Choosing an available day must prefill that exact due date")
         XCTAssertFalse(plannedDate.label.unicodeScalars.contains {
             (0x0660...0x0669).contains($0.value) || (0x06F0...0x06F9).contains($0.value)
@@ -112,7 +108,7 @@ final class LedgerToolsUITests: XCTestCase {
         app.buttons["closeFreeDays"].tap()
         let scheduledCheque = row(number: "000903", in: app)
         XCTAssertTrue(scheduledCheque.waitForExistence(timeout: 5))
-        XCTAssertTrue(scheduledCheque.label.contains(dateText(tomorrow, format: "dd/MM/yyyy")))
+        XCTAssertTrue(scheduledCheque.label.contains(localizedDueDate(tomorrow)))
         XCTAssertTrue(secondCheque.exists)
         waitForRowRemoval(firstCheque)
     }

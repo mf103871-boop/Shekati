@@ -17,6 +17,7 @@ struct ChequeTransferDocument: FileDocument {
 @MainActor
 struct DataToolsView: View {
     @Environment(AppState.self) private var app
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
     var body: some View {
         List {
             Section(app.tr("Backup")) {
@@ -26,7 +27,11 @@ struct DataToolsView: View {
                     .font(.footnote).foregroundStyle(.secondary)
             }
             Section(app.tr("Excel and CSV")) {
-                NavigationLink(app.tr("Import and export CSV")) { CSVTransferView() }
+                if hidesAmounts {
+                    Button(app.tr("Show amounts")) { hidesAmounts = false }
+                } else {
+                    NavigationLink(app.tr("Import and export CSV")) { CSVTransferView() }
+                }
                 Text(app.tr("CSV contains cheque details without photos. It can be opened in Excel. Review the file before importing."))
                     .font(.footnote).foregroundStyle(.secondary)
             }
@@ -38,6 +43,9 @@ struct DataToolsView: View {
 private struct BackupCreationView: View {
     @Environment(AppState.self) private var app
     @Query private var records: [ChequeRecord]
+    @Query private var accounts: [BankAccountRecord]
+    @Query private var books: [ChequeBookRecord]
+    @Query private var ledgerEvents: [LedgerEventRecord]
     @State private var password = ""
     @State private var confirmation = ""
     @State private var busy = false
@@ -79,8 +87,17 @@ private struct BackupCreationView: View {
     }
     private var errorBinding: Binding<Bool> { Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } }) }
     private func createBackup() {
-        let payload = ChequeBackupPayload(currencyCode: app.currencyCode, records: records.map { ChequeBackupEntry(record: $0) },
-                                         globalReminders: GlobalReminderBackup(preferences: app.preferences))
+        let payload: ChequeBackupPayload
+        do {
+            let banking = try BankingArchive(accounts: accounts, books: books, events: ledgerEvents)
+            let entries = records.map { ChequeBackupEntry(record: $0) }
+            try banking.validate(records: entries)
+            payload = ChequeBackupPayload(version: 2, currencyCode: app.currencyCode, records: entries,
+                                          globalReminders: GlobalReminderBackup(preferences: app.preferences), banking: banking)
+        } catch {
+            errorMessage = transferMessage(error, app: app)
+            return
+        }
         let chosenPassword = password
         busy = true; message = nil
         Task {
@@ -131,6 +148,11 @@ private struct BackupRestoreView: View {
                     LabeledContent(app.tr("Unchanged cheques"), value: DisplayFormatting.count(preview.identicalCount, locale: app.preferences.language.locale))
                     LabeledContent(app.tr("Existing cheques with changes"), value: DisplayFormatting.count(preview.changedCount, locale: app.preferences.language.locale))
                     LabeledContent(app.tr("Deleted records in backup"), value: DisplayFormatting.count(preview.recentlyDeletedCount, locale: app.preferences.language.locale))
+                    if payload.banking != nil {
+                        LabeledContent(app.tr("New bank accounts"), value: DisplayFormatting.count(preview.newAccounts, locale: app.preferences.language.locale))
+                        LabeledContent(app.tr("New cheque books"), value: DisplayFormatting.count(preview.newBooks, locale: app.preferences.language.locale))
+                        LabeledContent(app.tr("New operations"), value: DisplayFormatting.count(preview.newOperations, locale: app.preferences.language.locale))
+                    }
                     if preview.changedCount > 0 {
                         Toggle(app.tr("Replace matching existing cheques"), isOn: $replaceExisting)
                         Text(app.tr("Off by default. New cheques are added; existing cheques remain unchanged. Turn on only to replace matching records with this backup's contents."))
@@ -142,7 +164,7 @@ private struct BackupRestoreView: View {
                             .font(.footnote).foregroundStyle(.secondary)
                     }
                     Button(app.tr("Restore reviewed backup")) { confirmation = true }
-                        .disabled(busy || (preview.newCount == 0 && (!replaceExisting || preview.changedCount == 0) && !restoreReminderPreferences))
+                        .disabled(busy || (preview.newCount == 0 && !preview.hasBankingChanges && (!replaceExisting || preview.changedCount == 0) && !restoreReminderPreferences))
                 }
             }
             if let message { Section { Text(message).foregroundStyle(.secondary) } }
@@ -186,7 +208,7 @@ private struct BackupRestoreView: View {
                 let decoded = try await Task.detached(priority: .userInitiated) {
                     try EncryptedBackup.decrypt(encryptedData, password: enteredPassword)
                 }.value
-                preview = try ChequeTransferService.preview(decoded, existing: records)
+                preview = try ChequeTransferService.preview(decoded, existing: records, context: context)
                 payload = decoded; password = ""
                 restoreReminderPreferences = records.isEmpty && decoded.globalReminders != nil
             } catch { errorMessage = transferMessage(error, app: app) }
@@ -198,9 +220,16 @@ private struct BackupRestoreView: View {
         do {
             let count = try ChequeTransferService.restore(payload, into: context, replaceExisting: replaceExisting)
             if restoreReminderPreferences { payload.globalReminders?.apply(to: app.preferences) }
-            app.currencyCode = payload.currencyCode; app.didMutate()
+            if app.currencyCode.isEmpty { app.currencyCode = payload.currencyCode }
+            app.didMutate()
             Task { await app.requestNotificationPermissionIfNeeded() }
-            message = app.tr("Backup restored") + ": " + DisplayFormatting.count(count, locale: app.preferences.language.locale)
+            var details = [app.tr("Cheques") + ": " + DisplayFormatting.count(count, locale: app.preferences.language.locale)]
+            if let preview, preview.hasBankingChanges {
+                details += [(app.tr("New bank accounts"), preview.newAccounts), (app.tr("New cheque books"), preview.newBooks), (app.tr("New operations"), preview.newOperations)].map {
+                    $0.0 + ": " + DisplayFormatting.count($0.1, locale: app.preferences.language.locale)
+                }
+            }
+            message = app.tr("Backup restored") + "\n" + details.joined(separator: "\n")
             self.payload = nil; preview = nil; encryptedData = nil; password = ""
         } catch { errorMessage = transferMessage(error, app: app) }
     }
@@ -209,6 +238,8 @@ private struct BackupRestoreView: View {
 @MainActor
 private struct CSVTransferView: View {
     @Environment(AppState.self) private var app
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
+    @EnvironmentObject private var plus: ShekatiPlusStore
     @Environment(\.modelContext) private var context
     @Query private var records: [ChequeRecord]
     @State private var importing = false
@@ -225,9 +256,18 @@ private struct CSVTransferView: View {
     private var selectedCount: Int { preview?.rows.filter { includeDuplicates || !$0.isProbableDuplicate }.count ?? 0 }
 
     var body: some View {
+        if hidesAmounts {
+            Button(app.tr("Show amounts")) { hidesAmounts = false }
+        } else {
+            transferForm
+        }
+    }
+
+    private var transferForm: some View {
         List {
             Section(app.tr("Export")) {
                 Button(app.tr("Export saved cheques to CSV")) {
+                    guard !hidesAmounts else { return }
                     document = ChequeTransferDocument(data: ChequeCSV.export(active))
                     filename = "Shekati-\(LocalDay.today.iso).csv"; exporting = true
                 }.disabled(active.isEmpty)
@@ -329,7 +369,7 @@ private struct CSVTransferView: View {
                 errorMessage = app.tr("Your records changed. Review the updated duplicate warnings before importing.")
                 return
             }
-            let count = try ChequeTransferService.restore(payload, into: context)
+            let count = try ChequeTransferService.importCSV(payload, into: context, isPlus: plus.isPlus)
             app.didMutate(); self.preview = nil
             Task { await app.requestNotificationPermissionIfNeeded() }
             message = app.tr("Cheques imported") + ": " + DisplayFormatting.count(count, locale: app.preferences.language.locale)

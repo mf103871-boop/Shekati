@@ -1,0 +1,26 @@
+{
+  "locale": "en-GB",
+  "applicationLocale": "en-GB",
+  "name": "Shekati",
+  "subtitle": "Cheque tracker",
+  "keywords": "cheques,bank accounts,calendar,reminders",
+  "description": "Record incoming and outgoing cheques, see their due dates and keep your cheque images together.\n\nThe free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders.\n\nShekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts.\n\nChoose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account.\n\nYou can read, close and export existing cheques after a subscription ends.\n\nTerms of use\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPrivacy policy\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Monthly",
+      "description": "Unlimited cheques"
+    },
+    "annual": {
+      "name": "Shekati Plus · Annual",
+      "description": "Unlimited cheques"
+    }
+  },
+  "screenshotHeadings": [
+    "Your account",
+    "Cheque register",
+    "Review scanned details · Shekati Plus",
+    "Cheque details",
+    "Due dates"
+  ]
+}

@@ -43,7 +43,7 @@ final class EnhancementUITests: XCTestCase {
         capture(app, "Arabic numeric entry keeps leading zeros and English digits")
         app.buttons["saveCheque"].tap()
         waitForEditorDismissal(app)
-        app.tabBars.buttons["الشيكات"].tap()
+        openMoreDestination("outgoingLedgerLink", in: app)
         let saved = row(number: "000812", in: app)
         XCTAssertTrue(saved.waitForExistence(timeout: 5))
         XCTAssertTrue(saved.label.contains("125.5"))
@@ -109,7 +109,7 @@ final class EnhancementUITests: XCTestCase {
         XCTAssertTrue(app.segmentedControls["chequeDirectionPicker"].buttons["Incoming"].isSelected)
         app.buttons["Cancel"].tap()
         waitForEditorDismissal(app)
-        app.tabBars.buttons["Cheques"].tap()
+        app.tabBars.buttons["tabCheques"].tap()
         XCTAssertTrue(row(number: "000201", in: app).waitForExistence(timeout: 5))
         XCTAssertTrue(row(number: "000202", in: app).exists)
         capture(app, "Build 6 English two cheques saved consecutively")
@@ -139,36 +139,61 @@ final class EnhancementUITests: XCTestCase {
         XCTAssertTrue(warning.waitForExistence(timeout: 5))
         warning.buttons["Save anyway"].tap()
         waitForEditorDismissal(app)
-        app.tabBars.buttons["Cheques"].tap()
+        app.tabBars.buttons["tabCheques"].tap()
         XCTAssertTrue(row(number: "000301", in: app).waitForExistence(timeout: 5))
         assertRowCount(2, number: "000301", in: app)
         capture(app, "Build 6 English explicitly confirmed repeated cheque")
     }
 
+    func testIncomingDepositAndCollectionMoveTheBankBalanceOnceAndRemainInCalendar() {
+        let app = launch()
+        addCheque(app, amount: "125.50", party: "Spring Studio", number: "004182")
+        let balance = app.descendants(matching: .any).matching(NSPredicate(
+            format: "label BEGINSWITH %@", "Recorded balance,"
+        )).firstMatch
+        XCTAssertTrue(balance.waitForExistence(timeout: 5))
+        XCTAssertTrue(balance.label.contains("0.00"))
+        app.tabBars.buttons["tabCheques"].tap()
+        let cheque = row(number: "004182", in: app)
+        XCTAssertTrue(cheque.waitForExistence(timeout: 5))
+        cheque.tap()
+        let deposit = app.buttons["operation-deposit"]
+        reveal(deposit, in: app)
+        deposit.tap()
+        let review = app.buttons["reviewOperation"]
+        XCTAssertTrue(review.waitForExistence(timeout: 5))
+        review.tap()
+        let confirm = app.buttons.matching(identifier: "commitOperation").firstMatch
+        XCTAssertTrue(confirm.waitForExistence(timeout: 5))
+        confirm.tap()
+        app.tabBars.buttons["tabHome"].tap()
+        XCTAssertTrue(balance.waitForExistence(timeout: 5))
+        XCTAssertTrue(balance.label.contains("0.00"))
+        app.tabBars.buttons["tabCheques"].tap()
+        recordBankSettlement(in: app)
+        app.tabBars.buttons["tabHome"].tap()
+        let updated = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label CONTAINS %@", "125.50"), object: balance)
+        XCTAssertEqual(XCTWaiter.wait(for: [updated], timeout: 8), .completed)
+        app.tabBars.buttons["tabCalendar"].tap()
+        XCTAssertTrue(cheque.waitForExistence(timeout: 8))
+        XCTAssertTrue(cheque.label.contains("Settled"))
+    }
+
     func testPrimarySettlementRecordsActualDateAndMovesChequeOutOfOutstandingButKeepsHistory() {
         let app = launch()
         addCheque(app, amount: "130.50", party: "Payment demo", number: "000401", outgoing: true)
-        app.tabBars.buttons["Cheques"].tap()
+        openMoreDestination("outgoingLedgerLink", in: app)
         let cheque = row(number: "000401", in: app)
         XCTAssertTrue(cheque.waitForExistence(timeout: 5))
         reveal(cheque, in: app)
         cheque.tap()
         let paymentDate = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Payment date,")).firstMatch
         XCTAssertFalse(paymentDate.exists)
-        XCTAssertTrue(app.buttons["primarySettlement"].waitForExistence(timeout: 5))
-        capture(app, "Build 6 English payment action next to amount")
-        app.buttons["primarySettlement"].tap()
-        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "actualSettlementDate").firstMatch.waitForExistence(timeout: 5))
-        app.buttons["confirmSettlement"].tap()
-        waitForAbsence(app.buttons["confirmSettlement"])
+        recordBankSettlement(in: app)
         XCTAssertTrue(paymentDate.waitForExistence(timeout: 5))
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.calendar = Calendar(identifier: .gregorian)
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        XCTAssertEqual(paymentDate.label, "Payment date, " + dateFormatter.string(from: Date()),
+        XCTAssertEqual(paymentDate.label, "Payment date, " + localizedDueDate(Date()),
                        "The confirmed default actual payment date must be visible, not only a changed status")
-        XCTAssertFalse(app.buttons["primarySettlement"].exists)
+        XCTAssertFalse(app.buttons["operation-settle"].exists)
         capture(app, "Build 6 English actual payment date saved")
         goBack(in: app)
         XCTAssertTrue(app.navigationBars["Cheques"].waitForExistence(timeout: 5))
@@ -188,7 +213,7 @@ final class EnhancementUITests: XCTestCase {
     func testSoftDeletionCanBeUndoneAndLaterRestoredFromSettingsTrash() {
         let app = launch()
         addCheque(app, amount: "150.00", party: "Restore demo", number: "000501", outgoing: true)
-        app.tabBars.buttons["Cheques"].tap()
+        app.tabBars.buttons["tabCheques"].tap()
         let cheque = row(number: "000501", in: app)
         XCTAssertTrue(cheque.waitForExistence(timeout: 5))
         reveal(cheque, in: app)
@@ -206,7 +231,7 @@ final class EnhancementUITests: XCTestCase {
         app.buttons["Done"].tap()
         XCTAssertTrue(app.navigationBars["Cheques"].waitForExistence(timeout: 5))
         waitForRowRemoval(cheque, in: app)
-        app.tabBars.buttons["Settings"].tap()
+        openMoreDestination("moreSettingsLink", in: app)
         let trash = app.descendants(matching: .any).matching(identifier: "recentlyDeleted").firstMatch
         reveal(trash, in: app)
         trash.tap()
@@ -216,11 +241,11 @@ final class EnhancementUITests: XCTestCase {
         capture(app, "Build 6 English recently deleted cheque retains its details")
         restore.tap()
         XCTAssertTrue(app.staticTexts["No deleted cheques"].waitForExistence(timeout: 5))
-        app.tabBars.buttons["Cheques"].tap()
+        app.tabBars.buttons["tabCheques"].tap()
         XCTAssertTrue(cheque.waitForExistence(timeout: 5))
         XCTAssertTrue(cheque.label.contains("150"))
         capture(app, "Build 6 English cheque restored from recently deleted")
-        app.tabBars.buttons["Settings"].tap()
+        app.tabBars.buttons["tabMore"].tap()
         if !app.navigationBars["Settings"].exists { goBack(in: app) }
         XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
         let tools = app.descendants(matching: .any).matching(identifier: "dataTools").firstMatch
@@ -263,14 +288,7 @@ final class EnhancementUITests: XCTestCase {
         hideKeyboard(in: app, arabic: true)
         app.buttons["saveCheque"].tap()
         waitForEditorDismissal(app)
-        app.tabBars.buttons["الشيكات"].tap()
-        XCTAssertTrue(app.staticTexts["لا توجد شيكات صادرة"].waitForExistence(timeout: 5))
-        XCTAssertFalse(row(number: "000601", in: app).exists, "The cheques sheet lists outgoing cheques only")
-        app.tabBars.buttons["الرئيسية"].tap()
-        let dueToday = app.descendants(matching: .any).matching(identifier: "dashboardScope-today").firstMatch
-        XCTAssertTrue(dueToday.waitForExistence(timeout: 5))
-        reveal(dueToday, in: app)
-        dueToday.tap()
+        app.tabBars.buttons["tabCheques"].tap()
         XCTAssertTrue(row(number: "000601", in: app).waitForExistence(timeout: 5))
         app.buttons["period-today"].tap()
         XCTAssertTrue(row(number: "000601", in: app).exists)
@@ -280,7 +298,7 @@ final class EnhancementUITests: XCTestCase {
         app.buttons["clearActiveFilters"].tap()
         XCTAssertTrue(row(number: "000601", in: app).waitForExistence(timeout: 5))
         capture(app, "Build 6 Arabic outstanding cheques and quick periods")
-        app.tabBars.buttons["الإعدادات"].tap()
+        openMoreDestination("moreSettingsLink", in: app)
         let tools = app.descendants(matching: .any).matching(identifier: "dataTools").firstMatch
         reveal(tools, in: app)
         tools.tap()

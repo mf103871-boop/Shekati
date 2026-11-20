@@ -1,0 +1,412 @@
+{
+  "localizationReference": "https://developer.apple.com/documentation/appstoreconnectapi/managing-metadata-in-your-app-by-using-locale-shortcodes",
+  "requiredScreens": [
+    "home",
+    "ledger",
+    "scan-review",
+    "detail",
+    "calendar"
+  ],
+  "locales": [
+    {
+      "store": "ar-SA",
+      "bundle": "ar",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "bn-BD",
+      "bundle": "bn",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "ca",
+      "bundle": "ca",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "zh-Hans",
+      "bundle": "zh-Hans",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "zh-Hant",
+      "bundle": "zh-Hant",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "hr",
+      "bundle": "hr",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "cs",
+      "bundle": "cs",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "da",
+      "bundle": "da",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "nl-NL",
+      "bundle": "nl",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "en-AU",
+      "bundle": "en-AU",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "en-CA",
+      "bundle": "en-CA",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "en-GB",
+      "bundle": "en-GB",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "en-US",
+      "bundle": "en-US",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "fi",
+      "bundle": "fi",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "fr-FR",
+      "bundle": "fr",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "fr-CA",
+      "bundle": "fr-CA",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "de-DE",
+      "bundle": "de",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "el",
+      "bundle": "el",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "gu-IN",
+      "bundle": "gu",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "he",
+      "bundle": "he",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "hi",
+      "bundle": "hi",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "hu",
+      "bundle": "hu",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "id",
+      "bundle": "id",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "it",
+      "bundle": "it",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "ja",
+      "bundle": "ja",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "kn-IN",
+      "bundle": "kn",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "ko",
+      "bundle": "ko",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "ms",
+      "bundle": "ms",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "ml-IN",
+      "bundle": "ml",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "mr-IN",
+      "bundle": "mr",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "no",
+      "bundle": "nb",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "or-IN",
+      "bundle": "or",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "pl",
+      "bundle": "pl",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "pt-BR",
+      "bundle": "pt-BR",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "pt-PT",
+      "bundle": "pt-PT",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "pa-IN",
+      "bundle": "pa",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "ro",
+      "bundle": "ro",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "ru",
+      "bundle": "ru",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "sk",
+      "bundle": "sk",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "sl-SI",
+      "bundle": "sl",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "es-MX",
+      "bundle": "es-MX",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "es-ES",
+      "bundle": "es-ES",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "sv",
+      "bundle": "sv",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "ta-IN",
+      "bundle": "ta",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "te-IN",
+      "bundle": "te",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "th",
+      "bundle": "th",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "tr",
+      "bundle": "tr",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "uk",
+      "bundle": "uk",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "ur-PK",
+      "bundle": "ur",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    },
+    {
+      "store": "vi",
+      "bundle": "vi",
+      "bundleComplete": true,
+      "screenshots": [],
+      "linguisticReview": "pending",
+      "nativeVisualReview": "pending"
+    }
+  ]
+}

@@ -26,12 +26,11 @@ final class DisplayFormattingTests: XCTestCase {
 
     func testCachedCivilDaysStayTheSameAcrossTimeZonesAndDaylightSavingBoundaries() throws {
         let zones = try ["Pacific/Kiritimati", "America/Los_Angeles", "Asia/Amman"].map { try XCTUnwrap(TimeZone(identifier: $0)) }
-        for iso in ["2026-03-08", "2026-03-29", "2026-11-01"] {
+        for (iso, expectedUS) in [("2026-03-08", "Mar 8, 2026"), ("2026-03-29", "Mar 29, 2026"), ("2026-11-01", "Nov 1, 2026")] {
             let day = try XCTUnwrap(LocalDay(iso: iso))
-            let expectedNumeric = "\(iso.suffix(2))/\(iso.dropFirst(5).prefix(2))/\(iso.prefix(4))"
             for zone in zones {
                 let displayed = DisplayFormatting.day(day, locale: Locale(identifier: "en_US"), zone: zone)
-                XCTAssertEqual(displayed, expectedNumeric)
+                XCTAssertEqual(displayed, expectedUS)
                 XCTAssertEqual(displayed, freshDay(day, locale: Locale(identifier: "en_US"), zone: zone))
             }
         }
@@ -45,7 +44,9 @@ final class DisplayFormattingTests: XCTestCase {
         for locale in locales {
             let actual = DisplayFormatting.day(day, locale: locale, zone: zone)
             XCTAssertEqual(actual, freshDay(day, locale: locale, zone: zone))
-            XCTAssertEqual(actual, "04/10/2026", "The user's calendar must not change the cheque's civil date or digit style")
+            XCTAssertTrue(actual.contains("2026"))
+            assertWesternDigits(actual)
+            if locale.identifier == "en_US" { XCTAssertEqual(actual, "Oct 4, 2026") }
         }
     }
 
@@ -83,7 +84,9 @@ final class DisplayFormattingTests: XCTestCase {
         XCTAssertEqual(AppLanguage.arabic.locale.language.languageCode?.identifier, "ar")
         XCTAssertEqual(AppLanguage.arabic.locale.numberingSystem.identifier, "latn")
         let day = try XCTUnwrap(LocalDay(iso: "2026-10-06"))
-        XCTAssertEqual(DisplayFormatting.day(day, locale: AppLanguage.arabic.locale), "06/10/2026")
+        let formatted = DisplayFormatting.day(day, locale: AppLanguage.arabic.locale)
+        assertWesternDigits(formatted)
+        XCTAssertEqual(formatted, freshDay(day, locale: AppLanguage.arabic.locale, zone: .current))
         XCTAssertEqual(Localization.text("Within 7 days", language: .arabic), "خلال 7 أيام")
     }
 
@@ -110,7 +113,7 @@ final class DisplayFormattingTests: XCTestCase {
         formatter.locale = locale
         formatter.calendar = Calendar(identifier: .gregorian)
         formatter.timeZone = zone
-        formatter.dateFormat = "dd/MM/yyyy"
+        formatter.setLocalizedDateFormatFromTemplate("yMMMd")
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = zone
         return NumericInput.latinDigits(formatter.string(from: day.date(calendar: calendar)))

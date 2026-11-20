@@ -1,0 +1,78 @@
+name: Capture localized App Store screens
+on:
+  push:
+    branches: ['feature/shekati-global-ledger']
+    paths:
+      - 'Tools/ScreenAudit/capture_store.py'
+      - 'Tools/ScreenAudit/frame_store.swift'
+      - '.github/workflows/store-capture.yml'
+      - 'ShekatiUITests/StoreScreenshotUITests.swift'
+    tags:
+      - 'shekati-store-smoke-*'
+      - 'shekati-store-worldwide-*'
+  workflow_dispatch:
+    inputs:
+      worldwide:
+        type: boolean
+        description: Capture all store locales
+        default: false
+permissions:
+  contents: read
+jobs:
+  select:
+    runs-on: ubuntu-latest
+    outputs:
+      batches: ${{ steps.locales.outputs.batches }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: locales
+        env:
+          WORLDWIDE: ${{ startsWith(github.ref_name, 'shekati-store-worldwide-') || inputs.worldwide }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          inventory = json.loads(Path("release/worldwide/locales.json").read_text())
+          locales = [row["store"] for row in inventory["locales"]] if os.environ["WORLDWIDE"] == "true" else ["ar-SA", "en-US"]
+          batches = [",".join(locales[i:i+5]) for i in range(0,len(locales),5)]
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              print("batches="+json.dumps(batches), file=output)
+          PY
+  capture:
+    needs: select
+    runs-on: macos-26
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        locales: ${{ fromJSON(needs.select.outputs.batches) }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen && xcodegen generate
+      - id: device
+        env:
+          SCREEN_SIZE: large
+        run: python3 Tools/ScreenAudit/select_simulator.py
+      - name: Build candidate and localized UI tests
+        env:
+          UDID: ${{ steps.device.outputs.udid }}
+          DEST: ${{ steps.device.outputs.destination }}
+        run: |
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time "9:41" --batteryState charged --batteryLevel 100
+          xcodebuild build-for-testing -project Shekati.xcodeproj -scheme Shekati -destination "$DEST" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO
+      - name: Capture native product screens
+        env:
+          DEST: ${{ steps.device.outputs.destination }}
+          LOCALES: ${{ matrix.locales }}
+        run: python3 Tools/ScreenAudit/capture_store.py --destination "$DEST" --locales "$LOCALES"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: store-${{ matrix.locales }}
+          path: build/store
+          if-no-files-found: ignore
+          retention-days: 30
+

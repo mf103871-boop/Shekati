@@ -14,16 +14,22 @@ struct ChequeDetailView: View {
     /// The match is by instance identity, so a duplicate id surviving elsewhere cannot mask this deletion.
     @Query private var liveRecords: [ChequeRecord]
     @State private var showingEditor = false
-    @State private var showingStatus = false
-    @State private var showingSettlement = false
+    @EnvironmentObject private var plus: ShekatiPlusStore
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
+    @Query private var events: [LedgerEventRecord]
+    @State private var showingReminder = false
+    private var hasJournal: Bool { record.replacesChequeID != nil || events.contains { $0.chequeID == record.id || $0.relatedID == record.id } }
+    private var reminderAmount: Int64? {
+        BankingLedger.reminderInputs(records: liveRecords, events: events).first { $0.snapshot.id == record.id }?.snapshot.amountMinorUnits
+    }
+    private var financialState: String { BankingLedger.position(for: record, events: events).state.title }
     @State private var showingDelete = false
     @State private var errorMessage: String?
     @State private var preview: ChequeImagePreview?
 
     init(record: ChequeRecord) {
         self.record = record
-        let id = record.id
-        _liveRecords = Query(filter: #Predicate<ChequeRecord> { $0.id == id })
+
     }
 
     var body: some View {
@@ -41,18 +47,19 @@ struct ChequeDetailView: View {
     }
 
     private var activeDetail: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                VStack(alignment: .leading, spacing: 16) {
+        let position = BankingLedger.position(for: record, events: events)
+        return ScrollView {
+            VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 10) {
                     ViewThatFits(in: .horizontal) {
                         HStack(spacing: 12) {
                             directionLabel.fixedSize(horizontal: true, vertical: false)
                             Spacer(minLength: 0)
-                            StatusPill(snapshot: record.snapshot).fixedSize(horizontal: true, vertical: false)
+                            Text(app.tr(financialState)).font(.subheadline.weight(.semibold)).fixedSize(horizontal: true, vertical: false)
                         }
                         VStack(alignment: .leading, spacing: 8) {
                             directionLabel
-                            StatusPill(snapshot: record.snapshot)
+                            Text(app.tr(financialState)).font(.subheadline.weight(.semibold))
                         }
                     }
                     ReadableCurrencyAmount(minorUnits: record.amountMinorUnits, currencyCode: record.currencyCode,
@@ -62,18 +69,23 @@ struct ChequeDetailView: View {
                         .font(.largeTitle.bold())
                         .foregroundStyle(record.direction == .incoming ? Theme.accent : Theme.navy)
                     if !record.party.isEmpty { Text(NumericInput.latinDigits(record.party)).font(.title3.weight(.medium)) }
+                    detailLine("Cheque number", record.number)
                     Divider()
+                    if !record.bank.isEmpty { detailLine("Bank", record.bank) }
+                    if position.conflicts.isEmpty {
+                        let remaining = DisplayFormatting.amount(minorUnits: position.remaining, currencyCode: record.currencyCode,
+                                                                locale: app.preferences.language.locale)
+                        ResponsiveValueRow(title: app.tr("Remaining amount"), value: hidesAmounts ? "••••" : remaining)
+                        if position.paid > 0 {
+                            ResponsiveValueRow(title: app.tr("Amount paid"), value: hidesAmounts ? "••••" :
+                                DisplayFormatting.amount(minorUnits: position.paid, currencyCode: record.currencyCode, locale: app.preferences.language.locale))
+                        }
+                    }
                     ResponsiveValueRow(title: app.tr("Due date"), value: app.formatDay(record.dueDate))
                         .foregroundStyle(record.snapshot.isOverdue(on: app.today) ? Theme.red : Theme.navy)
-                    if record.snapshot.isOutstanding {
+                    if record.snapshot.isOverdue(on: app.today) {
                         Text(app.relativeDueDate(record.dueDate))
                             .font(.subheadline).foregroundStyle(record.snapshot.isOverdue(on: app.today) ? Theme.red : .secondary)
-                        Button { showingSettlement = true } label: {
-                            Label(app.tr(record.direction == .incoming ? "Mark collected" : "Mark paid"), systemImage: "checkmark.circle")
-                                .frame(maxWidth: .infinity).padding(.vertical, 5)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .accessibilityIdentifier("primarySettlement")
                     }
                     if let actual = record.actualDate {
                         ResponsiveValueRow(title: app.tr(record.direction == .incoming ? "Collection date" : "Payment date"),
@@ -85,10 +97,18 @@ struct ChequeDetailView: View {
                 }
                 .padding(20).background(Theme.surface, in: RoundedRectangle(cornerRadius: 22))
 
+                if !hidesAmounts && (record.frontImageData != nil || record.backImageData != nil) {
+                    ScrollView(.horizontal) {
+                        HStack(spacing: 12) {
+                            if let data = record.frontImageData { imageButton(data, title: "Front") }
+                            if let data = record.backImageData { imageButton(data, title: "Back") }
+                        }
+                    }.scrollIndicators(.hidden)
+                }
+                ChequeOperationsView(record: record, isPlus: plus.isPlus, hidesAmounts: hidesAmounts, showsFinancialSummary: false)
+                    .shekatiCard()
                 VStack(alignment: .leading, spacing: 15) {
                     Text(app.tr("Cheque details")).font(.headline)
-                    detailLine("Cheque number", record.number)
-                    detailLine("Bank", record.bank)
                     if !record.branch.isEmpty { detailLine("Branch", record.branch) }
                     detailLine(record.direction == .incoming ? "Payer" : "Payee", record.party)
                     if !record.accountReference.isEmpty { detailLine("Account reference", record.accountReference) }
@@ -130,26 +150,18 @@ struct ChequeDetailView: View {
                 }
                 .padding(20).background(Theme.surface, in: RoundedRectangle(cornerRadius: 22))
 
-                if record.frontImageData != nil || record.backImageData != nil {
-                    VStack(alignment: .leading, spacing: 14) {
-                        Text(app.tr("Cheque images")).font(.headline)
-                        if let data = record.frontImageData { imageButton(data, title: "Front") }
-                        if let data = record.backImageData { imageButton(data, title: "Back") }
-                    }
-                    .padding(20).background(Theme.surface, in: RoundedRectangle(cornerRadius: 22))
+                if record.direction == .incoming && reminderAmount != nil {
+                    Button { showingReminder = true } label: {
+                        Label(app.tr("Preview reminder message"), systemImage: "message")
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                    }.buttonStyle(.bordered)
                 }
-
-                Button { showingStatus = true } label: {
-                    Label(app.tr("Change status"), systemImage: "checkmark.circle")
-                        .frame(maxWidth: .infinity).padding(.vertical, 7)
-                }
-                .buttonStyle(.borderedProminent)
 
                 Button(role: .destructive) { showingDelete = true } label: {
                     Label(app.tr("Delete cheque"), systemImage: "trash")
                         .frame(maxWidth: .infinity).padding(.vertical, 7)
                 }
-                .buttonStyle(.bordered)
+                .buttonStyle(.bordered).disabled(hasJournal)
             }
             .padding(18)
         }
@@ -158,19 +170,17 @@ struct ChequeDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(app.tr("Edit")) { showingEditor = true }
+                Button(app.tr("Edit")) { showingEditor = true }.accessibilityIdentifier("editCheque").disabled(hasJournal || hidesAmounts)
             }
         }
         .sheet(isPresented: $showingEditor) {
-            NavigationStack {
-                ChequeEditorView(record: record)
-                    .environment(\.locale, app.preferences.language.locale)
-                    .environment(\.layoutDirection, sheetDirection)
-            }
-            .environment(\.locale, app.preferences.language.locale)
-            .environment(\.layoutDirection, sheetDirection)
+            ChequeEditorSheet(record: record)
         }
-        .sheet(isPresented: $showingSettlement) { ChequeSettlementSheet(record: record) }
+        .sheet(isPresented: $showingReminder) {
+            if let amount = reminderAmount {
+                ChequeReminderPreview(record: record, remaining: amount, hidesAmounts: hidesAmounts)
+            } else { ContentUnavailableView(app.tr("Cheque reminder"), systemImage: "bell.slash") }
+        }
         .sheet(item: $preview) { item in
             NavigationStack {
                 ScrollView {
@@ -190,15 +200,6 @@ struct ChequeDetailView: View {
             .environment(\.locale, app.preferences.language.locale)
             .environment(\.layoutDirection, sheetDirection)
         }
-        .confirmationDialog(app.tr("Change status"), isPresented: $showingStatus, titleVisibility: .visible) {
-            Button(app.tr(record.direction == .incoming ? "Mark collected" : "Mark paid")) {
-                showingSettlement = true
-            }
-            Button(app.tr("Mark pending")) { transition(to: .pending) }
-            Button(app.tr("Mark returned")) { transition(to: .returned) }
-            Button(app.tr("Mark cancelled"), role: .destructive) { transition(to: .cancelled) }
-            Button(app.tr("Cancel"), role: .cancel) { }
-        }
         .alert(app.tr("Delete this cheque?"), isPresented: $showingDelete) {
             Button(app.tr("Delete"), role: .destructive) { deleteRecord() }
             Button(app.tr("Cancel"), role: .cancel) { }
@@ -208,7 +209,7 @@ struct ChequeDetailView: View {
     }
 
     private var sheetDirection: LayoutDirection {
-        app.preferences.language == .arabic ? .rightToLeft : .leftToRight
+        app.preferences.language.isRTL ? .rightToLeft : .leftToRight
     }
 
     private var directionLabel: some View {
@@ -220,7 +221,7 @@ struct ChequeDetailView: View {
 
     @ViewBuilder
     private var reminderCoverage: some View {
-        if record.snapshot.isOutstanding {
+        if reminderAmount != nil {
             if app.notifications.isDenied {
                 Text(app.tr("Notifications are off")).font(.subheadline).foregroundStyle(.orange)
                 NavigationLink(app.tr("Open reminder settings")) { SettingsView() }
@@ -245,13 +246,16 @@ struct ChequeDetailView: View {
 
     private var hasFutureReminderTime: Bool {
         var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = .current
+        let bankingCalendar = app.preferences.bankingCalendar
+        calendar.timeZone = TimeZone(identifier: bankingCalendar.timeZoneID) ?? .current
         let now = Date()
         let hour = record.reminderHour ?? app.preferences.reminderHour
         let minute = record.reminderMinute ?? app.preferences.reminderMinute
         return (record.reminderOffsets ?? app.preferences.reminderOffsets).contains { offset in
             guard (0...365).contains(offset) else { return false }
-            var parts = calendar.dateComponents([.year, .month, .day], from: record.dueDate.adding(days: -offset).date(calendar: calendar))
+            let proposed = record.dueDate.adding(days: -offset)
+            guard let adjusted = bankingCalendar.reminderDay(for: proposed, calendar: calendar) else { return false }
+            var parts = calendar.dateComponents([.year, .month, .day], from: adjusted.date(calendar: calendar))
             parts.hour = hour; parts.minute = minute
             return calendar.date(from: parts).map { $0 > now } ?? false
         }
@@ -305,11 +309,11 @@ struct ChequeDetailView: View {
     @ViewBuilder private func imageButton(_ data: Data, title: String) -> some View {
         if let image = UIImage(data: data) {
             Button { preview = ChequeImagePreview(image: image, title: title) } label: {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(app.tr(title)).font(.subheadline.weight(.medium))
+                VStack(alignment: .leading, spacing: 3) {
                     Image(uiImage: image).resizable().scaledToFit()
-                        .frame(maxWidth: .infinity, maxHeight: 180)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .frame(maxWidth: 160, maxHeight: 66)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    Label(app.tr(title), systemImage: "arrow.up.left.and.arrow.down.right").font(.caption).foregroundStyle(.secondary)
                 }
             }
             .buttonStyle(.plain)
@@ -333,23 +337,8 @@ struct ChequeDetailView: View {
         return NumericInput.latinDigits(date.formatted(.dateTime.hour().minute().locale(app.preferences.language.locale)))
     }
 
-    @discardableResult
-    private func transition(to status: ChequeStatus, actualDate: LocalDay? = nil) -> Bool {
-        guard record.deletedAt == nil else { return false }
-        record.status = status
-        record.actualDate = status == .settled ? actualDate : nil
-        do {
-            try context.save()
-            app.didMutate()
-            return true
-        } catch {
-            context.rollback()
-            errorMessage = app.tr("Your previous details were kept. Please try again.")
-            return false
-        }
-    }
-
     private func deleteRecord() {
+        guard !hasJournal else { return }
         record.deletedAt = Date()
         do {
             try context.save()
@@ -377,4 +366,40 @@ private struct ChequeImagePreview: Identifiable {
     let id = UUID()
     let image: UIImage
     let title: String
+}
+
+@MainActor
+private struct ChequeReminderPreview: View {
+    @Environment(AppState.self) private var app
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
+    let record: ChequeRecord
+    let remaining: Int64
+    let hidesAmounts: Bool
+    @State private var failed = false
+    private var message: String {
+        var lines = [app.tr("Cheque reminder"), app.tr("Cheque number") + ": " + record.number,
+                     app.tr("Due date") + ": " + app.formatDay(record.dueDate)]
+        if !hidesAmounts {
+            lines.append(app.tr("Remaining amount") + ": " + DisplayFormatting.amount(minorUnits: remaining, currencyCode: record.currencyCode, locale: app.preferences.language.locale))
+        }
+        return lines.joined(separator: "\n")
+    }
+    var body: some View {
+        NavigationStack {
+            Form {
+                Text(message).textSelection(.enabled)
+                Button(app.tr("Open WhatsApp")) {
+                    var url = URLComponents()
+                    url.scheme = "https"
+                    url.host = "wa.me"
+                    url.path = "/"
+                    url.queryItems = [URLQueryItem(name: "text", value: message)]
+                    if let link = url.url { openURL(link) { accepted in failed = !accepted } }
+                }
+                if failed { Text(app.tr("The message could not be opened.")).foregroundStyle(Theme.red) }
+            }.navigationTitle(app.tr("Preview reminder message"))
+                .toolbar { ToolbarItem(placement: .cancellationAction) { Button(app.tr("Done")) { dismiss() } } }
+        }
+    }
 }

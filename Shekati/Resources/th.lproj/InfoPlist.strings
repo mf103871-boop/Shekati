@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "ถ่ายภาพเช็คเพื่อตรวจสอบรายละเอียดที่อ่านได้";
+"NSFaceIDUsageDescription" = "ใช้ Face ID เพื่อปลดล็อกบันทึกเช็คของคุณ";

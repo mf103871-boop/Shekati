@@ -7,6 +7,7 @@ struct TrashView: View {
     @Environment(\.modelContext) private var context
     @Query(filter: #Predicate<ChequeRecord> { $0.deletedAt != nil },
            sort: \ChequeRecord.deletedAt, order: .reverse) private var deleted: [ChequeRecord]
+    @Query private var events: [LedgerEventRecord]
     @State private var deleting: ChequeRecord?
     @State private var errorMessage: String?
 
@@ -63,6 +64,10 @@ struct TrashView: View {
     }
     private func permanentlyDelete() {
         guard let record = deleting else { return }
+        guard record.replacesChequeID == nil, !events.contains(where: { $0.chequeID == record.id || $0.relatedID == record.id }) else {
+            errorMessage = app.tr("Recorded operations protect the original cheque details.")
+            return
+        }
         context.delete(record)
         do { try context.save(); deleting = nil; app.didMutate() }
         catch { context.rollback(); deleting = nil; errorMessage = app.tr("Your change was not saved. Please try again.") }

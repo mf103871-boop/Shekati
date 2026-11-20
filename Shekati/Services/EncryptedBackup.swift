@@ -6,7 +6,8 @@ import Security
 enum EncryptedBackup {
     // File contains a versioned authenticated header, random salt, and AES-GCM ciphertext.
     // The UTF-8 JSON exists in memory only and is never written to a temporary file.
-    private static let magic = Data("SHKBAK01".utf8)
+    private static let legacyMagic = Data("SHKBAK01".utf8)
+    private static let magic = Data("SHKBAK02".utf8)
     private static let iterations: UInt32 = 600_000
     private static let maximumFileBytes = 256_000_000
 
@@ -20,7 +21,9 @@ enum EncryptedBackup {
         let key = try deriveKey(password: password, salt: salt, rounds: iterations)
         let header = makeHeader(salt: salt, rounds: iterations)
         let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .millisecondsSince1970
+        // Foundation stores Date as seconds since its reference date. Avoid conversion
+        // to Unix milliseconds, which can round distinct sub-microsecond instants.
+        encoder.dateEncodingStrategy = .deferredToDate
         var plaintext = try encoder.encode(payload)
         defer { plaintext.resetBytes(in: 0..<plaintext.count) }
         guard plaintext.count <= maximumFileBytes - 56 else { throw ChequeTransferError.invalidFile }
@@ -45,7 +48,8 @@ enum EncryptedBackup {
     }
 
     static func decrypt(_ data: Data, password: String) throws -> ChequeBackupPayload {
-        guard data.count >= 56, data.count <= maximumFileBytes, data.prefix(8) == magic else {
+        let format = data.prefix(8)
+        guard data.count >= 56, data.count <= maximumFileBytes, format == magic || format == legacyMagic else {
             throw ChequeTransferError.invalidFile
         }
         let salt = data.subdata(in: 8..<24)
@@ -60,7 +64,7 @@ enum EncryptedBackup {
         } catch { throw ChequeTransferError.incorrectPassword }
         defer { plaintext.resetBytes(in: 0..<plaintext.count) }
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .millisecondsSince1970
+        decoder.dateDecodingStrategy = format == legacyMagic ? .millisecondsSince1970 : .deferredToDate
         let payload: ChequeBackupPayload
         do { payload = try decoder.decode(ChequeBackupPayload.self, from: plaintext) }
         catch { throw ChequeTransferError.invalidRecords }

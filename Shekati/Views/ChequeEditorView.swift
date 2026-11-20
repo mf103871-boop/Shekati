@@ -7,8 +7,38 @@ import UserNotifications
 import ShekatiCore
 
 @MainActor
+struct ChequeEditorSheet: View {
+    @Environment(AppState.self) private var app
+    var record: ChequeRecord? = nil
+    var initialDirection: ChequeDirection? = nil
+    var initialDueDate: LocalDay? = nil
+
+    var body: some View {
+        let language = app.preferences.language
+        let direction: LayoutDirection = language.isRTL ? .rightToLeft : .leftToRight
+        NavigationStack {
+            ChequeEditorView(record: record, initialDirection: initialDirection, initialDueDate: initialDueDate)
+                .environment(\.locale, language.locale)
+                .environment(\.layoutDirection, direction)
+        }
+        // A presented navigation bar and its UIKit-backed form each host a view hierarchy.
+        .environment(\.locale, language.locale)
+        .environment(\.layoutDirection, direction)
+    }
+}
+
+@MainActor
 struct ChequeEditorView: View {
     @Environment(AppState.self) private var app
+    @EnvironmentObject private var plus: ShekatiPlusStore
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
+    @Query(sort: \BankAccountRecord.name) private var accounts: [BankAccountRecord]
+    @Query(sort: \ChequeBookRecord.name) private var books: [ChequeBookRecord]
+    @Query private var events: [LedgerEventRecord]
+    @State private var selectedAccountID: UUID?
+    @State private var selectedBookID: UUID?
+    @State private var isDraft = false
+    @State private var showPlus = false
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -46,7 +76,11 @@ struct ChequeEditorView: View {
     @State private var showingScanner = false
     @State private var scanSide: AttachmentSide = .front
     @State private var showingCameraHelp = false
-    @State private var ocrSuggestion: OCRSuggestion?
+    private struct RecognizedCheque: Identifiable {
+        let id = UUID()
+        let suggestion: OCRSuggestion
+    }
+    @State private var ocrReview: RecognizedCheque?
     @State private var isReadingImage = false
     @State private var isSaving = false
     @State private var errorMessage: String?
@@ -75,6 +109,9 @@ struct ChequeEditorView: View {
     init(record: ChequeRecord? = nil, initialDirection: ChequeDirection? = nil,
          initialDueDate: LocalDay? = nil) {
         self.record = record
+        _selectedAccountID = State(initialValue: record?.bankAccountID)
+        _selectedBookID = State(initialValue: record?.chequeBookID)
+        _isDraft = State(initialValue: record?.ledgerBaselineStatusRaw == PaperState.draft.rawValue)
         recordID = record?.id
         recordCurrency = record?.currencyCode
         defaultDirection = initialDirection ?? .incoming
@@ -116,7 +153,13 @@ struct ChequeEditorView: View {
         }
     }
 
-    private var currency: String { recordCurrency ?? app.currencyCode }
+    private var selectedAccount: BankAccountRecord? { accounts.first { $0.id == selectedAccountID } }
+    private var validBooks: [ChequeBookRecord] { books.filter { $0.accountID == selectedAccountID } }
+    private var currency: String { recordCurrency ?? selectedAccount?.currencyCode ?? app.currencyCode }
+    private var hasJournal: Bool {
+        guard let recordID else { return false }
+        return record?.replacesChequeID != nil || events.contains { $0.chequeID == recordID || $0.relatedID == recordID }
+    }
     private var fractionDigits: Int { CurrencyMath.fractionDigits(for: currency) }
     private func numericFocus(_ field: EntryField) -> Binding<Bool> {
         Binding(get: { focusedField == field }, set: { active in
@@ -145,7 +188,7 @@ struct ChequeEditorView: View {
     }
 
     private var formSnapshot: FormSnapshot {
-        FormSnapshot(fields: [direction.rawValue, amountText, LocalDay(date: dueDate).iso,
+        FormSnapshot(fields: [selectedAccountID?.uuidString ?? "", selectedBookID?.uuidString ?? "", String(isDraft), direction.rawValue, amountText, LocalDay(date: dueDate).iso,
                               String(includeIssueDate), LocalDay(date: issueDate).iso,
                               number, bank, branch, party, accountReference, notes,
                               String(remindersEnabled), String(useDefaultReminders),
@@ -160,6 +203,29 @@ struct ChequeEditorView: View {
     }
 
     var body: some View {
+        Group {
+            if hidesAmounts {
+                ContentUnavailableView {
+                    Label(app.tr("Amounts hidden"), systemImage: "eye.slash")
+                } description: {
+                    EmptyView()
+                } actions: {
+                    Button(app.tr("Show amounts")) { hidesAmounts = false }
+                        .buttonStyle(.borderedProminent)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button(app.tr("Cancel")) { dismiss() }
+                    }
+                }
+            } else { editor }
+        }
+        .onChange(of: hidesAmounts) { _, hidden in
+            if hidden { ocrReview = nil; showingScanner = false }
+        }
+    }
+
+    private var editor: some View {
         ScrollViewReader { scrollProxy in
         Form {
             essentialFields
@@ -178,7 +244,7 @@ struct ChequeEditorView: View {
                     Toggle(app.tr("Add issue date"), isOn: $includeIssueDate)
                     if includeIssueDate {
                         DatePicker(app.tr("Issue date"), selection: $issueDate, displayedComponents: .date)
-                            .environment(\.locale, Locale(identifier: "en_GB"))
+                            .environment(\.locale, app.preferences.language.locale)
                             .environment(\.calendar, Calendar(identifier: .gregorian))
                     }
                     TextField(app.tr("Notes (optional)"), text: $notes.westernDigits, axis: .vertical)
@@ -202,6 +268,8 @@ struct ChequeEditorView: View {
                                 if isReadingImage { ProgressView() }
                             }
                         }
+                        .buttonStyle(.borderless)
+                        .accessibilityIdentifier("readChequeImage")
                         .disabled(busy)
                     }
                 } label: {
@@ -229,7 +297,7 @@ struct ChequeEditorView: View {
                             DatePicker(app.tr("Reminder time"), selection: Binding(
                                 get: { effectiveReminderTime }, set: { reminderTime = $0 }
                             ), displayedComponents: .hourAndMinute)
-                                .environment(\.locale, Locale(identifier: "en_GB"))
+                                .environment(\.locale, app.preferences.language.locale)
                                 .environment(\.calendar, Calendar(identifier: .gregorian))
                             Toggle(app.tr("3 days before"), isOn: $before3)
                             Toggle(app.tr("1 day before"), isOn: $before1)
@@ -333,7 +401,12 @@ struct ChequeEditorView: View {
             }
         }
         .interactiveDismissDisabled(hasEdited || busy)
+        .sheet(isPresented: $showPlus) { NavigationStack { ShekatiPlusView() } }
         .onAppear {
+            if record == nil && selectedAccountID == nil && accounts.count == 1 {
+                selectedAccountID = accounts.first?.id
+                if validBooks.count == 1 { selectedBookID = validBooks.first?.id }
+            }
             if cleanForm == nil { cleanForm = formSnapshot }
         }
         .onChange(of: focusedField) { _, field in
@@ -347,6 +420,11 @@ struct ChequeEditorView: View {
             } else if focusedField == previous && (previous == .party || previous == .bank) {
                 // Clear only the field that ended, preserving numeric and native handoffs.
                 focusedField = nil
+            }
+        }
+        .onChange(of: selectedAccountID) { _, _ in
+            if !validBooks.contains(where: { $0.id == selectedBookID }) {
+                selectedBookID = validBooks.count == 1 ? validBooks.first?.id : nil
             }
         }
         .onChange(of: amountText) { _, _ in amountError = nil }
@@ -368,19 +446,15 @@ struct ChequeEditorView: View {
             }, onCancel: { showingScanner = false })
             .ignoresSafeArea()
         }
-        .sheet(isPresented: Binding(
-            get: { ocrSuggestion != nil }, set: { if !$0 { ocrSuggestion = nil } }
-        )) {
-            if let suggestion = ocrSuggestion {
-                NavigationStack {
-                    OCRReviewSheet(suggestion: suggestion) { selected in
-                        applyOCR(suggestion, selected: selected)
-                        ocrSuggestion = nil
-                    }
+        .sheet(item: $ocrReview) { review in
+            NavigationStack {
+                OCRReviewSheet(suggestion: review.suggestion, sourceImage: frontImageData) { selected in
+                    applyOCR(review.suggestion, selected: selected)
+                    ocrReview = nil
                 }
-                .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
             }
+            .environment(\.locale, app.preferences.language.locale)
+            .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
         }
         .sheet(item: $duplicatePreview) { existing in
             NavigationStack {
@@ -391,7 +465,7 @@ struct ChequeEditorView: View {
                     } }
             }
                 .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+                .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
         }
         .alert(app.tr("Similar cheque found"), isPresented: $showingDuplicate) {
             Button(app.tr("View existing cheque")) {
@@ -443,6 +517,22 @@ struct ChequeEditorView: View {
     private var essentialFields: some View {
     Section {
         directionPicker
+        Picker(app.tr("Bank account"), selection: $selectedAccountID) {
+            Text(app.tr("Select account")).tag(nil as UUID?)
+            ForEach(accounts.filter { recordCurrency == nil || $0.currencyCode == recordCurrency }) { account in
+                Text(account.name + " · " + account.currencyCode).tag(Optional(account.id))
+            }
+        }.accessibilityIdentifier("entryAccountPicker")
+        if direction == .outgoing {
+            Picker(app.tr("Chequebook"), selection: $selectedBookID) {
+                Text(app.tr("Select chequebook")).tag(nil as UUID?)
+                ForEach(validBooks) { book in Text(book.name).tag(Optional(book.id)) }
+            }
+            if record == nil { Toggle(app.tr("Save as draft"), isOn: $isDraft) }
+        }
+        if accounts.isEmpty || (direction == .outgoing && validBooks.isEmpty) {
+            NavigationLink(app.tr("Manage accounts and chequebooks")) { BankingAccountsView(isPlus: plus.isPlus) }
+        }
         let amountLayout = dynamicTypeSize.isAccessibilitySize
             ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
             : AnyLayout(HStackLayout(spacing: 8))
@@ -468,7 +558,7 @@ struct ChequeEditorView: View {
             get: { dueDate },
             set: { dueDate = $0; dueDateNeedsReview = false; dateError = nil }
         ), displayedComponents: .date)
-            .environment(\.locale, Locale(identifier: "en_GB"))
+            .environment(\.locale, app.preferences.language.locale)
             .environment(\.calendar, Calendar(identifier: .gregorian))
             .accessibilityIdentifier("dueDateField")
         Text(app.formatDay(LocalDay(date: dueDate)) + " · " + app.relativeDueDate(LocalDay(date: dueDate)))
@@ -547,7 +637,7 @@ struct ChequeEditorView: View {
         let photosTitle = app.tr("Photos")
         VStack(alignment: .leading, spacing: 12) {
             Text(app.tr(side == .front ? "Front" : "Back")).font(.subheadline.weight(.semibold))
-            if let data, let image = UIImage(data: data) {
+            if !hidesAmounts, let data, let image = UIImage(data: data) {
                 Image(uiImage: image).resizable().scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: 145)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -558,6 +648,7 @@ struct ChequeEditorView: View {
                 : AnyLayout(HStackLayout(spacing: 18))
             attachmentLayout {
                 Button {
+                    guard plus.isPlus else { showPlus = true; return }
                     let status = AVCaptureDevice.authorizationStatus(for: .video)
                     guard DocumentScanner.isSupported, status != .denied, status != .restricted else {
                         showingCameraHelp = true
@@ -635,6 +726,8 @@ struct ChequeEditorView: View {
 
     @MainActor
     private func recognizeFrontImage() async {
+        guard !hidesAmounts else { return }
+        guard plus.isPlus else { showPlus = true; return }
         guard let data = frontImageData, let image = UIImage(data: data) else { return }
         guard !currency.isEmpty else {
             errorMessage = app.tr("Choose the app currency in Settings before adding a cheque.")
@@ -643,7 +736,9 @@ struct ChequeEditorView: View {
         isReadingImage = true
         defer { isReadingImage = false }
         do {
-            ocrSuggestion = try await ChequeOCRService.recognize(image: image, currencyCode: currency, direction: direction)
+            let suggestion = try await ChequeOCRService.recognize(image: image, currencyCode: currency, direction: direction,
+                                                                  languageCode: app.preferences.language.rawValue)
+            if !hidesAmounts { ocrReview = RecognizedCheque(suggestion: suggestion) }
         } catch {
             errorMessage = app.tr("The image could not be read. You can enter all details manually.")
         }
@@ -674,9 +769,32 @@ struct ChequeEditorView: View {
             errorMessage = app.tr("Restore this cheque before changing it.")
             return
         }
-        guard record != nil || (!app.currencyConflict && !app.currencyCode.isEmpty) else {
-            errorMessage = app.tr("Resolve the currency setting before adding a cheque.")
+        if record == nil && !plus.isPlus {
+            do {
+                let active = try context.fetch(FetchDescriptor<ChequeRecord>(predicate: #Predicate { $0.deletedAt == nil }))
+                let currentEvents = try context.fetch(FetchDescriptor<LedgerEventRecord>())
+                if BankingLedger.effectivePositions(records: active, events: currentEvents).values.filter(\.isOpen).count >= 10 {
+                    showPlus = true
+                    return
+                }
+            } catch {
+                errorMessage = app.tr("Could not save changes.")
+                return
+            }
+        }
+        guard !hasJournal else {
+            errorMessage = app.tr("Recorded operations protect the original cheque details.")
             return
+        }
+        if record == nil || selectedAccountID != nil {
+            guard let selectedAccount, selectedAccount.currencyCode == currency else {
+                errorMessage = app.tr("Select an account in the cheque currency.")
+                return
+            }
+            if direction == .outgoing && !validBooks.contains(where: { $0.id == selectedBookID }) {
+                errorMessage = app.tr("Select a chequebook for this account.")
+                return
+            }
         }
         guard !currency.isEmpty else {
             errorMessage = app.tr("Choose the app currency in Settings before adding a cheque.")
@@ -740,6 +858,8 @@ struct ChequeEditorView: View {
         let hour = useDefaultReminders ? nil : clock.component(.hour, from: effectiveReminderTime)
         let minute = useDefaultReminders ? nil : clock.component(.minute, from: effectiveReminderTime)
         if let record {
+            record.bankAccountID = selectedAccountID
+            record.chequeBookID = direction == .outgoing ? selectedBookID : nil
             record.update(from: snapshot)
             record.frontImageData = frontImageData
             record.backImageData = backImageData
@@ -748,9 +868,13 @@ struct ChequeEditorView: View {
             record.reminderHour = hour
             record.reminderMinute = minute
         } else {
-            context.insert(ChequeRecord(snapshot: snapshot, frontImageData: frontImageData,
+            let newRecord = ChequeRecord(snapshot: snapshot, frontImageData: frontImageData,
                                         backImageData: backImageData, remindersEnabled: remindersEnabled,
-                                        reminderOffsets: offsets, reminderHour: hour, reminderMinute: minute))
+                                        reminderOffsets: offsets, reminderHour: hour, reminderMinute: minute)
+            newRecord.bankAccountID = selectedAccountID
+            newRecord.chequeBookID = direction == .outgoing ? selectedBookID : nil
+            if direction == .outgoing && isDraft { newRecord.ledgerBaselineStatusRaw = PaperState.draft.rawValue }
+            context.insert(newRecord)
         }
         do {
             try context.save()
@@ -761,7 +885,7 @@ struct ChequeEditorView: View {
             return
         }
         let effectiveOffsets = offsets ?? app.preferences.reminderOffsets
-        if remindersEnabled && snapshot.isOutstanding && (!effectiveOffsets.isEmpty || app.preferences.dailySummary) {
+        if remindersEnabled && !(direction == .outgoing && isDraft) && snapshot.isOutstanding && (!effectiveOffsets.isEmpty || app.preferences.dailySummary) {
             await app.notifications.refreshAuthorization()
             if app.notifications.authorizationStatus == .notDetermined {
                 await app.notifications.requestPermission()
@@ -824,11 +948,13 @@ private struct OCRReviewSheet: View {
     @Environment(AppState.self) private var app
     @Environment(\.dismiss) private var dismiss
     let suggestion: OCRSuggestion
+    let sourceImage: Data?
     let apply: (Set<OCRField>) -> Void
     @State private var selected: Set<OCRField>
 
-    init(suggestion: OCRSuggestion, apply: @escaping (Set<OCRField>) -> Void) {
+    init(suggestion: OCRSuggestion, sourceImage: Data?, apply: @escaping (Set<OCRField>) -> Void) {
         self.suggestion = suggestion
+        self.sourceImage = sourceImage
         self.apply = apply
         var fields = Set<OCRField>()
         if suggestion.number != nil { fields.insert(.number) }
@@ -842,6 +968,13 @@ private struct OCRReviewSheet: View {
     var body: some View {
         Form {
             Section {
+                if let sourceImage, let image = UIImage(data: sourceImage) {
+                    Image(uiImage: image).resizable().scaledToFit().frame(maxWidth: .infinity)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .accessibilityLabel(app.tr("Front image"))
+                }
+                Label(app.tr("Shekati Plus"), systemImage: "sparkles").font(.caption.weight(.semibold))
+                    .foregroundStyle(Theme.accent)
                 Text(app.tr("Check each suggestion against your cheque. Nothing is saved until you tap Save."))
                     .font(.subheadline)
                 if suggestion.unsupportedArabic {
@@ -849,6 +982,13 @@ private struct OCRReviewSheet: View {
                           systemImage: "info.circle")
                         .font(.caption).foregroundStyle(.secondary)
                 }
+            } header: {
+                Text(app.tr("Review image details"))
+                    .font(.title2.bold())
+                    .foregroundStyle(.primary)
+                    .textCase(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityAddTraits(.isHeader)
             }
             Section(app.tr("Suggested details")) {
                 if let value = suggestion.number { suggestionRow(.number, title: "Cheque number", value: value) }
@@ -872,7 +1012,6 @@ private struct OCRReviewSheet: View {
                 }
             }
         }
-        .navigationTitle(app.tr("Review image details"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -880,7 +1019,7 @@ private struct OCRReviewSheet: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(app.tr("Use selected")) { apply(selected) }
-                    .fontWeight(.semibold).disabled(selected.isEmpty)
+                    .fontWeight(.semibold).disabled(selected.isEmpty).accessibilityIdentifier("useOCRFields")
             }
         }
     }

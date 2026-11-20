@@ -21,7 +21,7 @@ settings:
     SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
     SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
     MARKETING_VERSION: "1.0.0"
-    CURRENT_PROJECT_VERSION: "1"
+    CURRENT_PROJECT_VERSION: "11"
     SHEKATI_ICLOUD_CONTAINER: iCloud.com.mf103871.shekati
   configs:
     Debug:
@@ -60,6 +60,10 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: ShekatiTests
+        excludes:
+          - Resources
+      - path: ShekatiTests/Resources
+        buildPhase: resources
     dependencies:
       - target: Shekati
       - package: ShekatiCore
@@ -74,6 +78,8 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: ShekatiUITests
+      - path: ShekatiTests/Resources/ShekatiPlus.storekit
+        buildPhase: resources
     dependencies:
       - target: Shekati
     settings:
@@ -90,6 +96,7 @@ schemes:
         ShekatiUITests: [test]
     run:
       config: Debug
+      storeKitConfiguration: ShekatiTests/Resources/ShekatiPlus.storekit
     test:
       config: Debug
       gatherCoverageData: true

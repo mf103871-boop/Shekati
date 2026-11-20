@@ -32,14 +32,14 @@ targets:
     sources:
       - path: Sources
       # The model is compiled directly from the production source, never copied.
-      - path: ../../Shekati/Models/ChequeRecord.swift
+      - path: ../../Shekati/Models
       - path: ../../Shekati/Resources/Assets.xcassets
     dependencies:
       - package: ShekatiCore
     settings:
       base:
         TARGETED_DEVICE_FAMILY: "1"
-        PRODUCT_BUNDLE_IDENTIFIER: com.mf103871.shekati
+        PRODUCT_BUNDLE_IDENTIFIER: com.mf103871.shekati.schema-setup
         PRODUCT_NAME: ShekatiSchemaBootstrap
         INFOPLIST_FILE: Resources/Info.plist
         GENERATE_INFOPLIST_FILE: NO

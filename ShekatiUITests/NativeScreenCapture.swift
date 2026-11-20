@@ -2,6 +2,45 @@ import XCTest
 import UIKit
 
 extension XCTestCase {
+    func localizedDueDate(_ date: Date, arabic: Bool = false) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: (arabic ? "ar" : "en") + "@numbers=latn")
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = .current
+        formatter.setLocalizedDateFormatFromTemplate("yMMMd")
+        return formatter.string(from: date)
+    }
+
+    func openMoreDestination(_ identifier: String, in app: XCUIApplication) {
+        let more = app.tabBars.buttons["tabMore"]
+        XCTAssertTrue(more.waitForExistence(timeout: 5))
+        more.tap()
+        if !app.buttons[identifier].exists {
+            // A tab can retain an old detail or Settings stack. Retapping the active tab pops to its root.
+            more.tap()
+        }
+        let link = app.descendants(matching: .any).matching(identifier: identifier).firstMatch
+        for _ in 0..<8 where !link.isHittable { app.swipeUp() }
+        XCTAssertTrue(link.isHittable)
+        link.tap()
+    }
+
+    func recordBankSettlement(in app: XCUIApplication) {
+        let settle = app.buttons["operation-settle"]
+        for _ in 0..<7 where !settle.isHittable { app.swipeUp() }
+        XCTAssertTrue(settle.isHittable)
+        settle.tap()
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "operationDate").firstMatch
+            .waitForExistence(timeout: 5))
+        let review = app.buttons["reviewOperation"]
+        for _ in 0..<5 where !review.isHittable { app.swipeUp() }
+        XCTAssertTrue(review.isHittable)
+        review.tap()
+        let confirm = app.buttons.matching(identifier: "commitOperation").firstMatch
+        XCTAssertTrue(confirm.waitForExistence(timeout: 5))
+        confirm.tap()
+    }
+
     /// Capture the physical screen, not the app's portrait-oriented backing window. On iOS 26
     /// app.screenshot() can crop landscape content to the former portrait width and pad it black.
     func attachNativeScreenshot(in app: XCUIApplication, name: String) {

@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "ניתן לצלם המחאה כדי לבדוק את הפרטים שזוהו בה.";
+"NSFaceIDUsageDescription" = "ניתן לפתוח את רשומות ההמחאות באמצעות Face ID.";

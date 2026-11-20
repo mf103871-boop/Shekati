@@ -1,0 +1,10 @@
+Shekati is an iPhone cheque register for a single owner. It records cheques and bank entries entered by that owner. Local use requires no app account. Sign in to iCloud only when testing private sync on the owner's devices.
+
+Free access includes one bank account, ten open cheques across the register, manual entry, search, calendar and reminders. Begin on Home, add a bank account with its opening balance and currency, and add an incoming cheque. In its details, record a deposit and check that the bank balance is unchanged. Confirm collection to post the amount once. The original cheque number, including any leading zeros, is retained.
+
+Open More > Shekati Plus to see the monthly and annual auto-renewable options. Both provide the same features with no introductory trial. Prices are shown by StoreKit for the reviewer's storefront. The base US prices are USD 4.99 monthly and USD 39.99 annually. Apple handles payment. Restore Purchases and Manage Subscription are on the same screen.
+
+With Plus active, choose image scanning when adding a cheque, review the suggested fields and save after correction. Cheque endorsement, partial settlements, replacements, cash forecasts and advanced reports are also included. Expiration preserves reading, closing and exporting existing cheques. A new account or cheque is checked against the free allowance when added.
+
+Notifications require device permission. Data and Backup supports password-encrypted export/restore and CSV. Reports and exported files go to the destination the user chooses. Shekati does not connect to a bank or transfer money.
+

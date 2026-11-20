@@ -37,7 +37,7 @@ enum DisplayFormatting {
             created.locale = locale
             created.calendar = Calendar(identifier: .gregorian)
             created.timeZone = zone
-            created.dateFormat = "dd/MM/yyyy"
+            created.setLocalizedDateFormatFromTemplate("yMMMd")
             days[key] = created
             formatter = created
         }

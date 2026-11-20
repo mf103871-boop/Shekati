@@ -1,12 +1,12 @@
 /// Normalizes numeric text before it enters an editable field.
 /// Invalid proposals are rejected as a whole, so pasting `12-3` never becomes `123`.
 public enum NumericInput {
-    /// Replaces Arabic-Indic, Persian, and fullwidth digits with Western digits.
+    /// Maps every Unicode decimal-digit script to Western digits.
     /// Other characters remain unchanged, making this suitable for display text too.
     public static func latinDigits(_ text: String) -> String {
         var result = ""
         for scalar in text.unicodeScalars {
-            if let digit = westernDigit(scalar.value) {
+            if let digit = westernDigit(scalar) {
                 result.append(digit)
             } else {
                 result.unicodeScalars.append(scalar)
@@ -19,7 +19,7 @@ public enum NumericInput {
     public static func integer(_ proposed: String) -> String? {
         var result = ""
         for scalar in proposed.unicodeScalars {
-            guard let digit = westernDigit(scalar.value) else { return nil }
+            guard let digit = westernDigit(scalar) else { return nil }
             result.append(digit)
         }
         return result
@@ -35,7 +35,7 @@ public enum NumericInput {
         var hasSeparator = false
         var fractionalCount = 0
         for scalar in proposed.unicodeScalars {
-            if let digit = westernDigit(scalar.value) {
+            if let digit = westernDigit(scalar) {
                 if hasSeparator {
                     fractionalCount += 1
                     guard fractionalCount <= fractionDigits else { return nil }
@@ -53,15 +53,9 @@ public enum NumericInput {
         return result
     }
 
-    private static func westernDigit(_ value: UInt32) -> Character? {
-        let digit: UInt32
-        switch value {
-        case 0x0030...0x0039: digit = value - 0x0030
-        case 0x0660...0x0669: digit = value - 0x0660
-        case 0x06F0...0x06F9: digit = value - 0x06F0
-        case 0xFF10...0xFF19: digit = value - 0xFF10
-        default: return nil
-        }
-        return Character(String(digit))
+    private static func westernDigit(_ scalar: Unicode.Scalar) -> Character? {
+        if scalar.isASCII { return (48...57).contains(scalar.value) ? Character(scalar) : nil }
+        guard scalar.properties.numericType == .decimal, let digit = scalar.properties.numericValue else { return nil }
+        return Character(String(Int(digit)))
     }
 }

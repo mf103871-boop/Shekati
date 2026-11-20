@@ -12,10 +12,11 @@ enum ReminderRequestPolicy {
     /// No per-record hashing or money formatting runs while deriving this key.
     static func refreshKey(inputs: [ChequeReminderInput], settings: ReminderSettings,
                            dayRevision: Int, authorizationStatus: Int, mutationRevision: Int = 0) -> [[String]] {
-        let global = [String(dayRevision), String(authorizationStatus), String(mutationRevision), settings.languageCode,
+        var global = [String(dayRevision), String(authorizationStatus), String(mutationRevision), settings.languageCode,
                       String(settings.hour), String(settings.minute), String(settings.dailySummary),
-                      String(settings.hideDetails), String(settings.offsets.count)] +
-            settings.offsets.sorted().map(String.init)
+                      String(settings.hideDetails), String(settings.offsets.count)]
+        global.append(contentsOf: settings.offsets.sorted().map(String.init))
+        global.append(contentsOf: settings.bankingCalendar?.reminderSignature ?? [])
         let ordered = inputs.sorted { $0.snapshot.id.uuidString < $1.snapshot.id.uuidString }
         let records: [[String]] = ordered.map { input -> [String] in
             let cheque = input.snapshot
@@ -40,7 +41,7 @@ enum ReminderRequestPolicy {
                       cheque.dueDate.iso, String(cheque.amountMinorUnits), cheque.currencyCode, cheque.number, cheque.party,
                       String(input.enabled), (input.offsets ?? settings.offsets).sorted().map(String.init).joined(separator: ","),
                       String(input.hour ?? settings.hour), String(input.minute ?? settings.minute),
-                      String(settings.hideDetails), settings.languageCode]
+                      String(settings.hideDetails), settings.languageCode] + (settings.bankingCalendar?.reminderSignature ?? [])
         let data = (try? JSONEncoder().encode(fields)) ?? Data()
         return SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
     }
@@ -82,14 +83,22 @@ enum ReminderRequestPolicy {
             let offset: Int?
             if parts[1] == "cheque" {
                 guard parts.count == 4, let value = Int(parts[3]), (input.offsets ?? settings.offsets).contains(value) else { return false }
-                offset = value
+                if let banking = settings.bankingCalendar {
+                    var calendar = Calendar(identifier: .gregorian)
+                    calendar.timeZone = TimeZone(identifier: banking.timeZoneID) ?? supplied.timeZone
+                    let scheduled = input.snapshot.dueDate.adding(days: -value, calendar: calendar)
+                    guard let adjusted = banking.reminderDay(for: scheduled, calendar: calendar) else { return false }
+                    offset = adjusted == input.snapshot.dueDate ? 0 : max(1, value)
+                } else {
+                    offset = value
+                }
             } else { offset = nil }
             let expected = ReminderPlanner.chequeContent(cheque: input.snapshot, settings: settings, offset: offset)
             return expected.title == title && expected.body == body
         case "summary":
             guard settings.dailySummary, parts.count == 3, let day = LocalDay(iso: parts[2]) else { return false }
             var calendar = Calendar(identifier: .gregorian)
-            calendar.timeZone = supplied.timeZone
+            calendar.timeZone = settings.bankingCalendar.flatMap { TimeZone(identifier: $0.timeZoneID) } ?? supplied.timeZone
             let expected = ReminderPlanner.makeSummary(day: day, date: day.date(calendar: calendar),
                                                        inputs: active, settings: settings, calendar: calendar)
             return expected?.title == title && expected?.body == body

@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "수표를 촬영해 인식된 내용을 확인하세요.";
+"NSFaceIDUsageDescription" = "Face ID로 수표 기록의 잠금을 해제합니다.";

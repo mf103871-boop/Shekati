@@ -8,6 +8,7 @@ struct ReminderSettings: Equatable, Sendable {
     var dailySummary: Bool
     var hideDetails: Bool
     var languageCode: String
+    var bankingCalendar: BankingCalendar? = nil
 }
 
 struct ChequeReminderInput: Sendable {
@@ -65,11 +66,15 @@ enum ReminderPlanner {
     static let notificationBudget = 60
     static let summaryHorizonDays = 30
 
+    private static func translated(_ key: String, _ code: String) -> String {
+        Localization.text(key, language: AppLanguage(rawValue: code) ?? .english)
+    }
+
     static func makePlan(inputs: [ChequeReminderInput], settings: ReminderSettings,
                          now: Date = Date(), calendar suppliedCalendar: Calendar = .current,
                          snoozed: [SnoozedCheque] = []) -> ReminderPlan {
         var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = suppliedCalendar.timeZone
+        calendar.timeZone = settings.bankingCalendar.flatMap { TimeZone(identifier: $0.timeZoneID) } ?? suppliedCalendar.timeZone
         let active = inputs.filter { $0.enabled && $0.snapshot.isOutstanding }
         guard !active.isEmpty else { return ReminderPlan(items: [], firstUncoveredDate: nil) }
         let arabic = settings.languageCode.hasPrefix("ar")
@@ -83,11 +88,17 @@ enum ReminderPlanner {
             chequeSettings.minute = input.minute ?? settings.minute
             var sharedBody: String?
             for offset in Set(input.offsets ?? settings.offsets).filter({ (0...365).contains($0) }).sorted() {
-                let day = cheque.dueDate.adding(days: -offset, calendar: calendar)
+                let scheduled = cheque.dueDate.adding(days: -offset, calendar: calendar)
+                let day: LocalDay
+                if let banking = settings.bankingCalendar {
+                    guard let adjusted = banking.reminderDay(for: scheduled, calendar: calendar) else { continue }
+                    day = adjusted
+                } else { day = scheduled }
+                let effectiveOffset = day == cheque.dueDate ? 0 : max(1, offset)
                 guard let fireDate = fireDate(on: day, settings: chequeSettings, calendar: calendar), fireDate > now else { continue }
                 if sharedBody == nil { sharedBody = chequeContent(cheque: cheque, settings: settings, offset: offset).body }
                 candidates.append(PlannedReminder(id: "\(identifierPrefix)cheque.\(cheque.id.uuidString).\(offset)",
-                                                  fireDate: fireDate, title: chequeTitle(offset: offset, languageCode: settings.languageCode), body: sharedBody!,
+                                                  fireDate: fireDate, title: chequeTitle(offset: effectiveOffset, languageCode: settings.languageCode), body: sharedBody!,
                                                   chequeID: cheque.id, kind: .cheque))
             }
             if let snooze = snoozed.filter({ $0.chequeID == cheque.id && $0.dueDateISO == cheque.dueDate.iso && $0.fireDate > now })
@@ -130,9 +141,9 @@ enum ReminderPlanner {
             let immediateDate = now.addingTimeInterval(min(0.01, date.timeIntervalSince(now) / 2))
             let noticeDate = max(immediateDate, min(previousDay, date.addingTimeInterval(-1)))
             chosen.append(PlannedReminder(id: "\(identifierPrefix)coverage", fireDate: noticeDate,
-                                          title: arabic ? "حدّث تذكيرات شيكاتك" : "Refresh your cheque reminders",
+                                          title: arabic ? "حدّث تذكيرات شيكاتك" : translated("Refresh your cheque reminders", settings.languageCode),
                                           body: arabic ? "افتح شيكاتي لتجهيز التذكيرات التالية. التذكيرات المجدولة لها فترة تغطية محدودة."
-                                            : "Open Shekati to prepare the next reminders. Scheduled reminders have a limited coverage period.",
+                                            : translated("Open Shekati to prepare the next reminders. Scheduled reminders have a limited coverage period.", settings.languageCode),
                                           chequeID: nil, kind: .replenishment))
         }
         chosen.sort { $0.fireDate == $1.fireDate ? $0.id < $1.id : $0.fireDate < $1.fireDate }
@@ -152,24 +163,29 @@ enum ReminderPlanner {
         let arabic = settings.languageCode.hasPrefix("ar")
         let title = chequeTitle(offset: offset, languageCode: settings.languageCode)
         if settings.hideDetails {
-            return (title, arabic ? "افتح شيكاتي لمراجعة تفاصيل التذكير." : "Open Shekati to review your reminder.")
+            return (title, arabic ? "افتح شيكاتي لمراجعة تفاصيل التذكير." : translated("Open Shekati to review your reminder.", settings.languageCode))
         }
         let number = cheque.number.isEmpty ? "" : " #\(NumericInput.latinDigits(cheque.number))"
         let amount = CurrencyMath.format(minorUnits: cheque.amountMinorUnits, currencyCode: cheque.currencyCode,
-                                         locale: Locale(identifier: arabic ? "ar" : "en"))
+                                         locale: Locale(identifier: settings.languageCode))
         let direction = arabic ? (cheque.direction == .incoming ? "وارد" : "صادر")
             : (cheque.direction == .incoming ? "Incoming" : "Outgoing")
         let suffix = cheque.party.isEmpty ? "" : " · \(NumericInput.latinDigits(cheque.party))"
         let body = arabic ? "شيك \(direction)\(number) · \(amount)\(suffix) · الاستحقاق \(cheque.dueDate.iso)"
             : "\(direction) cheque\(number) · \(amount)\(suffix) · Due \(cheque.dueDate.iso)"
+        if !arabic && !settings.languageCode.hasPrefix("en") {
+            let kind = translated(cheque.direction == .incoming ? "Incoming cheque" : "Outgoing cheque", settings.languageCode)
+            let dateLabel = translated("Due date", settings.languageCode)
+            return (title, "\(kind)\(number) · \(amount)\(suffix) · \(dateLabel) \(cheque.dueDate.iso)")
+        }
         return (title, body)
     }
 
     private static func chequeTitle(offset: Int?, languageCode: String) -> String {
         let arabic = languageCode.hasPrefix("ar")
-        if offset == nil { return arabic ? "تذكير بشيك" : "Cheque reminder" }
+        if offset == nil { return arabic ? "تذكير بشيك" : translated("Cheque reminder", languageCode) }
         if arabic { return offset == 0 ? "شيك يستحق اليوم" : "اقترب استحقاق شيك" }
-        return offset == 0 ? "Cheque due today" : "Cheque due soon"
+        return offset == 0 ? translated("Cheque due today", languageCode) : translated("Cheque due soon", languageCode)
     }
 
     /// An add call succeeding is insufficient: the system's accepted queue must cover the intended dates.
@@ -201,13 +217,16 @@ enum ReminderPlanner {
         let arabic = settings.languageCode.hasPrefix("ar")
         let body: String
         if settings.hideDetails {
-            body = arabic ? "افتح شيكاتي للاطلاع على ملخص اليوم." : "Open Shekati to view today's summary."
+            body = arabic ? "افتح شيكاتي للاطلاع على ملخص اليوم." : translated("Open Shekati to view today's summary.", settings.languageCode)
+        } else if !arabic && !settings.languageCode.hasPrefix("en") {
+            body = [(translated("Due today", settings.languageCode), due), (translated("Overdue", settings.languageCode), overdue), (translated("Next 3 days", settings.languageCode), upcoming)]
+                .map { "\($0.0): \($0.1)" }.joined(separator: " · ")
         } else {
             body = arabic ? "يستحق اليوم: \(due) · متأخرة: \(overdue) · خلال 3 أيام: \(upcoming)"
                 : "Due today: \(due) · Overdue: \(overdue) · Next 3 days: \(upcoming)"
         }
         return PlannedReminder(id: "\(identifierPrefix)summary.\(day.iso)", fireDate: date,
-                               title: arabic ? "ملخص شيكاتك" : "Your cheque summary",
+                               title: arabic ? "ملخص شيكاتك" : translated("Your cheque summary", settings.languageCode),
                                body: body, chequeID: nil, kind: .dailySummary)
     }
 }

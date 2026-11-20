@@ -145,12 +145,11 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate {
                 if let signature { content.userInfo["signature"] = signature }
             }
             var calendar = Calendar(identifier: .gregorian)
-            calendar.timeZone = .autoupdatingCurrent
+            let bankingZone = settings.bankingCalendar.flatMap { TimeZone(identifier: $0.timeZoneID) }
+            calendar.timeZone = bankingZone ?? .autoupdatingCurrent
             var components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: item.fireDate)
             components.calendar = calendar
-            // Keep Gregorian civil dates even with a Hijri system calendar; let the device choose its local zone.
-            // Reverify after travel when the app becomes active; closed-app travel behavior needs device testing.
-            components.timeZone = nil
+            components.timeZone = bankingZone
             let trigger: UNNotificationTrigger
             if item.kind == .snooze || (item.kind == .replenishment && item.fireDate.timeIntervalSinceNow < 60) {
                 // Calendar components have whole-second precision; an imminent coverage notice needs a short interval.
@@ -229,10 +228,12 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate {
         } else { message = nil }
     }
 
-    private func localized(_ arabic: String, _ english: String) -> String { languageCode.hasPrefix("ar") ? arabic : english }
+    private func localized(_ arabic: String, _ english: String) -> String {
+        languageCode.hasPrefix("ar") ? arabic : Localization.text(english, language: AppLanguage(rawValue: languageCode) ?? .english)
+    }
 
     private func registerCategories(languageCode: String) {
-        let title = languageCode.hasPrefix("ar") ? "ذكّرني بعد ساعة" : "Remind me in 1 hour"
+        let title = localized("ذكّرني بعد ساعة", "Remind me in 1 hour")
         let snooze = UNNotificationAction(identifier: ReminderRequestPolicy.snoozeAction, title: title,
                                           options: [.authenticationRequired])
         center.setNotificationCategories([UNNotificationCategory(identifier: ReminderRequestPolicy.chequeCategory,

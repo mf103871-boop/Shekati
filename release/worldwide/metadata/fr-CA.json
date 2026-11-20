@@ -1,0 +1,26 @@
+{
+  "locale": "fr-CA",
+  "applicationLocale": "fr-CA",
+  "name": "Shekati",
+  "subtitle": "Suivi des chèques",
+  "keywords": "Chèques,comptes bancaires,calendrier,rappels",
+  "description": "Enregistrez les chèques reçus et émis, consultez leurs échéances et conservez leurs images au même endroit.\n\nLa formule gratuite permet de gérer un compte bancaire et jusqu’à dix chèques en cours. Elle comprend la saisie manuelle, le calendrier et les rappels.\n\nAvec Shekati Plus, gérez autant de comptes et de chèques en cours que nécessaire. Scannez vos chèques, enregistrez les endossements, les règlements partiels et les remplacements, et consultez vos prévisions de trésorerie.\n\nChoisissez un abonnement mensuel ou annuel. Le prix applicable dans votre région s’affiche avant l’achat. L’abonnement se renouvelle automatiquement jusqu’à sa résiliation depuis votre compte Apple.\n\nUne fois l’abonnement terminé, vous pouvez toujours consulter, clôturer et exporter les chèques déjà enregistrés.\n\nConditions d’utilisation\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolitique de confidentialité\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Mensuel",
+      "description": "Chèques illimités"
+    },
+    "annual": {
+      "name": "Shekati Plus · Annuel",
+      "description": "Chèques illimités"
+    }
+  },
+  "screenshotHeadings": [
+    "Votre compte",
+    "Registre des chèques",
+    "Vérifier les données numérisées · Shekati Plus",
+    "Détails du chèque",
+    "Échéances"
+  ]
+}

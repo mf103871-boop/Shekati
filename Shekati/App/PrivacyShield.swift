@@ -9,7 +9,8 @@ final class PrivacyShield {
     private var hiddenAccessibilityWindows: [(window: UIWindow, wasHidden: Bool)] = []
 
     func update(app: AppState, phase: ScenePhase) {
-        guard app.preferences.appLockEnabled, phase != .active || app.lock.isLocked else {
+        let shouldCover = phase != .active && (app.preferences.appLockEnabled || UserDefaults.standard.bool(forKey: "shekati.hideAmounts"))
+        guard shouldCover || (app.preferences.appLockEnabled && app.lock.isLocked) else {
             for captured in hiddenAccessibilityWindows {
                 captured.window.accessibilityElementsHidden = captured.wasHidden
             }
@@ -37,7 +38,7 @@ final class PrivacyShield {
         let cover = PrivacyShieldView(inactive: phase != .active)
             .environment(app)
             .environment(\.locale, app.preferences.language.locale)
-            .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+            .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
             .preferredColorScheme(app.preferences.appearance == .system ? nil :
                                   app.preferences.appearance == .dark ? .dark : .light)
         let controller = UIHostingController(rootView: cover)

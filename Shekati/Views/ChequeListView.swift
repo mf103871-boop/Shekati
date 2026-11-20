@@ -9,11 +9,13 @@ struct ChequeListView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @Query private var records: [ChequeRecord]
+    @Query private var events: [LedgerEventRecord]
+    @State private var paperFilter: PaperState?
     @State private var filter: ChequeFilter
     @State private var showingFilters = false
     @State private var showingEditor = false
     @State private var showingReport = false
-    @State private var reportCheques: [ChequeSnapshot] = []
+    @State private var reportIDs: [UUID] = []
     @State private var settlingRecord: ChequeRecord?
     @State private var scopeOverride: ChequeListScope?
     @State private var errorMessage: String?
@@ -27,7 +29,7 @@ struct ChequeListView: View {
     }
 
     private var hasFilters: Bool {
-        filter.direction != nil || filter.status != nil || filter.bank != nil ||
+        paperFilter != nil || filter.direction != nil || filter.status != nil || filter.bank != nil ||
         filter.from != nil || filter.through != nil || filter.dateScope != .all
     }
 
@@ -42,19 +44,33 @@ struct ChequeListView: View {
     var body: some View {
         // Derive the filtered/sorted rows and exact totals once for this update.
         // Deleted records remain in the global rank slots only, for safe restoration.
-        let activeRecords = records.filter { $0.deletedAt == nil }
-        let result = ChequeListResult(cheques: activeRecords.map(\.snapshot), filter: effectiveFilter,
+        let live = records.filter { $0.deletedAt == nil }
+        let audit = ChequeAudit(records: records, events: events)
+        let positions = audit.positions
+        let activeRecords = live.filter { record in
+            if scope == .outstanding && positions[record.id]?.isOpen != true && !audit.disputed.contains(record.id) { return false }
+            return paperFilter == nil || positions[record.id]?.state == paperFilter
+        }
+        let snapshots = activeRecords.map { record in
+            var snapshot = record.snapshot
+            if let state = positions[record.id]?.legacyStatus { snapshot.status = state }
+            return snapshot
+        }
+        let result = ChequeListResult(cheques: snapshots, filter: effectiveFilter,
                                       sort: app.preferences.sort, ascending: app.preferences.ascending, today: app.today)
         let byID = Dictionary(activeRecords.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         let visible = result.cheques.compactMap { byID[$0.id] }
+        let disputed = Set(result.cheques.filter { audit.disputed.contains($0.id) }.map(\.currencyCode))
+        let outstanding = result.cheques.filter { !disputed.contains($0.currencyCode) }
+            .compactMap { $0.remainingObligation(using: positions[$0.id]) }
         Group {
             if dynamicTypeSize.isAccessibilitySize || verticalSizeClass == .compact {
                 // One scrolling surface keeps large controls from squeezing the rows.
-                listContent(visible, activeCount: activeRecords.count, result: result, scrollsControls: true)
+                listContent(visible, activeCount: activeRecords.count, result: result, positions: positions, outstanding: outstanding, disputed: disputed, scrollsControls: true)
             } else {
                 VStack(spacing: 0) {
-                    listControls(result, showsTableHeader: !visible.isEmpty)
-                    listContent(visible, activeCount: activeRecords.count, result: result, scrollsControls: false)
+                    listControls(result, outstanding: outstanding, disputed: disputed)
+                    listContent(visible, activeCount: activeRecords.count, result: result, positions: positions, outstanding: outstanding, disputed: disputed, scrollsControls: false)
                 }
             }
         }
@@ -62,7 +78,7 @@ struct ChequeListView: View {
             .environment(\.editMode, $editMode)
             .navigationTitle(app.tr("Cheques"))
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $filter.query.westernDigits, prompt: Text(app.tr("Search number, bank or name")))
+            .searchable(text: $filter.query.westernDigits, prompt: Text(app.tr("Search number, name, bank or reference")))
             .toolbar {
                 ChequeListToolbar(
                     canReorder: app.preferences.sort == .manual && !visible.isEmpty,
@@ -70,9 +86,9 @@ struct ChequeListView: View {
                     showingFilters: $showingFilters,
                     showingEditor: $showingEditor,
                     editMode: $editMode,
-                    clearFilters: { filter = .init(query: filter.query) },
+                    clearFilters: { filter = .init(query: filter.query); paperFilter = nil },
                     showReport: {
-                        reportCheques = result.cheques
+                        reportIDs = result.cheques.map(\.id)
                         showingReport = true
                     },
                     canReport: !visible.isEmpty
@@ -83,13 +99,7 @@ struct ChequeListView: View {
             }
             .onChange(of: filter.direction) { _, _ in editMode = .inactive }
             .sheet(isPresented: $showingEditor) {
-                NavigationStack {
-                    ChequeEditorView()
-                        .environment(\.locale, app.preferences.language.locale)
-                        .environment(\.layoutDirection, sheetDirection)
-                }
-                .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, sheetDirection)
+                ChequeEditorSheet()
             }
             .sheet(isPresented: $showingFilters) {
                 NavigationStack {
@@ -107,7 +117,7 @@ struct ChequeListView: View {
             .sheet(item: $settlingRecord) { ChequeSettlementSheet(record: $0) }
             .sheet(isPresented: $showingReport) {
                 NavigationStack {
-                    ChequeReportSheet(cheques: reportCheques)
+                    ChequeReportSheet(chequeIDs: reportIDs)
                         .environment(\.locale, app.preferences.language.locale)
                         .environment(\.layoutDirection, sheetDirection)
                 }
@@ -122,12 +132,23 @@ struct ChequeListView: View {
     }
 
     private var sheetDirection: LayoutDirection {
-        app.preferences.language == .arabic ? .rightToLeft : .leftToRight
+        app.preferences.language.isRTL ? .rightToLeft : .leftToRight
     }
 
-    private func listControls(_ result: ChequeListResult, showsTableHeader: Bool) -> some View {
+    private func listControls(_ result: ChequeListResult, outstanding: [ChequeSnapshot], disputed: Set<String>) -> some View {
         VStack(spacing: 0) {
-            scopePicker
+            HStack {
+                scopePicker
+                Menu {
+                    Button(app.tr("All")) { paperFilter = nil }
+                    ForEach(PaperState.allCases, id: \.rawValue) { state in
+                        Button(app.tr(state.title)) { paperFilter = state; setScope(.allRecords) }
+                    }
+                } label: {
+                    Label(app.tr(paperFilter?.title ?? "Status"), systemImage: "line.3.horizontal.decrease.circle")
+                        .labelStyle(.iconOnly).frame(minWidth: 44, minHeight: 44)
+                }
+            }
                 .padding(.horizontal, 16)
                 .padding(.top, 6)
                 .padding(.bottom, 10)
@@ -139,6 +160,7 @@ struct ChequeListView: View {
             if hasFilters || !filter.query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 Button(app.tr("Clear search and filters")) {
                     filter = .init()
+                    paperFilter = nil
                     editMode = .inactive
                 }
                 // Keep this action independent of the other controls in the List row.
@@ -149,45 +171,37 @@ struct ChequeListView: View {
                 .padding(.bottom, 8)
                 .accessibilityIdentifier("clearActiveFilters")
             }
-            shownSummary(result)
+            shownSummary(result, outstanding: outstanding, disputed: disputed)
                 .padding(.horizontal, 16)
                 .padding(.bottom, 12)
-            if showsTableHeader {
-                ChequeTableHeaderView()
-                    .accessibilityIdentifier("chequeTableHeader")
-                    .padding(.leading, 16)
-                    // Match the row's content inset and the native disclosure indicator.
-                    .padding(.trailing, 36)
-                    .padding(.vertical, 9)
-                    .background(Theme.surface)
-                Divider()
-            }
+
         }
     }
 
     private func listContent(_ visible: [ChequeRecord], activeCount: Int, result: ChequeListResult,
-                             scrollsControls: Bool) -> some View {
+                             positions: [UUID: ChequePosition], outstanding: [ChequeSnapshot], disputed: Set<String>, scrollsControls: Bool) -> some View {
         List {
             if scrollsControls {
                 // An ordinary row (not a pinned Section header) is outside the movable ForEach.
-                listControls(result, showsTableHeader: !visible.isEmpty)
+                listControls(result, outstanding: outstanding, disputed: disputed)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     .listRowSeparator(.hidden)
                     .listRowBackground(Theme.background)
             }
-            ForEach(Array(visible.enumerated()), id: \.element.id) { index, record in
-                rowLink(record)
-                .listRowSeparator(.visible)
-                .listRowSeparatorTint(Color.primary.opacity(0.1))
-                .listRowBackground(index.isMultiple(of: 2) ? Theme.surface : Theme.accent.opacity(0.035))
-                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+            ForEach(visible) { record in
+                rowLink(record, position: positions[record.id])
+                .padding(.horizontal, 14)
+                .background(Theme.surface, in: RoundedRectangle(cornerRadius: 18))
+                .listRowSeparator(.hidden)
+                .listRowBackground(Theme.background)
+                .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
                 .moveDisabled(app.preferences.sort != .manual)
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                    if record.snapshot.isOutstanding {
+                    if positions[record.id]?.isOpen == true {
                         Button {
                             settlingRecord = record
                         } label: {
-                            Label(app.tr(record.direction == .incoming ? "Mark collected" : "Mark paid"), systemImage: "checkmark.circle")
+                            Label(app.tr("Cheque actions"), systemImage: "checkmark.circle")
                         }
                         .tint(Theme.accent)
                         .accessibilityIdentifier("settleCheque-\(record.id.uuidString)")
@@ -230,13 +244,14 @@ struct ChequeListView: View {
             if activeCount == 0 {
                 Button(app.tr("Add cheque")) { showingEditor = true }
                     .buttonStyle(.borderedProminent)
-                    .disabled(app.currencyConflict || app.currencyCode.isEmpty)
+                    .disabled(app.currencyCode.isEmpty)
             } else {
-                Button(app.tr("Clear search and filters")) { filter = .init() }
+                Button(app.tr("Clear search and filters")) { filter = .init(); paperFilter = nil }
                     .buttonStyle(.bordered)
                 if scope == .outstanding {
                     Button(app.tr("Show all and history")) {
                         filter = .init()
+                paperFilter = nil
                         setScope(.allRecords)
                     }
                     .buttonStyle(.bordered)
@@ -247,17 +262,19 @@ struct ChequeListView: View {
     }
 
     @ViewBuilder
-    private func rowLink(_ record: ChequeRecord) -> some View {
-        if record.snapshot.isOutstanding {
-            detailLink(record)
-                .accessibilityAction(named: Text(app.tr(record.direction == .incoming ? "Mark collected" : "Mark paid"))) {
+    private func rowLink(_ record: ChequeRecord, position: ChequePosition?) -> some View {
+        if position?.isOpen == true {
+            detailLink(record, position: position)
+                .accessibilityAction(named: Text(app.tr("Cheque actions"))) {
                     settlingRecord = record
                 }
-        } else { detailLink(record) }
+        } else { detailLink(record, position: position) }
     }
 
-    private func detailLink(_ record: ChequeRecord) -> some View {
-        NavigationLink { ChequeDetailView(record: record) } label: { ChequeRowView(record: record) }
+    private func detailLink(_ record: ChequeRecord, position: ChequePosition?) -> some View {
+        NavigationLink { ChequeDetailView(record: record) } label: {
+            ChequeRowView(record: record, position: position, needsReview: position == nil)
+        }.accessibilityIdentifier("cheque-row-" + record.id.uuidString)
     }
 
     private func setScope(_ value: ChequeListScope) {
@@ -331,21 +348,22 @@ struct ChequeListView: View {
         .accessibilityIdentifier("listDirectionPicker")
     }
 
-    private func shownSummary(_ result: ChequeListResult) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+    private func shownSummary(_ result: ChequeListResult, outstanding: [ChequeSnapshot], disputed: Set<String>) -> some View {
+        let groups = Dictionary(grouping: outstanding, by: \.currencyCode)
+        return VStack(alignment: .leading, spacing: 8) {
             shownCount(result.cheques.count)
-            if !app.currencyConflict && !app.currencyCode.isEmpty && !result.totals.hasCurrencyConflict {
+            ForEach(disputed.sorted(), id: \.self) { code in UnverifiedCurrencyTotal(currency: code) }
+            ForEach(groups.keys.sorted(), id: \.self) { code in
+                let totals = ChequeDirectionTotals(cheques: groups[code] ?? [])
                 ViewThatFits(in: .horizontal) {
                     HStack(alignment: .top, spacing: 16) {
-                        directionTotal(.incoming, totals: result.totals)
-                            .fixedSize(horizontal: true, vertical: false)
+                        directionTotal(.incoming, totals: totals, currency: code)
                         Spacer(minLength: 8)
-                        directionTotal(.outgoing, totals: result.totals)
-                            .fixedSize(horizontal: true, vertical: false)
+                        directionTotal(.outgoing, totals: totals, currency: code)
                     }
                     VStack(alignment: .leading, spacing: 6) {
-                        directionTotal(.incoming, totals: result.totals)
-                        directionTotal(.outgoing, totals: result.totals)
+                        directionTotal(.incoming, totals: totals, currency: code)
+                        directionTotal(.outgoing, totals: totals, currency: code)
                     }
                 }
             }
@@ -362,13 +380,13 @@ struct ChequeListView: View {
         .accessibilityIdentifier("shownChequeCount")
     }
 
-    private func directionTotal(_ direction: ChequeDirection, totals: ChequeDirectionTotals) -> some View {
+    private func directionTotal(_ direction: ChequeDirection, totals: ChequeDirectionTotals, currency: String) -> some View {
         let total = direction == .incoming ? totals.incomingMinorUnits : totals.outgoingMinorUnits
         return VStack(alignment: .leading, spacing: 3) {
-            Text(app.tr(direction == .incoming ? "Shown incoming" : "Shown outgoing"))
+            Text(app.tr(direction == .incoming ? "Incoming" : "Outgoing") + " · " + app.tr("Remaining"))
                 .font(.footnote).foregroundStyle(.secondary)
             if let total {
-                AmountText(minorUnits: total).font(.subheadline.weight(.semibold))
+                ReadableCurrencyAmount(minorUnits: total, currencyCode: currency, formatted: DisplayFormatting.amount(minorUnits: total, currencyCode: currency, locale: app.preferences.language.locale)).font(.subheadline.weight(.semibold))
                     .environment(\.layoutDirection, .leftToRight)
                     .fixedSize(horizontal: false, vertical: true)
             } else {
@@ -428,7 +446,7 @@ private struct ChequeListToolbar: ToolbarContent {
                 }
             }
                 .accessibilityLabel(app.tr("Add cheque"))
-                .disabled(app.currencyConflict || app.currencyCode.isEmpty)
+                .disabled(app.currencyCode.isEmpty)
         }
     }
 
@@ -549,7 +567,7 @@ private struct ChequeFilterSheet: View {
                         get: { (draft.from ?? .today).date() },
                         set: { draft.from = LocalDay(date: $0) }
                     ), displayedComponents: .date)
-                        .environment(\.locale, Locale(identifier: "en_GB"))
+                        .environment(\.locale, app.preferences.language.locale)
                         .environment(\.calendar, Calendar(identifier: .gregorian))
                 }
                 Toggle(app.tr("Through date"), isOn: Binding(
@@ -560,7 +578,7 @@ private struct ChequeFilterSheet: View {
                         get: { (draft.through ?? .today).date() },
                         set: { draft.through = LocalDay(date: $0) }
                     ), displayedComponents: .date)
-                        .environment(\.locale, Locale(identifier: "en_GB"))
+                        .environment(\.locale, app.preferences.language.locale)
                         .environment(\.calendar, Calendar(identifier: .gregorian))
                 }
             }

@@ -6,12 +6,49 @@ import ShekatiCore
 @MainActor
 struct OutgoingChequeTableView: View {
     @Environment(AppState.self) private var app
+    @Query private var records: [ChequeRecord]
+    @Query private var events: [LedgerEventRecord]
+    @State private var selectedCode = ""
+    var body: some View {
+        let outgoing = records.filter { $0.isActive && $0.direction == .outgoing }
+        let codes = Set(outgoing.map(\.currencyCode)).sorted()
+        let code = codes.contains(selectedCode) ? selectedCode : codes.first ?? app.currencyCode
+        let audit = ChequeAudit(records: records, events: events)
+        let group = outgoing.filter { $0.currencyCode == code }
+        let uncertain = group.filter { audit.disputed.contains($0.id) }
+        VStack(spacing: 6) {
+            if codes.count > 1 {
+                Picker(app.tr("Currency"), selection: Binding(get: { code }, set: { selectedCode = $0 })) {
+                    ForEach(codes, id: \.self) { Text($0).tag($0) }
+                }.pickerStyle(.menu)
+            }
+            if !uncertain.isEmpty {
+                NavigationLink {
+                    List(uncertain) { record in
+                        NavigationLink { ChequeDetailView(record: record) } label: {
+                            ChequeRowView(record: record, position: audit.positions[record.id], needsReview: true)
+                        }
+                    }.navigationTitle(app.tr("Review conflicting entries"))
+                } label: { UnverifiedCurrencyTotal(currency: code) }
+            }
+            CurrencyOutgoingTable(records: group.filter { !audit.disputed.contains($0.id) },
+                                  positions: audit.positions, uncertain: !uncertain.isEmpty)
+                .id(code)
+        }
+    }
+}
+
+@MainActor
+private struct CurrencyOutgoingTable: View {
+    @Environment(AppState.self) private var app
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @ScaledMetric(relativeTo: .footnote) private var minimumTableWidth: CGFloat = 620
     @ScaledMetric(relativeTo: .footnote) private var digitWidth: CGFloat = 8
-    @Query(filter: #Predicate<ChequeRecord> { $0.deletedAt == nil && $0.directionRaw == "outgoing" })
-    private var records: [ChequeRecord]
+    let records: [ChequeRecord]
+    let positions: [UUID: ChequePosition]
+    let uncertain: Bool
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
     @State private var showsPaid = false
     @State private var isSelecting = false
     @State private var selectedIDs: Set<UUID> = []
@@ -20,12 +57,25 @@ struct OutgoingChequeTableView: View {
 
     var body: some View {
         let byID = Dictionary(records.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
-        let snapshots = byID.values.filter { showsPaid ? $0.status == .settled : $0.status != .settled }.map(\.snapshot)
+        let snapshots: [ChequeSnapshot] = byID.values.compactMap { record in
+            guard let position = positions[record.id] else { return nil }
+            if showsPaid {
+                guard position.state == .settled else { return nil }
+            } else {
+                guard position.isOpen, position.state != .draft else { return nil }
+            }
+            var row = record.snapshot
+            row.status = position.legacyStatus
+            row.amountMinorUnits = showsPaid ? position.paid : position.remaining
+            return row
+        }
         let ledger = OutgoingChequeLedger(cheques: snapshots)
         let visibleIDs = Set(ledger.rows.map(\.id))
         let selected = ChequeSelectionSummary(cheques: snapshots, selectedIDs: selectedIDs)
         Group {
-            if dynamicTypeSize.isAccessibilitySize {
+            if hidesAmounts {
+                ContentUnavailableView(app.tr("Amounts hidden"), systemImage: "eye.slash")
+            } else if dynamicTypeSize.isAccessibilitySize {
                 accessibleContent(ledger, byID: byID, visibleIDs: visibleIDs, selected: selected)
             } else {
                 VStack(spacing: 0) {
@@ -54,21 +104,20 @@ struct OutgoingChequeTableView: View {
                 } label: { Image(systemName: "plus") }
                 .accessibilityLabel(app.tr("Add cheque"))
                 .accessibilityIdentifier("addOutgoingCheque")
-                .disabled(app.currencyConflict || app.currencyCode.isEmpty)
+                .disabled(app.currencyCode.isEmpty)
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if isSelecting && !dynamicTypeSize.isAccessibilitySize {
+            if isSelecting && !hidesAmounts && !dynamicTypeSize.isAccessibilitySize {
                 ChequeSelectionSummaryView(summary: selected, compact: verticalSizeClass == .compact)
             }
         }
         .onChange(of: showsPaid) { _, _ in endSelection() }
+        .onChange(of: uncertain) { _, _ in endSelection() }
         .onChange(of: visibleIDs) { _, ids in selectedIDs.formIntersection(ids) }
         .sheet(isPresented: $showingFreeDays) { ChequeFreeDaysView() }
         .sheet(isPresented: $showingEditor) {
-            NavigationStack { ChequeEditorView(initialDirection: .outgoing) }
-                .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+            ChequeEditorSheet(initialDirection: .outgoing)
         }
     }
 
@@ -139,7 +188,7 @@ struct OutgoingChequeTableView: View {
         .fontWeight(.semibold)
         .frame(minHeight: 44)
         .buttonStyle(.borderless)
-        .disabled(visibleIDs.isEmpty && !isSelecting)
+        .disabled(uncertain || (visibleIDs.isEmpty && !isSelecting))
         .accessibilityIdentifier("selectChequesButton")
     }
 
@@ -196,11 +245,11 @@ struct OutgoingChequeTableView: View {
                             }
                         }
                         .frame(width: width, height: tableGeometry.size.height)
-                        .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+                        .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
                     }
                     // Use a physical scroll axis with an explicit starting edge. The
                     // sheet itself retains the selected language's column direction.
-                    .defaultScrollAnchor(app.preferences.language == .arabic ? .topTrailing : .topLeading)
+                    .defaultScrollAnchor(app.preferences.language.isRTL ? .topTrailing : .topLeading)
                     .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
                     .environment(\.layoutDirection, .leftToRight)
                     .accessibilityIdentifier("outgoingChequeTable")
@@ -215,7 +264,7 @@ struct OutgoingChequeTableView: View {
             let fields: [(String, Int)] = [
                 (NumericInput.latinDigits(row.cheque.number), OutgoingChequeColumn.number),
                 (CurrencyMath.plain(minorUnits: row.cheque.amountMinorUnits, currencyCode: row.cheque.currencyCode), OutgoingChequeColumn.amount),
-                (showsPaid ? "00/00/0000" : row.remainingMinorUnits.map {
+                (showsPaid ? app.formatDay(row.cheque.actualDate ?? row.cheque.dueDate) : row.remainingMinorUnits.map {
                     CurrencyMath.plain(minorUnits: $0, currencyCode: row.cheque.currencyCode)
                 } ?? "—", OutgoingChequeColumn.balance)
             ]
@@ -267,7 +316,7 @@ struct OutgoingChequeTableView: View {
                                     if selectedIDs.contains(row.id) { selectedIDs.remove(row.id) }
                                     else { selectedIDs.insert(row.id) }
                                 } label: {
-                                    OutgoingChequeRow(row: row, showsBalance: !ledger.hasCurrencyConflict,
+                                    OutgoingChequeRow(row: row, showsBalance: !uncertain,
                                         showsPaidDates: showsPaid, isSelecting: true, isSelected: selectedIDs.contains(row.id))
                                 }
                                 .buttonStyle(.plain)
@@ -275,7 +324,7 @@ struct OutgoingChequeTableView: View {
                                 .accessibilityValue(app.tr(selectedIDs.contains(row.id) ? "Selected" : "Not selected"))
                             } else {
                                 NavigationLink { ChequeDetailView(record: record) } label: {
-                                    OutgoingChequeRow(row: row, showsBalance: !ledger.hasCurrencyConflict, showsPaidDates: showsPaid)
+                                    OutgoingChequeRow(row: row, showsBalance: !uncertain, showsPaidDates: showsPaid)
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -400,8 +449,8 @@ private struct OutgoingChequeRow: View {
     private var cheque: ChequeSnapshot { row.cheque }
     private var number: String { NumericInput.latinDigits(cheque.number.trimmingCharacters(in: .whitespacesAndNewlines)) }
     private var amount: String { CurrencyMath.plain(minorUnits: cheque.amountMinorUnits, currencyCode: cheque.currencyCode) }
-    private var date: String { OutgoingChequeLedger.dateText(cheque.dueDate) }
-    private var paymentDate: String { cheque.actualDate.map(OutgoingChequeLedger.dateText) ?? "—" }
+    private var date: String { app.formatDay(cheque.dueDate) }
+    private var paymentDate: String { cheque.actualDate.map(app.formatDay) ?? "—" }
     private var balance: String {
         guard showsBalance, let remaining = row.remainingMinorUnits else { return "—" }
         return CurrencyMath.plain(minorUnits: remaining, currencyCode: cheque.currencyCode)

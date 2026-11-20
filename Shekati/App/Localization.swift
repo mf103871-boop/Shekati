@@ -3,8 +3,15 @@ import ShekatiCore
 
 enum Localization {
     static func text(_ key: String, language: AppLanguage) -> String {
-        NumericInput.latinDigits(language == .arabic ? arabic[key] ?? key : key)
+        let localized = bundles[language.rawValue]?.localizedString(forKey: key, value: key, table: nil) ?? key
+        let value = language == .arabic ? arabic[key] ?? localized : localized
+        return NumericInput.latinDigits(value)
     }
+
+    private static let bundles: [String: Bundle] = Dictionary(uniqueKeysWithValues: AppLanguage.supported.compactMap { code in
+        guard let path = Bundle.main.path(forResource: code, ofType: "lproj"), let bundle = Bundle(path: path) else { return nil }
+        return (code, bundle)
+    })
 
     /// Arabic day counts follow the CLDR plural categories: one, two, few (3–10), many (11–99) and other.
     static func arabicDays(_ count: Int) -> String {
@@ -20,7 +27,11 @@ enum Localization {
 
     /// A reminder offset label such as "14 days before" the due date.
     static func daysBefore(_ offset: Int, language: AppLanguage) -> String {
-        language == .arabic ? arabicDays(offset) + " قبل الاستحقاق" : "\(offset) days before"
+        if language == .arabic { return arabicDays(offset) + " قبل الاستحقاق" }
+        if language.rawValue.hasPrefix("en") { return "\(offset) days before" }
+        let formatter = RelativeDateTimeFormatter()
+        formatter.locale = language.locale
+        return formatter.localizedString(from: DateComponents(day: -offset))
     }
 
     /// Relative due-date wording for three or more days; today, tomorrow and two days use dedicated keys.
@@ -28,7 +39,11 @@ enum Localization {
         let count = abs(distance)
         switch language {
         case .arabic: return (distance < 0 ? "متأخر منذ " : "بعد ") + arabicDays(count)
-        case .english: return distance < 0 ? "Overdue by \(count) days" : "In \(count) days"
+        default:
+            if language.rawValue.hasPrefix("en") { return distance < 0 ? "Overdue by \(count) days" : "In \(count) days" }
+            let formatter = RelativeDateTimeFormatter()
+            formatter.locale = language.locale
+            return formatter.localizedString(from: DateComponents(day: distance))
         }
     }
 

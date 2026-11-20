@@ -1,0 +1,26 @@
+{
+  "locale": "sk",
+  "applicationLocale": "sk",
+  "name": "Shekati",
+  "subtitle": "Evidencia šekov",
+  "keywords": "šeky,bankové účty,kalendár,pripomienky",
+  "description": "Záznam prichádzajúce a odchádzajúce šeky, vidieť ich termíny splatnosti a udržať svoje obrázky šeku spolu.\n\nBezplatný plán zahŕňa jeden bankový účet, desať aktívnych šekov, manuálne zadávanie, kalendár a pripomienky.\n\nShekati Plus pridáva viac účtov, neobmedzené aktívne šeky, skenovanie šekov, potvrdenia, čiastočné zúčtovanie, náhrady a prognózy peňažných tokov.\n\nPredplatné sa automaticky obnovuje, kým ho nezrušíte vo svojom účte Apple ID. Môžete si vybrať mesačné alebo ročné predplatné a predplatné sa vám automaticky obnoví po uplynutí platnosti.\n\nExistujúce šeky môžete čítať, zatvárať a exportovať po skončení predplatného.\n\nPodmienky používania\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nOchrana osobných údajov - GDPR\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Mesačne",
+      "description": "Neobmedzený počet šekov"
+    },
+    "annual": {
+      "name": "Shekati Plus · Ročne",
+      "description": "Neobmedzený počet šekov"
+    }
+  },
+  "screenshotHeadings": [
+    "Váš účet |",
+    "Registračný šek",
+    "Skontrolujte naskenované podrobnosti · Shekati Plus",
+    "Podrobnosti o šeku",
+    "Dátumy splatnosti"
+  ]
+}

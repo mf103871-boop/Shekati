@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "Fotografa un assegno per verificare i dati riconosciuti.";
+"NSFaceIDUsageDescription" = "Usa Face ID per sbloccare il registro degli assegni.";

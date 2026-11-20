@@ -8,31 +8,39 @@ struct ChequeFreeDaysView: View {
     @Environment(AppState.self) private var app
     @Environment(\.dismiss) private var dismiss
     @Query(filter: #Predicate<ChequeRecord> { $0.deletedAt == nil }) private var records: [ChequeRecord]
+    @Query private var events: [LedgerEventRecord]
     @State private var fromDate = LocalDay.today.date()
     @State private var throughDate = LocalDay.today.adding(days: 90).date()
     @State private var plannedDate: PlannedChequeDate?
 
-    private var canAddCheque: Bool { !app.currencyConflict && !app.currencyCode.isEmpty }
+    private var canAddCheque: Bool { !app.currencyCode.isEmpty }
     private var layoutDirection: LayoutDirection {
-        app.preferences.language == .arabic ? .rightToLeft : .leftToRight
+        app.preferences.language.isRTL ? .rightToLeft : .leftToRight
     }
 
     var body: some View {
         let from = LocalDay(date: fromDate)
         let through = LocalDay(date: throughDate)
-        let availability = ChequeAvailability(cheques: records.map(\.snapshot), from: from, through: through)
+        let positions = BankingLedger.effectivePositions(records: records, events: events)
+        let open = records.compactMap { record -> ChequeSnapshot? in
+            guard let position = positions[record.id], position.isOpen, position.state != .draft else { return nil }
+            var cheque = record.snapshot
+            cheque.status = position.legacyStatus
+            return cheque
+        }
+        let availability = ChequeAvailability(cheques: open, from: from, through: through)
         let calendar = weekdayCalendar
         NavigationStack {
             List {
                 Section {
                     DatePicker(app.tr("From"), selection: $fromDate,
                                in: app.today.date()..., displayedComponents: .date)
-                        .environment(\.locale, Locale(identifier: "en_GB"))
+                        .environment(\.locale, app.preferences.language.locale)
                         .environment(\.calendar, Calendar(identifier: .gregorian))
                         .accessibilityIdentifier("freeDaysFromDate")
                     DatePicker(app.tr("Through"), selection: $throughDate,
                                in: app.today.date()..., displayedComponents: .date)
-                        .environment(\.locale, Locale(identifier: "en_GB"))
+                        .environment(\.locale, app.preferences.language.locale)
                         .environment(\.calendar, Calendar(identifier: .gregorian))
                         .accessibilityIdentifier("freeDaysThroughDate")
                 } footer: {
@@ -114,11 +122,7 @@ struct ChequeFreeDaysView: View {
                 }
             }
             .sheet(item: $plannedDate) { plan in
-                NavigationStack {
-                    ChequeEditorView(initialDirection: .outgoing, initialDueDate: plan.day)
-                }
-                .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, layoutDirection)
+                ChequeEditorSheet(initialDirection: .outgoing, initialDueDate: plan.day)
             }
         }
         .environment(\.locale, app.preferences.language.locale)

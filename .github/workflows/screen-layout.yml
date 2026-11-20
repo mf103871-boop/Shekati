@@ -1,6 +1,7 @@
 name: Verify iPhone screen layouts
 on:
   push:
+    branches: [main]
     paths:
       - '.github/workflows/screen-layout.yml'
       - 'Tools/ScreenAudit/**'

@@ -1,0 +1,26 @@
+{
+  "locale": "id",
+  "applicationLocale": "id",
+  "name": "Shekati",
+  "subtitle": "Pengelola cek",
+  "keywords": "cek,Akun bank,kalender,peringatan",
+  "description": "Rekam cek masuk dan keluar, lihat tanggal jatuh tempo mereka dan simpan gambar cek Anda bersama-sama.\n\nRencana gratis termasuk satu rekening bank, sepuluh cek aktif, entri manual, kalender dan peringatan.\n\nShekati Plus menambahkan lebih banyak akun, cek aktif tak terbatas, scan cek, dukungan, penyelesaian sebagian, penggantian dan ramalan aliran tunai.\n\nPilih langganan bulanan atau tahunan. Harga lokal Anda ditampilkan sebelum pembelian. Layanan diperbarui secara otomatis sampai dibatalkan di Apple Account Anda.\n\nAnda dapat membaca, menutup dan mengekspor cek yang ada setelah langganan berakhir.\n\nKetentuan penggunaan\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nKebijakan Privasi\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Bulanan",
+      "description": "Cek tanpa batas"
+    },
+    "annual": {
+      "name": "Shekati Plus · Tahunan",
+      "description": "Cek tanpa batas"
+    }
+  },
+  "screenshotHeadings": [
+    "Akun Anda",
+    "Daftar cek",
+    "Tinjau detail yang dipindai · Shekati Plus",
+    "Rincian cek",
+    "Tanggal jatuh tempo"
+  ]
+}

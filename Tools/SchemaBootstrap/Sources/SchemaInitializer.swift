@@ -27,7 +27,7 @@ enum SchemaInitializer {
             // Apple's SwiftData/Core Data integration generates all optional fields and asset counterparts.
             // A temporary store prevents schema setup from inserting records in the regular app's local store.
             try autoreleasepool {
-                guard let model = NSManagedObjectModel.makeManagedObjectModel(for: [ChequeRecord.self, AppConfiguration.self]) else {
+                guard let model = NSManagedObjectModel.makeManagedObjectModel(for: [ChequeRecord.self, AppConfiguration.self, BankAccountRecord.self, ChequeBookRecord.self, LedgerEventRecord.self]) else {
                     throw SchemaInitializationError.unavailableModel
                 }
                 let description = NSPersistentStoreDescription(url: directory.appending(path: "Schema.store"))

@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "Photographiez un chèque pour vérifier les informations détectées.";
+"NSFaceIDUsageDescription" = "Utilisez Face ID pour déverrouiller votre registre de chèques.";

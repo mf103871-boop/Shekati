@@ -7,13 +7,13 @@ on:
         type: boolean
         default: false
       bundle_id:
-        description: Account-owned Bundle ID (required for signed export)
+        description: Dedicated Bundle ID of the Shekati Sync Setup app
         type: string
-        required: false
+        default: com.mf103871.shekati.schema-setup
       cloud_container_id:
-        description: Account-owned CloudKit container (required for signed export)
+        description: Shared Shekati CloudKit container
         type: string
-        required: false
+        default: iCloud.com.mf103871.shekati
       development_team:
         description: Apple Developer Team ID (required for signed export)
         type: string
@@ -28,10 +28,7 @@ concurrency:
   group: schema-bootstrap
   cancel-in-progress: false
 jobs:
-  validate:
-    uses: ./.github/workflows/ci.yml
   prepare:
-    needs: validate
     runs-on: macos-26
     timeout-minutes: 45
     environment: testflight
@@ -40,12 +37,12 @@ jobs:
       CLOUD_CONTAINER_ID: ${{ inputs.cloud_container_id }}
       APPLE_TEAM_ID: ${{ inputs.development_team }}
       APP_BUILD_NUMBER: ${{ inputs.build_number }}
-      CERTIFICATE_BASE64: ${{ secrets.DISTRIBUTION_CERTIFICATE_BASE64 }}
-      CERTIFICATE_PASSWORD: ${{ secrets.DISTRIBUTION_CERTIFICATE_PASSWORD }}
-      PROFILE_BASE64: ${{ secrets.ADHOC_PROVISIONING_PROFILE_BASE64 }}
-      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify the SwiftData schema against the previous release
+        run: python3 Tools/SchemaBootstrap/verify_ledger_schema.py
       - name: Generate separate setup project
         run: |
           xcodebuild -version
@@ -58,17 +55,20 @@ jobs:
             -derivedDataPath "$RUNNER_TEMP/SchemaBootstrap-derived" CODE_SIGNING_ALLOWED=NO
       - name: Stage requested signing files
         if: ${{ inputs.signing }}
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.DISTRIBUTION_CERTIFICATE_BASE64 }}
+          PROFILE_BASE64: ${{ secrets.SCHEMA_SETUP_ADHOC_PROFILE_BASE64 }}
         run: |
           python3 - <<'PY'
           import base64, os, pathlib, re
-          required = ['APP_BUNDLE_ID', 'CLOUD_CONTAINER_ID', 'APPLE_TEAM_ID', 'APP_BUILD_NUMBER', 'CERTIFICATE_BASE64', 'CERTIFICATE_PASSWORD', 'PROFILE_BASE64', 'KEYCHAIN_PASSWORD']
+          required = ['APP_BUNDLE_ID', 'CLOUD_CONTAINER_ID', 'APPLE_TEAM_ID', 'APP_BUILD_NUMBER', 'CERTIFICATE_BASE64', 'PROFILE_BASE64']
           missing = [name for name in required if not os.environ.get(name)]
           if missing:
               raise SystemExit('Missing signed-export setup values: ' + ', '.join(missing))
-          if not re.fullmatch(r'[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+', os.environ['APP_BUNDLE_ID']) or os.environ['APP_BUNDLE_ID'] == 'com.shekati.app':
-              raise SystemExit('Use a valid, account-owned Bundle ID')
-          if not re.fullmatch(r'iCloud\.[A-Za-z0-9.-]+', os.environ['CLOUD_CONTAINER_ID']):
-              raise SystemExit('Invalid CloudKit container identifier')
+          if os.environ['APP_BUNDLE_ID'] != 'com.mf103871.shekati.schema-setup':
+              raise SystemExit('The standalone setup must use its dedicated app identifier')
+          if os.environ['CLOUD_CONTAINER_ID'] != 'iCloud.com.mf103871.shekati':
+              raise SystemExit('The standalone setup must use the existing Shekati CloudKit container')
           if not re.fullmatch(r'[A-Z0-9]{10}', os.environ['APPLE_TEAM_ID']):
               raise SystemExit('Invalid Team ID')
           if not re.fullmatch(r'[1-9][0-9]*', os.environ['APP_BUILD_NUMBER']):
@@ -81,13 +81,17 @@ jobs:
           PY
       - name: Install ad-hoc signing credentials
         if: ${{ inputs.signing }}
+        env:
+          CERTIFICATE_PASSWORD: ${{ secrets.DISTRIBUTION_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
+          : "${CERTIFICATE_PASSWORD:?Missing signing certificate password}" "${KEYCHAIN_PASSWORD:?Missing keychain password}"
           SIGNING_KEYCHAIN="$RUNNER_TEMP/schema-signing.keychain-db"
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$SIGNING_KEYCHAIN"
           security set-keychain-settings -lut 3600 "$SIGNING_KEYCHAIN"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$SIGNING_KEYCHAIN"
           security import "$RUNNER_TEMP/schema-certificate.p12" -P "$CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$SIGNING_KEYCHAIN"
-          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$SIGNING_KEYCHAIN"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$SIGNING_KEYCHAIN" >/dev/null
           security list-keychains -d user -s "$SIGNING_KEYCHAIN"
           security cms -D -i "$RUNNER_TEMP/schema-profile.mobileprovision" > "$RUNNER_TEMP/schema-profile.plist"
           python3 - <<'PY'
@@ -98,8 +102,8 @@ jobs:
           entitlements = profile['Entitlements']
           if profile.get('TeamIdentifier', [None])[0] != team or not entitlements.get('application-identifier', '').endswith('.' + bundle):
               raise SystemExit('Profile does not match the Team ID and Bundle ID')
-          if not profile.get('ProvisionedDevices') or entitlements.get('get-task-allow') or profile.get('ProvisionsAllDevices'):
-              raise SystemExit('Use an ad-hoc distribution profile containing the intended registered iPhone')
+          if len(profile.get('ProvisionedDevices') or []) != 1 or entitlements.get('get-task-allow') or profile.get('ProvisionsAllDevices'):
+              raise SystemExit('Use an ad-hoc distribution profile containing the owner’s registered iPhone')
           expiration = profile.get('ExpirationDate')
           if not expiration or expiration.replace(tzinfo=datetime.timezone.utc) <= datetime.datetime.now(datetime.timezone.utc):
               raise SystemExit('Provisioning profile has expired')
@@ -122,7 +126,7 @@ jobs:
       - name: Archive and export the dedicated development-cloud app
         if: ${{ inputs.signing }}
         run: |
-          xcodebuild archive -project Tools/SchemaBootstrap/ShekatiSchemaBootstrap.xcodeproj \
+          xcodebuild -quiet archive -project Tools/SchemaBootstrap/ShekatiSchemaBootstrap.xcodeproj \
             -scheme ShekatiSchemaBootstrap -configuration Debug -destination 'generic/platform=iOS' \
             -archivePath "$RUNNER_TEMP/ShekatiSchemaBootstrap.xcarchive" \
             PRODUCT_BUNDLE_IDENTIFIER="$APP_BUNDLE_ID" SHEKATI_ICLOUD_CONTAINER="$CLOUD_CONTAINER_ID" \
@@ -135,11 +139,12 @@ jobs:
           if families != [1]:
               raise SystemExit(f'Refusing to export a setup archive with UIDeviceFamily={families!r}; expected iPhone only [1]')
           PY
-          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/ShekatiSchemaBootstrap.xcarchive" \
+          xcodebuild -quiet -exportArchive -archivePath "$RUNNER_TEMP/ShekatiSchemaBootstrap.xcarchive" \
             -exportOptionsPlist "$RUNNER_TEMP/SchemaExportOptions.plist" -exportPath "$RUNNER_TEMP/Schema-export"
       - name: Verify exported app uses the development CloudKit environment
         if: ${{ inputs.signing }}
         run: |
+          python3 Tools/SchemaBootstrap/verify_setup_ipa.py "$RUNNER_TEMP/Schema-export/ShekatiSchemaBootstrap.ipa"
           python3 - <<'PY'
           import os, pathlib, plistlib, subprocess, zipfile
           root = pathlib.Path(os.environ['RUNNER_TEMP'])
@@ -150,13 +155,22 @@ jobs:
               raise SystemExit('Expected exactly one setup app')
           app = apps[0]
           subprocess.run(['codesign', '--verify', '--deep', '--strict', str(app)], check=True)
+          chosen_profile = plistlib.loads((root / 'schema-profile.plist').read_bytes())
+          embedded_profile = plistlib.loads(subprocess.check_output(
+              ['security', 'cms', '-D', '-i', str(app / 'embedded.mobileprovision')], stderr=subprocess.DEVNULL))
+          if (embedded_profile.get('UUID') != chosen_profile['UUID'] or
+                  embedded_profile.get('ProvisionedDevices') != chosen_profile['ProvisionedDevices'] or
+                  embedded_profile.get('DeveloperCertificates') != chosen_profile['DeveloperCertificates']):
+              raise SystemExit('The IPA must embed the verified one-device provisioning profile')
           entitlements = plistlib.loads(subprocess.check_output(['codesign', '-d', '--entitlements', ':-', str(app)], stderr=subprocess.DEVNULL))
           if entitlements.get('com.apple.developer.icloud-container-environment') != 'Development':
               raise SystemExit('Refusing to deliver a schema initializer signed for Production')
-          if os.environ['CLOUD_CONTAINER_ID'] not in entitlements.get('com.apple.developer.icloud-container-identifiers', []):
+          if entitlements.get('application-identifier') != os.environ['APPLE_TEAM_ID'] + '.' + os.environ['APP_BUNDLE_ID']:
+              raise SystemExit('The signed setup has the wrong app identifier')
+          if entitlements.get('com.apple.developer.icloud-container-identifiers') != [os.environ['CLOUD_CONTAINER_ID']]:
               raise SystemExit('Exported app uses a different CloudKit container')
-          if 'CloudKit' not in entitlements.get('com.apple.developer.icloud-services', []):
-              raise SystemExit('Exported app does not request CloudKit')
+          if entitlements.get('com.apple.developer.icloud-services') != ['CloudKit']:
+              raise SystemExit('Exported app must explicitly request only CloudKit')
           if entitlements.get('aps-environment') != 'production':
               raise SystemExit('Exported ad-hoc app uses the wrong push notification environment')
           info = plistlib.loads((app / 'Info.plist').read_bytes())
@@ -165,12 +179,25 @@ jobs:
           if info['CFBundleIdentifier'] != os.environ['APP_BUNDLE_ID'] or info.get('ShekatiCloudContainerIdentifier') != os.environ['CLOUD_CONTAINER_ID']:
               raise SystemExit('Exported app metadata does not match the requested setup')
           PY
-      - name: Save setup IPA for private download
+      - name: Encrypt the verified IPA for its owner
+        if: ${{ inputs.signing }}
+        run: |
+          set -euo pipefail
+          umask 077
+          openssl3="$(brew --prefix openssl@3)/bin/openssl"
+          recipient=Tools/SchemaBootstrap/setup-delivery-recipient.pem
+          fingerprint="$("$openssl3" x509 -in "$recipient" -outform DER | shasum -a 256 | awk '{print $1}')"
+          test "$fingerprint" = 'c90081cc0443cc37bb730284e400de41d9e7770357437680632b7a31646cde90'
+          "$openssl3" cms -encrypt -binary -aes-256-gcm -outform DER \
+            -recip "$recipient" -keyopt rsa_padding_mode:oaep -keyopt rsa_oaep_md:sha256 -keyopt rsa_mgf1_md:sha256 \
+            -in "$RUNNER_TEMP/Schema-export/ShekatiSchemaBootstrap.ipa" \
+            -out "$RUNNER_TEMP/ShekatiSchemaBootstrap.ipa.cms"
+      - name: Upload only the owner-encrypted package
         if: ${{ inputs.signing }}
         uses: actions/upload-artifact@v4
         with:
-          name: ShekatiSchemaBootstrap-registered-iPhone
-          path: ${{ runner.temp }}/Schema-export/ShekatiSchemaBootstrap.ipa
+          name: ShekatiSchemaBootstrap-encrypted-iPhone
+          path: ${{ runner.temp }}/ShekatiSchemaBootstrap.ipa.cms
           if-no-files-found: error
           retention-days: 3
       - name: Remove signing credentials
@@ -178,10 +205,12 @@ jobs:
         run: |
           security delete-keychain "$RUNNER_TEMP/schema-signing.keychain-db" || true
           python3 - <<'PY'
-          import os, pathlib
+          import os, pathlib, shutil
           root = pathlib.Path(os.environ['RUNNER_TEMP'])
           for name in ['schema-certificate.p12', 'schema-profile.mobileprovision', 'schema-profile.plist', 'SchemaExportOptions.plist']:
               (root / name).unlink(missing_ok=True)
+          for name in ['Schema-verify', 'Schema-export', 'ShekatiSchemaBootstrap.xcarchive']:
+              shutil.rmtree(root / name, ignore_errors=True)
           if os.environ.get('SCHEMA_PROFILE_UUID'):
               (pathlib.Path.home() / 'Library/MobileDevice/Provisioning Profiles' / (os.environ['SCHEMA_PROFILE_UUID'] + '.mobileprovision')).unlink(missing_ok=True)
           PY

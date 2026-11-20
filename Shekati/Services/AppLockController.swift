@@ -40,7 +40,7 @@ final class AppLockController {
     func unlock() async {
         guard enabled, isLocked, !isAuthenticating else { return }
         let current = LAContext()
-        current.localizedCancelTitle = languageCode.hasPrefix("ar") ? "إلغاء" : "Cancel"
+        current.localizedCancelTitle = localized("إلغاء", "Cancel")
         var error: NSError?
         guard current.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
             errorMessage = localized("فعّل رمز دخول للآيفون حتى تتمكن من فتح شيكاتي.", "Set an iPhone passcode to unlock Shekati.")
@@ -69,5 +69,7 @@ final class AppLockController {
         }
     }
 
-    private func localized(_ arabic: String, _ english: String) -> String { languageCode.hasPrefix("ar") ? arabic : english }
+    private func localized(_ arabic: String, _ english: String) -> String {
+        languageCode.hasPrefix("ar") ? arabic : Localization.text(english, language: AppLanguage(rawValue: languageCode) ?? .english)
+    }
 }

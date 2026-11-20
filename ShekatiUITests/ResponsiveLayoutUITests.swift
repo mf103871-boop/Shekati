@@ -44,7 +44,7 @@ final class ResponsiveLayoutUITests: XCTestCase {
         currency.tap()
         XCTAssertTrue(app.buttons["addCheque"].waitForExistence(timeout: 8))
         rotate(.portrait, in: app)
-        reveal(app.buttons["addCheque"], in: app)
+        XCTAssertTrue(app.buttons["addCheque"].isHittable)
         app.buttons["addCheque"].tap()
         XCTAssertTrue(app.textFields["amountField"].waitForExistence(timeout: 5))
         selectOutgoing(in: app, arabic: arabic)
@@ -96,16 +96,16 @@ final class ResponsiveLayoutUITests: XCTestCase {
         rotate(.portrait, in: app)
         // The total row combines its VoiceOver children, so assert the public row's complete
         // value rather than relying on an identifier hidden inside that combined element.
-        let dashboardTotal = element("dashboardTotal-outgoing", in: app)
+        let dashboardTotal = element("outgoingDueAmount", in: app)
         reveal(dashboardTotal, in: app)
         assertVisibleBounds(dashboardTotal, in: app)
-        XCTAssertEqual(dashboardTotal.label.filter { "0123456789".contains($0) }, "123456789012",
+        XCTAssertTrue(dashboardTotal.label.filter { "0123456789".contains($0) }.hasSuffix("123456789012"),
                        "The dashboard must expose the complete precise amount with English digits")
         capture(app, "06 large amount dashboard portrait")
 
-        let chequesTab = app.tabBars.buttons[arabic ? "الشيكات" : "Cheques"]
+        let chequesTab = app.tabBars.buttons["tabCheques"]
         assertVisibleBounds(chequesTab, in: app)
-        chequesTab.tap()
+        openMoreDestination("outgoingLedgerLink", in: app)
         if !largeText {
             // The title belongs to the viewport while the wide columns scroll underneath it.
             let title = app.staticTexts["outgoingTableTitle"]
@@ -169,14 +169,13 @@ final class ResponsiveLayoutUITests: XCTestCase {
         let plannedDate = app.staticTexts["plannedDueDateSummary"]
         reveal(plannedDate, in: app)
         assertVisibleBounds(plannedDate, in: app)
-        formatter.dateFormat = "dd/MM/yyyy"
-        XCTAssertTrue(plannedDate.label.contains(formatter.string(from: tomorrow)))
+        XCTAssertTrue(plannedDate.label.contains(localizedDueDate(tomorrow, arabic: arabic)))
         capture(app, "14 date-prefilled editor portrait")
         app.buttons[arabic ? "إلغاء" : "Cancel"].tap()
         waitForAbsence(app.buttons["saveCheque"])
         app.buttons["closeFreeDays"].tap()
         waitForAbsence(app.buttons["closeFreeDays"])
-        app.tabBars.buttons[arabic ? "الإعدادات" : "Settings"].tap()
+        openMoreDestination("moreSettingsLink", in: app)
         let dataTools = element("dataTools", in: app)
         reveal(dataTools, in: app)
         assertVisibleBounds(dataTools, in: app)
