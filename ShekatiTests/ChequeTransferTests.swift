@@ -3,6 +3,7 @@ import XCTest
 import SwiftData
 import CryptoKit
 import PDFKit
+import UIKit
 import ShekatiCore
 @testable import Shekati
 
@@ -337,12 +338,57 @@ final class ChequeTransferTests: XCTestCase {
             XCTAssertTrue(text.contains("PARTY-END-MARKER"))
             XCTAssertTrue(text.contains("BANK-END-MARKER"))
             XCTAssertTrue(text.contains("000777"))
+            let expectedDate = DisplayFormatting.day(huge.dueDate, locale: language.locale)
+            let dateBounds = CGRect(x: language.isRTL ? 32 : 352, y: 210, width: 211, height: 25)
+            let expectedPixels = try renderedDate(expectedDate, rect: dateBounds, rightToLeft: language.isRTL)
             for index in 0..<document.pageCount {
-                let pageText = try XCTUnwrap(document.page(at: index)?.string)
+                let page = try XCTUnwrap(document.page(at: index))
+                let pageText = try XCTUnwrap(page.string)
                 XCTAssertTrue(pageText.contains("12.345"), "Amount must repeat on continuation page \(index + 1)")
-                XCTAssertTrue(pageText.contains(DisplayFormatting.day(huge.dueDate, locale: language.locale)))
+                XCTAssertEqual(try datePixels(page, rect: dateBounds), expectedPixels,
+                               "The full localized due date must be visible in its column on page \(index + 1)")
             }
         }
+    }
+
+    // PDFKit can extract Arabic glyph runs in visual order. Compare the ink in the
+    // date column with a separately typeset localized date so missing or swapped
+    // day, month and year glyphs still fail on every continuation page.
+    private func renderedDate(_ text: String, rect: CGRect, rightToLeft: Bool) throws -> Data {
+        let size = CGRect(x: 0, y: 0, width: 595, height: 842)
+        let data = UIGraphicsPDFRenderer(bounds: size).pdfData { renderer in
+            renderer.beginPage()
+            UIColor(white: 0.96, alpha: 1).setFill()
+            UIBezierPath(rect: rect).fill()
+            let style = NSMutableParagraphStyle()
+            style.baseWritingDirection = rightToLeft ? .rightToLeft : .leftToRight
+            style.alignment = rightToLeft ? .right : .left
+            style.lineBreakMode = .byWordWrapping
+            (text as NSString).draw(in: rect, withAttributes: [
+                .font: UIFont.systemFont(ofSize: 12), .paragraphStyle: style, .foregroundColor: UIColor.black
+            ])
+        }
+        let page = try XCTUnwrap(PDFDocument(data: data)?.page(at: 0))
+        let ink = try datePixels(page, rect: rect)
+        XCTAssertTrue(ink.contains(1), "The reference date must contain visible ink")
+        return ink
+    }
+
+    private func datePixels(_ page: PDFPage, rect: CGRect) throws -> Data {
+        let width = Int(rect.width) * 2, height = Int(rect.height) * 2
+        let bitmap = try XCTUnwrap(CGContext(data: nil, width: width, height: height,
+                                              bitsPerComponent: 8, bytesPerRow: width,
+                                              space: CGColorSpaceCreateDeviceGray(),
+                                              bitmapInfo: CGImageAlphaInfo.none.rawValue))
+        bitmap.setFillColor(gray: 1, alpha: 1)
+        bitmap.fill(CGRect(x: 0, y: 0, width: width, height: height))
+        bitmap.scaleBy(x: 2, y: 2)
+        bitmap.translateBy(x: -rect.minX, y: -(page.bounds(for: .mediaBox).maxY - rect.maxY))
+        let source = try XCTUnwrap(page.pageRef)
+        bitmap.drawPDFPage(source)
+        let pixels = try XCTUnwrap(bitmap.data?.assumingMemoryBound(to: UInt8.self))
+        // The report row is light gray and the reference page is white. Only compare text.
+        return Data(UnsafeBufferPointer(start: pixels, count: width * height).map { $0 < 48 ? 1 : 0 })
     }
 
     func testRestoredReminderOffsetsKeepEachDayOnce() throws {

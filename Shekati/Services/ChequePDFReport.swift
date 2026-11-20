@@ -47,8 +47,12 @@ enum ChequePDFReport {
                     let amount = DisplayFormatting.amount(minorUnits: cheque.amountMinorUnits, currencyCode: cheque.currencyCode, locale: language.locale)
                     draw(amount, in: CGRect(x: arabic ? 32 : 352, y: y + 6, width: 211, height: 30),
                          font: .boldSystemFont(ofSize: 13), arabic: arabic)
-                    draw(DisplayFormatting.day(cheque.dueDate, locale: language.locale), in: CGRect(x: arabic ? 32 : 352, y: y + 36, width: 211, height: 25),
+                    let dueDate = DisplayFormatting.day(cheque.dueDate, locale: language.locale)
+                    // A tagged span preserves the logical Unicode order for assistive PDF readers.
+                    CGPDFContextBeginTag(context.cgContext, .span, [CGPDFTagProperty.actualText.rawValue as String: dueDate] as CFDictionary)
+                    draw(dueDate, in: CGRect(x: arabic ? 32 : 352, y: y + 36, width: 211, height: 25),
                          font: .systemFont(ofSize: 12), arabic: arabic)
+                    CGPDFContextEndTag(context.cgContext)
                     if continuation {
                         draw((Localization.text("Cheque continuation", language: language) + " ") + String(index + 1),
                              in: CGRect(x: arabic ? 32 : 352, y: y + 60, width: 211, height: 16),
