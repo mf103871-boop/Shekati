@@ -35,8 +35,14 @@ struct ChequeRowView: View {
             HStack(alignment: .firstTextBaseline) {
                 Text(app.formatDay(record.dueDate)).font(.footnote).foregroundStyle(.secondary)
                 Spacer()
-                if needsReview || position != nil {
-                    Text(app.tr(needsReview ? "Needs review" : position?.state.title ?? "Pending")).font(.caption.weight(.semibold)).foregroundStyle(tint)
+                if needsReview || position?.conflicts.isEmpty == false {
+                    Label(app.tr("Needs review"), systemImage: "exclamationmark.triangle.fill")
+                        .font(.caption.weight(.semibold)).foregroundStyle(.orange)
+                } else if position?.state == .returned || (position == nil && record.status == .returned) {
+                    Label(app.tr("Returned"), systemImage: "exclamationmark.arrow.triangle.2.circlepath")
+                        .font(.caption.weight(.semibold)).foregroundStyle(.orange)
+                } else if let position {
+                    Text(app.tr(position.state.title)).font(.caption.weight(.semibold)).foregroundStyle(tint)
                 } else { StatusPill(snapshot: record.snapshot) }
             }
         }.padding(.vertical, 12).contentShape(Rectangle())

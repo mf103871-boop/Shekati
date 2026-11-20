@@ -182,6 +182,8 @@ struct ChequeEditorView: View {
             if hidesAmounts {
                 ContentUnavailableView {
                     Label(app.tr("Amounts hidden"), systemImage: "eye.slash")
+                } description: {
+                    EmptyView()
                 } actions: {
                     Button(app.tr("Show amounts")) { hidesAmounts = false }
                         .buttonStyle(.borderedProminent)
