@@ -210,8 +210,10 @@ struct ChequeEditorView: View {
                 } description: {
                     EmptyView()
                 } actions: {
-                    Button(app.tr("Show amounts")) { hidesAmounts = false }
-                        .buttonStyle(.borderedProminent)
+                    Button { hidesAmounts = false } label: {
+                        Text(app.tr("Show amounts")).foregroundStyle(Theme.onAccent)
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {

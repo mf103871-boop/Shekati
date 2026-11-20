@@ -4,6 +4,10 @@ import ShekatiCore
 @MainActor
 enum Theme {
     static let accent = Color("AccentColor")
+    /// Text and symbols on the filled accent button use a dark ink on its light mint variant.
+    static let onAccent = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark ? UIColor(red: 0.04, green: 0.15, blue: 0.16, alpha: 1) : .white
+    })
     static let navy = Color("Navy")
     static let brandBackground = Color(red: 18 / 255, green: 78 / 255, blue: 82 / 255)
     static let incoming = Color(uiColor: UIColor { $0.userInterfaceStyle == .dark ? UIColor(red: 0.53, green: 0.85, blue: 0.69, alpha: 1) : UIColor(red: 0.14, green: 0.44, blue: 0.30, alpha: 1) })

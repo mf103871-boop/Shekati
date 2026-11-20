@@ -269,10 +269,12 @@ struct ChequeDetailView: View {
                 .multilineTextAlignment(.center)
             Text(app.tr("You can restore its details and photos for 30 days."))
                 .foregroundStyle(.secondary).multilineTextAlignment(.center)
-            Button(app.tr("Undo deletion")) { restoreRecord() }
-                .buttonStyle(.borderedProminent)
-                .disabled(!record.canRestore(asOf: Date()))
-                .accessibilityIdentifier("undoChequeDeletion")
+            Button { restoreRecord() } label: {
+                Text(app.tr("Undo deletion")).foregroundStyle(Theme.onAccent)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(!record.canRestore(asOf: Date()))
+            .accessibilityIdentifier("undoChequeDeletion")
             Button(app.tr("Done")) { dismiss() }.buttonStyle(.bordered)
         }
         .frame(maxWidth: .infinity).padding(24)

@@ -242,9 +242,11 @@ struct ChequeListView: View {
                 systemImage: activeCount == 0 ? "doc.text" : "line.3.horizontal.decrease.circle"
             )
             if activeCount == 0 {
-                Button(app.tr("Add cheque")) { showingEditor = true }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(app.currencyCode.isEmpty)
+                Button { showingEditor = true } label: {
+                    Text(app.tr("Add cheque")).foregroundStyle(Theme.onAccent)
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(app.currencyCode.isEmpty)
             } else {
                 Button(app.tr("Clear search and filters")) { filter = .init(); paperFilter = nil }
                     .buttonStyle(.bordered)

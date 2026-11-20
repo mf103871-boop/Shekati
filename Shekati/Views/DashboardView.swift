@@ -77,8 +77,10 @@ struct DashboardView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Label(app.tr("Add your first bank account"), systemImage: "building.columns").font(.headline)
                         Text(app.tr("Enter the opening balance to see your available balance and upcoming commitments.")).font(.subheadline)
-                        NavigationLink(app.tr("Bank accounts")) { BankingAccountsView(isPlus: plus.isPlus) }
-                            .buttonStyle(.borderedProminent)
+                        NavigationLink { BankingAccountsView(isPlus: plus.isPlus) } label: {
+                            Text(app.tr("Bank accounts")).foregroundStyle(Theme.onAccent)
+                        }
+                        .buttonStyle(.borderedProminent)
                     }.shekatiCard()
                 }
                 HStack {
