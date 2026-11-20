@@ -161,7 +161,7 @@ struct DueCalendarView: View {
                             NavigationLink { ChequeDetailView(record: record) } label: {
                                 ChequeRowView(record: record, position: positions[record.id]).padding(.horizontal, 14)
                                     .background(Theme.surface, in: RoundedRectangle(cornerRadius: 18))
-                            }.buttonStyle(.plain)
+                            }.buttonStyle(.plain).accessibilityIdentifier("cheque-row-" + record.id.uuidString)
                         }
                     }
                 }.padding(.horizontal, 8)

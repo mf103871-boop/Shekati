@@ -277,7 +277,9 @@ struct ChequeListView: View {
     }
 
     private func detailLink(_ record: ChequeRecord, position: ChequePosition?) -> some View {
-        NavigationLink { ChequeDetailView(record: record) } label: { ChequeRowView(record: record, position: position, needsReview: position == nil) }
+        NavigationLink { ChequeDetailView(record: record) } label: {
+            ChequeRowView(record: record, position: position, needsReview: position == nil)
+        }.accessibilityIdentifier("cheque-row-" + record.id.uuidString)
     }
 
     private func setScope(_ value: ChequeListScope) {
