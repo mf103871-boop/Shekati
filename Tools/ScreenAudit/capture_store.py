@@ -84,6 +84,13 @@ if __name__ == "__main__":
     rows = {entry["store"]: entry for entry in json.loads(MANIFEST.read_text())["locales"]}
     device = json.loads(Path("build/capture-device.json").read_text())
     xctestrun, = Path("DerivedData/Build/Products").glob("*.xctestrun")
+    failures = []
     for locale in args.locales.split(","):
-        capture(rows[locale], xctestrun, args.destination, device)
+        try:
+            capture(rows[locale], xctestrun, args.destination, device)
+        except (OSError, RuntimeError, ValueError, subprocess.CalledProcessError) as error:
+            failures.append(f"{locale}: {error}")
+            print(failures[-1], flush=True)
+    if failures:
+        raise SystemExit("\n".join(failures))
 

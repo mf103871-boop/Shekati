@@ -238,6 +238,7 @@ private struct BackupRestoreView: View {
 @MainActor
 private struct CSVTransferView: View {
     @Environment(AppState.self) private var app
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
     @EnvironmentObject private var plus: ShekatiPlusStore
     @Environment(\.modelContext) private var context
     @Query private var records: [ChequeRecord]
@@ -255,9 +256,18 @@ private struct CSVTransferView: View {
     private var selectedCount: Int { preview?.rows.filter { includeDuplicates || !$0.isProbableDuplicate }.count ?? 0 }
 
     var body: some View {
+        if hidesAmounts {
+            Button(app.tr("Show amounts")) { hidesAmounts = false }
+        } else {
+            transferForm
+        }
+    }
+
+    private var transferForm: some View {
         List {
             Section(app.tr("Export")) {
                 Button(app.tr("Export saved cheques to CSV")) {
+                    guard !hidesAmounts else { return }
                     document = ChequeTransferDocument(data: ChequeCSV.export(active))
                     filename = "Shekati-\(LocalDay.today.iso).csv"; exporting = true
                 }.disabled(active.isEmpty)
