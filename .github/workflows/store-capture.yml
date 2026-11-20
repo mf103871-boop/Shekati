@@ -85,7 +85,10 @@ jobs:
         env:
           DEST: ${{ steps.device.outputs.destination }}
           LOCALES: ${{ matrix.locales }}
-        run: python3 Tools/ScreenAudit/capture_store.py --destination "$DEST" --locales "$LOCALES"
+        run: |
+          python3 -m venv "$RUNNER_TEMP/store-image-tools"
+          "$RUNNER_TEMP/store-image-tools/bin/python" -m pip install --only-binary=:all: Pillow==12.3.0
+          "$RUNNER_TEMP/store-image-tools/bin/python" Tools/ScreenAudit/capture_store.py --destination "$DEST" --locales "$LOCALES"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
