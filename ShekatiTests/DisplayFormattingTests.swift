@@ -26,12 +26,11 @@ final class DisplayFormattingTests: XCTestCase {
 
     func testCachedCivilDaysStayTheSameAcrossTimeZonesAndDaylightSavingBoundaries() throws {
         let zones = try ["Pacific/Kiritimati", "America/Los_Angeles", "Asia/Amman"].map { try XCTUnwrap(TimeZone(identifier: $0)) }
-        for iso in ["2026-03-08", "2026-03-29", "2026-11-01"] {
+        for (iso, expectedUS) in [("2026-03-08", "Mar 8, 2026"), ("2026-03-29", "Mar 29, 2026"), ("2026-11-01", "Nov 1, 2026")] {
             let day = try XCTUnwrap(LocalDay(iso: iso))
-            let expectedNumeric = "\(iso.suffix(2))/\(iso.dropFirst(5).prefix(2))/\(iso.prefix(4))"
             for zone in zones {
                 let displayed = DisplayFormatting.day(day, locale: Locale(identifier: "en_US"), zone: zone)
-                XCTAssertEqual(displayed, expectedNumeric)
+                XCTAssertEqual(displayed, expectedUS)
                 XCTAssertEqual(displayed, freshDay(day, locale: Locale(identifier: "en_US"), zone: zone))
             }
         }
