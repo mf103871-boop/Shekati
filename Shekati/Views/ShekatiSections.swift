@@ -130,7 +130,10 @@ struct DueCalendarView: View {
     private var calendar: Calendar {
         var result = Calendar(identifier: .gregorian)
         result.locale = app.preferences.language.locale
-        result.firstWeekday = Calendar.autoupdatingCurrent.firstWeekday
+        result.timeZone = TimeZone(identifier: app.preferences.bankingCalendar.timeZoneID) ?? .current
+        var regionCalendar = Calendar(identifier: .gregorian)
+        regionCalendar.locale = Locale(identifier: "en_" + app.preferences.bankingCalendar.region)
+        result.firstWeekday = regionCalendar.firstWeekday
         return result
     }
     private var start: Date {
@@ -142,7 +145,7 @@ struct DueCalendarView: View {
         }
     }
     private func dayRecords(from records: [ChequeRecord]) -> [ChequeRecord] {
-        records.filter { $0.dueDate == LocalDay(date: selected) }.sorted { ($0.number, $0.party) < ($1.number, $1.party) }
+        records.filter { $0.dueDate == LocalDay(date: selected, calendar: calendar) }.sorted { ($0.number, $0.party) < ($1.number, $1.party) }
     }
 
     var body: some View {
@@ -171,12 +174,18 @@ struct DueCalendarView: View {
                     let offset = (calendar.component(.weekday, from: start) - calendar.firstWeekday + 7) % 7
                     ForEach(0..<offset, id: \.self) { _ in Color.clear.frame(height: 1) }
                     ForEach(days, id: \.self) { day in
-                        let entries = grouped[LocalDay(date: day).iso] ?? []
-                        dayButton(day, entries: entries)
+                        let entries = grouped[LocalDay(date: day, calendar: calendar).iso] ?? []
+                        dayButton(day, entries: entries, positions: positions)
                     }
                 }
                 VStack(alignment: .leading, spacing: 10) {
-                    Text(app.formatDay(LocalDay(date: selected))).font(.headline)
+                    Text(app.formatDay(LocalDay(date: selected, calendar: calendar))).font(.headline)
+                    if let closure = closedDayLabel(selected) {
+                        Label(app.tr(closure), systemImage: "calendar.badge.minus").font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                    Text(countSummary(dayRecords, positions: positions))
+                        .font(.footnote).foregroundStyle(.secondary).accessibilityIdentifier("selectedDayCounts")
                     if dayRecords.isEmpty {
                         Text(app.tr("No cheques due on this day")).foregroundStyle(.secondary)
                     } else {
@@ -205,23 +214,44 @@ struct DueCalendarView: View {
         }.background(Theme.background).navigationTitle(app.tr("Calendar"))
     }
 
-    private func dayButton(_ day: Date, entries: [ChequeRecord]) -> some View {
+    private func closedDayLabel(_ date: Date) -> String? {
+        let banking = app.preferences.bankingCalendar
+        let local = LocalDay(date: date, calendar: calendar)
+        if banking.holidays.contains(local.iso) { return "Holiday" }
+        return banking.closedWeekdays.contains(calendar.component(.weekday, from: date)) ? "Weekly closing days" : nil
+    }
+
+    private func countSummary(_ entries: [ChequeRecord], positions: [UUID: ChequePosition]) -> String {
+        let counts = [("Incoming", entries.filter { $0.direction == .incoming }.count),
+                      ("Outgoing", entries.filter { $0.direction == .outgoing }.count),
+                      ("Returned", entries.filter { positions[$0.id]?.state == .returned }.count)]
+        return counts.map { app.tr($0.0) + " " + DisplayFormatting.count($0.1, locale: app.preferences.language.locale) }
+            .joined(separator: " · ")
+    }
+
+    private func dayButton(_ day: Date, entries: [ChequeRecord], positions: [UUID: ChequePosition]) -> some View {
+        let closure = closedDayLabel(day)
         let current = calendar.isDate(day, inSameDayAs: selected)
         return Button { selected = day } label: {
             VStack(spacing: 3) {
-                Text(day.formatted(.dateTime.day().locale(app.preferences.language.locale))).font(.subheadline)
+                HStack(spacing: 1) {
+                    Text(String(calendar.component(.day, from: day))).font(.subheadline)
+                    if closure != nil {
+                        Image(systemName: "minus.circle").font(.caption2).accessibilityHidden(true)
+                    }
+                }
                 HStack(spacing: 2) {
                     if entries.contains(where: { $0.direction == .incoming }) { Circle().fill(Theme.incoming) }
                     if entries.contains(where: { $0.direction == .outgoing }) { Circle().fill(Theme.outgoing) }
-                    if entries.contains(where: { $0.status == .returned }) { Circle().fill(Color.orange) }
+                    if entries.contains(where: { positions[$0.id]?.state == .returned }) { Circle().fill(Color.orange) }
                 }.frame(width: 20, height: 5)
             }.frame(maxWidth: .infinity, minHeight: 44)
                 .foregroundStyle(current ? Color.white : .primary)
-                .background(current ? Theme.brandBackground : Color.clear, in: RoundedRectangle(cornerRadius: 10))
+                .background(current ? Theme.brandBackground : closure != nil ? Color.orange.opacity(0.12) : Color.clear, in: RoundedRectangle(cornerRadius: 10))
         }.buttonStyle(.plain)
-            .accessibilityIdentifier("dueDay-" + LocalDay(date: day).iso)
-            .accessibilityLabel(app.formatDay(LocalDay(date: day)))
-            .accessibilityValue(app.tr("Cheques") + " " + String(entries.count))
+            .accessibilityIdentifier("dueDay-" + LocalDay(date: day, calendar: calendar).iso)
+            .accessibilityLabel(app.formatDay(LocalDay(date: day, calendar: calendar)))
+            .accessibilityValue(([closure.map { app.tr($0) }, countSummary(entries, positions: positions)] as [String?]).compactMap { $0 }.joined(separator: " · "))
             .accessibilityAddTraits(current ? .isSelected : [])
     }
 
