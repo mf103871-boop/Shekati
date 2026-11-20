@@ -23,6 +23,8 @@ def known_source_keys():
         if source.stem.endswith("Arabic") or source.stem == "Localization":
             table=swift.split("static let arabic:",1)[-1]
             literal_calls.extend(k for k,_ in re.findall(TOKEN+r'\s*:\s*'+TOKEN,table))
+        if source.name == "CashFlowReport.swift":
+            literal_calls.extend(re.findall(r'\(\s*'+TOKEN+r'\s*,\s*outlook\.',swift))
         for value in literal_calls:
             if "\\(" not in value:
                 required.add(json.loads('"'+value+'"'))

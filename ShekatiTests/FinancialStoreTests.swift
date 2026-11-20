@@ -78,6 +78,13 @@ final class FinancialStoreTests: XCTestCase {
         try ChequeTransferService.restore(partial, into: target.mainContext)
         let journal = try target.mainContext.fetch(FetchDescriptor<LedgerEventRecord>())
         XCTAssertEqual(BankingLedger.reminderInputs(records: [live], events: journal).first?.snapshot.amountMinorUnits, 800_000)
+        var olderDeleted = ChequeBackupEntry(snapshot: before.records[0].snapshot)
+        olderDeleted.deletedAt = Date()
+        let oldTrash = ChequeBackupPayload(currencyCode: "JOD", records: [olderDeleted])
+        try ChequeTransferService.restore(oldTrash, into: target.mainContext, replaceExisting: true)
+        XCTAssertNil(live.deletedAt)
+        XCTAssertEqual(BankingLedger.reminderInputs(records: [live], events: journal).first?.snapshot.amountMinorUnits, 800_000)
+
         try BankingLedger.perform(.settle, for: live, day: .today, expectedParent: journal.first?.id, isPlus: false, context: target.mainContext)
         try ChequeTransferService.restore(before, into: target.mainContext, replaceExisting: true)
         XCTAssertEqual(live.status, .settled)

@@ -236,11 +236,13 @@ enum ChequeTransferService {
         let existing = try context.fetch(FetchDescriptor<ChequeRecord>())
         try payload.banking?.validate(records: payload.records)
         let byID = Dictionary(existing.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        let journalledIDs = Set(try context.fetch(FetchDescriptor<LedgerEventRecord>()).compactMap(\.chequeID))
         var changed = 0
         do {
             for var entry in payload.records.map(\.normalized) {
                 if let record = byID[entry.snapshot.id] {
                     if payload.version == 1 && !replaceExisting { continue }
+                    if journalledIDs.contains(record.id) { entry.deletedAt = record.deletedAt }
                     if record.ledgerBaselineStatusRaw != nil || record.bankAccountID != nil {
                         // Never erase a newer journal with an older backup, including when replacing metadata.
                         guard entry.bankAccountID == nil || record.bankAccountID == entry.bankAccountID,

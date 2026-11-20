@@ -57,6 +57,13 @@ final class IndependentStoreSyncTests: XCTestCase {
             let position = BankingLedger.position(for: client.cheque, events: ops)
             XCTAssertTrue(position.conflicts.isEmpty)
             XCTAssertEqual(position.remaining, 30_000)
+            let archive = try BankingArchive(accounts: [client.account], books: [], events: ops)
+            XCTAssertEqual(archive.events.count, 3)
+            let backup = ChequeBackupPayload(version: 2, currencyCode: "JOD", records: [ChequeBackupEntry(record: client.cheque)], banking: archive)
+            try archive.validate(records: backup.records)
+            let exported = try EncryptedBackup.encrypt(backup, password: "Replica-test-pass")
+            let restored = try EncryptedBackup.decrypt(exported, password: "Replica-test-pass")
+            XCTAssertEqual(restored.banking, archive)
             XCTAssertEqual(try BankingLedger.outlook(account: client.account, records: [client.cheque], events: ops, today: .today).recorded, 70_000)
         }
     }

@@ -95,9 +95,9 @@ enum BankingLedger {
         guard let accountID = record.bankAccountID,
               let account = try context.fetch(FetchDescriptor<BankAccountRecord>()).first(where: { $0.id == accountID }),
               account.currencyCode == record.currencyCode else { throw BankingError.accountRequired }
-        if let ancestor = record.replacesChequeID {
-            guard let original = try context.fetch(FetchDescriptor<ChequeRecord>()).first(where: { $0.id == ancestor }),
-                  position(for: original, events: all).replacementID == record.id else { throw BankingError.conflict }
+        if record.replacesChequeID != nil {
+            let records = try context.fetch(FetchDescriptor<ChequeRecord>())
+            guard effectivePositions(records: records, events: all)[record.id] != nil else { throw BankingError.conflict }
         }
         let baseline = record.ledgerBaselineStatusRaw ?? PaperState.initial(record.status, direction: record.direction).rawValue
         let successorID: UUID? = action == .replace ? UUID() : nil
@@ -208,7 +208,7 @@ enum BankingLedger {
                         today: LocalDay, horizon: Int = 60) throws -> AccountOutlook {
         let raw = events.filter { $0.accountID == account.id }
         guard raw.allSatisfy({ $0.operation != nil }) else { throw BankingError.missing }
-        let eventGroups = Dictionary(grouping: events.compactMap(\.operation), by: \.chequeID)
+        let resolved = effectivePositions(records: records, events: events)
         let byID = Dictionary(grouping: records, by: \.id)
         let linked = records.filter { $0.bankAccountID == account.id }
         guard linked.allSatisfy({ byID[$0.id]?.count == 1 && $0.currencyCode == account.currencyCode }),
@@ -216,14 +216,19 @@ enum BankingLedger {
         var movements = try adjustments(account: account, events: events).map(\.amount)
         var items: [TreasuryItem] = []
         for record in linked {
-            let position = position(for: record, operations: eventGroups[record.id] ?? [])
-            guard position.conflicts.isEmpty else { throw BankingError.conflict }
-            if let ancestorID = record.replacesChequeID {
-                guard let parent = byID[ancestorID]?.first else { throw BankingError.missing }
-                let previous = self.position(for: parent, operations: eventGroups[ancestorID] ?? [])
-                guard previous.conflicts.isEmpty else { throw BankingError.conflict }
-                if previous.replacementID != record.id { continue }
+            if let parent = record.replacesChequeID, byID[parent]?.first?.bankAccountID != account.id {
+                throw BankingError.missing
             }
+            guard let position = resolved[record.id] else {
+                // A remote device may have paid a replacement before it saw its reversal.
+                // Withhold the balance until that branch is explicitly corrected.
+                if raw.contains(where: { $0.chequeID == record.id }) {
+                    let inactive = self.position(for: record, events: raw)
+                    if !inactive.accepted.isEmpty || !inactive.conflicts.isEmpty { throw BankingError.conflict }
+                }
+                continue
+            }
+            guard position.conflicts.isEmpty else { throw BankingError.conflict }
             if let replacementID = position.replacementID, byID[replacementID]?.first == nil { throw BankingError.missing }
             movements.append(contentsOf: position.bankMovements.values)
             if record.isActive {

@@ -42,19 +42,43 @@ jobs:
           candidates = [(runtime, d) for runtime, values in devices.items() if '.iOS-' in runtime for d in values if d.get('isAvailable') and d['name'].startswith('iPhone')]
           if not candidates:
               raise SystemExit('No available iPhone simulator. Install an iOS simulator runtime on the runner.')
-          runtime, device = sorted(candidates, key=lambda value: (value[0], value[1]['name']), reverse=True)[0]
+          # StoreKitTest on iOS 26.5 reports SKInternalErrorDomain 3 when a CLI
+          # session loads its catalog (FB22237318). Layout CI covers the latest runtime.
+          preferred = [pair for pair in candidates if pair[0].endswith('iOS-26-2')]
+          runtime, device = sorted(preferred or candidates, key=lambda value: (value[0], value[1]['name']), reverse=True)[0]
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write(f"destination=platform=iOS Simulator,id={device['udid']}\n")
           print('Selected', device['name'], runtime)
           PY
-      - name: Build and run iPhone tests
+      - name: Compile app and tests
+        id: compile
         env:
-          SIMULATOR_DESTINATION: ${{ steps.simulator.outputs.destination }}
+          DEST: ${{ steps.simulator.outputs.destination }}
+        run: xcodebuild build-for-testing -project Shekati.xcodeproj -scheme Shekati -destination "$DEST" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO
+      - name: Exercise finance, migration, reminders and StoreKit
+        env:
+          DEST: ${{ steps.simulator.outputs.destination }}
         run: |
-          xcodebuild test -project Shekati.xcodeproj -scheme Shekati \
-            -destination "$SIMULATOR_DESTINATION" \
+          mkdir -p build
+          xcodebuild test-without-building -project Shekati.xcodeproj -scheme Shekati -destination "$DEST" \
+            -derivedDataPath DerivedData -resultBundlePath build/Financial.xcresult \
+            -only-testing:ShekatiTests -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+      - name: Save hosted unit test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Shekati-finance-migration-storekit
+          path: build/Financial.xcresult
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Run iPhone interaction tests
+        if: ${{ !cancelled() && steps.compile.outcome == 'success' }}
+        env:
+          DEST: ${{ steps.simulator.outputs.destination }}
+        run: |
+          xcodebuild test-without-building -project Shekati.xcodeproj -scheme Shekati -destination "$DEST" \
             -derivedDataPath DerivedData -resultBundlePath build/Shekati.xcresult \
-            -skip-testing:ShekatiUITests/ResponsiveLayoutUITests \
+            -only-testing:ShekatiUITests -skip-testing:ShekatiUITests/ResponsiveLayoutUITests \
             CODE_SIGNING_ALLOWED=NO
       - name: Export native UI attachments
         if: always()

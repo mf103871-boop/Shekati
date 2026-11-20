@@ -17,6 +17,7 @@ struct ChequeTransferDocument: FileDocument {
 @MainActor
 struct DataToolsView: View {
     @Environment(AppState.self) private var app
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
     var body: some View {
         List {
             Section(app.tr("Backup")) {
@@ -26,7 +27,11 @@ struct DataToolsView: View {
                     .font(.footnote).foregroundStyle(.secondary)
             }
             Section(app.tr("Excel and CSV")) {
-                NavigationLink(app.tr("Import and export CSV")) { CSVTransferView() }
+                if hidesAmounts {
+                    Button(app.tr("Show amounts")) { hidesAmounts = false }
+                } else {
+                    NavigationLink(app.tr("Import and export CSV")) { CSVTransferView() }
+                }
                 Text(app.tr("CSV contains cheque details without photos. It can be opened in Excel. Review the file before importing."))
                     .font(.footnote).foregroundStyle(.secondary)
             }

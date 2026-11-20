@@ -27,10 +27,26 @@ struct BankingArchive: Codable, Equatable, Sendable {
     var events: [LedgerOperation]
 
     @MainActor init(accounts: [BankAccountRecord], books: [ChequeBookRecord], events: [LedgerEventRecord]) throws {
-        self.accounts = accounts.map(Account.init)
-        self.books = books.map(Book.init)
-        self.events = events.compactMap(\.operation)
-        guard self.events.count == events.count else { throw ChequeTransferError.invalidRecords }
+        self.accounts = try Self.deduplicated(accounts.map(Account.init), by: \.id)
+        self.books = try Self.deduplicated(books.map(Book.init), by: \.id)
+        let decoded = events.compactMap(\.operation)
+        guard decoded.count == events.count else { throw ChequeTransferError.invalidRecords }
+        self.events = try Self.deduplicated(decoded, by: \.id)
+    }
+
+    private static func deduplicated<T: Equatable>(_ values: [T], by key: KeyPath<T, UUID>) throws -> [T] {
+        var seen: [UUID: T] = [:]
+        var unique: [T] = []
+        for value in values {
+            let id = value[keyPath: key]
+            if let previous = seen[id] {
+                guard previous == value else { throw ChequeTransferError.invalidRecords }
+            } else {
+                seen[id] = value
+                unique.append(value)
+            }
+        }
+        return unique
     }
 
     func validate(records: [ChequeBackupEntry]) throws {
@@ -71,14 +87,14 @@ struct BankingArchive: Codable, Equatable, Sendable {
         let oldEvents = Dictionary(grouping: try context.fetch(FetchDescriptor<LedgerEventRecord>()), by: \.id)
         for account in accounts {
             if let existing = oldAccounts[account.id] {
-                guard existing.count == 1, existing[0].currencyCode == account.currency, existing[0].openingMinor == account.opening else { throw ChequeTransferError.invalidRecords }
+                guard existing.allSatisfy({ $0.currencyCode == account.currency && $0.openingMinor == account.opening }) else { throw ChequeTransferError.invalidRecords }
             } else {
                 context.insert(BankAccountRecord(id: account.id, name: account.name, currencyCode: account.currency, openingMinor: account.opening, createdAt: account.createdAt))
             }
         }
         for book in books {
             if let existing = oldBooks[book.id] {
-                guard existing.count == 1, existing[0].accountID == book.accountID else { throw ChequeTransferError.invalidRecords }
+                guard existing.allSatisfy({ $0.accountID == book.accountID }) else { throw ChequeTransferError.invalidRecords }
             } else { context.insert(ChequeBookRecord(id: book.id, accountID: book.accountID, name: book.name)) }
         }
         for op in events {
