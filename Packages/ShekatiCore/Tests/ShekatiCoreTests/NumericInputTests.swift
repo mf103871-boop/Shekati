@@ -6,6 +6,10 @@ final class NumericInputTests: XCTestCase {
         XCTAssertEqual(NumericInput.latinDigits("شيك ٠٠١۲٣ — ５/١٠/۲۰۲۶: USD ٧٫٥"), "شيك 00123 — 5/10/2026: USD 7٫5")
         XCTAssertEqual(NumericInput.latinDigits("٠١٢٣٤٥٦٧٨٩ ۰۱۲۳۴۵۶۷۸۹ ０１２３４５６７８９"), "0123456789 0123456789 0123456789")
         XCTAssertEqual(NumericInput.latinDigits(""), "")
+        XCTAssertEqual(NumericInput.latinDigits("৩ · ૧૨ · ೪೫ · ½ · Ⅳ"), "3 · 12 · 45 · ½ · Ⅳ")
+        XCTAssertEqual(NumericInput.integer("০০૪೧೮೨"), "004182")
+        XCTAssertNil(NumericInput.integer("①"))
+        XCTAssertNil(NumericInput.integer("½"))
     }
 
     func testIntegerNormalizesMixedDigitsAndPreservesLeadingZeros() {
