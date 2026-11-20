@@ -103,7 +103,7 @@ final class ResponsiveLayoutUITests: XCTestCase {
                        "The dashboard must expose the complete precise amount with English digits")
         capture(app, "06 large amount dashboard portrait")
 
-        let chequesTab = app.tabBars.buttons["tabCheques"]
+        let chequesTab = nativeTab(.cheques, in: app)
         assertVisibleBounds(chequesTab, in: app)
         openMoreDestination("outgoingLedgerLink", in: app)
         if !largeText {

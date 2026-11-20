@@ -11,7 +11,7 @@ final class StoreScreenshotUITests: XCTestCase {
         XCTAssertTrue(app.buttons["addCheque"].waitForExistence(timeout: 12))
         let homeDue = app.descendants(matching: .any).matching(identifier: "outgoingDueAmount").firstMatch
         XCTAssertTrue(homeDue.label.contains("3,200.000"))
-        app.tabBars.buttons["tabCheques"].tap()
+        nativeTab(.cheques, in: app).tap()
         let row = app.descendants(matching: .any).matching(identifier:
             "cheque-row-00000000-0000-4000-8000-000000007309").firstMatch
         for _ in 0..<7 where !row.isHittable { app.swipeUp() }
@@ -35,7 +35,7 @@ final class StoreScreenshotUITests: XCTestCase {
         let confirm = app.buttons.matching(identifier: "commitOperation").firstMatch
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         confirm.tap()
-        app.tabBars.buttons["tabHome"].tap()
+        nativeTab(.home, in: app).tap()
         let updated = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label CONTAINS %@", "3,050.000"), object: homeDue)
         XCTAssertEqual(XCTWaiter.wait(for: [updated], timeout: 8), .completed)
         openMoreDestination("outgoingLedgerLink", in: app)
@@ -63,7 +63,7 @@ final class StoreScreenshotUITests: XCTestCase {
         XCTAssertTrue(element("outgoingDueAmount").waitForExistence(timeout: 10))
         capture("01-home")
 
-        let ledger = app.tabBars.buttons["tabCheques"]
+        let ledger = nativeTab(.cheques, in: app)
         XCTAssertTrue(ledger.waitForExistence(timeout: 5))
         ledger.tap()
         let row = element("cheque-row-00000000-0000-4000-8000-000000004182")
@@ -93,7 +93,7 @@ final class StoreScreenshotUITests: XCTestCase {
         // Relaunch to leave the read-only review without accepting changes to the source cheque.
         app.terminate()
         app.launch()
-        let calendar = app.tabBars.buttons["tabCalendar"]
+        let calendar = nativeTab(.calendar, in: app)
         XCTAssertTrue(calendar.waitForExistence(timeout: 10))
         calendar.tap()
         XCTAssertTrue(row.waitForExistence(timeout: 8), "The selected date must contain the seeded incoming cheque.")

@@ -7,6 +7,7 @@ on:
       - 'Tools/ScreenAudit/frame_store.swift'
       - '.github/workflows/store-capture.yml'
       - 'ShekatiUITests/StoreScreenshotUITests.swift'
+      - 'ShekatiUITests/NativeScreenCapture.swift'
     tags:
       - 'shekati-store-smoke-*'
       - 'shekati-store-worldwide-*'
@@ -16,6 +17,10 @@ on:
         type: boolean
         description: Capture all store locales
         default: false
+      locales:
+        type: string
+        description: Optional comma-separated App Store locales to capture, such as ar-SA,en-US
+        required: false
 permissions:
   contents: read
 jobs:
@@ -28,12 +33,25 @@ jobs:
       - id: locales
         env:
           WORLDWIDE: ${{ startsWith(github.ref_name, 'shekati-store-worldwide-') || inputs.worldwide }}
+          REQUESTED_LOCALES: ${{ inputs.locales }}
         run: |
           python3 - <<'PY'
           import json, os
           from pathlib import Path
           inventory = json.loads(Path("release/worldwide/locales.json").read_text())
-          locales = [row["store"] for row in inventory["locales"]] if os.environ["WORLDWIDE"] == "true" else ["ar-SA", "en-US"]
+          supported = [row["store"] for row in inventory["locales"]]
+          requested = os.environ["REQUESTED_LOCALES"].strip()
+          worldwide = os.environ["WORLDWIDE"] == "true"
+          if requested:
+              if worldwide:
+                  raise SystemExit("Select either worldwide or individual locales.")
+              locales = [code.strip() for code in requested.split(",")]
+              if any(code not in supported for code in locales):
+                  raise SystemExit("Every requested locale must match an App Store shortcode in the inventory.")
+              if len(locales) != len(set(locales)):
+                  raise SystemExit("Duplicate App Store locale.")
+          else:
+              locales = supported if worldwide else ["ar-SA", "en-US"]
           batches = [",".join(locales[i:i+5]) for i in range(0,len(locales),5)]
           with open(os.environ["GITHUB_OUTPUT"], "a") as output:
               print("batches="+json.dumps(batches), file=output)

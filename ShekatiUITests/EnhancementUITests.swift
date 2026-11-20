@@ -109,7 +109,7 @@ final class EnhancementUITests: XCTestCase {
         XCTAssertTrue(app.segmentedControls["chequeDirectionPicker"].buttons["Incoming"].isSelected)
         app.buttons["Cancel"].tap()
         waitForEditorDismissal(app)
-        app.tabBars.buttons["tabCheques"].tap()
+        nativeTab(.cheques, in: app).tap()
         XCTAssertTrue(row(number: "000201", in: app).waitForExistence(timeout: 5))
         XCTAssertTrue(row(number: "000202", in: app).exists)
         capture(app, "Build 6 English two cheques saved consecutively")
@@ -139,7 +139,7 @@ final class EnhancementUITests: XCTestCase {
         XCTAssertTrue(warning.waitForExistence(timeout: 5))
         warning.buttons["Save anyway"].tap()
         waitForEditorDismissal(app)
-        app.tabBars.buttons["tabCheques"].tap()
+        nativeTab(.cheques, in: app).tap()
         XCTAssertTrue(row(number: "000301", in: app).waitForExistence(timeout: 5))
         assertRowCount(2, number: "000301", in: app)
         capture(app, "Build 6 English explicitly confirmed repeated cheque")
@@ -153,7 +153,7 @@ final class EnhancementUITests: XCTestCase {
         )).firstMatch
         XCTAssertTrue(balance.waitForExistence(timeout: 5))
         XCTAssertTrue(balance.label.contains("0.00"))
-        app.tabBars.buttons["tabCheques"].tap()
+        nativeTab(.cheques, in: app).tap()
         let cheque = row(number: "004182", in: app)
         XCTAssertTrue(cheque.waitForExistence(timeout: 5))
         cheque.tap()
@@ -166,15 +166,15 @@ final class EnhancementUITests: XCTestCase {
         let confirm = app.buttons.matching(identifier: "commitOperation").firstMatch
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         confirm.tap()
-        app.tabBars.buttons["tabHome"].tap()
+        nativeTab(.home, in: app).tap()
         XCTAssertTrue(balance.waitForExistence(timeout: 5))
         XCTAssertTrue(balance.label.contains("0.00"))
-        app.tabBars.buttons["tabCheques"].tap()
+        nativeTab(.cheques, in: app).tap()
         recordBankSettlement(in: app)
-        app.tabBars.buttons["tabHome"].tap()
+        nativeTab(.home, in: app).tap()
         let updated = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label CONTAINS %@", "125.50"), object: balance)
         XCTAssertEqual(XCTWaiter.wait(for: [updated], timeout: 8), .completed)
-        app.tabBars.buttons["tabCalendar"].tap()
+        nativeTab(.calendar, in: app).tap()
         XCTAssertTrue(cheque.waitForExistence(timeout: 8))
         XCTAssertTrue(cheque.label.contains("Settled"))
     }
@@ -213,7 +213,7 @@ final class EnhancementUITests: XCTestCase {
     func testSoftDeletionCanBeUndoneAndLaterRestoredFromSettingsTrash() {
         let app = launch()
         addCheque(app, amount: "150.00", party: "Restore demo", number: "000501", outgoing: true)
-        app.tabBars.buttons["tabCheques"].tap()
+        nativeTab(.cheques, in: app).tap()
         let cheque = row(number: "000501", in: app)
         XCTAssertTrue(cheque.waitForExistence(timeout: 5))
         reveal(cheque, in: app)
@@ -241,11 +241,11 @@ final class EnhancementUITests: XCTestCase {
         capture(app, "Build 6 English recently deleted cheque retains its details")
         restore.tap()
         XCTAssertTrue(app.staticTexts["No deleted cheques"].waitForExistence(timeout: 5))
-        app.tabBars.buttons["tabCheques"].tap()
+        nativeTab(.cheques, in: app).tap()
         XCTAssertTrue(cheque.waitForExistence(timeout: 5))
         XCTAssertTrue(cheque.label.contains("150"))
         capture(app, "Build 6 English cheque restored from recently deleted")
-        app.tabBars.buttons["tabMore"].tap()
+        nativeTab(.more, in: app).tap()
         if !app.navigationBars["Settings"].exists { goBack(in: app) }
         XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
         let tools = app.descendants(matching: .any).matching(identifier: "dataTools").firstMatch
@@ -288,7 +288,7 @@ final class EnhancementUITests: XCTestCase {
         hideKeyboard(in: app, arabic: true)
         app.buttons["saveCheque"].tap()
         waitForEditorDismissal(app)
-        app.tabBars.buttons["tabCheques"].tap()
+        nativeTab(.cheques, in: app).tap()
         XCTAssertTrue(row(number: "000601", in: app).waitForExistence(timeout: 5))
         app.buttons["period-today"].tap()
         XCTAssertTrue(row(number: "000601", in: app).exists)
@@ -385,8 +385,11 @@ final class EnhancementUITests: XCTestCase {
 
     private func assertValue(_ expected: String, in field: XCUIElement) {
         let canonical = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", expected), object: field)
-        XCTAssertEqual(XCTWaiter.wait(for: [canonical], timeout: 5), .completed,
-                       "The intended field must display the exact accepted value")
+        // A hosted AX snapshot took over four seconds even with the exact number already visible.
+        // Allow more than one snapshot before diagnosing the input as incorrect.
+        if XCTWaiter.wait(for: [canonical], timeout: 20) != .completed {
+            XCTAssertEqual(field.value as? String, expected, "The intended field must display the exact accepted value")
+        }
     }
 
     private func typeAndAssert(_ text: String, into field: XCUIElement, in app: XCUIApplication) {

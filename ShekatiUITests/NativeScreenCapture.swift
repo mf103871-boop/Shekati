@@ -1,7 +1,46 @@
 import XCTest
 import UIKit
 
+enum ProductTab: String {
+    case home = "Home"
+    case cheques = "Cheques"
+    case calendar = "Calendar"
+    case more = "More"
+}
+
 extension XCTestCase {
+    /// UIKit sometimes publishes its native tab title without the SwiftUI label's identifier.
+    /// Read the same localization resource as the app, including regional variants such as en-US.
+    func nativeTab(_ tab: ProductTab, in app: XCUIApplication, language: String? = nil) -> XCUIElement {
+        let identifier = "tab" + tab.rawValue
+        let identified = app.tabBars.buttons.matching(identifier: identifier).firstMatch
+        if identified.exists { return identified }
+
+        let arguments = app.launchArguments
+        let captureLanguage = arguments.firstIndex(of: "-ShekatiStoreLocale").flatMap { index in
+            arguments.dropFirst(index + 1).first
+        }
+        let locale = language ?? captureLanguage ?? (arguments.contains("--arabic") ? "ar" : "en")
+        let resources = Bundle(for: type(of: self))
+        guard let path = resources.path(forResource: locale, ofType: "lproj"),
+              let bundle = Bundle(path: path) else {
+            XCTFail("Missing app localization in the UI test bundle: " + locale)
+            return identified
+        }
+        let label = bundle.localizedString(forKey: tab.rawValue, value: "__missing_tab_title__", table: nil)
+        guard label != "__missing_tab_title__" else {
+            XCTFail("Missing " + tab.rawValue + " tab title for " + locale)
+            return identified
+        }
+        let titled = app.tabBars.buttons.matching(NSPredicate(format: "label == %@", label)).firstMatch
+        if titled.waitForExistence(timeout: 5) { return titled }
+
+        // Some native layouts flatten the tab bar. Only select an unambiguous button.
+        let flattened = app.buttons.matching(NSPredicate(format: "identifier == %@ OR label == %@", identifier, label))
+        if flattened.count == 1 { return flattened.firstMatch }
+        return titled
+    }
+
     func localizedDueDate(_ date: Date, arabic: Bool = false) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: (arabic ? "ar" : "en") + "@numbers=latn")
@@ -12,7 +51,7 @@ extension XCTestCase {
     }
 
     func openMoreDestination(_ identifier: String, in app: XCUIApplication) {
-        let more = app.tabBars.buttons["tabMore"]
+        let more = nativeTab(.more, in: app)
         XCTAssertTrue(more.waitForExistence(timeout: 5))
         more.tap()
         if !app.buttons[identifier].exists {
