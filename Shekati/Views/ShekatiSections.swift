@@ -2,9 +2,42 @@ import SwiftUI
 import SwiftData
 import ShekatiCore
 
+/// Computed from the entire journal so a filtered view cannot turn an unresolved branch into a payable.
+@MainActor
+struct ChequeAudit {
+    let positions: [UUID: ChequePosition]
+    let disputed: Set<UUID>
+    init(records: [ChequeRecord], events: [LedgerEventRecord]) {
+        let effective = BankingLedger.effectivePositions(records: records, events: events)
+        let byID = Dictionary(grouping: records, by: \.id)
+        let touched = Set(events.compactMap(\.chequeID))
+        var unresolved = Set(effective.compactMap { $0.value.conflicts.isEmpty ? nil : $0.key })
+        for (id, group) in byID where group.count > 1 || (effective[id] == nil && touched.contains(id)) {
+            unresolved.insert(id)
+        }
+        for event in events where event.operation == nil {
+            if let id = event.chequeID { unresolved.insert(id) }
+        }
+        positions = effective
+        disputed = unresolved
+    }
+}
+
+@MainActor
+struct UnverifiedCurrencyTotal: View {
+    @Environment(AppState.self) private var app
+    let currency: String
+    var body: some View {
+        Label(app.tr("Total unavailable") + " · " + currency + " · " + app.tr("Review conflicting entries"),
+              systemImage: "exclamationmark.triangle.fill")
+            .font(.footnote.weight(.medium)).foregroundStyle(.orange)
+            .accessibilityIdentifier("uncertainTotal-" + currency)
+    }
+}
+
 extension ChequeSnapshot {
     func remainingObligation(using position: ChequePosition?) -> Self? {
-        guard let position, position.isOpen, position.state != .draft, position.state != .endorsed,
+        guard let position, position.conflicts.isEmpty, position.isOpen, position.state != .draft, position.state != .endorsed,
               position.remaining > 0 else { return nil }
         var row = self
         row.amountMinorUnits = position.remaining
@@ -113,8 +146,9 @@ struct DueCalendarView: View {
     }
 
     var body: some View {
-        let positions = BankingLedger.effectivePositions(records: records, events: events)
-        let validRecords = records.filter { positions[$0.id] != nil }
+        let audit = ChequeAudit(records: records, events: events)
+        let positions = audit.positions
+        let validRecords = records.filter { positions[$0.id] != nil || audit.disputed.contains($0.id) }
         let dayRecords = self.dayRecords(from: validRecords)
         let grouped = Dictionary(grouping: validRecords, by: { $0.dueDateISO })
         ScrollView {
@@ -146,8 +180,10 @@ struct DueCalendarView: View {
                     if dayRecords.isEmpty {
                         Text(app.tr("No cheques due on this day")).foregroundStyle(.secondary)
                     } else {
+                        let disputedCodes = Set(dayRecords.filter { audit.disputed.contains($0.id) }.map(\.currencyCode))
+                        ForEach(disputedCodes.sorted(), id: \.self) { code in UnverifiedCurrencyTotal(currency: code) }
                         ForEach(ChequeDirection.allCases, id: \.self) { direction in
-                            let items = dayRecords.filter { $0.direction == direction }
+                            let items = dayRecords.filter { $0.direction == direction && !disputedCodes.contains($0.currencyCode) }
                             ForEach(Array(Set(items.map(\.currencyCode))).sorted(), id: \.self) { code in
                                 let total = ChequeDirectionTotals(cheques: items.filter { $0.currencyCode == code }.compactMap { $0.snapshot.remainingObligation(using: positions[$0.id]) })
                                 let minor = direction == .incoming ? total.incomingMinorUnits : total.outgoingMinorUnits
@@ -159,7 +195,7 @@ struct DueCalendarView: View {
                         }
                         ForEach(dayRecords) { record in
                             NavigationLink { ChequeDetailView(record: record) } label: {
-                                ChequeRowView(record: record, position: positions[record.id]).padding(.horizontal, 14)
+                                ChequeRowView(record: record, position: positions[record.id], needsReview: audit.disputed.contains(record.id)).padding(.horizontal, 14)
                                     .background(Theme.surface, in: RoundedRectangle(cornerRadius: 18))
                             }.buttonStyle(.plain).accessibilityIdentifier("cheque-row-" + record.id.uuidString)
                         }

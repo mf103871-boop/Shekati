@@ -4,7 +4,11 @@ import ShekatiCore
 
 @MainActor
 enum ChequePDFReport {
-    static func generate(cheques: [ChequeSnapshot], language: AppLanguage) -> Data {
+    enum Basis: String {
+        case original, remaining
+        var title: String { self == .original ? "Original amount" : "Remaining amount" }
+    }
+    static func generate(cheques: [ChequeSnapshot], language: AppLanguage, basis: Basis = .original) -> Data {
         let arabic = language.isRTL
         let page = CGRect(x: 0, y: 0, width: 595, height: 842)
         let renderer = UIGraphicsPDFRenderer(bounds: page)
@@ -15,7 +19,7 @@ enum ChequePDFReport {
         return renderer.pdfData { context in
             var pageNumber = 1
             context.beginPage()
-            drawHeader(reportDate: reportDate, count: cheques.count, totals: totals, language: language)
+            drawHeader(reportDate: reportDate, count: cheques.count, totals: totals, language: language, basis: basis)
             var y = bodyTop
             for (index, cheque) in cheques.enumerated() {
                 let layout = ReportRowLayout(text: rowText(cheque, language: language), width: 294)
@@ -24,7 +28,7 @@ enum ChequePDFReport {
                 if layout.fullHeight <= bodyBottom - bodyTop && y > bodyTop && y + layout.fullHeight > bodyBottom {
                     drawFooter(pageNumber, language: language)
                     context.beginPage(); pageNumber += 1
-                    drawHeader(reportDate: reportDate, count: cheques.count, totals: totals, language: language)
+                    drawHeader(reportDate: reportDate, count: cheques.count, totals: totals, language: language, basis: basis)
                     y = bodyTop
                 }
                 var continuation = false
@@ -32,7 +36,7 @@ enum ChequePDFReport {
                     if bodyBottom - y < 78 {
                         drawFooter(pageNumber, language: language)
                         context.beginPage(); pageNumber += 1
-                        drawHeader(reportDate: reportDate, count: cheques.count, totals: totals, language: language)
+                        drawHeader(reportDate: reportDate, count: cheques.count, totals: totals, language: language, basis: basis)
                         y = bodyTop
                     }
                     let fragment = layout.nextFragment(height: bodyBottom - y - 12)
@@ -54,7 +58,7 @@ enum ChequePDFReport {
                     if layout.hasMore {
                         drawFooter(pageNumber, language: language)
                         context.beginPage(); pageNumber += 1
-                        drawHeader(reportDate: reportDate, count: cheques.count, totals: totals, language: language)
+                        drawHeader(reportDate: reportDate, count: cheques.count, totals: totals, language: language, basis: basis)
                         y = bodyTop; continuation = true
                     }
                 }
@@ -63,9 +67,9 @@ enum ChequePDFReport {
         }
     }
 
-    private static func drawHeader(reportDate: String, count: Int, totals: String, language: AppLanguage) {
+    private static func drawHeader(reportDate: String, count: Int, totals: String, language: AppLanguage, basis: Basis) {
         let arabic = language.isRTL
-        draw(Localization.text("Shekati — Cheque report", language: language), in: CGRect(x: 32, y: 30, width: 531, height: 32),
+        draw(Localization.text("Shekati — Cheque report", language: language) + " · " + Localization.text(basis.title, language: language), in: CGRect(x: 32, y: 30, width: 531, height: 32),
              font: .boldSystemFont(ofSize: 22), arabic: arabic)
         draw((Localization.text("Report date:", language: language) + " ") + reportDate + "    ·    " +
              (Localization.text("Cheques:", language: language) + " ") + String(count),
@@ -106,7 +110,6 @@ enum ChequePDFReport {
     }
 
     private static func totalsText(cheques: [ChequeSnapshot], language: AppLanguage) -> String {
-        let arabic = language.isRTL
         let groups = Dictionary(grouping: cheques, by: { "\($0.currencyCode)|\($0.direction.rawValue)" })
         return groups.keys.sorted().compactMap { key -> String? in
             guard let values = groups[key], let first = values.first else { return nil }
@@ -125,7 +128,6 @@ enum ChequePDFReport {
     }
 
     private static func status(_ cheque: ChequeSnapshot, language: AppLanguage) -> String {
-        let arabic = language.isRTL
         switch cheque.status {
         case .pending: return Localization.text("Pending", language: language)
         case .returned: return Localization.text("Returned", language: language)

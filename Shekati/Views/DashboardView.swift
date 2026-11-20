@@ -18,16 +18,16 @@ struct DashboardView: View {
         accounts.first { $0.id.uuidString == selectedID } ?? accounts.first
     }
 
-    private func upcoming(_ positions: [UUID: ChequePosition]) -> [ChequeRecord] {
+    private func upcoming(_ audit: ChequeAudit) -> [ChequeRecord] {
         records.filter { record in
-            guard record.bankAccountID == account?.id, let position = positions[record.id] else { return false }
+            guard record.bankAccountID == account?.id, !audit.disputed.contains(record.id), let position = audit.positions[record.id] else { return false }
             return position.isOpen && position.state != .draft && position.state != .endorsed
         }.sorted { ($0.dueDateISO, $0.number) < ($1.dueDateISO, $1.number) }
     }
 
     var body: some View {
-        let positions = BankingLedger.effectivePositions(records: records, events: events)
-        let upcoming = self.upcoming(positions)
+        let audit = ChequeAudit(records: records, events: events)
+        let upcoming = self.upcoming(audit)
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 if let account {
@@ -86,7 +86,7 @@ struct DashboardView: View {
                 }
                 ForEach(upcoming.prefix(4)) { record in
                     NavigationLink { ChequeDetailView(record: record) } label: {
-                        ChequeRowView(record: record, position: positions[record.id]).padding(.horizontal, 14)
+                        ChequeRowView(record: record, position: audit.positions[record.id]).padding(.horizontal, 14)
                             .background(Theme.surface, in: RoundedRectangle(cornerRadius: 18))
                     }.buttonStyle(.plain)
                 }

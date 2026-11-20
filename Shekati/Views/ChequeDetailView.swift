@@ -19,6 +19,9 @@ struct ChequeDetailView: View {
     @Query private var events: [LedgerEventRecord]
     @State private var showingReminder = false
     private var hasJournal: Bool { record.replacesChequeID != nil || events.contains { $0.chequeID == record.id || $0.relatedID == record.id } }
+    private var reminderAmount: Int64? {
+        BankingLedger.reminderInputs(records: liveRecords, events: events).first { $0.snapshot.id == record.id }?.snapshot.amountMinorUnits
+    }
     private var financialState: String { BankingLedger.position(for: record, events: events).state.title }
     @State private var showingDelete = false
     @State private var errorMessage: String?
@@ -26,8 +29,7 @@ struct ChequeDetailView: View {
 
     init(record: ChequeRecord) {
         self.record = record
-        let id = record.id
-        _liveRecords = Query(filter: #Predicate<ChequeRecord> { $0.id == id })
+
     }
 
     var body: some View {
@@ -138,7 +140,7 @@ struct ChequeDetailView: View {
                     .padding(20).background(Theme.surface, in: RoundedRectangle(cornerRadius: 22))
                 }
 
-                if record.direction == .incoming {
+                if record.direction == .incoming && reminderAmount != nil {
                     Button { showingReminder = true } label: {
                         Label(app.tr("Preview reminder message"), systemImage: "message")
                             .frame(maxWidth: .infinity, minHeight: 44)
@@ -170,7 +172,11 @@ struct ChequeDetailView: View {
             .environment(\.locale, app.preferences.language.locale)
             .environment(\.layoutDirection, sheetDirection)
         }
-        .sheet(isPresented: $showingReminder) { ChequeReminderPreview(record: record, remaining: BankingLedger.position(for: record, events: events).remaining, hidesAmounts: hidesAmounts) }
+        .sheet(isPresented: $showingReminder) {
+            if let amount = reminderAmount {
+                ChequeReminderPreview(record: record, remaining: amount, hidesAmounts: hidesAmounts)
+            } else { ContentUnavailableView(app.tr("Cheque reminder"), systemImage: "bell.slash") }
+        }
         .sheet(item: $preview) { item in
             NavigationStack {
                 ScrollView {
@@ -211,7 +217,7 @@ struct ChequeDetailView: View {
 
     @ViewBuilder
     private var reminderCoverage: some View {
-        if record.snapshot.isOutstanding {
+        if reminderAmount != nil {
             if app.notifications.isDenied {
                 Text(app.tr("Notifications are off")).font(.subheadline).foregroundStyle(.orange)
                 NavigationLink(app.tr("Open reminder settings")) { SettingsView() }
