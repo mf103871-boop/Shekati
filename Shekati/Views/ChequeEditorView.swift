@@ -862,7 +862,7 @@ struct ChequeEditorView: View {
             return
         }
         let effectiveOffsets = offsets ?? app.preferences.reminderOffsets
-        if remindersEnabled && snapshot.isOutstanding && (!effectiveOffsets.isEmpty || app.preferences.dailySummary) {
+        if remindersEnabled && !(direction == .outgoing && isDraft) && snapshot.isOutstanding && (!effectiveOffsets.isEmpty || app.preferences.dailySummary) {
             await app.notifications.refreshAuthorization()
             if app.notifications.authorizationStatus == .notDetermined {
                 await app.notifications.requestPermission()

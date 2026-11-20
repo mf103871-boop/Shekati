@@ -236,13 +236,16 @@ struct ChequeDetailView: View {
 
     private var hasFutureReminderTime: Bool {
         var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = .current
+        let bankingCalendar = app.preferences.bankingCalendar
+        calendar.timeZone = TimeZone(identifier: bankingCalendar.timeZoneID) ?? .current
         let now = Date()
         let hour = record.reminderHour ?? app.preferences.reminderHour
         let minute = record.reminderMinute ?? app.preferences.reminderMinute
         return (record.reminderOffsets ?? app.preferences.reminderOffsets).contains { offset in
             guard (0...365).contains(offset) else { return false }
-            var parts = calendar.dateComponents([.year, .month, .day], from: record.dueDate.adding(days: -offset).date(calendar: calendar))
+            let proposed = record.dueDate.adding(days: -offset)
+            guard let adjusted = bankingCalendar.reminderDay(for: proposed, calendar: calendar) else { return false }
+            var parts = calendar.dateComponents([.year, .month, .day], from: adjusted.date(calendar: calendar))
             parts.hour = hour; parts.minute = minute
             return calendar.date(from: parts).map { $0 > now } ?? false
         }
