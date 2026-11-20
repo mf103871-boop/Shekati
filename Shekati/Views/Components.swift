@@ -30,6 +30,7 @@ struct ResponsiveValueRow: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let title: String
     let value: String
+    var stackedTitleStyle = AnyShapeStyle(.secondary)
 
     var body: some View {
         Group {
@@ -50,7 +51,7 @@ struct ResponsiveValueRow: View {
 
     private var stacked: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(title).foregroundStyle(.secondary)
+            Text(title).foregroundStyle(stackedTitleStyle)
             Text(value).fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

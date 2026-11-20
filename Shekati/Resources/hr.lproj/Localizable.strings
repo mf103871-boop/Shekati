@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Prognoze novčanog toka i napredni izvještaji";
 "Cash forecast" = "Prognoza novčanog toka";
 "Change status" = "Promijeni status";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Automatski se obnavlja dok ga ne otkažeš na svom Apple računu.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Iznos se naplaćuje pri kupnji. Pretplata se automatski obnavlja dok je ne otkažete na svom Apple računu.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Provjerite svaki prijedlog u odnosu na svoj ček. Ništa se ne sprema dok ne dodirnete Spremi.";
 "Check iCloud status" = "Provjerite status iClouda";
 "Check the account name and opening balance." = "Provjerite naziv računa i početni saldo.";
@@ -133,7 +133,7 @@
 "Correct last action" = "Ispravi zadnju akciju";
 "Could not complete operation" = "Ne mogu dovršiti operaciju";
 "Could not load subscription prices. Please try again." = "Nisam mogao učitati cijene pretplate. Molimo pokušajte ponovno.";
-"Could not restore purchases. Please try again." = "Nisam mogao vratiti kupljene stavke. Pokušajte ponovno.";
+"Could not restore purchases. Please try again." = "Kupnje nije bilo moguće obnoviti. Pokušajte ponovno.";
 "Could not save changes" = "Ne mogu spremiti promjene";
 "Could not save changes." = "Nisam mogao spremiti promjene.";
 "Could not unlock. Try again using biometrics or your device passcode." = "Ne mogu otključati. Pokušajte ponovno pomoću biometrije ili zaporke uređaja.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Omogućite obavijesti za primanje podsjetnika na ček.";
 "Endorse cheque" = "Indosiraj ček";
 "Endorsed" = "Indosiran";
-"Endorsements, partial settlements and replacements" = "Potvrde, djelomične namire i zamjene";
+"Endorsements, partial settlements and replacements" = "Indosamenti, djelomična plaćanja i zamjenski čekovi";
 "Enter a positive amount and the date written on the cheque." = "Unesite pozitivan iznos i datum napisan na čeku.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Unesite valjani iznos veći od nule, koristeći decimalne znamenke valute.";
 "Enter a whole number of days from 1 to 365." = "Unesite cijeli broj dana od 1 do 365.";
@@ -252,7 +252,7 @@
 "Mark paid" = "Označi kao plaćen";
 "Mark pending" = "Označi kao ček na čekanju";
 "Mark returned" = "Označi kao vraćen";
-"Monthly subscription" = "Mjesečna pretplata na vijesti";
+"Monthly subscription" = "Mjesečna pretplata";
 "More" = "Više";
 "More details" = "Više detalja";
 "Move reminders to the preceding banking day" = "Premještanje podsjetnika na prethodni radni dan";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Osvježavanje podsjetnika";
 "Refresh upcoming reminders" = "Osvježavanje nadolazećih podsjetnika";
 "Refresh your cheque reminders" = "Osvježavanje podsjetnika na ček";
-"Reload prices" = "Cijene za ponovno učitavanje";
+"Reload prices" = "Ponovno učitaj cijene";
 "Remaining" = "Preostalo";
 "Remaining after payment" = "Preostalo nakon uplate";
 "Remaining amount" = "Preostali iznos";
@@ -374,7 +374,7 @@
 "Reminder options" = "Mogućnosti podsjetnika";
 "Reminder time" = "Vrijeme podsjetnika";
 "Reminders" = "Podsjetnici";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Vi kontrolirate dozvolu, vrijeme i to hoće li se detalji o čeku pojaviti u upozorenjima.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Podsjetnici se zakazuju na ovom uređaju. Vi odlučujete želite li dopustiti obavijesti, kada će se prikazati i hoće li sadržavati podatke o čeku.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Podsjetnici pokrivaju ograničeno razdoblje. Otvori aplikaciju prije nego što se pokrivenost završi kako bi pripremila ostatak.";
 "Reminders disabled" = "Podsjetnici onemogućeni";
 "Reminders enabled" = "Podsjetnici omogućeni";
@@ -434,7 +434,7 @@
 "Scheduled notifications" = "Zakazane obavijesti";
 "Search currencies" = "Pretraži valute";
 "Search number, bank or name" = "Broj pretraživanja, banka ili ime";
-"Search number, name, bank or reference" = "Broj pretraživanja, ime, banka ili referentna točka";
+"Search number, name, bank or reference" = "Broj, ime, banka ili referenca";
 "See all" = "Pogledajte sve";
 "Select" = "Odaberi";
 "Select a bank account in the cheque currency." = "Odaberite bankovni račun u valuti čeka.";

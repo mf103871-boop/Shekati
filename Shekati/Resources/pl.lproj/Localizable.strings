@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Prognozy przepływów pieniężnych i zaawansowane raporty";
 "Cash forecast" = "Prognoza przepływów pieniężnych";
 "Change status" = "Zmień status";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Odnawia się automatycznie do momentu anulowania na koncie Apple ID.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Opłata jest pobierana w chwili zakupu. Subskrypcja odnawia się automatycznie, dopóki nie anulujesz jej na swoim koncie Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Sprawdź każdą sugestię w stosunku do czeku. Nic nie zostanie zapisane, dopóki nie dotkniesz Zapisz.";
 "Check iCloud status" = "Sprawdź status iCloud";
 "Check the account name and opening balance." = "Sprawdź nazwę konta i saldo otwarcia.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Włącz powiadomienia, aby otrzymywać przypomnienia czeku.";
 "Endorse cheque" = "Indosuj czek";
 "Endorsed" = "Indosowany";
-"Endorsements, partial settlements and replacements" = "Innocjacje, częściowe rozliczenia i zastąpienia";
+"Endorsements, partial settlements and replacements" = "Indosy, płatności częściowe i czeki zastępcze";
 "Enter a positive amount and the date written on the cheque." = "Wprowadź dodatnią kwotę i datę napisaną na czeku.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Wprowadź prawidłową kwotę większą niż zero, używając miejsc dziesiętnych waluty.";
 "Enter a whole number of days from 1 to 365." = "Wprowadź liczbę całkowitą dni od 1 do 365.";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "Podgląd wiadomości przypomnienia";
 "Previous month" = "Poprzedni miesiąc";
 "Privacy" = "Prywatność";
-"Privacy policy" = "Polityka prywatności |";
+"Privacy policy" = "Polityka prywatności";
 "Read details from front image" = "Czytaj szczegóły z obrazu przedniego";
 "Reason" = "Powód";
 "Recently Deleted" = "Ostatnio usunięte";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Odśwież przypomnienia";
 "Refresh upcoming reminders" = "Odśwież nadchodzące przypomnienia";
 "Refresh your cheque reminders" = "Odśwież swoje przypomnienia o czekach";
-"Reload prices" = "Ceny za ponowne ładowanie";
+"Reload prices" = "Wczytaj ceny ponownie";
 "Remaining" = "Pozostała kwota";
 "Remaining after payment" = "Pozostało po wpłacie";
 "Remaining amount" = "Pozostała kwota";
@@ -374,7 +374,7 @@
 "Reminder options" = "Opcje przypomnienia";
 "Reminder time" = "Czas przypomnienia";
 "Reminders" = "Przypomnienia";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Ty decydujesz o uprawnieniach, czasie i tym, czy dane dotyczące czeku pojawią się w alertach.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Przypomnienia są planowane na tym urządzeniu. Decydujesz, czy zezwolić na powiadomienia, kiedy mają się pojawiać i czy mają zawierać dane czeku.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Przypomnienia obejmują ograniczony okres. Otwórz aplikację przed zakończeniem przypomnień, aby przygotować resztę.";
 "Reminders disabled" = "Przypomnienia wyłączone";
 "Reminders enabled" = "Przypomnienia włączone";
@@ -434,8 +434,8 @@
 "Scheduled notifications" = "Zaplanowane powiadomienia";
 "Search currencies" = "Szukaj walut";
 "Search number, bank or name" = "Wyszukaj numer, bank lub nazwę";
-"Search number, name, bank or reference" = "Wyszukaj numer, nazwę, bank lub referencję";
-"See all" = "Zobacz wszystkie produkty";
+"Search number, name, bank or reference" = "Szukaj według numeru, nazwy, banku lub oznaczenia";
+"See all" = "Pokaż wszystkie";
 "Select" = "Wybierz";
 "Select a bank account in the cheque currency." = "Wybierz rachunek bankowy w walucie czeku.";
 "Select a chequebook for this account." = "Wybierz książeczkę czekową dla tego konta.";
@@ -462,7 +462,7 @@
 "Show cheques" = "Pokaż czeki";
 "Showing the first 200 rows. The counts include every row." = "Pokazuje pierwsze 200 wierszy. Liczba obejmuje każdy wiersz.";
 "Shown amount" = "Pokazana kwota";
-"Shown cheques" = "Pokazane czeki";
+"Shown cheques" = "Wyświetlone czeki";
 "Shown incoming" = "Pokazano przychodzące";
 "Shown outgoing" = "Pokazano wychodzące";
 "Sign in to iCloud to sync" = "Zaloguj się do iCloud, aby zsynchronizować";

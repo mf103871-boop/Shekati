@@ -208,7 +208,7 @@
 "Forecast duration" = "予測期間";
 "Free days" = "休日";
 "Free due dates" = "自由期限";
-"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "無料は1つの口座と10個の活動小切手を含みます。あなたの記録は読み込み、閉じる、エクスポートできるままであります。";
+"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "無料プランでは、銀行口座1件と処理中の小切手10枚を管理できます。既存の記録は引き続き閲覧でき、処理を完了したり、データを書き出したりできます。";
 "From" = "送信者";
 "From date" = "日付から";
 "Front" = "表面";
@@ -257,7 +257,7 @@
 "More details" = "詳細は";
 "Move reminders to the preceding banking day" = "前日の金曜日にリマインダーを移動します";
 "My order" = "私の注文";
-"Name" = "ネーム";
+"Name" = "名前";
 "Name / number / bank / status" = "名前/番号/銀行/状態";
 "Name and number" = "名前と番号";
 "Needs review" = "要確認";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "リマインダーを更新";
 "Refresh upcoming reminders" = "来るべきリマインダーを更新";
 "Refresh your cheque reminders" = "小切手のリマインダーを更新";
-"Reload prices" = "リロード料金";
+"Reload prices" = "価格を再読み込み";
 "Remaining" = "残り";
 "Remaining after payment" = "支払後の残額";
 "Remaining amount" = "残高";
@@ -374,7 +374,7 @@
 "Reminder options" = "リマインダーのオプション";
 "Reminder time" = "リマインダー時間";
 "Reminders" = "リマインダー";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "このデバイスにリマインダーが設定されています。権限、タイミング、警告に小切手の詳細を表示するかどうかはあなたが制御します。";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "リマインダーはこの端末で設定されます。通知の許可、通知する時刻、小切手の詳細を通知に表示するかどうかを選べます。";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "リマインダーは限られた期間のみ有効です。残りを準備するには、リマインダーが終了する前にアプリケーションを開きます。";
 "Reminders disabled" = "リマインダーを無効にしました";
 "Reminders enabled" = "覚え書きを有効にしました";
@@ -434,7 +434,7 @@
 "Scheduled notifications" = "スケジュール通知";
 "Search currencies" = "検索通貨";
 "Search number, bank or name" = "検索番号、銀行または名前";
-"Search number, name, bank or reference" = "検索番号、名前、銀行、参照";
+"Search number, name, bank or reference" = "番号・名前・銀行名・参照番号で検索";
 "See all" = "すべて見る";
 "Select" = "選択";
 "Select a bank account in the cheque currency." = "小切手の通貨で銀行口座を選択します。";
@@ -513,7 +513,7 @@
 "The number of columns does not match the header." = "列の数がヘッダと一致しません。";
 "The password is incorrect or the backup has been damaged." = "パスワードが間違っていますか、バックアップが損傷していますか。";
 "The purchase could not be completed. Please try again." = "購入を完了できませんでした。もう一度試してください。";
-"The purchase is awaiting approval." = "買い取りは承認を待っている。";
+"The purchase is awaiting approval." = "購入は承認待ちです。";
 "The reminder days and time from Settings will be used." = "設定のリマインダー日と時間を使用します。";
 "The report includes the cheques and order shown in your filtered list." = "フィルタリングリストに表示されている小切手と注文を含むレポートです。";
 "The reversal is recorded in the activity history." = "逆転は活動履歴に記録される。";
@@ -538,7 +538,7 @@
 "Total exceeds supported range" = "総数がサポート範囲を超えています";
 "Total outstanding cheques" = "未払い小切手総数";
 "Total unavailable" = "利用できない";
-"Track unlimited active cheques across your bank accounts." = "あなたの銀行口座の無制限の活動小切手を追跡します。";
+"Track unlimited active cheques across your bank accounts." = "複数の銀行口座にわたって、処理中の小切手を枚数の制限なく管理できます。";
 "Track what you owe and what you will collect, with timely reminders and everything in one place." = "あなたが負債を追跡し、何を収集するか、適切なリマインダーとすべての一つの場所で。";
 "Try another search or clear the filters." = "別の検索を試してみましょうか、フィルタをクリアしてください。";
 "Unable to open your records" = "レコードを開けません";

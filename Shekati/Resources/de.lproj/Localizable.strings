@@ -27,7 +27,7 @@
 "All" = "Alle";
 "All and history" = "Alle mit Verlauf";
 "All banks" = "Alle Banken anzeigen";
-"All dates" = "Alle Termine anzeigen";
+"All dates" = "Alle Daten";
 "All features included. One purchase. No subscription." = "Alle Funktionen inklusive. Ein Kauf. Kein Abonnement.";
 "All individual reminder times for this cheque have passed." = "Alle einzelnen Erinnerungszeiten für diesen Scheck sind verstrichen.";
 "Amount" = "Betrag";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "Erinnerungsnachricht in der Vorschau anzeigen";
 "Previous month" = "Vorheriger Monat";
 "Privacy" = "Privatsphäre";
-"Privacy policy" = "Datenschutzerklärung - 100%";
+"Privacy policy" = "Datenschutzerklärung";
 "Read details from front image" = "Details aus dem Frontbild lesen";
 "Reason" = "Grund";
 "Recently Deleted" = "Kürzlich gelöschte Bilder";
@@ -374,7 +374,7 @@
 "Reminder options" = "Erinnerungsoptionen";
 "Reminder time" = "Erinnerungszeit";
 "Reminders" = "Erinnerungen";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Sie steuern die Berechtigung, den Zeitpunkt und ob Scheckdetails in Benachrichtigungen angezeigt werden. Sie können auch die E-Mail-Adresse des Empfängers ändern.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Erinnerungen werden auf diesem Gerät geplant. Du bestimmst, ob und wann Mitteilungen erscheinen und ob sie Scheckdaten enthalten.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Erinnerungen decken einen begrenzten Zeitraum ab. Öffne die App, bevor die Abdeckung endet, um den Rest vorzubereiten.";
 "Reminders disabled" = "Erinnerungen deaktiviert";
 "Reminders enabled" = "Erinnerungen aktiviert";
@@ -462,7 +462,7 @@
 "Show cheques" = "Schecks anzeigen";
 "Showing the first 200 rows. The counts include every row." = "Zeigt die ersten 200 Zeilen an. Die Zählungen beinhalten jede Zeile.";
 "Shown amount" = "Gezeigte Menge";
-"Shown cheques" = "Gezeigte Schecks";
+"Shown cheques" = "Angezeigte Schecks";
 "Shown incoming" = "Gezeigte eingehenden Bestellungen";
 "Shown outgoing" = "Gezeigt ausgehendes";
 "Sign in to iCloud to sync" = "Melden Sie sich bei iCloud an, um zu synchronisieren";
@@ -471,7 +471,7 @@
 "Some Arabic text may need manual entry. You can complete every field yourself." = "Einige arabische Texte müssen manuell eingegeben werden. Sie können alle Felder selbst ausfüllen.";
 "Some financial records are still syncing." = "Einige Finanzdatensätze werden noch synchronisiert.";
 "Some later reminders still need scheduling." = "Einige spätere Erinnerungen müssen noch geplant werden.";
-"Some purchase options are unavailable. Please try again later." = "Bitte versuchen Sie es später noch einmal, oder rufen Sie uns an.";
+"Some purchase options are unavailable. Please try again later." = "Einige Kaufoptionen sind nicht verfügbar. Bitte versuche es später erneut.";
 "Some reminders could not be scheduled. Check notification settings and refresh." = "Einige Erinnerungen konnten nicht geplant werden. Überprüfen Sie die Benachrichtigungseinstellungen und aktualisieren Sie sie.";
 "Some reminders could not be scheduled. Check permission and refresh the queue." = "Einige Erinnerungen konnten nicht geplant werden. Überprüfen Sie die Berechtigung und aktualisieren Sie die Warteschlange.";
 "Sort by" = "Sortieren nach Preis";

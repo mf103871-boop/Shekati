@@ -86,7 +86,7 @@
 "Cheque books" = "Чекові книжки";
 "Cheque continuation" = "Продовження перевірки";
 "Cheque date" = "Дата перевірки";
-"Cheque details" = "Подробиці чеку";
+"Cheque details" = "Відомості про чек";
 "Cheque details and photos are stored on this iPhone. When iCloud is available, they sync to your private Apple account." = "Подробиці щодо чеку та фотографії зберігаються на цьому iPhone. Якщо доступна служба iCloud, вони синхронізуються з вашим приватним обліковим записом Apple.";
 "Cheque due soon" = "Незабаром чек має бути виплачений";
 "Cheque due today" = "Термін погашення чеку сьогодні";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Увімкнути сповіщення для отримання нагадування про чеки.";
 "Endorse cheque" = "Індосувати чек";
 "Endorsed" = "Індосовано";
-"Endorsements, partial settlements and replacements" = "Підтвердження, часткові розрахунки і заміни";
+"Endorsements, partial settlements and replacements" = "Індосаменти, часткові платежі та заміна чеків";
 "Enter a positive amount and the date written on the cheque." = "Введіть додатну суму і дату, написану на чеку.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Введіть коректну суму, більшу за нуль, з використанням десяткових знаків валюти.";
 "Enter a whole number of days from 1 to 365." = "Введіть ціле число днів від 1 до 365.";
@@ -208,7 +208,7 @@
 "Forecast duration" = "Тривалість прогнозу";
 "Free days" = "Вільні дні";
 "Free due dates" = "Вільні дати завершення";
-"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Доступні один рахунок і десять активних чеків. Ваші записи залишаться доступними для читання, закриття та експорту.";
+"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Безкоштовний план включає один банківський рахунок і десять активних чеків. Ви й надалі можете переглядати, закривати та експортувати наявні записи.";
 "From" = "Від";
 "From date" = "З дати";
 "Front" = "Лицьовий бік";
@@ -257,7 +257,7 @@
 "More details" = "Докладніші відомості";
 "Move reminders to the preceding banking day" = "Пересунути нагадування до попереднього банківського дня";
 "My order" = "Мой замовлення";
-"Name" = "Назва";
+"Name" = "Ім’я";
 "Name / number / bank / status" = "Назва / номер / банк / стан";
 "Name and number" = "Назва і номер";
 "Needs review" = "Потрібна перевірка";
@@ -374,7 +374,7 @@
 "Reminder options" = "Параметри нагадування";
 "Reminder time" = "Час нагадування";
 "Reminders" = "Нагадування";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "На цьому пристрої плануються нагадування. Ви можете керувати дозволами, часом і тим, чи буде показано дані про чек у сповіщеннях.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Нагадування плануються на цьому пристрої. Ви обираєте, чи дозволяти сповіщення, коли їх отримувати та чи показувати в них дані чека.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Нагадування охоплюють обмежений період часу. Відкрийте програму до закінчення нагадування, щоб підготувати решту.";
 "Reminders disabled" = "Нагадування вимкнено";
 "Reminders enabled" = "Нагадування ввімкнено";
@@ -434,7 +434,7 @@
 "Scheduled notifications" = "Заплановані сповіщення";
 "Search currencies" = "Пошук валют";
 "Search number, bank or name" = "Шукати номер, банк або назву";
-"Search number, name, bank or reference" = "Шукати номер, назву, банк або посилання";
+"Search number, name, bank or reference" = "Пошук за номером, іменем, банком або ідентифікатором";
 "See all" = "Показати всі";
 "Select" = "Вибрати";
 "Select a bank account in the cheque currency." = "Виберіть банківський рахунок у валюті чеку.";

@@ -36,7 +36,7 @@
 "Amount paid" = "Plačani znesek";
 "Amounts hidden" = "Skriti zneski";
 "Analytics" = "Analitika";
-"Annual subscription" = "Letna naročnina 10 €";
+"Annual subscription" = "Letna naročnina";
 "App lock" = "Zaklepanje aplikacije";
 "Appearance" = "Videz";
 "Appearance and language" = "Videz in jezik";
@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Napovedi denarnega toka in napredna poročila";
 "Cash forecast" = "Napoved denarnega toka";
 "Change status" = "Spremeni stanje";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Naročnina se samodejno podaljša, dokler je ne prekličete v svojem računu Apple.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Plačilo se zaračuna ob nakupu. Naročnina se samodejno podaljšuje, dokler je ne prekličete v svojem računu Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Vsak predlog preverite v primerjavi s svojim čekom. Nič se ne shrani, dokler ne tapnete Shrani.";
 "Check iCloud status" = "Preveri stanje storitve iCloud";
 "Check the account name and opening balance." = "Preverite ime računa in začetno stanje.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Omogočite obvestila za prejemanje opomnike čekov.";
 "Endorse cheque" = "Indosiraj ček";
 "Endorsed" = "Indosiran";
-"Endorsements, partial settlements and replacements" = "Indotirani računi, delne poravnave in nadomestitve";
+"Endorsements, partial settlements and replacements" = "Indosamenti, delna plačila in nadomestni čeki";
 "Enter a positive amount and the date written on the cheque." = "Vnesite pozitiven znesek in datum, napisan na čeku.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Vnesite veljaven znesek, večji od nič, z decimalnimi mesti valute.";
 "Enter a whole number of days from 1 to 365." = "Vnesite celo število dni od 1 do 365.";
@@ -252,7 +252,7 @@
 "Mark paid" = "Označi kot plačan";
 "Mark pending" = "Označi kot čakajoč";
 "Mark returned" = "Označi kot vrnjen";
-"Monthly subscription" = "Mesečna naročnina na e-novice";
+"Monthly subscription" = "Mesečna naročnina";
 "More" = "Več";
 "More details" = "Več podrobnosti";
 "Move reminders to the preceding banking day" = "Premikanje opomnikov na prejšnji delovni dan";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "Predogled sporočila opomnika";
 "Previous month" = "Prejšnji mesec";
 "Privacy" = "Zasebnost";
-"Privacy policy" = "Politika zasebnosti - OZS";
+"Privacy policy" = "Politika zasebnosti";
 "Read details from front image" = "Preberite podrobnosti s sprednje slike";
 "Reason" = "Razlog";
 "Recently Deleted" = "Nedavno izbrisani";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Osvežitev opomnikov";
 "Refresh upcoming reminders" = "Osveži prihajajoče opomnike";
 "Refresh your cheque reminders" = "Osvežite opomnike za ček";
-"Reload prices" = "Cene za ponovno nalaganje";
+"Reload prices" = "Ponovno naloži cene";
 "Remaining" = "Preostali";
 "Remaining after payment" = "Preostanek po plačilu";
 "Remaining amount" = "Preostali znesek";
@@ -374,7 +374,7 @@
 "Reminder options" = "Možnosti opomnika";
 "Reminder time" = "Čas opomnika";
 "Reminders" = "Opomniki";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Opomniki so načrtovani v tej napravi, vi pa nadzorujete dovoljenje, čas in ali se podrobnosti o čekih prikažejo v opozorilih.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Opomniki se načrtujejo v tej napravi. Izberete lahko, ali dovolite obvestila, kdaj jih prejmete in ali so v njih prikazani podatki o čeku.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Opomniki veljajo za omejeno obdobje, zato odprite aplikacijo pred koncem tega obdobja in se pripravite na preostanek.";
 "Reminders disabled" = "Opomniki onemogočeni";
 "Reminders enabled" = "Omogočeni opomniki";
@@ -435,7 +435,7 @@
 "Search currencies" = "Iskanje valut";
 "Search number, bank or name" = "Iskanje številke, banke ali imena";
 "Search number, name, bank or reference" = "Iskanje številke, imena, banke ali reference";
-"See all" = "Poglej vse izdelke";
+"See all" = "Prikaži vse";
 "Select" = "Izberi";
 "Select a bank account in the cheque currency." = "Izberite bančni račun v valuti čeka.";
 "Select a chequebook for this account." = "Izberite čekovnico za ta račun.";

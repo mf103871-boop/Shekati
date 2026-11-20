@@ -347,7 +347,7 @@
 "Preview reminder message" = "Náhled připomenutí";
 "Previous month" = "Předchozí měsíc";
 "Privacy" = "Soukromí";
-"Privacy policy" = "Ochrana osobních údajů |";
+"Privacy policy" = "Ochrana osobních údajů";
 "Read details from front image" = "Číst detaily z předního obrázku";
 "Reason" = "Důvod";
 "Recently Deleted" = "Nedávno smazané stránky";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Aktualizace připomínek";
 "Refresh upcoming reminders" = "Aktualizace nadcházejících připomínek";
 "Refresh your cheque reminders" = "Obnovte své šekové připomínky";
-"Reload prices" = "Ceny za Reload";
+"Reload prices" = "Znovu načíst ceny";
 "Remaining" = "Zbývající";
 "Remaining after payment" = "Zbývá po úhradě";
 "Remaining amount" = "Zbývající částka";
@@ -374,7 +374,7 @@
 "Reminder options" = "Možnosti připomenutí";
 "Reminder time" = "Čas připomenutí";
 "Reminders" = "Připomenutí";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Můžete kontrolovat povolení, načasování a zda se v upozorněních zobrazí podrobnosti o šeku.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Připomínky se plánují na tomto zařízení. Můžete nastavit, zda a kdy se mají oznámení zobrazovat a zda mají obsahovat údaje o šeku.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Připomínky se vztahují na omezenou dobu. Otevřete aplikaci před koncem pokrytí, abyste si připravili zbytek.";
 "Reminders disabled" = "Připomenutí zakázáno";
 "Reminders enabled" = "Připomenutí povoleno";
@@ -434,7 +434,7 @@
 "Scheduled notifications" = "Plánovaná oznámení";
 "Search currencies" = "Vyhledat měny";
 "Search number, bank or name" = "Vyhledávání čísla, banky nebo názvu";
-"Search number, name, bank or reference" = "Vyhledávací číslo, název, banka nebo reference";
+"Search number, name, bank or reference" = "Číslo, jméno, banka či reference";
 "See all" = "Zobrazit vše";
 "Select" = "Vybrat";
 "Select a bank account in the cheque currency." = "Vyberte bankovní účet v měně šeku.";

@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Ramalan aliran tunai dan laporan maju";
 "Cash forecast" = "Perkiraan arus kas";
 "Change status" = "Ubah status";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Dibayar saat pembelian. Perbarui secara otomatis sampai dibatalkan di Akun Apple Anda.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Biaya dikenakan saat pembelian. Langganan diperpanjang otomatis hingga Anda membatalkannya di Akun Apple Anda.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Periksa setiap saran dengan cek Anda. Tidak ada yang disimpan sampai Anda menekan Simpan.";
 "Check iCloud status" = "Periksa status iCloud";
 "Check the account name and opening balance." = "Periksa nama rekening dan saldo awal.";
@@ -109,7 +109,7 @@
 "Choose" = "Pilih";
 "Choose CSV file" = "Pilih berkas CSV";
 "Choose a date range from today, with the end on or after the start, up to 366 days." = "Pilih rentang tanggal dari hari ini, dengan akhir pada atau setelah awal, hingga 366 hari.";
-"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "Pilih langganan bulanan atau tahunan. Harga lokal Anda ditampilkan sebelum pembelian. Layanan diperbarui secara otomatis sampai dibatalkan di Apple Account Anda.";
+"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "Pilih langganan bulanan atau tahunan. Harga setempat ditampilkan sebelum pembelian. Langganan diperpanjang otomatis hingga Anda membatalkannya di Akun Apple Anda.";
 "Choose a subscription" = "Pilih langganan";
 "Choose at least one reminder day, or turn reminders off." = "Pilih setidaknya satu hari peringatan, atau matikan peringatan.";
 "Choose backup file" = "Pilih berkas cadangan";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "Kosongkan pencarian dan filter";
 "Clear selection" = "Hapus pemilihan";
 "Collected" = "Ditagih dan diterima";
-"Collection date" = "Tarikh Koleksi";
+"Collection date" = "Tanggal penerimaan dana cek";
 "Confirm" = "Konfirmasi";
 "Confirm action" = "Konfirmasi aksi";
 "Confirm holder collected" = "Konfirmasi bahwa pemegang cek telah menerima pembayaran";
@@ -133,7 +133,7 @@
 "Correct last action" = "Memperbaiki aksi terakhir";
 "Could not complete operation" = "Tak dapat menyelesaikan operasi";
 "Could not load subscription prices. Please try again." = "Tak dapat memuat harga langganan. Silakan coba lagi.";
-"Could not restore purchases. Please try again." = "Tak dapat mengembalikan pembelian. Silakan coba lagi.";
+"Could not restore purchases. Please try again." = "Pembelian tidak dapat dipulihkan. Silakan coba lagi.";
 "Could not save changes" = "Tak dapat menyimpan perubahan";
 "Could not save changes." = "Tak dapat menyimpan perubahan.";
 "Could not unlock. Try again using biometrics or your device passcode." = "Tak dapat membuka kunci. Coba lagi menggunakan biometrik atau kode sandi perangkat Anda.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Aktifkan pemberitahuan untuk menerima peringatan cek.";
 "Endorse cheque" = "Endosemenkan cek";
 "Endorsed" = "Diendosemen";
-"Endorsements, partial settlements and replacements" = "Penandatanganan, penyelesaian sebagian dan penggantian";
+"Endorsements, partial settlements and replacements" = "Pengalihan cek melalui endosemen, pembayaran sebagian, dan cek pengganti";
 "Enter a positive amount and the date written on the cheque." = "Masukkan jumlah yang positif dan tanggal yang ditulis pada cek.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Masukkan jumlah yang valid lebih besar dari nol, menggunakan tempat desimal mata uang.";
 "Enter a whole number of days from 1 to 365." = "Masukkan jumlah hari penuh dari 1 sampai 365.";
@@ -237,7 +237,7 @@
 "Keep type, bank and name for the next cheque" = "Simpan jenis, bank dan nama untuk cek berikutnya";
 "Know what is due" = "Tahu apa yang harus dilakukan";
 "Language" = "Bahasa";
-"Last reconciliation" = "Konsolidasi terakhir";
+"Last reconciliation" = "Rekonsiliasi rekening terakhir";
 "Last sync" = "Sinkronisasi terakhir";
 "Legal follow-up" = "Pelaksanaan hukum";
 "Light" = "Cepat";
@@ -295,7 +295,7 @@
 "Notifications currently arrive quietly. Enable alerts and sound in iPhone Settings." = "Notifikasi saat ini tiba dengan diam. Aktifkan peringatan dan suara di Pengaturan iPhone.";
 "Notifications enabled" = "Notifikasi diaktifkan";
 "OK" = "OK";
-"Off by default. New cheques are added; existing cheques remain unchanged. Turn on only to replace matching records with this backup's contents." = "Mati secara default. Pemeriksaan baru ditambahkan; pemeriksaan yang ada tetap tidak berubah. Nyalakan hanya untuk mengganti rekaman yang cocok dengan isi salinan cadangan ini.";
+"Off by default. New cheques are added; existing cheques remain unchanged. Turn on only to replace matching records with this backup's contents." = "Secara bawaan, opsi ini nonaktif. Cek baru ditambahkan dan cek yang sudah ada tetap seperti semula. Aktifkan hanya jika Anda ingin mengganti data cek yang cocok dengan isi cadangan ini.";
 "Offline — saved on this iPhone" = "Luar jaringan — disimpan pada iPhone ini";
 "On due date" = "Pada tanggal jatuh tempo";
 "On the due date" = "Pada tanggal jatuh tempo";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Perbarui peringatan";
 "Refresh upcoming reminders" = "Perbarui peringatan yang akan datang";
 "Refresh your cheque reminders" = "Segarkan peringatan cek Anda";
-"Reload prices" = "Ulangi isi harga";
+"Reload prices" = "Muat ulang harga";
 "Remaining" = "Sisa";
 "Remaining after payment" = "Sisa setelah pembayaran";
 "Remaining amount" = "Jumlah yang tersisa";
@@ -374,7 +374,7 @@
 "Reminder options" = "Opsi pengingat";
 "Reminder time" = "Waktu peringatan";
 "Reminders" = "Pengingat";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Peringatan dijadwalkan pada perangkat ini. Anda mengatur izin, waktu dan apakah rincian cek muncul dalam pemberitahuan.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Pengingat dijadwalkan di perangkat ini. Anda menentukan izin notifikasi, waktunya, dan apakah rincian cek ditampilkan dalam notifikasi.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Pengingat mencakup periode terbatas. Buka aplikasi sebelum pencakupannya berakhir untuk mempersiapkan sisanya.";
 "Reminders disabled" = "Pengingat dimatikan";
 "Reminders enabled" = "Pengingat diaktifkan";
@@ -411,7 +411,7 @@
 "Review image details" = "Tinjau rincian gambar";
 "Review scanned details" = "Tinjau detail yang dipindai";
 "Review the conflicting entries before continuing." = "Periksa entri yang berkonflik sebelum melanjutkan.";
-"Review the counts and replacement choice. These changes will also sync to iCloud." = "Periksa jumlah dan penggantian pilihan. Perubahan ini juga akan disensorkan ke iCloud.";
+"Review the counts and replacement choice. These changes will also sync to iCloud." = "Periksa jumlah data dan pilihan penggantian. Perubahan ini juga akan disinkronkan ke iCloud.";
 "Review the due date for the next cheque." = "Tinjau tanggal jatuh tempo untuk cek berikutnya.";
 "Reviewing CSV" = "Melihat CSV";
 "Rows" = "Baris";
@@ -427,7 +427,7 @@
 "Save encrypted backup" = "Simpan salinan cadangan yang terenkripsi";
 "Saved cheques" = "Ceki yang disimpan";
 "Scan" = "Imbas";
-"Scan and review cheque details" = "Imbau dan cek rincian";
+"Scan and review cheque details" = "Pindai cek dan periksa rinciannya";
 "Scan or add photos" = "Imbau atau tambahkan foto";
 "Scan or choose an image, review the suggested details, then save the cheque." = "Scan atau pilih gambar, periksa detail yang diusulkan, lalu simpan cek.";
 "Scan, review, save" = "Scan, review, simpan";
@@ -451,10 +451,10 @@
 "Set an iPhone passcode to unlock Shekati." = "Tetapkan kode akses iPhone untuk membuka Shekati.";
 "Settings" = "Pengaturan";
 "Settled" = "Diselesaikan";
-"Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "cek yang disetujui memerlukan tanggal sebenarnya. Tanggal harus menggunakan YYYY-MM-DD.";
+"Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Cek yang telah diselesaikan memerlukan tanggal pembayaran atau penagihan yang sebenarnya. Masukkan tanggal dalam format YYYY-MM-DD.";
 "Shekati" = "Shekati";
 "Shekati Plus" = "Shekati Plus";
-"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Shekati Plus menambahkan lebih banyak akun, cek aktif tak terbatas, scan cek, dukungan, penyelesaian sebagian, penggantian dan ramalan aliran tunai.";
+"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Dengan Shekati Plus, Anda dapat menambahkan lebih banyak rekening dan menyimpan cek aktif tanpa batas. Pindai cek, catat pengalihan melalui endosemen, pembayaran sebagian dan cek pengganti, serta lihat proyeksi arus kas.";
 "Shekati includes no advertising or third-party analytics SDK. Apple may provide store and crash diagnostics according to your Apple settings." = "Shekati tidak termasuk iklan atau SDK analitik pihak ketiga. Apple dapat menyediakan diagnosa toko dan crash sesuai dengan pengaturan Apple Anda.";
 "Shekati — Cheque report" = "Shekati — Laporan cek";
 "Show all and history" = "Tampilkan semua dan sejarah";
@@ -462,7 +462,7 @@
 "Show cheques" = "Tampilkan cek";
 "Showing the first 200 rows. The counts include every row." = "Tampilkan 200 baris pertama. Jumlahnya termasuk setiap baris.";
 "Shown amount" = "Jumlah yang ditampilkan";
-"Shown cheques" = "Ceko";
+"Shown cheques" = "Cek yang ditampilkan";
 "Shown incoming" = "Tampilkan masukan";
 "Shown outgoing" = "Tampilkan keluaran";
 "Sign in to iCloud to sync" = "Log masuk ke iCloud untuk menyensor";
@@ -491,13 +491,13 @@
 "The actual payment or collection date cannot be before the issue date." = "Tanggal pembayaran atau pengumpulan yang sebenarnya tidak dapat sebelum tanggal penerbitan.";
 "The actual payment or collection date cannot be in the future." = "Tanggal pembayaran atau pengumpulan yang sebenarnya tidak dapat berada di masa depan.";
 "The balance changed. Review the new difference before confirming." = "Saldo berubah. Lihat perbedaan baru sebelum mengkonfirmasi.";
-"The bank balance changes when collection is confirmed." = "Saldo bank berubah ketika pengumpulan dikonfirmasi.";
+"The bank balance changes when collection is confirmed." = "Saldo rekening bank berubah saat penagihan cek dikonfirmasi berhasil.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Kamera hanya digunakan ketika Anda memilih untuk memindai. Pengenalan teks terjadi pada iPhone ini. Tidak ada foto cek yang dikirim ke layanan pengenalan eksternal.";
 "The cheque could not be deleted. Please try again." = "cek tidak dapat dihapus. Silakan coba lagi.";
 "The cheque could not be restored. Please try again." = "Cek tidak dapat dipulihkan. Silakan coba lagi.";
 "The cheque could not be saved. Your draft is still here; please try again." = "cek tidak dapat disimpan. draft Anda masih ada di sini; silakan coba lagi.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "cek akan pindah ke Baru-baru ini Dihapus selama 30 hari. Peringatannya berhenti; Anda dapat mengembalikan rincian dan fotonya.";
-"The cheque stays in follow-up until the new holder confirms collection." = "cek tetap di follow-up sampai pemegang baru mengkonfirmasi koleksi.";
+"The cheque stays in follow-up until the new holder confirms collection." = "Cek tetap dipantau sampai pemegang baru mengonfirmasi bahwa dana cek telah diterima.";
 "The end date must be on or after the start date." = "Tanggal akhir harus pada atau setelah tanggal awal.";
 "The file contains invalid cheque information." = "Berkas berisi informasi cek yang tidak valid.";
 "The file could not be read or saved. Please try again." = "Berkas tidak dapat dibaca atau disimpan. Silakan coba lagi.";

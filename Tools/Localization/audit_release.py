@@ -5,6 +5,7 @@ import json
 import plistlib
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -71,6 +72,14 @@ def inspect(require_release):
                     raise ValueError(f"Translator annotation in {key!r}")
                 if set(CALENDAR_YEAR.findall(translated)) - set(CALENDAR_YEAR.findall(reference[key])):
                     raise ValueError(f"Unexpected calendar year in {key!r}")
+            # Both forecast horizons use the same plural form in the shipped locales.
+            # Catch unrelated text such as a commercial return period in either control.
+            if re.sub(r"\d+", "#", ui["30 days"]) != re.sub(r"\d+", "#", ui["60 days"]):
+                raise ValueError("Inconsistent wording for forecast durations")
+            for key in ("Monthly subscription", "Annual subscription"):
+                title = ui[key]
+                if any(unicodedata.category(c) == "Sc" for c in title) or re.search(r"\d\s*(Ft|lei)\b", title, re.I):
+                    raise ValueError(f"StoreKit price embedded in plan title: {key}")
             permissions = read_strings(bundle / "InfoPlist.strings")
             if set(permissions) != {"CFBundleDisplayName","NSFaceIDUsageDescription","NSCameraUsageDescription"}:
                 raise ValueError("Permission or display-name key mismatch")

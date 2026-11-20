@@ -36,7 +36,7 @@
 "Amount paid" = "A kifizetett összeg";
 "Amounts hidden" = "Rejtett összegek";
 "Analytics" = "Analitika";
-"Annual subscription" = "Éves előfizetés 100 Ft";
+"Annual subscription" = "Éves előfizetés";
 "App lock" = "Az alkalmazás zárolása";
 "Appearance" = "Megjelenés";
 "Appearance and language" = "Megjelenés és nyelv";
@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Cash flow előrejelzések és fejlett jelentések";
 "Cash forecast" = "Pénzforgalmi előrejelzés";
 "Change status" = "Állapot módosítása";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Az előfizetés automatikusan megújul, amíg le nem mondja az Apple-fiókjában.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "A díjat vásárláskor számítjuk fel. Az előfizetés automatikusan megújul, amíg le nem mondja az Apple-fiókjában.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Ellenőrizze az egyes javaslatokat a csekk ellenőrzésével. Semmi sem kerül mentésre, amíg meg nem érinti a Mentés gombot.";
 "Check iCloud status" = "Az iCloud állapotának ellenőrzése";
 "Check the account name and opening balance." = "Ellenőrizze a számla nevét és nyitó egyenlegét.";
@@ -147,7 +147,7 @@
 "Dark" = "Sötét";
 "Data and backup" = "Adat és biztonsági mentés";
 "Date" = "Dátum";
-"Date added" = "Hozzáadás dátuma:";
+"Date added" = "Rögzítés dátuma";
 "Days before" = "Napok azelőtt";
 "Days before (1–365)" = "Az előző napok (1–365)";
 "Days with no unpaid outgoing cheques due, across all banks. Choose a period of up to 366 days." = "Azon napok száma, amikor nincs esedékes kifizetett csekk az összes banknál Válassza ki a legfeljebb 366 napos időszakot.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Engedélyezze az értesítéseket, hogy fogadja a csekk emlékeztetőket.";
 "Endorse cheque" = "Csekk forgatása";
 "Endorsed" = "Forgatva";
-"Endorsements, partial settlements and replacements" = "Bejegyzések, részleges elszámolások és helyettesítések";
+"Endorsements, partial settlements and replacements" = "Csekkforgatmányok, részfizetések és cserecsekkek";
 "Enter a positive amount and the date written on the cheque." = "Írjon be egy pozitív összeget és a csekken szereplő dátumot.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Írjon be egy érvényes, nullánál nagyobb összeget a pénznem tizedesjegyeinek használatával.";
 "Enter a whole number of days from 1 to 365." = "Adjon meg egy egész napszámot 1 és 365 között.";
@@ -252,7 +252,7 @@
 "Mark paid" = "Megjelölés kifizetettként";
 "Mark pending" = "Megjelölés függőben lévőként";
 "Mark returned" = "Megjelölés visszaküldöttként";
-"Monthly subscription" = "Havi előfizetés 100 Ft";
+"Monthly subscription" = "Havi előfizetés";
 "More" = "Továbbiak";
 "More details" = "További részletek »";
 "Move reminders to the preceding banking day" = "Emlékeztetők áthelyezése az előző banknapra";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "Emlékeztető üzenet előnézete";
 "Previous month" = "Előző hónap 1";
 "Privacy" = "Adatvédelem";
-"Privacy policy" = "Adatvédelmi nyilatkozat -";
+"Privacy policy" = "Adatvédelmi tájékoztató";
 "Read details from front image" = "Olvassa el a részleteket az elülső képről";
 "Reason" = "Indoklás";
 "Recently Deleted" = "Nemrég törölt témák";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Emlékeztetők frissítése";
 "Refresh upcoming reminders" = "Közelgő emlékeztetők frissítése";
 "Refresh your cheque reminders" = "Frissítse a csekk emlékeztetőket";
-"Reload prices" = "Reload árak";
+"Reload prices" = "Árak újratöltése";
 "Remaining" = "Maradék";
 "Remaining after payment" = "Fizetés után fennmaradó összeg";
 "Remaining amount" = "Fennmaradó összeg";
@@ -374,7 +374,7 @@
 "Reminder options" = "Emlékeztető beállítások módosítása";
 "Reminder time" = "Emlékeztető időpontja";
 "Reminders" = "Emlékeztetők";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Ön szabályozza az engedélyt, az időzítést és azt, hogy a csekk adatai megjelenjenek-e a figyelmeztetésekben.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Az emlékeztetők ütemezése ezen az eszközön történik. Ön dönti el, hogy engedélyezi-e az értesítéseket, mikor jelenjenek meg, és tartalmazzák-e a csekk adatait.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Az emlékeztetők korlátozott ideig érvényesek, ezért nyisd meg az alkalmazást a lefedettség vége előtt, hogy felkészülhess a többire.";
 "Reminders disabled" = "Emlékeztetők le vannak tiltva";
 "Reminders enabled" = "Emlékeztetők engedélyezve";
@@ -434,7 +434,7 @@
 "Scheduled notifications" = "Ütemezett értesítések";
 "Search currencies" = "Keresés a pénznemek között";
 "Search number, bank or name" = "Keresés szám, bank vagy név szerint";
-"Search number, name, bank or reference" = "Keresés szám, név, bank vagy referencia";
+"Search number, name, bank or reference" = "Keresés szám, név, bank vagy hivatkozás alapján";
 "See all" = "Lásd az összeset";
 "Select" = "Válassza ki a";
 "Select a bank account in the cheque currency." = "Válasszon egy bankszámlát a csekk pénznemében.";
@@ -471,7 +471,7 @@
 "Some Arabic text may need manual entry. You can complete every field yourself." = "Néhány arab szöveg manuális bevitelt igényelhet. Minden mezőt saját maga is kitölthet.";
 "Some financial records are still syncing." = "Néhány pénzügyi rekord még mindig szinkronizálja.";
 "Some later reminders still need scheduling." = "Néhány későbbi emlékeztetőt még ütemezni kell.";
-"Some purchase options are unavailable. Please try again later." = "Kérjük, próbálja meg később újra.";
+"Some purchase options are unavailable. Please try again later." = "Egyes vásárlási lehetőségek nem érhetők el. Próbálja újra később.";
 "Some reminders could not be scheduled. Check notification settings and refresh." = "Néhány emlékeztetőt nem lehetett ütemezni. Ellenőrizze az értesítési beállításokat, és frissítse a rendszert.";
 "Some reminders could not be scheduled. Check permission and refresh the queue." = "Néhány emlékeztetőt nem lehetett ütemezni. Ellenőrizze a jogosultságokat, és frissítse a várólistát.";
 "Sort by" = "Rendezés: Ár szerint";

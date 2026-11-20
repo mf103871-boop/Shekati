@@ -1,6 +1,6 @@
 "1 day before" = "1 dag voor";
 "3 days before" = "3 dagen voor vertrek";
-"30 days" = "30 dagen garantie";
+"30 days" = "30 dagen";
 "60 days" = "60 dagen";
 "A clear view of your next commitments." = "Een duidelijk beeld van uw volgende verplichtingen.";
 "A fresh start" = "Een frisse start";
@@ -27,7 +27,7 @@
 "All" = "Allemaal";
 "All and history" = "Alles, inclusief historie";
 "All banks" = "Alle banken in Nederland";
-"All dates" = "Alle datums weergeven";
+"All dates" = "Alle datums";
 "All features included. One purchase. No subscription." = "Alle functies inbegrepen. Eén aankoop. Geen abonnement.";
 "All individual reminder times for this cheque have passed." = "Alle individuele herinneringstijden voor deze cheque zijn verstreken.";
 "Amount" = "Bedrag";
@@ -36,7 +36,7 @@
 "Amount paid" = "Betaald bedrag";
 "Amounts hidden" = "Bedragen verborgen";
 "Analytics" = "Analyse";
-"Annual subscription" = "Jaarabonnement op de website";
+"Annual subscription" = "Jaarabonnement";
 "App lock" = "App lock verwijderen";
 "Appearance" = "Verschijning";
 "Appearance and language" = "Uiterlijk en taal";
@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Cashflowprognoses en geavanceerde rapporten";
 "Cash forecast" = "Liquiditeitsprognose";
 "Change status" = "Status wijzigen";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "De abonnementen worden automatisch verlengd totdat ze in je Apple ID worden geannuleerd.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Het bedrag wordt bij aankoop in rekening gebracht. Het abonnement wordt automatisch verlengd totdat je het opzegt in je Apple Account.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Controleer elke suggestie tegen uw cheque. Er wordt niets opgeslagen totdat u op Opslaan tikt.";
 "Check iCloud status" = "Controleer de iCloud-status";
 "Check the account name and opening balance." = "Controleer de rekeningnaam en het openingssaldo.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Schakel meldingen in om cheque herinneringen te ontvangen.";
 "Endorse cheque" = "Cheque endosseren";
 "Endorsed" = "Geëndosseerd";
-"Endorsements, partial settlements and replacements" = "Aantekeningen, gedeeltelijke afwikkelingen en vervangingen";
+"Endorsements, partial settlements and replacements" = "Endossementen, deelbetalingen en vervangende cheques";
 "Enter a positive amount and the date written on the cheque." = "Vul een positief bedrag in en de datum die op de cheque staat.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Voer een geldig bedrag in dat groter is dan nul, met gebruikmaking van de decimalen van de valuta.";
 "Enter a whole number of days from 1 to 365." = "Voer een geheel aantal dagen in van 1 tot en met 365.";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "Voorbeeld van herinneringsbericht";
 "Previous month" = "Vorige maand";
 "Privacy" = "Privacy";
-"Privacy policy" = "Privacybeleid - 100%";
+"Privacy policy" = "Privacybeleid";
 "Read details from front image" = "Lees details van voorafbeelding";
 "Reason" = "Reden";
 "Recently Deleted" = "Recent verwijderde bestanden";
@@ -374,7 +374,7 @@
 "Reminder options" = "Opties voor herinneringen";
 "Reminder time" = "Herinneringstijd";
 "Reminders" = "Herinneringen";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "U bepaalt zelf de toestemming, timing en of chequegegevens in waarschuwingen worden weergegeven.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Herinneringen worden op dit apparaat gepland. Je bepaalt of meldingen zijn toegestaan, wanneer ze verschijnen en of ze chequegegevens bevatten.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Herinneringen hebben een beperkte geldigheidsduur, dus open de app voordat de geldigheidsduur afloopt om de rest voor te bereiden.";
 "Reminders disabled" = "Herinneringen uitgeschakeld";
 "Reminders enabled" = "Herinneringen ingeschakeld";
@@ -434,7 +434,7 @@
 "Scheduled notifications" = "Geplande meldingen";
 "Search currencies" = "Zoek valuta’s";
 "Search number, bank or name" = "Zoeknummer, bank of naam";
-"Search number, name, bank or reference" = "Zoeknummer, naam, bank of referentie";
+"Search number, name, bank or reference" = "Zoek op nummer, naam, bank of referentie";
 "See all" = "Bekijk alles";
 "Select" = "Selecteer";
 "Select a bank account in the cheque currency." = "Selecteer een bankrekening in de valuta van de cheque.";

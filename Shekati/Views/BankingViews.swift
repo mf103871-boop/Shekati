@@ -212,8 +212,10 @@ struct AccountLiquidityView: View {
                     Text(app.tr("Estimated available in 7 days")).font(.subheadline)
                     Text(money(outlook.available7)).font(.largeTitle.bold()).monospacedDigit().minimumScaleFactor(0.65)
                     Divider().overlay(.white.opacity(0.5))
-                    ResponsiveValueRow(title: app.tr("Recorded balance"), value: money(outlook.recorded))
-                    ResponsiveValueRow(title: app.tr("Outgoing due within 7 days"), value: money(outlook.outgoing7))
+                    ResponsiveValueRow(title: app.tr("Recorded balance"), value: money(outlook.recorded),
+                                       stackedTitleStyle: AnyShapeStyle(.white))
+                    ResponsiveValueRow(title: app.tr("Outgoing due within 7 days"), value: money(outlook.outgoing7),
+                                       stackedTitleStyle: AnyShapeStyle(.white))
                         .accessibilityIdentifier("outgoingDueAmount")
                     if let reconciled = try? BankingLedger.adjustments(account: account, events: events).last?.day {
                         Text(app.tr("Last reconciliation") + " · " + app.formatDay(reconciled)).font(.caption)

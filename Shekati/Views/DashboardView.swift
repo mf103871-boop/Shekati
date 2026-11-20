@@ -51,6 +51,8 @@ struct DashboardView: View {
                                                                 today: app.today, horizon: 30) {
                         let divisor = pow(10.0, Double(CurrencyMath.fractionDigits(for: account.currencyCode)))
                         VStack(alignment: .leading, spacing: 8) {
+                            Text(app.tr("Shekati Plus")).font(.caption.weight(.semibold))
+                                .foregroundStyle(Theme.accent)
                             Text(app.tr("Cash forecast") + " · " + app.tr("30 days")).font(.headline)
                             Chart {
                                 RuleMark(y: .value(account.currencyCode, 0))

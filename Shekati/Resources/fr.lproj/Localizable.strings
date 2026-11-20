@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Prévisions de trésorerie et rapports avancés";
 "Cash forecast" = "Prévision de trésorerie";
 "Change status" = "Changer de statut";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Renouvellement automatique jusqu’à résiliation dans votre compte Apple.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Le paiement est prélevé au moment de l’achat. L’abonnement se renouvelle automatiquement jusqu’à sa résiliation dans votre compte Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Vérifiez chaque suggestion par rapport à votre chèque. Rien n’est enregistré tant que vous n’avez pas appuyé sur Enregistrer.";
 "Check iCloud status" = "Vérifier l’état iCloud";
 "Check the account name and opening balance." = "Vérifiez le nom du compte et le solde d’ouverture.";
@@ -268,7 +268,7 @@
 "New operations" = "Nouvelles opérations";
 "Next" = "Suivant";
 "Next 3 days" = "3 jours prochains";
-"Next 7 days" = "7 jours prochains";
+"Next 7 days" = "7 prochains jours";
 "Next cheques" = "Prochains chèques";
 "Next month" = "Le mois prochain";
 "Next scheduled reminder" = "Prochain rappel planifié";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Actualiser les rappels";
 "Refresh upcoming reminders" = "Actualiser les rappels à venir";
 "Refresh your cheque reminders" = "Actualisez vos rappels de chèques";
-"Reload prices" = "Prix de recharge";
+"Reload prices" = "Recharger les tarifs";
 "Remaining" = "Montant restant";
 "Remaining after payment" = "Solde restant après paiement";
 "Remaining amount" = "Montant restant";
@@ -374,7 +374,7 @@
 "Reminder options" = "Options de rappel";
 "Reminder time" = "Heure de rappel";
 "Reminders" = "Rappels";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Vous contrôlez l’autorisation, le calendrier et si les détails du chèque apparaissent dans les alertes.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Les rappels sont programmés sur cet appareil. Vous choisissez d’autoriser ou non les notifications, le moment où elles s’affichent et si elles contiennent les détails du chèque.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Les rappels couvrent une période limitée. Ouvrez l’appli avant la fin de la couverture pour préparer le reste.";
 "Reminders disabled" = "Rappels désactivés";
 "Reminders enabled" = "Rappels activés";
@@ -434,8 +434,8 @@
 "Scheduled notifications" = "Notifications programmées";
 "Search currencies" = "Recherche de devises";
 "Search number, bank or name" = "Recherche numéro, banque ou nom";
-"Search number, name, bank or reference" = "Recherche numéro, nom, banque ou référence";
-"See all" = "Voir tout les produits";
+"Search number, name, bank or reference" = "Rechercher par numéro, nom, banque ou référence";
+"See all" = "Tout voir";
 "Select" = "Sélectionner";
 "Select a bank account in the cheque currency." = "Sélectionnez un compte bancaire dans la devise du chèque.";
 "Select a chequebook for this account." = "Sélectionnez un chèque-livret pour ce compte.";
@@ -462,7 +462,7 @@
 "Show cheques" = "Afficher les chèques";
 "Showing the first 200 rows. The counts include every row." = "Affichage des 200 premières lignes. Le nombre inclut chaque ligne.";
 "Shown amount" = "Montant indiqué";
-"Shown cheques" = "Chèques montrés";
+"Shown cheques" = "Chèques affichés";
 "Shown incoming" = "Montré entrant";
 "Shown outgoing" = "Montré sortant";
 "Sign in to iCloud to sync" = "Connectez-vous à iCloud pour synchroniser";

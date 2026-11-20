@@ -36,7 +36,7 @@
 "Amount paid" = "Maksettava määrä";
 "Amounts hidden" = "Piilotetut määrät";
 "Analytics" = "Analytiikka";
-"Annual subscription" = "Vuositilaus 10 €";
+"Annual subscription" = "Vuositilaus";
 "App lock" = "Sovelluksen lukitus";
 "Appearance" = "Ulkonäkö";
 "Appearance and language" = "Ulkonäkö ja kieli";
@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Rahavirtaennusteet ja kehittyneet raportit";
 "Cash forecast" = "Kassavirtaennuste";
 "Change status" = "Muuta tilaa";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Tilaus uusiutuu automaattisesti, kunnes se peruutetaan Apple-tililläsi.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Maksu veloitetaan ostohetkellä. Tilaus uusiutuu automaattisesti, kunnes peruutat sen Apple-tililläsi.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Tarkista jokainen ehdotus sekkiäsi vasten. Mitään ei tallenneta, ennen kuin napautat Tallenna.";
 "Check iCloud status" = "Tarkista iCloudin tila";
 "Check the account name and opening balance." = "Tarkista tilin nimi ja avaussaldo.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Ota ilmoitukset vastaanottaa tarkistaa muistutuksia.";
 "Endorse cheque" = "Siirrä sekki siirtomerkinnällä";
 "Endorsed" = "Siirretty";
-"Endorsements, partial settlements and replacements" = "Endossaatiot, osittaiset selvitykset ja korvaukset";
+"Endorsements, partial settlements and replacements" = "Sekkien siirrot siirtomerkinnällä, osasuoritukset ja korvaavat sekit";
 "Enter a positive amount and the date written on the cheque." = "Syötä positiivinen summa ja päivämäärä, joka on kirjoitettu shekkiin.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Anna kelvollinen summa, joka on suurempi kuin nolla, käyttäen valuutan desimaaleja.";
 "Enter a whole number of days from 1 to 365." = "Anna kokonaismäärä päiviä väliltä 1–365.";
@@ -208,7 +208,7 @@
 "Forecast duration" = "Ennuste kestää";
 "Free days" = "Vapaapäivät";
 "Free due dates" = "Vapaa eräpäivät";
-"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Ilmainen sisältää yhden tilin ja kymmenen aktiivista sekkiä, joita voit lukea, sulkea ja viedä.";
+"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Maksuttomaan versioon kuuluu yksi tili ja kymmenen aktiivista sekkiä. Voit edelleen tarkastella, sulkea ja viedä aiemmin tallentamiasi tietoja.";
 "From" = "Lähettäjä";
 "From date" = "Päivästä alkaen";
 "Front" = "Etupuoli";
@@ -252,7 +252,7 @@
 "Mark paid" = "Merkitse maksetuksi";
 "Mark pending" = "Merkitse odottavaksi";
 "Mark returned" = "Merkitse palautetuksi";
-"Monthly subscription" = "Kuukausitilaus 10 €";
+"Monthly subscription" = "Kuukausitilaus";
 "More" = "Lisää vaihtoehtoja";
 "More details" = "Lisää yksityiskohtia";
 "Move reminders to the preceding banking day" = "Muistutusten siirtäminen edelliseen pankkipäivään";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "Esikatsele muistutusviesti";
 "Previous month" = "Edellinen kuukausi";
 "Privacy" = "Yksityisyys";
-"Privacy policy" = "Tietosuojakäytäntö |";
+"Privacy policy" = "Tietosuojakäytäntö";
 "Read details from front image" = "Lue yksityiskohdat etusivusta";
 "Reason" = "Syy";
 "Recently Deleted" = "Äskettäin poistettu -sivu";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Päivitä muistutukset";
 "Refresh upcoming reminders" = "Päivitä tulevat muistutukset";
 "Refresh your cheque reminders" = "Päivitä shekkimuistutuksesi";
-"Reload prices" = "Reload hinnat";
+"Reload prices" = "Lataa hinnat uudelleen";
 "Remaining" = "Jäljellä olevat";
 "Remaining after payment" = "Jäljellä maksun jälkeen";
 "Remaining amount" = "Jäljellä oleva määrä";
@@ -374,7 +374,7 @@
 "Reminder options" = "Muistutusvaihtoehdot";
 "Reminder time" = "Muistutusaika";
 "Reminders" = "Muistutukset";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Muistutukset ajoitetaan tähän laitteeseen, ja voit hallita lupaa, ajoitusta ja sitä, näkyvätkö sekin tiedot ilmoituksissa.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Muistutukset ajastetaan tällä laitteella. Voit valita, sallitaanko ilmoitukset, milloin ne näytetään ja näkyvätkö šekin tiedot niissä.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Muistutukset kattavat rajoitetun ajan, joten avaa appi ennen kattavuuden päättymistä ja valmistaudu loppuun.";
 "Reminders disabled" = "Muistutukset pois käytöstä";
 "Reminders enabled" = "Muistutukset käytössä";
@@ -434,8 +434,8 @@
 "Scheduled notifications" = "Ajoitetut ilmoitukset";
 "Search currencies" = "Etsi valuuttoja";
 "Search number, bank or name" = "Haku numero, pankki tai nimi";
-"Search number, name, bank or reference" = "Haku numero, nimi, pankki tai viite";
-"See all" = "Näytä kaikki tuotteet";
+"Search number, name, bank or reference" = "Hae numerolla, nimellä, pankilla tai viitteellä";
+"See all" = "Näytä kaikki";
 "Select" = "Valitse";
 "Select a bank account in the cheque currency." = "Valitse pankkitili shekin valuutassa.";
 "Select a chequebook for this account." = "Valitse tätä tiliä varten shekkivihko.";
@@ -462,7 +462,7 @@
 "Show cheques" = "Näytä shekit";
 "Showing the first 200 rows. The counts include every row." = "Näytetään ensimmäiset 200 riviä. Laskennassa on mukana jokainen rivi.";
 "Shown amount" = "Näytetty määrä";
-"Shown cheques" = "Näytetyt shekit";
+"Shown cheques" = "Näytetyt šekit";
 "Shown incoming" = "Näytetään saapuvat";
 "Shown outgoing" = "Näytetään lähtevä";
 "Sign in to iCloud to sync" = "Kirjaudu iCloudiin synkronointia varten";

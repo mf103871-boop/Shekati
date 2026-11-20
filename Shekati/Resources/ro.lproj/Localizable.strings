@@ -52,7 +52,7 @@
 "Backup restored" = "Backup restaurat";
 "Backup saved. Keep the file and password in a safe place." = "Păstrați fișierul și parola într-un loc sigur, pentru a putea accesa datele.";
 "Balance" = "Sold";
-"Bank" = "Banca";
+"Bank" = "Bancă";
 "Bank (optional)" = "Banca (opțional)";
 "Bank account" = "Cont bancar";
 "Bank accounts" = "Conturi bancare deschise";
@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Previziunile fluxului de numerar și rapoarte avansate";
 "Cash forecast" = "Prognoza fluxului de numerar";
 "Change status" = "Schimbarea stării de acces";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Abonamentul se reînnoiește automat până la anularea din contul tău Apple.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Plata se efectuează la cumpărare. Abonamentul se reînnoiește automat până când îl anulați din contul Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Verificați fiecare sugestie în raport cu cecul. Nimic nu este salvat până când atingeți Salvare.";
 "Check iCloud status" = "Verificarea stării iCloud";
 "Check the account name and opening balance." = "Verificați numele contului și soldul de deschidere.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Activați notificările pentru a primi memento-uri de cec.";
 "Endorse cheque" = "Girează cecul";
 "Endorsed" = "Andosat";
-"Endorsements, partial settlements and replacements" = "Anotații, decontări parțiale și înlocuiri";
+"Endorsements, partial settlements and replacements" = "Giruri, plăți parțiale și cecuri de înlocuire";
 "Enter a positive amount and the date written on the cheque." = "Introduceți o sumă pozitivă și data scrisă pe cec.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Introduceți o sumă validă mai mare decât zero, folosind zecimalele monedei.";
 "Enter a whole number of days from 1 to 365." = "Introduceți un număr întreg de zile, de la 1 la 365.";
@@ -208,7 +208,7 @@
 "Forecast duration" = "Durata de prognoză";
 "Free days" = "Zile gratuite";
 "Free due dates" = "Date scadente gratuite";
-"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Înregistrările dvs. rămân disponibile pentru a fi citite, închise și exportate, iar contul dvs. este disponibil pentru a fi utilizat de către orice persoană.";
+"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Planul gratuit include un cont bancar și zece cecuri active. Înregistrările existente pot fi în continuare consultate, închise și exportate.";
 "From" = "De la";
 "From date" = "De la data";
 "Front" = "Față";
@@ -252,7 +252,7 @@
 "Mark paid" = "Marchează ca plătit";
 "Mark pending" = "Marchează ca în așteptare";
 "Mark returned" = "Marchează ca returnat";
-"Monthly subscription" = "Abonament lunar 100 lei";
+"Monthly subscription" = "Abonament lunar";
 "More" = "Mai multe";
 "More details" = "Mai multe detalii";
 "Move reminders to the preceding banking day" = "Mutați mementourile la ziua bancară anterioară";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Reîmprospătarea mementourilor";
 "Refresh upcoming reminders" = "Reîmprospătarea mementourilor viitoare";
 "Refresh your cheque reminders" = "Reîmprospătați mementourile de cec";
-"Reload prices" = "Prețuri de reîncărcare";
+"Reload prices" = "Reîncarcă prețurile";
 "Remaining" = "Restul";
 "Remaining after payment" = "Rămas după plată";
 "Remaining amount" = "Suma rămasă";
@@ -374,7 +374,7 @@
 "Reminder options" = "Opțiuni de memento";
 "Reminder time" = "Timp de memento";
 "Reminders" = "Mementouri";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Mementourile sunt programate pe acest dispozitiv, iar dvs. controlați permisiunea, calendarul și dacă detaliile cecurilor apar în alerte.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Mementourile sunt programate pe acest dispozitiv. Alegeți dacă permiteți notificările, când apar și dacă afișează datele cecului.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Mementourile acoperă o perioadă limitată. Deschide aplicația înainte de sfârșitul acoperirii pentru a pregăti restul.";
 "Reminders disabled" = "Mementouri dezactivate";
 "Reminders enabled" = "Mementouri activate";
@@ -434,8 +434,8 @@
 "Scheduled notifications" = "Notificări programate";
 "Search currencies" = "Caută monede";
 "Search number, bank or name" = "Caută număr, bancă sau nume";
-"Search number, name, bank or reference" = "Caută număr, nume, bancă sau referință";
-"See all" = "Vezi toate produsele";
+"Search number, name, bank or reference" = "Caută după număr, nume, bancă sau referință";
+"See all" = "Vezi toate";
 "Select" = "Selectează";
 "Select a bank account in the cheque currency." = "Selectați un cont bancar în moneda cecului.";
 "Select a chequebook for this account." = "Selectați un carnet de cecuri pentru acest cont.";
@@ -554,7 +554,7 @@
 "Use at least 10 characters. Your password is not saved or sent anywhere." = "Folosiți cel puțin 10 caractere. Parola nu este salvată și nu este trimisă nicăieri.";
 "Use default reminders" = "Utilizarea mementourilor implicite";
 "Use incoming or outgoing, a positive amount and a valid YYYY-MM-DD date." = "Utilizați intrare sau ieșire, o sumă pozitivă și o dată validă AAAA-LL-ZZ.";
-"Use selected" = "Folosește selecțiile selectate";
+"Use selected" = "Aplică selecția";
 "Use the template's English column names, YYYY-MM-DD dates and your selected currency. Keep cheque numbers as text in Excel to preserve leading zeros." = "Utilizați numele coloanelor în limba engleză ale șablonului, datele AAAA-LL-ZZ și moneda selectată. Păstrați numerele de cec ca text în Excel pentru a păstra zerourile inițiale.";
 "Used before" = "Folosit înainte de";
 "Uses default reminder time" = "Folosește ora implicită a mementoului";

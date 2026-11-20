@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "현금흐름 예측 및 고급 보고서";
 "Cash forecast" = "현금 흐름 예측";
 "Change status" = "상태 변경";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Apple 계정에서 취소할 때까지 자동으로 연장됩니다.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "구매 시 요금이 청구됩니다. Apple 계정에서 취소할 때까지 구독이 자동으로 갱신됩니다.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "각 제안을 수표와 비교해 확인하세요. 저장을 탭할 때까지는 아무것도 저장되지 않습니다.";
 "Check iCloud status" = "iCloud 상태 확인하기";
 "Check the account name and opening balance." = "계좌 이름과 개시 잔액을 확인합니다.";
@@ -208,7 +208,7 @@
 "Forecast duration" = "예측 기간";
 "Free days" = "자유 일";
 "Free due dates" = "무료 만기일";
-"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "무료 계정과 10 개의 활성 수표가 포함되어 있습니다. 기록은 읽기, 닫기 및 내보내기를 할 수 있습니다.";
+"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "무료 플랜에는 은행 계좌 한 개와 처리 중인 수표 열 장이 포함됩니다. 기존 기록은 계속 열람하거나 처리를 완료하거나 내보낼 수 있습니다.";
 "From" = "메시지 보내기";
 "From date" = "날짜부터";
 "Front" = "앞면";
@@ -257,7 +257,7 @@
 "More details" = "더 많은 세부 사항";
 "Move reminders to the preceding banking day" = "미리 알림을 이전 은행일로 이동";
 "My order" = "내 주문";
-"Name" = "메시지";
+"Name" = "이름";
 "Name / number / bank / status" = "이름 / 번호 / 은행 / 상태";
 "Name and number" = "이름과 번호";
 "Needs review" = "검토 필요";
@@ -374,7 +374,7 @@
 "Reminder options" = "알림 옵션";
 "Reminder time" = "알림 시간";
 "Reminders" = "알림";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "알림은 이 기기에서 예약됩니다. 권한, 시간 및 수표 세부 정보가 알림에 나타날지 여부를 제어할 수 있습니다.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "미리 알림은 이 기기에서 예약합니다. 알림을 허용할지, 언제 알림을 받을지, 알림에 수표 정보를 표시할지 선택할 수 있습니다.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "미리 알림은 한정된 기간 동안만 제공됩니다. 나머지를 준비하려면 미리 알림이 끝나기 전에 앱을 엽니다.";
 "Reminders disabled" = "알림 활성화됨";
 "Reminders enabled" = "알림 활성화됨";

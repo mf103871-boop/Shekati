@@ -86,7 +86,7 @@
 "Cheque books" = "Checkbøger";
 "Cheque continuation" = "Check for fortsættelse";
 "Cheque date" = "Check dato";
-"Cheque details" = "Check detaljer";
+"Cheque details" = "Checkoplysninger";
 "Cheque details and photos are stored on this iPhone. When iCloud is available, they sync to your private Apple account." = "Oplysninger om checks og billeder gemmes på denne iPhone, og når iCloud er tilgængelig, synkroniseres de med din private Apple-konto.";
 "Cheque due soon" = "Check forfalder snart";
 "Cheque due today" = "Check forfalder i dag";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "Vis påmindelsesmeddelelse";
 "Previous month" = "Forrige måned";
 "Privacy" = "Privatliv";
-"Privacy policy" = "Privatlivspolitik og cookies";
+"Privacy policy" = "Privatlivspolitik";
 "Read details from front image" = "Læs detaljer fra forsidebillede";
 "Reason" = "Årsag";
 "Recently Deleted" = "For nylig slettet";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Opdater påmindelser";
 "Refresh upcoming reminders" = "Opdater kommende påmindelser";
 "Refresh your cheque reminders" = "Opdater dine checkpåmindelser";
-"Reload prices" = "Priser for genindlæsning";
+"Reload prices" = "Indlæs priser igen";
 "Remaining" = "Resterende";
 "Remaining after payment" = "Restbeløb efter betaling";
 "Remaining amount" = "Resterende beløb";
@@ -374,7 +374,7 @@
 "Reminder options" = "Indstillinger for påmindelse";
 "Reminder time" = "Påmindelsestidspunkt";
 "Reminders" = "Påmindelser";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Påmindelser planlægges på denne enhed, og du styrer tilladelse, timing og om checkoplysninger vises i advarsler.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Påmindelser planlægges på denne enhed. Du bestemmer, om notifikationer er tilladt, hvornår de vises, og om de indeholder checkoplysninger.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Påmindelser dækker en begrænset periode, så åbn appen, før dækningen slutter, for at forberede resten.";
 "Reminders disabled" = "Påmindelser deaktiveret";
 "Reminders enabled" = "Påmindelser aktiveret";
@@ -434,8 +434,8 @@
 "Scheduled notifications" = "Planlagte meddelelser";
 "Search currencies" = "Søg efter valutaer";
 "Search number, bank or name" = "Søg nummer, bank eller navn";
-"Search number, name, bank or reference" = "Søg nummer, navn, bank eller reference";
-"See all" = "Se alle billeder";
+"Search number, name, bank or reference" = "Søg efter nummer, navn, bank eller reference";
+"See all" = "Se alle";
 "Select" = "Vælg";
 "Select a bank account in the cheque currency." = "Vælg en bankkonto i checkens valuta.";
 "Select a chequebook for this account." = "Vælg en checkbog til denne konto.";
@@ -486,7 +486,7 @@
 "Syncing" = "Synkronisering";
 "System" = "System";
 "Tap a day to add an outgoing cheque with this due date." = "Tryk på en dag for at tilføje en udgående check med denne forfaldsdato.";
-"Terms of use" = "Brugsbetingelser for hjemmesiden";
+"Terms of use" = "Brugsvilkår";
 "The 30-day restore period has ended." = "Gendannelsesperioden på 30 dage er udløbet.";
 "The actual payment or collection date cannot be before the issue date." = "Den faktiske betalings- eller inddrivelsesdato kan ikke være før udstedelsesdatoen.";
 "The actual payment or collection date cannot be in the future." = "Den faktiske betalings- eller indsamlingsdato kan ikke være i fremtiden.";

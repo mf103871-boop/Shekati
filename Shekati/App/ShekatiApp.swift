@@ -24,8 +24,8 @@ struct ShekatiApp: App {
             startupError = failure
             let testDefaults = UserDefaults(suiteName: "com.shekati.ui-testing")!
             testDefaults.removePersistentDomain(forName: "com.shekati.ui-testing")
-            let screenshotLocale = CommandLine.arguments.contains("--store-screens") ? UserDefaults.standard.string(forKey: "ShekatiStoreLocale") : nil
-            testDefaults.set(screenshotLocale ?? (CommandLine.arguments.contains("--arabic") ? "ar" : "en"), forKey: "language")
+            let requestedLocale = UserDefaults.standard.string(forKey: "ShekatiStoreLocale")
+            testDefaults.set(requestedLocale ?? (CommandLine.arguments.contains("--arabic") ? "ar" : "en"), forKey: "language")
             testDefaults.set([Int](), forKey: "reminderOffsets")
             let appState = AppState(localOnlyReason: "UI test storage", defaults: testDefaults)
             if let built {

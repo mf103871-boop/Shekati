@@ -86,7 +86,7 @@
 "Cheque books" = "支票簿";
 "Cheque continuation" = "支票繼續";
 "Cheque date" = "日期";
-"Cheque details" = "支票的細節";
+"Cheque details" = "支票明細";
 "Cheque details and photos are stored on this iPhone. When iCloud is available, they sync to your private Apple account." = "支票詳細信息和照片存储在此 iPhone 上。 iCloud 可用时,它们会同步到您的私人 Apple 帐户。";
 "Cheque due soon" = "支票很快到期";
 "Cheque due today" = "支票今天到期";
@@ -208,7 +208,7 @@
 "Forecast duration" = "預測時間";
 "Free days" = "休息日";
 "Free due dates" = "免費的到期日";
-"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "免費版包括一個帳戶和十張活躍支票。 您的記錄仍可閱讀、關閉和輸出。";
+"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "免費版可管理一個銀行帳戶和十張處理中的支票。你仍可檢視現有紀錄、結清支票或匯出紀錄。";
 "From" = "從";
 "From date" = "從日期";
 "Front" = "正面";
@@ -374,7 +374,7 @@
 "Reminder options" = "提醒選項";
 "Reminder time" = "提醒時間";
 "Reminders" = "提醒";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "提醒會在此設備上安排。 你可以控制權限、時間和是否在警報中顯示支票詳細信息。";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "提醒會在這部裝置上排程。你可以選擇是否允許通知、何時提醒，以及通知中是否顯示支票明細。";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "提醒覆蓋有限的時間。 在覆蓋結束前打開應用程式,以准备其余部分。";
 "Reminders disabled" = "已禁用提醒";
 "Reminders enabled" = "啟用提醒";
@@ -434,7 +434,7 @@
 "Scheduled notifications" = "預定通知";
 "Search currencies" = "搜尋貨幣";
 "Search number, bank or name" = "搜尋號碼、銀行或名稱";
-"Search number, name, bank or reference" = "搜尋號碼、名稱、銀行或參考";
+"Search number, name, bank or reference" = "依號碼、名稱、銀行或參考編號搜尋";
 "See all" = "看到所有";
 "Select" = "選擇";
 "Select a bank account in the cheque currency." = "選擇支票貨幣的銀行帳戶";
@@ -462,7 +462,7 @@
 "Show cheques" = "展示支票";
 "Showing the first 200 rows. The counts include every row." = "顯示前200行 ， 數字包括每一行 。";
 "Shown amount" = "顯示的數量";
-"Shown cheques" = "顯示支票";
+"Shown cheques" = "已顯示的支票";
 "Shown incoming" = "顯示進入";
 "Shown outgoing" = "顯示出來的";
 "Sign in to iCloud to sync" = "登入 iCloud 以同步";
@@ -538,7 +538,7 @@
 "Total exceeds supported range" = "總數超過支持範圍";
 "Total outstanding cheques" = "未清支票總數";
 "Total unavailable" = "總數";
-"Track unlimited active cheques across your bank accounts." = "追蹤無限活躍支票跨過你的銀行帳戶。";
+"Track unlimited active cheques across your bank accounts." = "可在各個銀行帳戶中追蹤處理中的支票，數量不限。";
 "Track what you owe and what you will collect, with timely reminders and everything in one place." = "跟蹤您欠的款項和將要收取的款項,並及時提醒您。";
 "Try another search or clear the filters." = "請嘗試其他搜索或清除過濾器。";
 "Unable to open your records" = "未能打開你的記錄";

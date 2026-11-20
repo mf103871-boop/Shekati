@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Kontantstrømsprognoser og avanserte rapporter";
 "Cash forecast" = "Likviditetsprognose";
 "Change status" = "Endre status";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Fornyes automatisk til det avsluttes i Apple-kontoen din.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Beløpet belastes ved kjøp. Abonnementet fornyes automatisk til du sier det opp i Apple-kontoen din.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Kontroller hvert forslag mot sjekken din. Ingenting lagres før du trykker på Lagre.";
 "Check iCloud status" = "Sjekk iCloud-status";
 "Check the account name and opening balance." = "Sjekk kontonavnet og åpningssaldoen.";
@@ -86,7 +86,7 @@
 "Cheque books" = "Sjekkbøker";
 "Cheque continuation" = "Fortsettelsessjekk";
 "Cheque date" = "Sjekkdato";
-"Cheque details" = "Sjekk detaljer";
+"Cheque details" = "Sjekkdetaljer";
 "Cheque details and photos are stored on this iPhone. When iCloud is available, they sync to your private Apple account." = "Sjekkinformasjon og bilder lagres på denne iPhone-enheten, og når iCloud er tilgjengelig, synkroniseres de med den private Apple-kontoen din.";
 "Cheque due soon" = "Sjekk forfaller snart";
 "Cheque due today" = "Sjekk forfaller i dag";
@@ -309,7 +309,7 @@
 "Open the app before" = "Åpne appen før";
 "Open the app before this time to renew the queue. Later reminders are not yet covered." = "Åpne appen før dette tidspunktet for å fornye køen. Senere påminnelser er ennå ikke dekket.";
 "Opening backup" = "Åpner sikkerhetskopi";
-"Opening balance" = "Åpningsbalanse";
+"Opening balance" = "Inngående saldo";
 "Order" = "Rekkefølge";
 "Original amount" = "Opprinnelig beløp";
 "Outgoing" = "Utstedte";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "Forhåndsvis påminnelsesmelding";
 "Previous month" = "Forrige måned";
 "Privacy" = "Personvern";
-"Privacy policy" = "Personvern og cookies";
+"Privacy policy" = "Personvernerklæring";
 "Read details from front image" = "Les detaljer fra frontbilde";
 "Reason" = "Årsak";
 "Recently Deleted" = "Nylig slettet";
@@ -374,7 +374,7 @@
 "Reminder options" = "Påminnelsesvalg";
 "Reminder time" = "Påminnelsestidspunkt";
 "Reminders" = "Påminnelser";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Du kontrollerer tillatelse, tidspunkt og om sjekkdetaljer vises i varsler. Du kan også endre påminnelser for å tilpasse dem etter dine behov.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Påminnelsene planlegges på denne enheten. Du bestemmer om varsler skal tillates, når de vises, og om de inneholder opplysninger om sjekken.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Påminnelser dekker en begrenset periode, så åpne appen før dekningen slutter for å forberede resten.";
 "Reminders disabled" = "Påminnelser slått av";
 "Reminders enabled" = "Påminnelser slått på";
@@ -435,7 +435,7 @@
 "Search currencies" = "Søk etter valutaer";
 "Search number, bank or name" = "Søk nummer, bank eller navn";
 "Search number, name, bank or reference" = "Søk nummer, navn, bank eller referanse";
-"See all" = "Se alle innlegg";
+"See all" = "Se alle";
 "Select" = "Velg";
 "Select a bank account in the cheque currency." = "Velg en bankkonto i sjekkvalutaen.";
 "Select a chequebook for this account." = "Velg et sjekkhefte for denne kontoen.";
@@ -486,7 +486,7 @@
 "Syncing" = "Synkroniserer";
 "System" = "System";
 "Tap a day to add an outgoing cheque with this due date." = "Trykk på en dag for å legge til en utgående sjekk med denne forfallsdatoen.";
-"Terms of use" = "Bruksvilkår for nettstedet";
+"Terms of use" = "Bruksvilkår";
 "The 30-day restore period has ended." = "Gjenopprettingsperioden på 30 dager er avsluttet.";
 "The actual payment or collection date cannot be before the issue date." = "Den faktiske betalings- eller innkrevingsdatoen kan ikke være før utstedelsesdatoen.";
 "The actual payment or collection date cannot be in the future." = "Den faktiske betalings- eller innkrevingsdatoen kan ikke være i fremtiden.";

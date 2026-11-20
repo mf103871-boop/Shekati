@@ -1,6 +1,6 @@
 "1 day before" = "1 gün önce";
 "3 days before" = "3 gün önce";
-"30 days" = "30 gün.";
+"30 days" = "30 gün";
 "60 days" = "60 gün";
 "A clear view of your next commitments." = "Bir sonraki görevlerinize açık bir bakış.";
 "A fresh start" = "Yeni bir başlangıç";
@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Para akış tahminleri ve ileri raporlar";
 "Cash forecast" = "Nakit akışı tahmini";
 "Change status" = "Durumu değiştir";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Apple Hesabınızda iptal edilmesine kadar otomatik olarak yenilenir.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Ücret satın alma sırasında tahsil edilir. Apple Hesabınızdan iptal edene kadar aboneliğiniz otomatik olarak yenilenir.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Her öneriyi çekinizle karşılaştırın. Kaydet’e basmayınca hiçbir şey kaydedilmeyecek.";
 "Check iCloud status" = "iCloud durumunu kontrol et";
 "Check the account name and opening balance." = "Hesap adını ve açılış bilançosunu kontrol et.";
@@ -86,7 +86,7 @@
 "Cheque books" = "Çek defterleri";
 "Cheque continuation" = "Çeki devam ediyor.";
 "Cheque date" = "Tarihi";
-"Cheque details" = "Çeki detayları";
+"Cheque details" = "Çek ayrıntıları";
 "Cheque details and photos are stored on this iPhone. When iCloud is available, they sync to your private Apple account." = "Çeki detayları ve fotoğraflar bu iPhone’da saklanmaktadır. iCloud kullanılabilir olduğunda, bunlar kişisel Apple hesabınızla senkronize edilir.";
 "Cheque due soon" = "Çeki yakında ödeyeceksin.";
 "Cheque due today" = "Çeki bugün ödeyeceksin.";
@@ -133,7 +133,7 @@
 "Correct last action" = "Son eylemi düzelt";
 "Could not complete operation" = "Operasyon tamamlanamadı";
 "Could not load subscription prices. Please try again." = "Üyelik fiyatları yüklenemedi. Lütfen tekrar deneyin.";
-"Could not restore purchases. Please try again." = "Alınanlar geri alınamadı. Lütfen tekrar deneyin.";
+"Could not restore purchases. Please try again." = "Satın alımlar geri yüklenemedi. Lütfen tekrar deneyin.";
 "Could not save changes" = "Değişiklikler kaydedilemedi";
 "Could not save changes." = "Değişiklikler kaydedilemedi.";
 "Could not unlock. Try again using biometrics or your device passcode." = "Kilidi açılamadı. Biometrik veya cihaz şifresiyle tekrar deneyin.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Çeki hatırlatmalarını almak için bildirimleri etkinleştir.";
 "Endorse cheque" = "Çeki ciro et";
 "Endorsed" = "Ciro edildi";
-"Endorsements, partial settlements and replacements" = "İmzalar, kısmi anlaşmalar ve değiştirmeler";
+"Endorsements, partial settlements and replacements" = "Çek ciroları, kısmi ödemeler ve çek değişimleri";
 "Enter a positive amount and the date written on the cheque." = "Pozitif bir miktar ve çek üzerinde yazılmış tarihi gir.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Para biriminin ondalık yerlerini kullanarak sıfırdan büyük geçerli bir miktar giriniz.";
 "Enter a whole number of days from 1 to 365." = "1 ile 365 arasında bir tam gün sayısını giriniz.";
@@ -374,7 +374,7 @@
 "Reminder options" = "Hatırlatma seçenekleri";
 "Reminder time" = "Hatırlatma zamanı";
 "Reminders" = "Hatırlatmalar";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Bu cihazda hatırlatmalar planlanmıştır. İzin, zamanlama ve çek detaylarının uyarılarda görünüp görünmediğini siz kontrol edersiniz.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Hatırlatmalar bu cihazda planlanır. Bildirimlere izin verilip verilmeyeceğini, ne zaman gösterileceğini ve çek ayrıntılarını içerip içermeyeceğini siz seçersiniz.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Hatırlatmalar sınırlı bir süre için geçerlidir. Geri kalanını hazırlamak için uygulamayı kapsam sona ermeden aç.";
 "Reminders disabled" = "Hatırlatmalar etkinleştirildi";
 "Reminders enabled" = "Hatırlatmalar etkinleştirildi";
@@ -397,7 +397,7 @@
 "Restore backup" = "Yedeklemeyi geri getir";
 "Restore deleted cheques within 30 days. After that, only permanent deletion is available." = "Sililmiş çekleri 30 gün içinde geri getir. Bundan sonra sadece kalıcı silme mümkündür.";
 "Restore preview" = "Önizlemeyi Geri Yükle";
-"Restore purchases" = "Alışverişleri geri al";
+"Restore purchases" = "Satın alımları geri yükle";
 "Restore reminder preferences" = "Hatırlatma tercihlerini geri yükle";
 "Restore reviewed backup" = "Gözden geçirilmiş yedeklemeyi geri getir";
 "Restore this backup?" = "Bu yedeklemeyi geri yükle?";

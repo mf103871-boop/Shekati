@@ -12,7 +12,8 @@ final class SubscriptionPurchaseScreenTests: XCTestCase {
 
         XCUIDevice.shared.orientation = .portrait
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "-AppleLanguages", "(en-US)", "-AppleLocale", "en_US"]
+        app.launchArguments = ["--ui-testing", "-ShekatiStoreLocale", "en-US",
+                               "-AppleLanguages", "(en-US)", "-AppleLocale", "en_US"]
         app.launch()
         let chooseCurrency = app.buttons["chooseCurrency"]
         XCTAssertTrue(chooseCurrency.waitForExistence(timeout: 12))
@@ -28,6 +29,7 @@ final class SubscriptionPurchaseScreenTests: XCTestCase {
         XCTAssertTrue(annual.exists)
         XCTAssertTrue(monthly.label.contains("4.99"), monthly.label)
         XCTAssertTrue(annual.label.contains("39.99"), annual.label)
+        XCTAssertTrue(app.staticTexts["Track unlimited active checks across your bank accounts."].exists)
         XCTAssertTrue(app.buttons["Restore purchases"].exists)
         attachNativeScreenshot(in: app, name: "Shekati-Plus-US-review")
     }
