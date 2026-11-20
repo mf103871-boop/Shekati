@@ -7,7 +7,7 @@ import ShekatiCore
 struct DashboardView: View {
     @Environment(AppState.self) private var app
     @EnvironmentObject private var plus: ShekatiPlusStore
-    @Query(filter: #Predicate<ChequeRecord> { $0.deletedAt == nil }) private var records: [ChequeRecord]
+    @Query private var records: [ChequeRecord]
     @Query(sort: \BankAccountRecord.name) private var accounts: [BankAccountRecord]
     @Query private var events: [LedgerEventRecord]
     @AppStorage("shekati.dashboardAccount") private var selectedID = ""
@@ -20,7 +20,7 @@ struct DashboardView: View {
 
     private func upcoming(_ audit: ChequeAudit) -> [ChequeRecord] {
         records.filter { record in
-            guard record.bankAccountID == account?.id, !audit.disputed.contains(record.id), let position = audit.positions[record.id] else { return false }
+            guard record.isActive, record.bankAccountID == account?.id, !audit.disputed.contains(record.id), let position = audit.positions[record.id] else { return false }
             return position.isOpen && position.state != .draft && position.state != .endorsed
         }.sorted { ($0.dueDateISO, $0.number) < ($1.dueDateISO, $1.number) }
     }
@@ -93,7 +93,7 @@ struct DashboardView: View {
                 if upcoming.isEmpty {
                     Text(app.tr("No outstanding cheques")).foregroundStyle(.secondary)
                 }
-                if let account, records.contains(where: { $0.bankAccountID == nil }) {
+                if let account, records.contains(where: { $0.isActive && $0.bankAccountID == nil }) {
                     NavigationLink { UnlinkedChequeView(currency: account.currencyCode) } label: {
                         Label(app.tr("Review cheques without an account"), systemImage: "link.badge.plus")
                     }

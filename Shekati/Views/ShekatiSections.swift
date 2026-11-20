@@ -121,7 +121,7 @@ private struct PartyDirectoryView: View {
 @MainActor
 struct DueCalendarView: View {
     @Environment(AppState.self) private var app
-    @Query(filter: #Predicate<ChequeRecord> { $0.deletedAt == nil }) private var records: [ChequeRecord]
+    @Query private var records: [ChequeRecord]
     @Query private var events: [LedgerEventRecord]
     @State private var selected = Date()
     @State private var month = Date()
@@ -151,7 +151,7 @@ struct DueCalendarView: View {
     var body: some View {
         let audit = ChequeAudit(records: records, events: events)
         let positions = audit.positions
-        let validRecords = records.filter { positions[$0.id] != nil || audit.disputed.contains($0.id) }
+        let validRecords = records.filter { $0.isActive && (positions[$0.id] != nil || audit.disputed.contains($0.id)) }
         let dayRecords = self.dayRecords(from: validRecords)
         let grouped = Dictionary(grouping: validRecords, by: { $0.dueDateISO })
         ScrollView {
