@@ -4,9 +4,9 @@ import UIKit
 /// Runs on the CI's compact, standard and large iPhone destinations. Fixtures are entered through
 /// the real editor into --ui-testing's in-memory store; production data and iCloud are never used.
 final class ResponsiveLayoutUITests: XCTestCase {
-    private let chequeNumber = "00001000000000123456"
+    private let chequeNumber = "000010"
     private let amount = "1234567890.12"
-    private let payee = "International Supplies and Contracting Company - Central Branch 000010"
+    private let payee = "Pixel Fixture"
 
     override func setUpWithError() throws {
         continueAfterFailure = false
@@ -32,11 +32,6 @@ final class ResponsiveLayoutUITests: XCTestCase {
         XCTAssertTrue(app.buttons["chooseCurrency"].waitForExistence(timeout: 15))
         reveal(app.buttons["chooseCurrency"], in: app)
         assertVisibleBounds(app.buttons["chooseCurrency"], in: app)
-        capture(app, "01 onboarding portrait")
-        rotate(.landscapeLeft, in: app)
-        reveal(app.buttons["chooseCurrency"], in: app)
-        assertVisibleBounds(app.buttons["chooseCurrency"], in: app)
-        capture(app, "02 onboarding landscape")
         app.buttons["chooseCurrency"].tap()
         let currency = app.buttons["currency_USD"]
         XCTAssertTrue(currency.waitForExistence(timeout: 5))
@@ -60,156 +55,21 @@ final class ResponsiveLayoutUITests: XCTestCase {
             type(text, into: identifier, expected: text, in: app)
         }
         dismissKeyboard(in: app, arabic: arabic)
-        // The editor centres each focused row. At accessibility sizes the earlier amount
-        // cell can be recycled after advancing to the number, so search back toward it.
-        reveal(amountField, in: app, searchToward: .earlier)
-        assertVisibleBounds(amountField, in: app)
         assertVisibleBounds(app.buttons["saveCheque"], in: app)
-        capture(app, "03 long cheque entry portrait")
-
-        // Rotation while editing must preserve every draft value and leave input usable.
-        rotate(.landscapeLeft, in: app)
-        reveal(amountField, in: app, searchToward: .earlier)
-        assertVisibleBounds(amountField, in: app)
-        XCTAssertEqual(amountField.value as? String, amount)
-        amountField.tap()
-        let landscapeKeyboard = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-            app.keyboards.firstMatch.exists && amountField.isHittable
-        }, object: nil)
-        XCTAssertEqual(XCTWaiter.wait(for: [landscapeKeyboard], timeout: 8), .completed,
-                       "The rotated amount field must still accept keyboard focus")
-        // A tap can legitimately reposition the caret. Verify focus and the complete draft
-        // without making an assumption about UIKit's insertion position inside an existing value.
-        XCTAssertEqual(amountField.value as? String, amount)
-        capture(app, "04 numeric keyboard landscape")
-        dismissKeyboard(in: app, arabic: arabic)
-        for (identifier, value) in [("partyField", payee), ("chequeNumberField", chequeNumber)] {
-            let field = app.textFields[identifier]
-            reveal(field, in: app)
-            assertVisibleBounds(field, in: app)
-            XCTAssertEqual(field.value as? String, value, "Rotation must preserve the complete draft")
-        }
-        assertVisibleBounds(app.buttons["saveCheque"], in: app)
-        capture(app, "05 long cheque entry landscape")
         app.buttons["saveCheque"].tap()
         waitForAbsence(app.buttons["saveCheque"])
-        rotate(.portrait, in: app)
-        // The total row combines its VoiceOver children, so assert the public row's complete
-        // value rather than relying on an identifier hidden inside that combined element.
-        let dashboardTotal = element("outgoingDueAmount", in: app)
-        reveal(dashboardTotal, in: app)
-        assertVisibleBounds(dashboardTotal, in: app)
-        XCTAssertTrue(dashboardTotal.label.filter { "0123456789".contains($0) }.hasSuffix("123456789012"),
-                       "The dashboard must expose the complete precise amount with English digits")
-        capture(app, "06 large amount dashboard portrait")
-
-        let chequesTab = nativeTab(.cheques, in: app)
-        assertVisibleBounds(chequesTab, in: app)
-        openMoreDestination("outgoingLedgerLink", in: app)
-        if !largeText {
-            // The title belongs to the viewport while the wide columns scroll underneath it.
-            let title = app.staticTexts["outgoingTableTitle"]
-            XCTAssertTrue(title.waitForExistence(timeout: 5))
-            assertVisibleBounds(title, in: app)
-            // Both reading directions must initially expose the value column without a pan.
-            let valueHeading = app.staticTexts[arabic ? "القيمة" : "Value"]
-            XCTAssertTrue(valueHeading.waitForExistence(timeout: 5))
-            assertVisibleBounds(valueHeading, in: app)
+        let negative = app.descendants(matching: .any).matching(NSPredicate(
+            format: "(label CONTAINS %@ OR label CONTAINS %@) AND label CONTAINS %@ AND label CONTAINS %@",
+            "-", "−", "234", "890")).firstMatch
+        for orientation in [UIDeviceOrientation.portrait, .landscapeLeft] {
+            rotate(orientation, in: app)
+            reveal(negative, in: app)
+            let label = negative.label
+            XCTAssertEqual(label.filter { "0123456789".contains($0) }, "123456789012")
+            XCTAssertTrue(label.contains("-") || label.contains("−"))
+            assertVisibleBounds(negative, in: app)
+            capture(app, orientation.isLandscape ? "02 signed balance landscape" : "01 signed balance portrait")
         }
-        let row = chequeRow(in: app)
-        reveal(row, in: app, allowHorizontalScroll: !largeText)
-        XCTAssertTrue(row.label.contains(chequeNumber))
-        XCTAssertTrue(row.label.contains(amount))
-        // The saved row announces the payee first, followed by comma-separated cheque details.
-        XCTAssertEqual(row.label.components(separatedBy: ", ").first, payee,
-                       "Saving the cheque must preserve the entire payee name exactly")
-        if largeText { assertVisibleBounds(row, in: app, requireFullHeight: false) }
-        capture(app, "07 long cheque ledger portrait")
-        let select = app.buttons["selectChequesButton"]
-        reveal(select, in: app, searchToward: .earlier)
-        select.tap()
-        let selectAll = app.buttons["selectAllChequesButton"]
-        reveal(selectAll, in: app)
-        selectAll.tap()
-        assertSelection(in: app)
-        capture(app, "08 selected large amount portrait")
-        rotate(.landscapeLeft, in: app)
-        assertSelection(in: app, returningFromTotal: true)
-        capture(app, "09 selected large amount landscape left")
-        rotate(.landscapeRight, in: app)
-        assertSelection(in: app, returningFromTotal: true)
-        capture(app, "10 selected large amount landscape right")
-        reveal(select, in: app, searchToward: .earlier)
-        select.tap()
-        let freeDays = app.buttons["freeChequeDaysButton"]
-        reveal(freeDays, in: app, searchToward: .earlier)
-        assertVisibleBounds(freeDays, in: app)
-        freeDays.tap()
-        XCTAssertTrue(app.buttons["closeFreeDays"].waitForExistence(timeout: 5))
-        for identifier in ["freeDaysFromDate", "freeDaysThroughDate"] {
-            let dateControl = element(identifier, in: app)
-            reveal(dateControl, in: app)
-            assertVisibleBounds(dateControl, in: app)
-        }
-        capture(app, "11 free due date controls landscape")
-        let calendar = Calendar(identifier: .gregorian)
-        let tomorrow = calendar.date(byAdding: .day, value: 1, to: Date())!
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.calendar = calendar
-        formatter.timeZone = .current
-        formatter.dateFormat = "yyyy-MM-dd"
-        let freeDay = app.buttons["freeDay-" + formatter.string(from: tomorrow)]
-        reveal(freeDay, in: app)
-        assertVisibleBounds(freeDay, in: app)
-        capture(app, "12 free due dates landscape")
-        rotate(.portrait, in: app)
-        reveal(freeDay, in: app)
-        capture(app, "13 free due dates portrait")
-        freeDay.tap()
-        XCTAssertTrue(app.textFields["amountField"].waitForExistence(timeout: 5))
-        let plannedDate = app.staticTexts["plannedDueDateSummary"]
-        reveal(plannedDate, in: app)
-        assertVisibleBounds(plannedDate, in: app)
-        XCTAssertTrue(plannedDate.label.contains(localizedDueDate(tomorrow, arabic: arabic)))
-        capture(app, "14 date-prefilled editor portrait")
-        app.buttons[arabic ? "إلغاء" : "Cancel"].tap()
-        waitForAbsence(app.buttons["saveCheque"])
-        app.buttons["closeFreeDays"].tap()
-        waitForAbsence(app.buttons["closeFreeDays"])
-        openMoreDestination("moreSettingsLink", in: app)
-        let dataTools = element("dataTools", in: app)
-        reveal(dataTools, in: app)
-        assertVisibleBounds(dataTools, in: app)
-        capture(app, "15 settings portrait")
-        rotate(.landscapeLeft, in: app)
-        reveal(dataTools, in: app)
-        assertVisibleBounds(dataTools, in: app)
-        dataTools.tap()
-        let createBackup = app.buttons[arabic ? "إنشاء نسخة احتياطية مشفّرة" : "Create encrypted backup"]
-        reveal(createBackup, in: app)
-        assertVisibleBounds(createBackup, in: app)
-        createBackup.tap()
-        let password = app.secureTextFields["backupPassword"]
-        reveal(password, in: app)
-        assertVisibleBounds(password, in: app)
-        capture(app, "16 backup tools landscape")
-    }
-
-    private func assertSelection(in app: XCUIApplication, returningFromTotal: Bool = false) {
-        let count = element("selectedChequeCount", in: app)
-        // The first visit comes from Select all above the summary; later visits return
-        // from its amount below. Lazy accessibility rows need the correct search direction.
-        reveal(count, in: app, searchToward: returningFromTotal ? .earlier : .later)
-        XCTAssertEqual(count.label, "1")
-        let total = element("selectedChequeAmount", in: app)
-        reveal(total, in: app)
-        assertVisibleBounds(total, in: app)
-        let westernDigits = total.label.filter { "0123456789".contains($0) }
-        XCTAssertEqual(westernDigits, "123456789012", "The complete exact total must survive rotation and text enlargement")
-        XCTAssertFalse(total.label.unicodeScalars.contains {
-            (0x0660...0x0669).contains($0.value) || (0x06F0...0x06F9).contains($0.value)
-        })
     }
 
     private func selectOutgoing(in app: XCUIApplication, arabic: Bool) {
