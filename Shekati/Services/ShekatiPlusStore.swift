@@ -13,20 +13,34 @@ final class ShekatiPlusStore: ObservableObject {
     @Published private(set) var isBusy = false
     @Published private(set) var notice: String?
     private var listener: Task<Void, Never>?
-    private var refreshNumber = 0
+    private var refreshRevision = 0
+    private var activeRefresh: Task<Bool, Never>?
 
     init() {
         listener = Task { [weak self] in
             for await result in Transaction.updates {
                 guard let self, case .verified(let transaction) = result,
                       Self.productIDs.contains(transaction.productID) else { continue }
-                await self.refreshEntitlement()
+                await self.applyVerified(transaction)
                 await transaction.finish()
             }
         }
     }
 
     deinit { listener?.cancel() }
+
+    private func applyVerified(_ transaction: StoreKit.Transaction) async {
+        refreshRevision += 1
+        activeRefresh = nil
+        // StoreKit may deliver the newly signed purchase before currentEntitlements
+        // has incorporated it. A presently valid signed grant can be applied directly.
+        if Self.productIDs.contains(transaction.productID), transaction.revocationDate == nil,
+           !transaction.isUpgraded, let expiration = transaction.expirationDate, expiration > Date() {
+            isPlus = true
+        } else {
+            await refreshEntitlement()
+        }
+    }
 
     func refreshEntitlement() async {
         #if DEBUG && targetEnvironment(simulator)
@@ -35,17 +49,27 @@ final class ShekatiPlusStore: ObservableObject {
             return
         }
         #endif
-        refreshNumber += 1
-        let request = refreshNumber
-        var entitled = false
-        // StoreKit's signed current entitlements include eligible billing-grace periods.
-        for await result in Transaction.currentEntitlements {
-            guard case .verified(let transaction) = result,
-                  Self.productIDs.contains(transaction.productID),
-                  transaction.revocationDate == nil, !transaction.isUpgraded else { continue }
-            entitled = true
+        let refresh: Task<Bool, Never>
+        if let inFlight = activeRefresh {
+            refresh = inFlight
+        } else {
+            refreshRevision += 1
+            refresh = Task {
+                // StoreKit includes subscriptions in a billing grace period here.
+                for await result in StoreKit.Transaction.currentEntitlements {
+                    if case .verified(let transaction) = result,
+                       Self.productIDs.contains(transaction.productID),
+                       transaction.revocationDate == nil, !transaction.isUpgraded { return true }
+                }
+                return false
+            }
+            activeRefresh = refresh
         }
-        if request == refreshNumber { isPlus = entitled }
+        let revision = refreshRevision
+        let entitled = await refresh.value
+        guard revision == refreshRevision else { return }
+        isPlus = entitled
+        activeRefresh = nil
     }
 
     func loadProducts() async {
@@ -69,7 +93,7 @@ final class ShekatiPlusStore: ObservableObject {
         do {
             switch try await product.purchase() {
             case .success(.verified(let transaction)):
-                await refreshEntitlement()
+                await applyVerified(transaction)
                 await transaction.finish()
             case .success(.unverified(_, _)):
                 notice = "Apple could not verify this purchase."
