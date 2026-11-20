@@ -48,7 +48,7 @@ struct ChequeDetailView: View {
 
     private var activeDetail: some View {
         let position = BankingLedger.position(for: record, events: events)
-        ScrollView {
+        return ScrollView {
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 10) {
                     ViewThatFits(in: .horizontal) {
