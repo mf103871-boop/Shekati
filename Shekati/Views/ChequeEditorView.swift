@@ -178,6 +178,27 @@ struct ChequeEditorView: View {
     }
 
     var body: some View {
+        Group {
+            if hidesAmounts {
+                ContentUnavailableView {
+                    Label(app.tr("Amounts hidden"), systemImage: "eye.slash")
+                } actions: {
+                    Button(app.tr("Show amounts")) { hidesAmounts = false }
+                        .buttonStyle(.borderedProminent)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button(app.tr("Cancel")) { dismiss() }
+                    }
+                }
+            } else { editor }
+        }
+        .onChange(of: hidesAmounts) { _, hidden in
+            if hidden { ocrSuggestion = nil; showingScanner = false }
+        }
+    }
+
+    private var editor: some View {
         ScrollViewReader { scrollProxy in
         Form {
             essentialFields
@@ -681,6 +702,7 @@ struct ChequeEditorView: View {
 
     @MainActor
     private func recognizeFrontImage() async {
+        guard !hidesAmounts else { return }
         guard plus.isPlus else { showPlus = true; return }
         guard let data = frontImageData, let image = UIImage(data: data) else { return }
         guard !currency.isEmpty else {
@@ -690,7 +712,8 @@ struct ChequeEditorView: View {
         isReadingImage = true
         defer { isReadingImage = false }
         do {
-            ocrSuggestion = try await ChequeOCRService.recognize(image: image, currencyCode: currency, direction: direction)
+            let suggestion = try await ChequeOCRService.recognize(image: image, currencyCode: currency, direction: direction)
+            if !hidesAmounts { ocrSuggestion = suggestion }
         } catch {
             errorMessage = app.tr("The image could not be read. You can enter all details manually.")
         }
