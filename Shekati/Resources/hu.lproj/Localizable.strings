@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Adja hozzá az első csekket, hogy együtt tartsa a részleteket és emlékeztetőket.";
 "Adjustment" = "Kiigazítások";
 "All" = "Minden";
-"All and history" = "Történelem és történelem";
+"All and history" = "Mind, előzményekkel együtt";
 "All banks" = "Az összes bank";
 "All dates" = "Minden dátum";
 "All features included. One purchase. No subscription." = "Minden funkció benne van. Egy vásárlás. Nincs előfizetés.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Feltételezi, hogy a bejövő csekkeket a lejárati időpontban gyűjtik össze.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Próbálkozzon újra biometrikus azonosítással vagy az iPhone jelkódjával.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "A Shekati nem fér hozzá, és nem tárolja a biometrikus adatokat vagy az eszköz jelszavát.";
-"Back" = "Vissza!";
+"Back" = "Hátlap";
 "Backup" = "Biztonsági mentés";
 "Backup password" = "Biztonsági mentési jelszó";
 "Backup restored" = "A biztonsági mentés visszaállt";
@@ -58,7 +58,7 @@
 "Bank accounts" = "Bankszámlák";
 "Bank holidays" = "Banki ünnepnapok";
 "Bank region" = "Bank régió";
-"Banking calendar" = "Banki naptár 2018";
+"Banking calendar" = "Banki naptár";
 "Branch" = "Ágazat";
 "Branch (optional)" = "Bankfiók (nem kötelező)";
 "CSV contains cheque details without photos. It can be opened in Excel. Review the file before importing." = "A CSV fájl fénykép nélkül tartalmazza a csekk adatait, Excelben megnyitható. Importálás előtt ellenőrizze a fájlt.";
@@ -80,7 +80,7 @@
 "Check the details" = "Ellenőrizze a részleteket";
 "Checking iCloud" = "Az iCloud ellenőrzése";
 "Cheque" = "Csekk";
-"Cheque actions" = "Csekk akciók";
+"Cheque actions" = "Csekkműveletek";
 "Cheque book" = "Csekkfüzet";
 "Cheque book name" = "Csekkkönyv neve";
 "Cheque books" = "Csekkfüzetek";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Titkosított biztonsági mentés létrehozása";
 "Currency" = "Pénznem";
 "Currency cannot change while any saved cheque exists, including history." = "A pénznem nem változtatható meg, amíg bármely mentett csekk létezik, beleértve az előzményeket is.";
-"Current account" = "Folyó fizetési mérleg";
+"Current account" = "Folyószámla";
 "Current holder" = "Jelenlegi csekktulajdonos";
 "Daily summary" = "Napi összefoglaló";
 "Daily summary is enabled; no individual reminder days are selected." = "A napi összefoglaló engedélyezve van, nincsenek kiválasztva egyedi emlékeztető napok.";
@@ -317,9 +317,9 @@
 "Outgoing cheque ledger" = "Kimenő csekkkönyv";
 "Outgoing cheques you add appear here in date order." = "A hozzáadott kimenő csekkek itt dátum szerinti sorrendben jelennek meg.";
 "Outgoing due within 7 days" = "7 napon belül esedékes kiállított csekkek";
-"Outstanding" = "Kiemelt";
+"Outstanding" = "Kiegyenlítetlen";
 "Outstanding cheques" = "Kifizetetlen csekkek";
-"Outstanding only" = "Csak kiemelkedő";
+"Outstanding only" = "Csak kiegyenlítetlenek";
 "Overdue" = "Lejárt";
 "Overdue by 1 day" = "1 nappal később";
 "Overdue by 2 days" = "2 nappal később";

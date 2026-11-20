@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "വിവരങ്ങളും ഓര്‍മ്മപ്പെടുത്തലുകളും ഒരുമിച്ചു സൂക്ഷിക്കുന്നതിനായി നിങ്ങളുടെ ആദ്യത്തെ ചെക്ക് ചേര്‍ക്കുക.";
 "Adjustment" = "ക്രമീകരണം";
 "All" = "എല്ലാം";
-"All and history" = "എല്ലാം, ചരിത്രം";
+"All and history" = "ചരിത്രം ഉൾപ്പെടെ എല്ലാം";
 "All banks" = "എല്ലാ ബാങ്കുകളും";
 "All dates" = "എല്ലാ തീയതികളും";
 "All features included. One purchase. No subscription." = "എല്ലാ ഫീച്ചറുകളും ഉള്‍പ്പെടുത്തിയിരിക്കുന്നു. ഒരു വാങ്ങല്‍. സബ്സ്ക്രൈബ് ചെയ്യേണ്ടതില്ല.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "വരാനിരിക്കുന്ന ചെക്കുകള്‍ അവരുടെ കാലാവധി തീയതികളില്‍ ശേഖരിക്കപ്പെടുമെന്ന് കരുതുന്നു.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "തിരിച്ചറിയല്‍ പരാജയപ്പെട്ടു. ബയോമെട്രിക്സ് അല്ലെങ്കില്‍ നിങ്ങളുടെ ഐഫോണ്‍ പാസ്വേര്‍ഡ് ഉപയോഗിച്ച് വീണ്ടും ശ്രമിക്കുക.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "ആധികാരികത ഉറപ്പാക്കല്‍ ഐഒഎസ് കൈകാര്യം ചെയ്യുന്നു. നിങ്ങളുടെ ബയോമെട്രിക് വിവരങ്ങള്‍ അല്ലെങ്കില്‍ ഡിവൈസ് പാസ്വേര്‍ഡ് ഷെക്കാറ്റി ലഭ്യമാക്കുകയോ സൂക്ഷിക്കുകയോ ചെയ്യില്ല.";
-"Back" = "പിറകിലേക്ക്";
+"Back" = "പിൻവശം";
 "Backup" = "ബാക്കപ്പ്";
 "Backup password" = "അടയാളവാക്കിന്റെ ബാക്കപ്പ്";
 "Backup restored" = "ബാക്കപ്പ് പുനസ്ഥാപിച്ചു";
@@ -80,7 +80,7 @@
 "Check the details" = "വിശദാംശങ്ങള്‍ പരിശോധിക്കുക";
 "Checking iCloud" = "ഐക്ലൂഡ് പരിശോധിക്കുന്നു";
 "Cheque" = "ചെക്ക്";
-"Cheque actions" = "പ്രവര്‍ത്തനങ്ങള്‍ പരിശോധിക്കുക";
+"Cheque actions" = "ചെക്കിന്റെ നടപടികൾ";
 "Cheque book" = "ചെക്ക്ബുക്ക്";
 "Cheque book name" = "ചെക്ക് ബുക്കിന്റെ പേരു്";
 "Cheque books" = "ചെക്ക് ബുക്കുകള്‍";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "എന്‍ക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പ് ഉണ്ടാക്കുക";
 "Currency" = "കറന്‍സി";
 "Currency cannot change while any saved cheque exists, including history." = "ചരിത്രവും ഉൾപ്പെടെ സൂക്ഷിച്ചിട്ടുള്ള ചെക്ക് നിലവിലുണ്ടെങ്കിൽ കാർഡ് മാറ്റാൻ കഴിയില്ല.";
-"Current account" = "നിലവിലുള്ള അക്കൌണ്ട്";
+"Current account" = "കറന്റ് അക്കൗണ്ട്";
 "Current holder" = "നിലവിലെ ചെക്ക് ഉടമ";
 "Daily summary" = "ദിവസേനയുള്ള ചുരുക്കപ്പട്ടിക";
 "Daily summary is enabled; no individual reminder days are selected." = "ദിവസേനയുള്ള ചുരുക്കപ്പട്ടിക പ്രാവര്‍ത്തികമാക്കിയിരിക്കുന്നു; ഓരോ ദിവസവും ഓര്‍മ്മിപ്പിക്കുവാന്‍ തിരഞ്ഞെടുത്തിട്ടില്ല.";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "ചെക്കുകളുടെ ക്രമം മാറ്റാന്‍ അവയെ ഇറക്കിവിടുക.";
 "Due date" = "കാലാവധി തീയതി";
 "Due dates" = "തീയതികള്‍";
-"Due today" = "ഇന്ന് തീരേണ്ടതു്";
+"Due today" = "ഇന്ന് അടയ്ക്കേണ്ടത്";
 "Edit" = "ചിട്ടപ്പെടുത്തുക";
 "Edit cheque" = "ചെക്ക് ചിട്ടപ്പെടുത്തുക";
 "Enable in iPhone Settings" = "ഐഫോണ്‍ സജ്ജീകരണങ്ങളില്‍ പ്രാവര്‍ത്തികമാക്കുക";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "ഒരു അക്കൗണ്ട്, പത്ത് ചെക്ക് എന്നിവ ഫീച്ചറുകളായി ലഭ്യമാണ്. നിങ്ങളുടെ റെക്കോര്‍ഡുകള്‍ വായിക്കാനും അടയ്ക്കാനും എക്സ്പോര്‍ട്ട് ചെയ്യാനും ലഭ്യമായി തുടരും.";
 "From" = "ല്‍ നിന്നും";
 "From date" = "തീയതി മുതല്‍";
-"Front" = "മുമ്പ്";
+"Front" = "മുൻവശം";
 "Front image" = "മുമ്പത്തെ ചിത്രം";
 "Hide amounts" = "അളവുകള്‍ ഒളിപ്പിക്കുക";
 "Hide notification details" = "അറിയിപ്പിന്റെ വിശദാംശങ്ങള്‍ അദൃശ്യമാക്കുക";
@@ -271,7 +271,7 @@
 "Next 7 days" = "അടുത്ത7ദിവസങ്ങള്‍";
 "Next cheques" = "അടുത്ത ചെക്കുകള്‍";
 "Next month" = "അടുത്ത മാസം";
-"Next scheduled reminder" = "അടുത്ത ക്രമീകരിച്ച ഓര്‍മ്മപ്പെടുത്തല്‍@ action";
+"Next scheduled reminder" = "അടുത്ത ക്രമീകരിച്ച ഓര്‍മ്മപ്പെടുത്തല്‍";
 "No active subscription was found." = "സജീവമായ സബ്സ്ക്രിപ്ഷന്‍ ലഭ്യമല്ല.";
 "No cheques due on this day" = "ഈ ദിവസം ചെക്കുകള്‍ തീരാന്‍ പോകുന്നില്ല";
 "No cheques yet" = "ഇതുവരെ ചെക്കുകള്‍ ഇല്ല";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "പുറത്തു് പോകുന്ന ചെക്ക് ലെഡ്ജര്‍";
 "Outgoing cheques you add appear here in date order." = "നിങ്ങള്‍ ചേര്‍ത്തിരിയ്ക്കുന്ന പുറത്തുപോകുന്ന ചെക്കുകള്‍ തീയതി ക്രമത്തില്‍ ഇവിടെ കാണിക്കുന്നു.";
 "Outgoing due within 7 days" = "7 ദിവസത്തിനുള്ളിൽ നൽകേണ്ട ചെക്കുകൾ";
-"Outstanding" = "നില്‍ക്കുന്ന";
+"Outstanding" = "തീർപ്പാക്കാത്തവ";
 "Outstanding cheques" = "ബാക്കിയുള്ള ചെക്കുകള്‍";
-"Outstanding only" = "നില്‍ക്കുന്നവ മാത്രം";
-"Overdue" = "കാലാവധി കഴിഞ്ഞ";
+"Outstanding only" = "തീർപ്പാക്കാത്തവ മാത്രം";
+"Overdue" = "അടവ് തീയതി കഴിഞ്ഞു";
 "Overdue by 1 day" = "1 ദിവസം വൈകിയിരിക്കുന്നു";
 "Overdue by 2 days" = "രണ്ടു ദിവസം വൈകിയിരിക്കുന്നു";
 "Page" = "താളുകള്‍";
@@ -347,12 +347,12 @@
 "Preview reminder message" = "ഓര്‍മ്മപ്പെടുത്തല്‍ സന്ദേശം കണ്ടുനോക്കുക";
 "Previous month" = "മുമ്പത്തെ മാസം";
 "Privacy" = "സ്വകാര്യത";
-"Privacy policy" = "സ്വകാര്യതയുടെ പോളിസി";
+"Privacy policy" = "സ്വകാര്യതാ നയം";
 "Read details from front image" = "മുമ്പത്തെ ചിത്രത്തില്‍ നിന്നും വിവരങ്ങള്‍ വായിക്കുക";
 "Reason" = "കാരണം";
 "Recently Deleted" = "അടുത്തിടെ നീക്കം ചെയ്തവ";
 "Recently deleted" = "അടുത്തിടെ നീക്കം ചെയ്തവ";
-"Recognized text" = "തിരിച്ചറിഞ്ഞ പദാവലി";
+"Recognized text" = "തിരിച്ചറിഞ്ഞ വാചകം";
 "Reconcile account" = "അക്കൌണ്ട് യോജിപ്പിക്കുക";
 "Record bank settlement" = "ബാങ്ക് തീർപ്പാക്കൽ രേഖപ്പെടുത്തുക";
 "Record collection" = "തുക ലഭിച്ചത് രേഖപ്പെടുത്തുക";
@@ -376,7 +376,7 @@
 "Reminders" = "ഓര്‍മ്മപ്പെടുത്തലുകള്‍";
 "Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "ഈ ഉപകരണത്തില്‍ റിമൈന്‍ഡറുകള്‍ ക്രമീകരിച്ചിരിക്കുന്നു. അനുവാദങ്ങള്‍, സമയം, അലാറമുകളില്‍ ചെക്ക് വിവരങ്ങള്‍ കാണിക്കണമോ എന്നത് നിങ്ങള്‍ നിയന്ത്രിക്കുന്നു.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "റിമൈന്‍ഡറുകള്‍ ഒരു പരിമിതമായ കാലയളവ് ഉള്‍ക്കൊള്ളുന്നു. അവശേഷിക്കുന്നതു് തയ്യാറാക്കാന്‍, പരിധി തീരുന്നതിനു് മുമ്പായി പ്രയോഗം തുറക്കുക.";
-"Reminders disabled" = "ഓര്‍മ്മപ്പെടുത്തലുകള്‍ പ്രവര്‍ത്തന രഹിതമാക്കിയിരിക്കുന്നു@ info: whatsthis";
+"Reminders disabled" = "ഓര്‍മ്മപ്പെടുത്തലുകള്‍ പ്രവര്‍ത്തന രഹിതമാക്കിയിരിക്കുന്നു";
 "Reminders enabled" = "ഓര്‍മ്മപ്പെടുത്തലുകള്‍ സജ്ജമാക്കിയിരിക്കുന്നു";
 "Reminders stop when a cheque is settled or cancelled." = "ഒരു ചെക്ക് ക്രമീകരിക്കപ്പെട്ടോ റദ്ദാക്കപ്പെട്ടോ വരുമ്പോള്‍ ഓര്‍മ്മപ്പെടുത്തലുകള്‍ നിര്‍ത്തുന്നു.";
 "Reminders stop when a cheque is settled or cancelled. Past reminder times are skipped." = "ഒരു ചെക്ക് പൂര്‍ത്തിയാകുകയോ റദ്ദാക്കുകയോ ചെയ്താല്‍ ഓര്‍മ്മപ്പെടുത്തലുകള്‍ നിര്‍ത്തുന്നു. കഴിഞ്ഞ ഓര്‍മ്മപ്പെടുത്തല്‍ സമയങ്ങള്‍ ഒഴിവാക്കപ്പെടുന്നു.";
@@ -486,7 +486,7 @@
 "Syncing" = "സിന്‍ക് ചെയ്യുന്നു";
 "System" = "സിസ്റ്റം";
 "Tap a day to add an outgoing cheque with this due date." = "ഈ തീയതിയില്‍ ഒരു ചെക്ക് അയയ്ക്കുന്നതിനായി ഒരു ദിവസം ക്ലിക്ക് ചെയ്യുക.";
-"Terms of use" = "ഉപയോഗത്തിന്റെ മാനദണ്ഡങ്ങള്‍";
+"Terms of use" = "ഉപയോഗ നിബന്ധനകൾ";
 "The 30-day restore period has ended." = "30 ദിവസത്തെ പുനസ്ഥാപന കാലാവധി കഴിഞ്ഞു.";
 "The actual payment or collection date cannot be before the issue date." = "യഥാർത്ഥ പണം നൽകിയോ, ശേഖരിച്ചതോ ആയ തീയതി ഇറങ്ങിയ തീയതിക്ക് മുമ്പായിരിക്കരുത്.";
 "The actual payment or collection date cannot be in the future." = "യഥാർത്ഥത്തിൽ ഈ പണം നൽകിയോ, അല്ലെങ്കിൽ ശേഖരിച്ചതോ ആയ തീയതി ഭാവിയിൽ ഉണ്ടാകാൻ പാടില്ല.";

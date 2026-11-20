@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "Gestió de xecs",
   "keywords": "xecs,comptes bancaris,calendari,recordatoris",
-  "description": "Registreu els xecs entrants i sortints, vegeu les seves dates de venciment i mantingueu les imatges dels vostres xecs junts.\n\nEl pla gratuït inclou un compte bancari, deu xecs actius, entrada manual, calendari i recordatoris.\n\nShekati Plus afegeix més comptes, xecs actius il·limitats, escaneig de xecs, endossats, liquidacions parcials, reemplaçaments i previsions de fluxos de caixa.\n\nEscolliu una subscripció mensual o anual. El preu local es mostra abans de la compra. Les subscripcions es renoven automàticament fins que no es cancel·lin al vostre compte Apple.\n\nPodeu llegir, tancar i exportar xecs existents després que acabi una subscripció.\n\nCondicions d’ús\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolítica de privacitat\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "description": "Registra els xecs rebuts i emesos, consulta els venciments i conserva una imatge de cada xec. Amb la versió gratuïta pots gestionar un compte bancari i fins a 10 xecs oberts. Inclou entrada manual, calendari i recordatoris.\n\nAmb Shekati Plus pots gestionar comptes i xecs sense aquests límits, escanejar xecs i registrar endossos, pagaments parcials i substitucions. Les previsions de tresoreria t’ajuden a veure si tindràs saldo suficient.\n\nPots triar una subscripció mensual o anual. Veuràs el preu local abans de comprar. La subscripció es renova automàticament fins que la cancel·lis al teu compte d’Apple. Quan caduqui, podràs continuar consultant, tancant i exportant els xecs que ja hagis registrat.\n\nCondicions d’ús\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolítica de privacitat\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {
@@ -17,9 +17,9 @@
     }
   },
   "screenshotHeadings": [
-    "El vostre compte",
+    "El vostre compte bancari",
     "Registre de xecs",
-    "Revisa els detalls escanejats · Shekati Plus",
+    "Reviseu les dades escanejades · Shekati Plus",
     "Detalls del xec",
     "Dates de venciment"
   ]

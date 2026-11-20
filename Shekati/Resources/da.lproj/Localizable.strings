@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Tilføj din første check for at holde oplysninger og påmindelser samlet.";
 "Adjustment" = "Justering";
 "All" = "Alle";
-"All and history" = "Historie og historie";
+"All and history" = "Alle, inkl. historik";
 "All banks" = "Alle banker";
 "All dates" = "Alle datoer";
 "All features included. One purchase. No subscription." = "Alle funktioner er inkluderet. Et køb. Intet abonnement.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Antager, at indgående checks bliver indsamlet på deres forfaldsdatoer.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Godkendelsen mislykkedes. Prøv igen med biometri eller adgangskoden til din iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Godkendelse håndteres af iOS. Shekati ikke får adgang til eller gemmer dine biometriske oplysninger eller enhedens adgangskode.";
-"Back" = "Tilbage";
+"Back" = "Bagside";
 "Backup" = "Sikkerhedskopi";
 "Backup password" = "Adgangskode til sikkerhedskopiering";
 "Backup restored" = "Backup gendannet";
@@ -80,7 +80,7 @@
 "Check the details" = "Tjek detaljerne";
 "Checking iCloud" = "Kontrollering af iCloud";
 "Cheque" = "Check";
-"Cheque actions" = "Check-aktioner";
+"Cheque actions" = "Handlinger for checken";
 "Cheque book" = "Checkhæfte";
 "Cheque book name" = "Checkbogsnavn";
 "Cheque books" = "Checkbøger";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Opret krypteret sikkerhedskopi";
 "Currency" = "Valuta";
 "Currency cannot change while any saved cheque exists, including history." = "Valuta kan ikke ændres, så længe en gemt check eksisterer, herunder historie.";
-"Current account" = "Løbende poster";
+"Current account" = "Lønkonto";
 "Current holder" = "Nuværende indehaver";
 "Daily summary" = "Daglig oversigt";
 "Daily summary is enabled; no individual reminder days are selected." = "Daglig oversigt er aktiveret; ingen individuelle påmindelsesdage er valgt.";
@@ -320,7 +320,7 @@
 "Outstanding" = "Udestående";
 "Outstanding cheques" = "Udestående checks";
 "Outstanding only" = "Kun udestående";
-"Overdue" = "Forsinket";
+"Overdue" = "Forfalden";
 "Overdue by 1 day" = "Forsinket med 1 dag";
 "Overdue by 2 days" = "Forsinket med 2 dage";
 "Page" = "Side";

@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Lisää ensimmäinen shekki, jotta voit pitää sen tiedot ja muistutukset yhdessä.";
 "Adjustment" = "Mukautus";
 "All" = "Kaikki";
-"All and history" = "Kaikki ja historia";
+"All and history" = "Kaikki, myös historia";
 "All banks" = "Kaikki pankit";
 "All dates" = "Kaikki päivämäärät";
 "All features included. One purchase. No subscription." = "Kaikki ominaisuudet sisältyvät hintaan. Yksi ostos. Ei tilausta.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Oletetaan, että tulevat shekit kerätään niiden eräpäivinä.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Todennus epäonnistui. Yritä uudelleen biometriikan tai iPhonen pääsykoodin avulla.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Todennus hoidetaan iOS:n kautta, eikä Shekati käytä tai tallenna biometrisiä tietojasi tai laitteen salasanaa.";
-"Back" = "Takaisin";
+"Back" = "Kääntöpuoli";
 "Backup" = "Varmuuskopiointi";
 "Backup password" = "Varmuuskopio salasana";
 "Backup restored" = "Varmuuskopio palautettu";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Salatun varmuuskopion luominen";
 "Currency" = "Valuutta";
 "Currency cannot change while any saved cheque exists, including history." = "Valuuttaa ei voi muuttaa, kun tallennettu sekki on olemassa, mukaan lukien historia.";
-"Current account" = "Vaihtotase";
+"Current account" = "Käyttötili";
 "Current holder" = "Nykyinen haltija";
 "Daily summary" = "Päivittäinen yhteenveto";
 "Daily summary is enabled; no individual reminder days are selected." = "Päivittäinen yhteenveto on käytössä, eikä yksittäisiä muistutuspäiviä ole valittu.";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Vedä sekkejä muuttaa niiden järjestystä.";
 "Due date" = "Eräpäivä";
 "Due dates" = "Eräpäivät";
-"Due today" = "Erääntynyt tänään";
+"Due today" = "Erääntyy tänään";
 "Edit" = "Muokkaa";
 "Edit cheque" = "Muokkaa sekkiä";
 "Enable in iPhone Settings" = "Ota käyttöön iPhonen asetuksissa";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Ilmainen sisältää yhden tilin ja kymmenen aktiivista sekkiä, joita voit lukea, sulkea ja viedä.";
 "From" = "Lähettäjä";
 "From date" = "Päivästä alkaen";
-"Front" = "Etuosa";
+"Front" = "Etupuoli";
 "Front image" = "Etusivu / Front image";
 "Hide amounts" = "Piilota määrät";
 "Hide notification details" = "Piilota ilmoituksen tiedot";
@@ -319,8 +319,8 @@
 "Outgoing due within 7 days" = "7 päivän kuluessa erääntyvät lähtevät šekit";
 "Outstanding" = "Maksettavaksi jääneet";
 "Outstanding cheques" = "Liikkeessä olevat sekit";
-"Outstanding only" = "Vain erääntyneet";
-"Overdue" = "Myöhästynyt";
+"Outstanding only" = "Vain avoimet";
+"Overdue" = "Erääntynyt";
 "Overdue by 1 day" = "1 päivä myöhässä";
 "Overdue by 2 days" = "2 päivää myöhässä";
 "Page" = "Sivu";

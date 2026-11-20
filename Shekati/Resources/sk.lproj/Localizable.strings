@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Pridajte prvý šek, aby ste mali všetky podrobnosti a pripomienky spolu.";
 "Adjustment" = "Úprava";
 "All" = "Všetko";
-"All and history" = "História a história";
+"All and history" = "Všetky vrátane histórie";
 "All banks" = "Všetky banky";
 "All dates" = "Všetky termíny";
 "All features included. One purchase. No subscription." = "Zahŕňa všetky funkcie. Jeden nákup. Žiadne predplatné.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Predpokladá sa, že prichádzajúce šeky sú vyzdvihnuté v ich dátumoch splatnosti.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Overenie zlyhalo. Skúste to znova pomocou biometrických údajov alebo kódu iPhonu.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Aplikácia Shekati nemá prístup k vašim biometrickým informáciám ani heslu zariadenia a neukladá ich.";
-"Back" = "Späť";
+"Back" = "Zadná strana";
 "Backup" = "Zálohovanie";
 "Backup password" = "Záložné heslo";
 "Backup restored" = "Záloha obnovená";
@@ -58,7 +58,7 @@
 "Bank accounts" = "Bankové účty";
 "Bank holidays" = "Bankové sviatky";
 "Bank region" = "Bankový región";
-"Banking calendar" = "Bankový kalendár 2018";
+"Banking calendar" = "Bankový kalendár";
 "Branch" = "Pobočka";
 "Branch (optional)" = "Pobočka (voliteľné)";
 "CSV contains cheque details without photos. It can be opened in Excel. Review the file before importing." = "CSV súbor obsahuje podrobnosti o šeku bez fotografií a dá sa otvoriť v Exceli. Pred importom si skontrolujte súbor.";
@@ -80,7 +80,7 @@
 "Check the details" = "Pozrite si podrobnosti";
 "Checking iCloud" = "Kontrola služby iCloud";
 "Cheque" = "Šek";
-"Cheque actions" = "Šek";
+"Cheque actions" = "Operácie so šekom";
 "Cheque book" = "Šeková knižka";
 "Cheque book name" = "Názov šekového účtu";
 "Cheque books" = "Šekové knižky";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Vytvorenie šifrovanej zálohy";
 "Currency" = "Mena";
 "Currency cannot change while any saved cheque exists, including history." = "Mena sa nemôže zmeniť, kým existuje uložený šek vrátane histórie.";
-"Current account" = "Běžný účet";
+"Current account" = "Bežný účet";
 "Current holder" = "Súčasný držiteľ šeku";
 "Daily summary" = "Denný súhrn";
 "Daily summary is enabled; no individual reminder days are selected." = "Denný súhrn je povolený; nie sú vybraté žiadne jednotlivé dni pripomienok.";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Free zahŕňa jeden účet a desať aktívnych šekov. Vaše záznamy zostávajú k dispozícii na čítanie, uzavretie a export.";
 "From" = "Od";
 "From date" = "Od dátumu";
-"Front" = "Predná časť";
+"Front" = "Predná strana";
 "Front image" = "Obrázok z prednej strany";
 "Hide amounts" = "Skryť množstvá";
 "Hide notification details" = "Skryť podrobnosti o oznámení";
@@ -317,7 +317,7 @@
 "Outgoing cheque ledger" = "Odchádzajúca šeková kniha";
 "Outgoing cheques you add appear here in date order." = "Odchádzajúce šeky, ktoré pridáte, sa zobrazia v poradí podľa dátumu.";
 "Outgoing due within 7 days" = "Vystavené šeky splatné do 7 dní";
-"Outstanding" = "Nesplatené";
+"Outstanding" = "Nevyrovnané";
 "Outstanding cheques" = "Nesplatené šeky";
 "Outstanding only" = "Len nevyrovnané";
 "Overdue" = "Po splatnosti";

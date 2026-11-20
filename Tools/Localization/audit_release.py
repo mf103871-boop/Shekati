@@ -12,6 +12,8 @@ RESOURCES = ROOT / "Shekati/Resources"
 RELEASE = ROOT / "release/worldwide"
 LINE = re.compile(r'^\s*("(?:[^"\\]|\\.)*")\s*=\s*("(?:[^"\\]|\\.)*")\s*;\s*$')
 TOKEN = r'"((?:[^"\\]|\\.)*)"'
+TRANSLATOR_ANNOTATION = re.compile(r"@\s*(?:info|option|action|label)\b|(?<=[^\x00-\x7f])(?:Name|Comment)$", re.I)
+CALENDAR_YEAR = re.compile(r"\b(?:19|20)\d{2}\b")
 
 def known_source_keys():
     required=set()
@@ -64,18 +66,25 @@ def inspect(require_release):
             ui = read_strings(bundle / "Localizable.strings")
             if ui.keys() != reference.keys():
                 raise ValueError(f"{len(reference.keys()-ui.keys())} missing, {len(ui.keys()-reference.keys())} extra UI keys")
+            for key, translated in ui.items():
+                if TRANSLATOR_ANNOTATION.search(translated):
+                    raise ValueError(f"Translator annotation in {key!r}")
+                if set(CALENDAR_YEAR.findall(translated)) - set(CALENDAR_YEAR.findall(reference[key])):
+                    raise ValueError(f"Unexpected calendar year in {key!r}")
             permissions = read_strings(bundle / "InfoPlist.strings")
             if set(permissions) != {"CFBundleDisplayName","NSFaceIDUsageDescription","NSCameraUsageDescription"}:
                 raise ValueError("Permission or display-name key mismatch")
             expected_name = "شيكاتي" if app == "ar" else "Shekati"
             metadata = json.loads((RELEASE/"metadata"/f"{store}.json").read_text(encoding="utf8"))
-            if metadata["name"] != expected_name or permissions["CFBundleDisplayName"] != expected_name:
+            if any(name != expected_name for name in (metadata["name"], permissions["CFBundleDisplayName"], ui["Shekati"])):
                 raise ValueError("Brand name mismatch")
             for field,unit,limit in [("subtitle","chars",30),("description","chars",4000),("keywords","bytes",100)]:
                 value = metadata[field]
                 length = len(value.encode("utf8")) if unit == "bytes" else len(value)
                 if not (0 < length <= limit):
                     raise ValueError(f"{field} has {length} {unit}; limit {limit}")
+                if TRANSLATOR_ANNOTATION.search(value):
+                    raise ValueError(f"Translator annotation in store {field}")
             for label, url in (
                 ("Terms of use", "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"),
                 ("Privacy policy", "https://mf103871-boop.github.io/Shekati/privacy.html"),
@@ -86,8 +95,13 @@ def inspect(require_release):
                 item=metadata["subscriptionLocalizations"][product]
                 if not (0<len(item["name"])<=30 and 0<len(item["description"])<=45):
                     raise ValueError(f"{product}: subscription name or description has invalid length")
-            if len(metadata["screenshotHeadings"])!=len(manifest["requiredScreens"]):
-                raise ValueError("Screenshot heading count mismatch")
+            headings = metadata["screenshotHeadings"]
+            if len(headings) != len(manifest["requiredScreens"]) or any(
+                not title.strip() or TRANSLATOR_ANNOTATION.search(title) for title in headings
+            ):
+                raise ValueError("Missing or damaged screenshot heading")
+            if ui["Shekati Plus"] not in headings[manifest["requiredScreens"].index("scan-review")]:
+                raise ValueError("Scan screenshot must identify the Plus feature")
             if require_release:
                 if entry["linguisticReview"] != "passed" or entry["nativeVisualReview"] != "passed":
                     raise ValueError("Linguistic and native UI reviewer evidence pending")

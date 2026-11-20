@@ -3,8 +3,8 @@
   "applicationLocale": "ro",
   "name": "Shekati",
   "subtitle": "Evidența cecurilor",
-  "keywords": "Cecuri,Conturi bancare deschise,calendar,Mementouri",
-  "description": "Înregistrați cecurile de intrare și ieșire, vedeți datele lor scadente și păstrați imaginile dvs. de verificare împreună.\n\nPlanul gratuit include un cont bancar, zece cecuri active, intrare manuală, un calendar și memento-uri.\n\nShekati Plus adaugă mai multe conturi, cecuri active nelimitate, scanarea de cecuri, aprobări, decontări parțiale, înlocuiri și previziuni ale fluxului de numerar.\n\nAlege un abonament lunar sau anual. Prețul local este afișat înainte de achiziționare. Abonamentele se reînnoiesc automat până când sunt anulate în contul Apple.\n\nPuteți citi, închide și exporta cecuri existente după terminarea unui abonament.\n\nTermeni de utilizare\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolitica de confidențialitate\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "keywords": "cecuri,conturi bancare,calendar,scadențe",
+  "description": "Înregistrați cecurile primite și emise, urmăriți scadențele și păstrați câte o fotografie pentru fiecare cec. Versiunea gratuită permite gestionarea unui cont bancar și a până la 10 cecuri deschise, cu introducere manuală, calendar și mementouri.\n\nCu Shekati Plus puteți gestiona oricâte conturi și cecuri doriți. Scanați cecuri, înregistrați giruri, plăți parțiale și cecuri de înlocuire și consultați prognoza fluxului de numerar.\n\nAlegeți un abonament lunar sau anual. Prețul local este afișat înainte de cumpărare. Abonamentul se reînnoiește automat până când îl anulați din contul Apple. După expirare puteți în continuare să consultați, să închideți și să exportați cecurile înregistrate.\n\nTermeni de utilizare\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolitica de confidențialitate\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {
@@ -17,10 +17,10 @@
     }
   },
   "screenshotHeadings": [
-    "Contul dvs. de utilizator",
-    "Registru de cecuri",
-    "Revizuirea detaliilor scanate · Shekati Plus",
-    "Detalii despre cec",
+    "Contul dvs. bancar",
+    "Registrul cecurilor",
+    "Verificați datele scanate · Shekati Plus",
+    "Detaliile cecului",
     "Datele scadente"
   ]
 }

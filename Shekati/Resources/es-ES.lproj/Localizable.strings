@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Añade tu primer cheque para mantener sus detalles y recordatorios juntos.";
 "Adjustment" = "Ajuste";
 "All" = "Todos";
-"All and history" = "Historia y historia";
+"All and history" = "Todos, incluido el historial";
 "All banks" = "Todos los bancos";
 "All dates" = "Todas las fechas";
 "All features included. One purchase. No subscription." = "Todas las funciones incluidas. Una compra. Sin suscripción.";
@@ -72,7 +72,7 @@
 "Cash forecast" = "Previsión de flujo de caja";
 "Change status" = "Cambiar el estado";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Se renueva automáticamente hasta que se cancela en tu cuenta de Apple.";
-"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "No se guardará nada hasta que toque Guardar. No se guardará nada hasta que toque Guardar.";
+"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Compare cada dato sugerido con su cheque. No se guardará nada hasta que toque Guardar.";
 "Check iCloud status" = "Comprobar el estado de iCloud";
 "Check the account name and opening balance." = "Revise el nombre de la cuenta y el saldo inicial.";
 "Check the amount, date and selected account." = "Compruebe el importe, la fecha y la cuenta seleccionada.";
@@ -80,7 +80,7 @@
 "Check the details" = "Comprueba los detalles";
 "Checking iCloud" = "Comprobación de iCloud";
 "Cheque" = "Cheque";
-"Cheque actions" = "Cheque acciones";
+"Cheque actions" = "Operaciones del cheque";
 "Cheque book" = "Libreta de cheques";
 "Cheque book name" = "Nombre del libro de cheques";
 "Cheque books" = "Libros de cheques";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Arrastre los cheques para cambiar su orden.";
 "Due date" = "Fecha de vencimiento";
 "Due dates" = "Fechas de vencimiento";
-"Due today" = "Vencido hoy";
+"Due today" = "Vence hoy";
 "Edit" = "Editar";
 "Edit cheque" = "Editar cheque";
 "Enable in iPhone Settings" = "Habilitar en Ajustes del iPhone";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "Libro mayor de cheques salientes";
 "Outgoing cheques you add appear here in date order." = "Los cheques salientes que añada aparecen aquí en orden de fecha.";
 "Outgoing due within 7 days" = "Cheques emitidos que vencen en 7 días";
-"Outstanding" = "Sumas pendientes";
+"Outstanding" = "Pendientes";
 "Outstanding cheques" = "Cheques pendientes";
 "Outstanding only" = "Solo pendientes";
-"Overdue" = "atrasado";
+"Overdue" = "Vencido";
 "Overdue by 1 day" = "Retraso de 1 día";
 "Overdue by 2 days" = "Retraso de 2 días";
 "Page" = "Página 1";

@@ -3,8 +3,8 @@
   "applicationLocale": "nl",
   "name": "Shekati",
   "subtitle": "Chequebeheer",
-  "keywords": "cheques,Bankrekeningen en bankrekeningnummers,kalender,herinneringen",
-  "description": "Registreer inkomende en uitgaande cheques, zie hun vervaldatums en houd uw chequebeelden bij elkaar.\n\nHet gratis plan omvat een bankrekening, tien actieve cheques, handmatige invoer, een kalender en herinneringen.\n\nShekati Plus voegt meer rekeningen, onbeperkt actieve cheques, cheque scannen, endorsements, gedeeltelijke afwikkelingen, vervangingen en cash flow prognoses.\n\nKies een maandelijks of jaarlijks abonnement. De lokale prijs wordt voor aankoop weergegeven en abonnementen worden automatisch verlengd totdat ze in je Apple Account worden geannuleerd.\n\nNadat een abonnement is afgelopen, kunt u bestaande cheques lezen, sluiten en exporteren.\n\nGebruiksvoorwaarden\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPrivacybeleid - 100%\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "keywords": "cheques,bankrekeningen,kalender,herinneringen",
+  "description": "Registreer ontvangen en uitgeschreven cheques, bekijk de vervaldatums en bewaar een foto van elke cheque. Gratis beheer je één bankrekening en maximaal 10 openstaande cheques. Handmatige invoer, de kalender en herinneringen zijn inbegrepen.\n\nMet Shekati Plus beheer je onbeperkt rekeningen en cheques. Scan cheques, leg overdrachten via endossement, deelbetalingen en vervangende cheques vast en bekijk je verwachte kasstroom.\n\nKies een maand- of jaarabonnement. Je ziet de lokale prijs vóór aankoop. Het abonnement wordt automatisch verlengd totdat je het opzegt via je Apple Account. Na afloop kun je bestaande cheques nog steeds bekijken, afsluiten en exporteren.\n\nGebruiksvoorwaarden\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPrivacybeleid - 100%\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {
@@ -17,10 +17,10 @@
     }
   },
   "screenshotHeadings": [
-    "Uw account aanmaken",
-    "Cheque register -",
+    "Uw bankrekening",
+    "Chequeregister",
     "Gescande details bekijken · Shekati Plus",
     "Details van de cheque",
-    "Vervaldatums"
+    "Vervaldata"
   ]
 }

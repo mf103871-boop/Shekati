@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Добавьте свой первый чек, чтобы сохранить его детали и напоминания вместе.";
 "Adjustment" = "Корректировка";
 "All" = "Все";
-"All and history" = "Все и история";
+"All and history" = "Все, включая историю";
 "All banks" = "Все банки";
 "All dates" = "Все даты";
 "All features included. One purchase. No subscription." = "Все функции включены. Одна покупка. Нет подписки.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Предполагается, что входящие чеки инкассированы по срокам их погашения.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Попробуйте еще раз, используя биометрические данные или пароль iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Аутентификация осуществляется iOS. Shekati не имеет доступа к вашей биометрической информации или паролю устройства и не хранит их.";
-"Back" = "Назад";
+"Back" = "Оборотная сторона";
 "Backup" = "Резервное копирование";
 "Backup password" = "Резервный пароль";
 "Backup restored" = "Резервное копирование восстановлено";
@@ -80,7 +80,7 @@
 "Check the details" = "Проверьте детали";
 "Checking iCloud" = "Проверка iCloud";
 "Cheque" = "Чек";
-"Cheque actions" = "Чек на акции";
+"Cheque actions" = "Операции с чеком";
 "Cheque book" = "Чековая книжка";
 "Cheque book name" = "Название чековой книжки";
 "Cheque books" = "Чековые книжки";
@@ -164,7 +164,7 @@
 "Descending" = "Убывающее";
 "Device lock unavailable" = "Блокировка устройства недоступна";
 "Different currencies found" = "Найдено различных валют";
-"Direction" = "Руководство";
+"Direction" = "Направление чека";
 "Discard" = "Отбросить";
 "Discard changes?" = "Отбросить изменения?";
 "Dismiss conflicting entry" = "Отклонить конфликтную запись";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Перетащите чеки, чтобы изменить их порядок.";
 "Due date" = "Срок платежа";
 "Due dates" = "Сроки";
-"Due today" = "Подлежит представлению сегодня";
+"Due today" = "Срок платежа сегодня";
 "Edit" = "Изменить";
 "Edit cheque" = "Редактировать чек";
 "Enable in iPhone Settings" = "Включить в настройках iPhone";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Бесплатный пакет включает один счет и десять активных чеков. Ваши записи остаются доступными для чтения, закрытия и экспорта.";
 "From" = "От";
 "From date" = "С даты";
-"Front" = "Фронт";
+"Front" = "Лицевая сторона";
 "Front image" = "Лицевая фотография";
 "Hide amounts" = "Скрыть суммы";
 "Hide notification details" = "Скрыть подробности уведомления";
@@ -317,9 +317,9 @@
 "Outgoing cheque ledger" = "Книга исходящих чеков";
 "Outgoing cheques you add appear here in date order." = "Исходящие чеки, которые вы добавляете, отображаются здесь в порядке даты.";
 "Outgoing due within 7 days" = "Выданные чеки к оплате в течение 7 дней";
-"Outstanding" = "Непогашенные обязательства";
+"Outstanding" = "Непогашенные";
 "Outstanding cheques" = "Непогашенные чеки";
-"Outstanding only" = "Только непогашенные обязательства";
+"Outstanding only" = "Только непогашенные";
 "Overdue" = "Просрочен";
 "Overdue by 1 day" = "Просрочен на 1 день";
 "Overdue by 2 days" = "Просрочен на 2 дня";
@@ -352,7 +352,7 @@
 "Reason" = "Причина";
 "Recently Deleted" = "Недавно удалённые";
 "Recently deleted" = "Недавно удалённые";
-"Recognized text" = "Признанный текст";
+"Recognized text" = "Распознанный текст";
 "Reconcile account" = "Выверка счета";
 "Record bank settlement" = "Зарегистрировать расчёт через банк";
 "Record collection" = "Записать получение средств";
@@ -367,7 +367,7 @@
 "Refresh upcoming reminders" = "Обновить предстоящие напоминания";
 "Refresh your cheque reminders" = "Обновить напоминания о чеках";
 "Reload prices" = "Цены на перезагрузку";
-"Remaining" = "Остальные";
+"Remaining" = "Остаток";
 "Remaining after payment" = "Остаток после платежа";
 "Remaining amount" = "Остающаяся сумма";
 "Remind me in 1 hour" = "Напомнить через 1 час";

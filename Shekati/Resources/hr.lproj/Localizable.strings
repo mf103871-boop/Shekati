@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Dodajte prvi ček kako biste zajedno čuvali njegove pojedinosti i podsjetnike.";
 "Adjustment" = "Prilagodba";
 "All" = "Sve";
-"All and history" = "Sve i povijest";
+"All and history" = "Svi, uključujući povijest";
 "All banks" = "Sve banke";
 "All dates" = "Svi datumi";
 "All features included. One purchase. No subscription." = "Sve značajke uključene. Jedna kupnja. Nema pretplate.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Pretpostavlja da su dolazni čekovi naplaćeni na datume dospijeća.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Pokušajte ponovno pomoću biometrijskih podataka ili lozinke iPhone uređaja.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Shekati ne pristupa ili pohranjuje vaše biometrijske podatke ili zaporku uređaja, a također ne koristi vašu e-poštu za provjeru autentičnosti.";
-"Back" = "Natrag.";
+"Back" = "Poleđina";
 "Backup" = "Sigurnosna kopija";
 "Backup password" = "Pričuvna zaporka";
 "Backup restored" = "Sigurnosna kopija vraćena";
@@ -80,7 +80,7 @@
 "Check the details" = "Provjerite detalje";
 "Checking iCloud" = "Provjera iClouda";
 "Cheque" = "Ček";
-"Cheque actions" = "Ček";
+"Cheque actions" = "Radnje s čekom";
 "Cheque book" = "Čekovna knjižica";
 "Cheque book name" = "Naziv čekovne knjižice";
 "Cheque books" = "Čekovne knjižice";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Povucite čekove da biste promijenili njihov redoslijed.";
 "Due date" = "Datum dospijeća";
 "Due dates" = "Datumi dospijeća";
-"Due today" = "Dolazi danas";
+"Due today" = "Dospijeva danas";
 "Edit" = "Uredi";
 "Edit cheque" = "Uredi ček";
 "Enable in iPhone Settings" = "Omogućivanje u iPhone postavkama";
@@ -204,14 +204,14 @@
 "Exported files contain readable cheque details. Share only with people you choose." = "Eksportirane datoteke sadrže čitljive detalje o čeku. Dijelite samo s osobama koje odaberete.";
 "Filters" = "Filtri";
 "Filters and sort" = "Filtri i sortiranje";
-"First reminder not scheduled" = "Prvi podsjetnik nije zakazan@ info: whatsthis";
+"First reminder not scheduled" = "Prvi podsjetnik nije zakazan";
 "Forecast duration" = "Predviđeno trajanje";
 "Free days" = "Slobodni dani";
 "Free due dates" = "Besplatni datumi dospijeća";
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Besplatno uključuje jedan račun i deset aktivnih čekova. Vaši zapisi ostaju dostupni za čitanje, zatvaranje i izvoz.";
 "From" = "Od";
 "From date" = "Od datuma";
-"Front" = "Prednji";
+"Front" = "Prednja strana";
 "Front image" = "Slika s prednje strane";
 "Hide amounts" = "Sakrij iznose";
 "Hide notification details" = "Sakrij detalje obavijesti";
@@ -271,7 +271,7 @@
 "Next 7 days" = "Sljedećih 7 dana";
 "Next cheques" = "Sljedeći čekovi";
 "Next month" = "Sljedeći mjesec";
-"Next scheduled reminder" = "Sljedeći zakazani podsjetnik@ info: whatsthis";
+"Next scheduled reminder" = "Sljedeći zakazani podsjetnik";
 "No active subscription was found." = "Nema aktivnih pretplata.";
 "No cheques due on this day" = "Nema dospjelih čekova na ovaj dan";
 "No cheques yet" = "Još nema čekova.";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "Odlazna čekovna knjiga";
 "Outgoing cheques you add appear here in date order." = "Odlazni čekovi koje dodate pojavljuju se ovdje redoslijedom datuma.";
 "Outgoing due within 7 days" = "Izdani čekovi dospjeli u 7 dana";
-"Outstanding" = "Izvanredno";
+"Outstanding" = "Nepodmireni";
 "Outstanding cheques" = "Nepodmireni čekovi";
-"Outstanding only" = "Samo neispunjeni";
-"Overdue" = "Zakasnio";
+"Outstanding only" = "Samo nepodmireni";
+"Overdue" = "Rok plaćanja prošao";
 "Overdue by 1 day" = "Zakasnila za 1 dan";
 "Overdue by 2 days" = "Zakasnila za 2 dana";
 "Page" = "Stranica";

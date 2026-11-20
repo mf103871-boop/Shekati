@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Dodaj swój pierwszy czek, aby zachować jego dane i przypomnienia razem.";
 "Adjustment" = "Dostosowanie";
 "All" = "Wszystkie";
-"All and history" = "Wszystkie i historia";
+"All and history" = "Wszystkie wraz z historią";
 "All banks" = "Wszystkie banki";
 "All dates" = "Wszystkie daty";
 "All features included. One purchase. No subscription." = "Wszystkie funkcje w zestawie. Jeden zakup. Bez subskrypcji.";
@@ -80,7 +80,7 @@
 "Check the details" = "Sprawdź szczegóły";
 "Checking iCloud" = "Sprawdzanie konta iCloud";
 "Cheque" = "Czek";
-"Cheque actions" = "Akcje czekowe";
+"Cheque actions" = "Operacje na czeku";
 "Cheque book" = "Książeczka czekowa";
 "Cheque book name" = "Nazwa książeczki czekowej";
 "Cheque books" = "Książeczki czekowe";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Tworzenie zaszyfrowanej kopii zapasowej";
 "Currency" = "Waluta";
 "Currency cannot change while any saved cheque exists, including history." = "Waluta nie może zostać zmieniona, dopóki istnieje zapisany czek, w tym historia.";
-"Current account" = "Saldo obrotów bieżących";
+"Current account" = "Rachunek bieżący";
 "Current holder" = "Obecny posiadacz czeku";
 "Daily summary" = "Podsumowanie dnia";
 "Daily summary is enabled; no individual reminder days are selected." = "Dzienne podsumowanie jest włączone; nie wybrano poszczególnych dni przypomnienia.";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Przeciągnij czeki, aby zmienić ich kolejność.";
 "Due date" = "Termin płatności";
 "Due dates" = "Terminy płatności";
-"Due today" = "Do dnia dzisiejszego";
+"Due today" = "Termin płatności dziś";
 "Edit" = "Edycja";
 "Edit cheque" = "Edytuj czek";
 "Enable in iPhone Settings" = "Włącz w ustawieniach iPhone’a";
@@ -318,9 +318,9 @@
 "Outgoing cheques you add appear here in date order." = "Dodane czeki wychodzące są tutaj wyświetlane w kolejności dat.";
 "Outgoing due within 7 days" = "Wystawione czeki płatne w ciągu 7 dni";
 "Outstanding" = "Nierozliczone";
-"Outstanding cheques" = "Czeki niewypłacone";
-"Outstanding only" = "Tylko wybitne";
-"Overdue" = "Przeterminowane";
+"Outstanding cheques" = "Czeki nierozliczone";
+"Outstanding only" = "Tylko nierozliczone";
+"Overdue" = "Po terminie";
 "Overdue by 1 day" = "Przekroczony o 1 dzień";
 "Overdue by 2 days" = "Przekroczony o 2 dni";
 "Page" = "Strona";
@@ -367,7 +367,7 @@
 "Refresh upcoming reminders" = "Odśwież nadchodzące przypomnienia";
 "Refresh your cheque reminders" = "Odśwież swoje przypomnienia o czekach";
 "Reload prices" = "Ceny za ponowne ładowanie";
-"Remaining" = "Resztki";
+"Remaining" = "Pozostała kwota";
 "Remaining after payment" = "Pozostało po wpłacie";
 "Remaining amount" = "Pozostała kwota";
 "Remind me in 1 hour" = "Przypomnij mi za 1 godzinę";

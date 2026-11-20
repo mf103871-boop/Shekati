@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Voeg uw eerste cheque toe om de details en herinneringen bij elkaar te houden.";
 "Adjustment" = "Aanpassing";
 "All" = "Allemaal";
-"All and history" = "Geschiedenis en geschiedenis";
+"All and history" = "Alles, inclusief historie";
 "All banks" = "Alle banken in Nederland";
 "All dates" = "Alle datums weergeven";
 "All features included. One purchase. No subscription." = "Alle functies inbegrepen. Eén aankoop. Geen abonnement.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Hierbij wordt ervan uitgegaan dat binnenkomende cheques op de vervaldatum worden geïnd.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Probeer het opnieuw met biometrie of de toegangscode van uw iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Authenticatie wordt afgehandeld door iOS. Shekati heeft geen toegang tot of slaat uw biometrische informatie of apparaatwachtwoord op.";
-"Back" = "Terug";
+"Back" = "Achterzijde";
 "Backup" = "Back-up";
 "Backup password" = "Wachtwoord voor back-up";
 "Backup restored" = "Back-up hersteld";
@@ -80,7 +80,7 @@
 "Check the details" = "Bekijk de details";
 "Checking iCloud" = "iCloud controleren";
 "Cheque" = "Cheque";
-"Cheque actions" = "Cheque aandelen";
+"Cheque actions" = "Chequehandelingen";
 "Cheque book" = "Het chequeboek";
 "Cheque book name" = "Naam van het chequeboek";
 "Cheque books" = "Chequeboekjes";
@@ -98,7 +98,7 @@
 "Cheque number (optional)" = "Chequenummer (optioneel)";
 "Cheque register" = "Cheque register -";
 "Cheque reminder" = "Chequeherinnering";
-"Cheque report" = "Cheque rapport 2016";
+"Cheque report" = "Chequerapport";
 "Cheque saved. Enter the next cheque." = "Voer de volgende cheque in.";
 "Cheque tracker" = "Chequebeheer";
 "Chequebook" = "Chequeboekje";
@@ -147,7 +147,7 @@
 "Dark" = "Donker";
 "Data and backup" = "Gegevens en back-up";
 "Date" = "Datum";
-"Date added" = "Datum toegevoegd 2016";
+"Date added" = "Datum toegevoegd";
 "Days before" = "Dagen voor de wedstrijd";
 "Days before (1–365)" = "Dagen voor (1-365)";
 "Days with no unpaid outgoing cheques due, across all banks. Choose a period of up to 366 days." = "Dagen zonder uitgaande cheques die vervallen, over alle banken heen. Kies een periode van maximaal 366 dagen.";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Sleep cheques om hun volgorde te wijzigen.";
 "Due date" = "Vervaldatum";
 "Due dates" = "Vervaldatums";
-"Due today" = "Vervaldag vandaag";
+"Due today" = "Vervalt vandaag";
 "Edit" = "Bewerken";
 "Edit cheque" = "Cheque bewerken";
 "Enable in iPhone Settings" = "Inschakelen in iPhone-instellingen";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "Uitgaand chequeboek";
 "Outgoing cheques you add appear here in date order." = "Uitgaande cheques die u toevoegt, worden hier in volgorde van datum weergegeven.";
 "Outgoing due within 7 days" = "Uitgeschreven cheques opeisbaar binnen 7 dagen";
-"Outstanding" = "Uitstaande";
+"Outstanding" = "Openstaand";
 "Outstanding cheques" = "Uitstaande cheques";
-"Outstanding only" = "Alleen uitstaande bestellingen";
-"Overdue" = "Te laat";
+"Outstanding only" = "Alleen openstaande cheques";
+"Overdue" = "Vervaldatum verstreken";
 "Overdue by 1 day" = "1 dag te laat";
 "Overdue by 2 days" = "2 dagen te laat";
 "Page" = "Pagina";

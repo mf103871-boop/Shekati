@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Hesap bilgilerini ve hatırlatmalarını bir arada tutmak için ilk çekinizi ekleyin.";
 "Adjustment" = "Ayarlama";
 "All" = "Hepsi";
-"All and history" = "Tarihi";
+"All and history" = "Geçmiş dâhil tümü";
 "All banks" = "Tüm bankalar";
 "All dates" = "Tüm tarihler";
 "All features included. One purchase. No subscription." = "Tüm özellikler dahil, tek satın alma, abonelik yok.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Gelen çeklerin ödenme tarihlerinde tahsil edildiğini varsayar.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Kimlik doğrulama başarısız oldu. Biyometrik veya iPhone şifresi ile tekrar deneyin.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Kimlik doğrulama iOS tarafından yapılır. Shekati, biyometrik bilgilerinize veya cihaz şifrenize erişmez ya da depolamaz.";
-"Back" = "Geri";
+"Back" = "Arka yüz";
 "Backup" = "Yedekleme";
 "Backup password" = "Yedek şifre";
 "Backup restored" = "Yedekleme geri getirildi";
@@ -80,7 +80,7 @@
 "Check the details" = "Detayları kontrol et.";
 "Checking iCloud" = "iCloud kontrol ediliyor";
 "Cheque" = "Çek";
-"Cheque actions" = "Görevleri kontrol et";
+"Cheque actions" = "Çek işlemleri";
 "Cheque book" = "Çek defteri";
 "Cheque book name" = "Çek defterinin adı";
 "Cheque books" = "Çek defterleri";
@@ -94,7 +94,7 @@
 "Cheque images" = "Resimler";
 "Cheque moved to Recently Deleted" = "Çeki Son Zamanlarda Sililmiş’e taşındı";
 "Cheque no." = "- Hayır, hayır.";
-"Cheque number" = "Çeki numaraları";
+"Cheque number" = "Çek numarası";
 "Cheque number (optional)" = "Çeki numara (izinlidir)";
 "Cheque register" = "Çeki kayıtları";
 "Cheque reminder" = "Hediye hatırlatması";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Şifreli yedek oluştur";
 "Currency" = "Para birimi";
 "Currency cannot change while any saved cheque exists, including history." = "Para birimi, geçmişi de dahil olmak üzere herhangi bir saklanmış çek varken değiştirilemez.";
-"Current account" = "Çevrimiçi hesap";
+"Current account" = "Vadesiz hesap";
 "Current holder" = "Mevcut çek hamili";
 "Daily summary" = "Günlük özet";
 "Daily summary is enabled; no individual reminder days are selected." = "Günlük özet etkinleştirildi; bireysel hatırlatma günleri seçilmedi.";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Sıralarını değiştirmek için çek.";
 "Due date" = "Vade tarihi";
 "Due dates" = "Süreç";
-"Due today" = "Bugün ödenecek.";
+"Due today" = "Vadesi bugün";
 "Edit" = "Düzenle";
 "Edit cheque" = "Çeki Düzenle";
 "Enable in iPhone Settings" = "iPhone Ayarlarında Etkinleştir";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Ücretsiz bir hesap ve on aktif çek içerir. Kayıtlarınız okumak, kapatma ve ihraç için mevcut kalacaktır.";
 "From" = "Gönderici";
 "From date" = "Tarihten";
-"Front" = "Ön";
+"Front" = "Ön yüz";
 "Front image" = "Ön resim";
 "Hide amounts" = "Miktarları gizle";
 "Hide notification details" = "İletişim detayları";
@@ -228,7 +228,7 @@
 "Incoming" = "Alınan";
 "Incoming cheque" = "Alınan çek";
 "Issue cheque" = "Çeki çıkar.";
-"Issue date" = "Yayın tarihi";
+"Issue date" = "Düzenleme tarihi";
 "Issue date must not be after the due date or actual settlement date." = "Yayım tarihi, vade tarihinden veya gerçek ödeme tarihinden sonra olmamalıdır.";
 "Issued" = "Düzenlendi";
 "It was permanently deleted, possibly from another device." = "Kalıcı olarak silinmiş, muhtemelen başka bir cihazdan.";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "Çıkan çek defteri";
 "Outgoing cheques you add appear here in date order." = "Eklediğiniz çıkan çekler burada tarih sırasına göre görüntülenir.";
 "Outgoing due within 7 days" = "7 gün içinde vadesi gelen verilen çekler";
-"Outstanding" = "Harika.";
-"Outstanding cheques" = "Beklenen çekler";
-"Outstanding only" = "Sadece harikalar var.";
-"Overdue" = "Geçti";
+"Outstanding" = "Ödenmemiş";
+"Outstanding cheques" = "Ödenmemiş çekler";
+"Outstanding only" = "Yalnızca ödenmemiş olanlar";
+"Overdue" = "Vadesi geçmiş";
 "Overdue by 1 day" = "1 gün gecikti";
 "Overdue by 2 days" = "2 gün gecikti";
 "Page" = "Sayfa";
@@ -554,7 +554,7 @@
 "Use at least 10 characters. Your password is not saved or sent anywhere." = "En az 10 karakter kullanın. Şifreniz hiçbir yere kaydedilmeyecek veya gönderilmeyecektir.";
 "Use default reminders" = "Varsayılan hatırlatıcıları kullan";
 "Use incoming or outgoing, a positive amount and a valid YYYY-MM-DD date." = "Gelen veya giden, pozitif bir miktar ve geçerli YYYY-MM-DD tarihi kullanın.";
-"Use selected" = "Seçilmiş kullan";
+"Use selected" = "Seçilenleri kullan";
 "Use the template's English column names, YYYY-MM-DD dates and your selected currency. Keep cheque numbers as text in Excel to preserve leading zeros." = "Şablonun İngilizce sütun isimlerini, YYYY-MM-DD tarihlerini ve seçilen para birimini kullan. Öndeki sıfırları korumak için Excel’de çek numaralarını metin olarak tut.";
 "Used before" = "Önceden kullanılmış";
 "Uses default reminder time" = "Öntanımlı hatırlatma zamanı";

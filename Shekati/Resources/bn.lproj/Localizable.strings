@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "বিস্তারিত বিবরণ এবং স্মারকলিপি একত্রে রাখতে আপনার প্রথম চেক যোগ করুন।";
 "Adjustment" = "সংশোধন";
 "All" = "সব";
-"All and history" = "ইতিহাস";
+"All and history" = "সব চেক ও পূর্বের রেকর্ড";
 "All banks" = "সব ব্যাংক";
 "All dates" = "সমস্ত তারিখ";
 "All features included. One purchase. No subscription." = "সব বৈশিষ্ট্য অন্তর্ভুক্ত, একবার কেনা, কোন সাবস্ক্রাইব নেই।";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "অনুমান করে যে, আসা চেকগুলি তাদের নির্ধারিত তারিখে সংগ্রহ করা হবে।";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "অনুমোদন ব্যর্থ। বায়োমেট্রিক অথবা আপনার iPhone পাসওয়ার্ড ব্যবহার করে পুনরায় চেষ্টা করুন।";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "অনুমোদন iOS দ্বারা পরিচালিত হয়। Shekati আপনার বায়োমেট্রিক তথ্য অথবা ডিভাইস পাসওয়ার্ড ব্যবহার করে না বা সংরক্ষণ করে না।";
-"Back" = "পিছনে যাও";
+"Back" = "পেছনের পিঠ";
 "Backup" = "ব্যাক- আপ";
 "Backup password" = "ব্যাক-আপ পাসওয়ার্ড";
 "Backup restored" = "ব্যাক-আপ পুনরুদ্ধার করা হয়েছে";
@@ -80,7 +80,7 @@
 "Check the details" = "বিস্তারিত দেখুন";
 "Checking iCloud" = "iCloud পরীক্ষা করা হচ্ছে";
 "Cheque" = "চেক";
-"Cheque actions" = "কাজ পরীক্ষা করো";
+"Cheque actions" = "চেকের কার্যক্রম";
 "Cheque book" = "চেকবুক";
 "Cheque book name" = "চেকবুকের নাম";
 "Cheque books" = "চেক বই";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "এনক্রিপ্ট করা ব্যাক-আপ তৈরি করুন";
 "Currency" = "মুদ্রা";
 "Currency cannot change while any saved cheque exists, including history." = "যেকোন সংরক্ষিত চেক যতক্ষণ বিদ্যমান থাকবে ততক্ষণ মুদ্রা পরিবর্তন করা যাবে না, ইতিহাস সহ।";
-"Current account" = "বর্তমান অ্যাকাউন্ট";
+"Current account" = "চলতি হিসাব";
 "Current holder" = "বর্তমান ধারক";
 "Daily summary" = "দিনের সারসংক্ষেপ";
 "Daily summary is enabled; no individual reminder days are selected." = "দৈনিক সারসংক্ষেপ সক্রিয় করা হয়েছে; কোন ব্যক্তিগত স্মরণলিপি দিন নির্বাচিত হয়নি।";
@@ -172,9 +172,9 @@
 "Download CSV template" = "CSV টেমপ্লেট ডাউনলোড করো";
 "Draft" = "খসড়া";
 "Drag cheques to change their order." = "চেক গুলোর ক্রম পরিবর্তন করতে চেক গুলোকে টেনে নিয়ে যাও ।";
-"Due date" = "পরিশোধের তারিখ";
+"Due date" = "পরিশোধের নির্ধারিত তারিখ";
 "Due dates" = "নির্ধারিত তারিখ";
-"Due today" = "আজকের দিনে";
+"Due today" = "আজ পরিশোধের নির্ধারিত দিন";
 "Edit" = "সম্পাদন করো";
 "Edit cheque" = "চেক সম্পাদন করুন";
 "Enable in iPhone Settings" = "iPhone সেটিংস- এ সক্রিয় করো";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "ফ্রিতে একটি অ্যাকাউন্ট এবং দশটি সক্রিয় চেক অন্তর্ভুক্ত আছে। আপনার রেকর্ড পড়ার, বন্ধ করার এবং রপ্তানির জন্য উপলব্ধ থাকবে।";
 "From" = "থেকে";
 "From date" = "তারিখ থেকে";
-"Front" = "সামনের";
+"Front" = "সামনের পিঠ";
 "Front image" = "সামনের ছবি";
 "Hide amounts" = "পরিমাণ আড়াল করো";
 "Hide notification details" = "বিজ্ঞপ্তির বিস্তারিত বিবরণ আড়াল করো";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "বহির্গমন চেক লেজার";
 "Outgoing cheques you add appear here in date order." = "আপনি যেসব বহির্মুখী চেক যোগ করেছেন তা এখানে তারিখ অনুযায়ী দেখানো হবে ।";
 "Outgoing due within 7 days" = "৭ দিনের মধ্যে প্রদেয় চেক";
-"Outstanding" = "অসাধারণ";
-"Outstanding cheques" = "অবশিষ্ট চেক";
-"Outstanding only" = "শুধুমাত্র  pendent";
-"Overdue" = "সময়সীমা অতিক্রান্ত";
+"Outstanding" = "অনিষ্পন্ন";
+"Outstanding cheques" = "অনিষ্পন্ন চেক";
+"Outstanding only" = "শুধু অনিষ্পন্ন";
+"Overdue" = "নির্ধারিত তারিখ পেরিয়েছে";
 "Overdue by 1 day" = "১ দিন পিছিয়ে";
 "Overdue by 2 days" = "২ দিন পিছিয়ে";
 "Page" = "পৃষ্ঠা";

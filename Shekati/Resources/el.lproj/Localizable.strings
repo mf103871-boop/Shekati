@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Προσθέστε την πρώτη σας επιταγή για να διατηρήσετε μαζί τα στοιχεία και τις υπενθυμίσεις της.";
 "Adjustment" = "Προσαρμογή";
 "All" = "Όλα";
-"All and history" = "Όλα και ιστορία";
+"All and history" = "Όλες, μαζί με το ιστορικό";
 "All banks" = "Όλες οι τράπεζες";
 "All dates" = "Όλες οι ημερομηνίες";
 "All features included. One purchase. No subscription." = "Όλα τα χαρακτηριστικά περιλαμβάνονται. Μία αγορά. Χωρίς συνδρομή.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Υποθέτει ότι οι εισερχόμενες επιταγές συλλέγονται στις ημερομηνίες λήξης τους.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Δοκιμάστε ξανά χρησιμοποιώντας βιομετρικά στοιχεία ή τον κωδικό πρόσβασης του Αποκτήστε πρόσβαση στο λογαριασμό σας.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Ο έλεγχος ταυτότητας γίνεται από το Το δεν έχει πρόσβαση ή αποθηκεύει τις βιομετρικές πληροφορίες σας ή τον κωδικό πρόσβασης της συσκευής.";
-"Back" = "Πίσω";
+"Back" = "Πίσω όψη";
 "Backup" = "Αντίγραφο ασφαλείας";
 "Backup password" = "Κωδικός πρόσβασης αντιγράφου ασφαλείας";
 "Backup restored" = "Το αντίγραφο ασφαλείας αποκαταστάθηκε";
@@ -80,7 +80,7 @@
 "Check the details" = "Δείτε τις λεπτομέρειες";
 "Checking iCloud" = "Έλεγχος του iCloud";
 "Cheque" = "Επιταγή";
-"Cheque actions" = "Επιταγή";
+"Cheque actions" = "Ενέργειες επιταγής";
 "Cheque book" = "Βιβλίο επιταγών";
 "Cheque book name" = "Όνομα βιβλίων επιταγών";
 "Cheque books" = "Βιβλία επιταγών";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Δημιουργία κρυπτογραφημένου αντιγράφου ασφαλείας";
 "Currency" = "Νόμισμα";
 "Currency cannot change while any saved cheque exists, including history." = "Το νόμισμα δεν μπορεί να αλλάξει όσο υπάρχει αποθηκευμένη επιταγή, συμπεριλαμβανομένου του ιστορικού.";
-"Current account" = "Τρεχούμενο λογαριασμός";
+"Current account" = "Τρεχούμενος λογαριασμός";
 "Current holder" = "Τρέχων κομιστής";
 "Daily summary" = "Ημερήσια περίληψη";
 "Daily summary is enabled; no individual reminder days are selected." = "Η ημερήσια σύνοψη είναι ενεργοποιημένη. Δεν επιλέγονται μεμονωμένες ημέρες υπενθύμισης.";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Σύρετε επιταγές για να αλλάξετε τη σειρά τους.";
 "Due date" = "Ημερομηνία λήξης";
 "Due dates" = "Ημερομηνίες λήξης";
-"Due today" = "Πρέπει να γίνει σήμερα";
+"Due today" = "Λήγει σήμερα";
 "Edit" = "Επεξεργασία";
 "Edit cheque" = "Επεξεργασία επιταγής";
 "Enable in iPhone Settings" = "Ενεργοποίηση στις Ρυθμίσεις του iPhone";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Δωρεάν περιλαμβάνει ένα λογαριασμό και δέκα ενεργές επιταγές.Τα αρχεία σας παραμένουν διαθέσιμα για να διαβάσετε, κλείσιμο και εξαγωγή.";
 "From" = "Από";
 "From date" = "Από την ημερομηνία";
-"Front" = "Μπροστά";
+"Front" = "Μπροστινή όψη";
 "Front image" = "Εικόνα από μπροστά";
 "Hide amounts" = "Απόκρυψη ποσών";
 "Hide notification details" = "Απόκρυψη λεπτομερειών ειδοποίησης";
@@ -317,9 +317,9 @@
 "Outgoing cheque ledger" = "Εξερχόμενο βιβλίο επιταγών";
 "Outgoing cheques you add appear here in date order." = "Οι εξερχόμενες επιταγές που προσθέτετε εμφανίζονται εδώ με σειρά ημερομηνίας.";
 "Outgoing due within 7 days" = "Εκδοθείσες επιταγές που λήγουν εντός 7 ημερών";
-"Outstanding" = "Εκκρεμές";
+"Outstanding" = "Εκκρεμείς";
 "Outstanding cheques" = "Εκκρεμείς επιταγές";
-"Outstanding only" = "Μόνο οι εξαιρετικοί";
+"Outstanding only" = "Μόνο εκκρεμείς";
 "Overdue" = "Εκπρόθεσμη";
 "Overdue by 1 day" = "Εκπρόθεσμη κατά 1 ημέρα";
 "Overdue by 2 days" = "Καθυστερημένη κατά 2 ημέρες";

@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "小切手管理",
   "keywords": "小切手,銀行口座,カレンダー,リマインダー",
-  "description": "受け取った小切手と振り出した小切手を記録し、支払期日と小切手の画像をまとめて管理できます。\n\n無料プランでは、銀行口座1件と未決済の小切手10枚までを登録できます。手入力、カレンダー、リマインダーが使えます。\n\nShekati Plusでは銀行口座と未決済の小切手を件数制限なく管理できます。小切手のスキャン、裏書、一部決済、差し替え、資金繰りの予測にも対応しています。\n\n月額または年額のプランを選択できます。購入前にお住まいの地域の価格が表示されます。サブスクリプションはApple Accountで解約するまで自動更新されます。\n\n契約終了後も、登録済みの小切手の閲覧、処理の完了、書き出しができます。\n\n利用規約\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nプライバシーポリシー\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "description": "受け取った小切手と振り出した小切手を、画像や支払期日と一緒に管理できます。カレンダーで今後の期日を確認し、リマインダーを設定できます。\n\n無料プランでは、銀行口座を1件、未決済の小切手を10枚まで登録できます。小切手の手入力、カレンダー、リマインダーをご利用いただけます。\n\nShekati Plusでは複数の銀行口座を管理でき、未決済の小切手の登録枚数に上限はありません。小切手をスキャンして読み取り結果を確認したり、裏書譲渡、一部決済、小切手の差し替えを記録したりできます。資金繰りの見通しも確認できます。\n\n月額または年額のプランを選べます。購入前にお住まいの地域の価格が表示されます。サブスクリプションは、Apple Accountで解約するまで自動更新されます。\n\n契約終了後も、登録済みの小切手を閲覧し、処理を完了したり、記録を書き出したりできます。\n\n利用規約\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nプライバシーポリシー\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {

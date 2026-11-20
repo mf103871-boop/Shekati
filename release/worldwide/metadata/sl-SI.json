@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "Evidenca čekov",
   "keywords": "čeki,bančni računi,koledar,opomniki",
-  "description": "Snemanje dohodnih in odhodnih čekov, si oglejte njihove datume zapadlosti in ohraniti svoje slike ček skupaj.\n\nBrezplačni paket vključuje en bančni račun, deset aktivnih čekov, ročni vnos, koledar in opomnike.\n\nShekati Plus dodaja več računov, neomejeno aktivne čeke, skeniranje čekov, potrdila, delne poravnave, zamenjave in napovedi denarnega toka.\n\nIzberi mesečno ali letno naročnino. Cena v tvoji državi je prikazana pred nakupom, naročnine pa se samodejno podaljšajo, dokler jih ne prekličete v računu Apple Account.\n\nObstoječe čeke lahko po koncu naročnine berete, zapirate in izvozite.\n\nPogoji uporabe\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolitika zasebnosti - OZS\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "description": "Vnesite prejete in izdane čeke, spremljajte datume zapadlosti in shranite fotografijo vsakega čeka. Brezplačna različica omogoča vodenje enega bančnega računa in največ 10 odprtih čekov. Vključuje ročni vnos, koledar in opomnike.\n\nS storitvijo Shekati Plus lahko vodite poljubno število računov in čekov. Skenirajte čeke, beležite prenose z indosamentom, delna plačila in nadomestne čeke ter preverite napoved denarnega toka.\n\nIzberite mesečno ali letno naročnino. Lokalno ceno boste videli pred nakupom. Naročnina se samodejno podaljšuje, dokler je ne prekličete v svojem računu Apple. Po izteku lahko še naprej pregledujete, zapirate in izvažate že vnesene čeke.\n\nPogoji uporabe\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolitika zasebnosti - OZS\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {
@@ -17,10 +17,10 @@
     }
   },
   "screenshotHeadings": [
-    "Vaš račun |",
+    "Vaš bančni račun",
     "Register čekov",
-    "Pregled skeniranih podrobnosti · Shekati Plus",
+    "Preverite skenirane podatke · Shekati Plus",
     "Podrobnosti o čeku",
-    "Roki"
+    "Datumi zapadlosti"
   ]
 }

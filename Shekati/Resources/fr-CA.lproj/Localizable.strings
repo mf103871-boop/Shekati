@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Ajoutez votre premier chèque pour conserver ses détails et rappels ensemble.";
 "Adjustment" = "Ajustement";
 "All" = "Tout";
-"All and history" = "Tout et l’histoire";
+"All and history" = "Tous, historique inclus";
 "All banks" = "Toutes les banques";
 "All dates" = "Toutes les dates";
 "All features included. One purchase. No subscription." = "Toutes les fonctionnalités incluses. Un seul achat. Pas d’abonnement.";
@@ -72,7 +72,7 @@
 "Cash forecast" = "Prévision de trésorerie";
 "Change status" = "Changer le statut";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Chargement au moment de l’achat. Renouvellement automatique jusqu’à annulation dans votre compte Apple.";
-"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Vérifiez chaque suggestion contre votre chèque. Rien n’est enregistré tant que vous n’avez pas appuyé sur Enregistrer.";
+"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Comparez chaque donnée proposée avec votre chèque. Rien ne sera enregistré avant que vous touchiez Enregistrer.";
 "Check iCloud status" = "Vérifier l’état iCloud";
 "Check the account name and opening balance." = "Vérifiez le nom du compte et le solde d’ouverture.";
 "Check the amount, date and selected account." = "Vérifiez le montant, la date et le compte sélectionné.";
@@ -204,7 +204,7 @@
 "Exported files contain readable cheque details. Share only with people you choose." = "Les fichiers exportés contiennent des détails de chèque lisibles. Partagez uniquement avec les personnes que vous choisissez.";
 "Filters" = "Filtres";
 "Filters and sort" = "Filtres et tri";
-"First reminder not scheduled" = "Premier rappel non planifié@ info: whatsthis";
+"First reminder not scheduled" = "Premier rappel non planifié";
 "Forecast duration" = "Durée de la prévision";
 "Free days" = "Jours de congé";
 "Free due dates" = "Dates d’échéance libres";
@@ -271,7 +271,7 @@
 "Next 7 days" = "7 prochains jours";
 "Next cheques" = "Suivants chèques";
 "Next month" = "Le mois prochain";
-"Next scheduled reminder" = "Prochain rappel planifié@ info: whatsthis";
+"Next scheduled reminder" = "Prochain rappel planifié";
 "No active subscription was found." = "Aucun abonnement actif n’a été trouvé.";
 "No cheques due on this day" = "Aucun chèque échu ce jour-là";
 "No cheques yet" = "Pas de chèques encore";
@@ -317,7 +317,7 @@
 "Outgoing cheque ledger" = "Livre sortant des chèques";
 "Outgoing cheques you add appear here in date order." = "Les chèques sortants que vous ajoutez apparaissent ici dans l’ordre de la date.";
 "Outgoing due within 7 days" = "Chèques émis à échéance sous 7 jours";
-"Outstanding" = "Excellent";
+"Outstanding" = "Non réglés";
 "Outstanding cheques" = "Chèques en cours";
 "Outstanding only" = "En cours seulement";
 "Overdue" = "En retard";
@@ -367,7 +367,7 @@
 "Refresh upcoming reminders" = "Actualiser les rappels à venir";
 "Refresh your cheque reminders" = "Actualiser vos rappels de chèques";
 "Reload prices" = "Recharger les prix";
-"Remaining" = "Restant";
+"Remaining" = "Montant restant";
 "Remaining after payment" = "Solde restant après paiement";
 "Remaining amount" = "Montant restant";
 "Remind me in 1 hour" = "Rappelez-moi dans une heure";

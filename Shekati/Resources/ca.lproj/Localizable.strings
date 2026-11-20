@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Afegeix el primer xec per a mantenir junts els detalls i recordatoris.";
 "Adjustment" = "Ajustament";
 "All" = "Tots";
-"All and history" = "Tot i l’historial";
+"All and history" = "Tots els xecs i l’historial";
 "All banks" = "Tots els bancs";
 "All dates" = "Totes les dates";
 "All features included. One purchase. No subscription." = "Totes les característiques incloses. Una compra. Sense subscripció.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Assumeix que els xecs entrants es recapten en les seves dates de venciment.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Ha fallat l’autenticació. Torneu-ho a provar usant la biometria o el codi de seguretat del vostre iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "L’autenticació és gestionada per iOS. Shekati no accedeix ni emmagatzema la vostra informació biomètrica o contrasenya del dispositiu.";
-"Back" = "Enrere";
+"Back" = "Revers";
 "Backup" = "Còpia de seguretat";
 "Backup password" = "Contrasenya de còpia de seguretat";
 "Backup restored" = "Còpia de seguretat restaurada";
@@ -72,7 +72,7 @@
 "Cash forecast" = "Previsió de tresoreria";
 "Change status" = "Canvia l’estat";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Carga en comprar. Es renova automàticament fins que es cancel· la al vostre compte Apple.";
-"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Comproveu cada suggeriment amb el vostre comprovant. No es desarà res fins que cliqueu Desa.";
+"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Compareu cada dada amb el xec. No es desarà res fins que toqueu Desa.";
 "Check iCloud status" = "Comproveu l’estat de l’iCloud";
 "Check the account name and opening balance." = "Comproveu el nom del compte i el saldo inicial.";
 "Check the amount, date and selected account." = "Comproveu la quantitat, data i compte seleccionat.";
@@ -80,7 +80,7 @@
 "Check the details" = "Comprova els detalls";
 "Checking iCloud" = "S’està comprovant l’iCloud";
 "Cheque" = "Xec";
-"Cheque actions" = "Accions de comprovació";
+"Cheque actions" = "Accions del xec";
 "Cheque book" = "Llibre de xecs";
 "Cheque book name" = "Nom del llibre de xecs";
 "Cheque books" = "Llibres de xecs";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Crea una còpia de seguretat encriptada";
 "Currency" = "Moneda";
 "Currency cannot change while any saved cheque exists, including history." = "La moneda no es pot canviar mentre existeixi qualsevol xec desat, incloent- hi l’historial.";
-"Current account" = "Compte actual";
+"Current account" = "Compte corrent";
 "Current holder" = "Tenidor actual";
 "Daily summary" = "Resum diari";
 "Daily summary is enabled; no individual reminder days are selected." = "El resum diari està habilitat; no s’han seleccionat dies de recordatori individuals.";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Arrossegueu els xecs per canviar- ne l’ordre.";
 "Due date" = "Venciment";
 "Due dates" = "Dates de venciment";
-"Due today" = "Venciment avui@ option today";
+"Due today" = "Venç avui";
 "Edit" = "Edita";
 "Edit cheque" = "Edita el xec";
 "Enable in iPhone Settings" = "Habilita a l’arranjament de l’iPhone";
@@ -204,7 +204,7 @@
 "Exported files contain readable cheque details. Share only with people you choose." = "Els fitxers exportats contenen detalls llegibles del xec. Compartiu només amb la gent que trieu.";
 "Filters" = "Filtres";
 "Filters and sort" = "Filtres i ordenació";
-"First reminder not scheduled" = "Primer recordatori no planificat@ info: whatsthis";
+"First reminder not scheduled" = "Primer recordatori no planificat";
 "Forecast duration" = "Durada del pronòstic";
 "Free days" = "Dies lliures";
 "Free due dates" = "Dates de venciment lliures";
@@ -228,7 +228,7 @@
 "Incoming" = "Rebuts";
 "Incoming cheque" = "Xec entrant";
 "Issue cheque" = "Emissió de xec";
-"Issue date" = "Data d’emisión";
+"Issue date" = "Data d’emissió";
 "Issue date must not be after the due date or actual settlement date." = "La data d’emisión no ha de ser posterior a la data de venciment o a la data real de liquidació.";
 "Issued" = "Emès";
 "It was permanently deleted, possibly from another device." = "S’ha esborrat permanentment, possiblement des d’un altre dispositiu.";
@@ -255,7 +255,7 @@
 "Monthly subscription" = "Subscripció mensual";
 "More" = "Més";
 "More details" = "Més detalls";
-"Move reminders to the preceding banking day" = "Mou els recordatoris al dia anterior@ info: whatsthis";
+"Move reminders to the preceding banking day" = "Mou els recordatoris al dia anterior";
 "My order" = "El meu ordre";
 "Name" = "Noms";
 "Name / number / bank / status" = "Nom / número / banc / estat";
@@ -270,8 +270,8 @@
 "Next 3 days" = "3 dies següents";
 "Next 7 days" = "Següents 7 dies";
 "Next cheques" = "Següent xec";
-"Next month" = "Mes següent@ option next month";
-"Next scheduled reminder" = "Recordatori següent planificat@ info: whatsthis";
+"Next month" = "Mes següent";
+"Next scheduled reminder" = "Recordatori següent planificat";
 "No active subscription was found." = "No s’ha trobat cap subscripció activa.";
 "No cheques due on this day" = "No hi ha xecs vençuts aquest dia";
 "No cheques yet" = "Encara no hi ha xecs";
@@ -282,7 +282,7 @@
 "No outgoing cheques" = "Sense xecs sortints";
 "No outstanding cheques" = "No hi ha xecs pendents";
 "No paid cheques" = "No hi ha xecs pagats";
-"No reminder days selected" = "No s’ha seleccionat cap dia de recordatori@ info: whatsthis";
+"No reminder days selected" = "No s’ha seleccionat cap dia de recordatori";
 "No upcoming reminder is currently scheduled for this cheque." = "Actualment no hi ha cap recordatori proper per a aquest xec.";
 "No." = "No, no ho és.";
 "Not provided" = "No proporcionat";
@@ -301,7 +301,7 @@
 "On the due date" = "En la data de venciment";
 "Only the reviewed valid rows will be added. These changes will also sync to iCloud." = "Només s’afegiran les files vàlides revisades. Aquests canvis també es sincronitzaran amb l’iCloud.";
 "Open Settings" = "Obre l’arranjament";
-"Open Shekati to prepare the next reminders. Scheduled reminders have a limited coverage period." = "Obre Shekati per a preparar els propers recordatoris. Els recordatoris programats tenen un període de cobertura limitat. @ info: whatsthis";
+"Open Shekati to prepare the next reminders. Scheduled reminders have a limited coverage period." = "Obre Shekati per a preparar els propers recordatoris. Els recordatoris programats tenen un període de cobertura limitat.";
 "Open Shekati to review your reminder." = "Obre Shekati per revisar el recordatori.";
 "Open Shekati to view today's summary." = "Obre Shekati per veure el resum d’avui.";
 "Open WhatsApp" = "Obre WhatsApp";
@@ -317,11 +317,11 @@
 "Outgoing cheque ledger" = "Llibre de xecs sortints";
 "Outgoing cheques you add appear here in date order." = "Els xecs sortints que afegiu apareixen aquí en ordre de data.";
 "Outgoing due within 7 days" = "Xecs a pagar en 7 dies";
-"Outstanding" = "Excessiu";
-"Outstanding cheques" = "Cheques pendents";
-"Outstanding only" = "Només pendent";
+"Outstanding" = "Pendents";
+"Outstanding cheques" = "Xecs pendents";
+"Outstanding only" = "Només pendents";
 "Overdue" = "Vençut";
-"Overdue by 1 day" = "Vençut fa 1 dia@ info: whatsthis";
+"Overdue by 1 day" = "Vençut fa 1 dia";
 "Overdue by 2 days" = "2 dies de retard";
 "Page" = "Pàgina";
 "Paid" = "Pagat";
@@ -363,8 +363,8 @@
 "Recorded balance" = "Saldo registrat";
 "Recorded operations protect the original cheque details." = "Les operacions gravades protegeixen els detalls originals del xec.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Els registres d’un altre dispositiu usen una moneda diferent. Resoleu aquests registres abans d’afegir nous xecs. Els totals s’oculten per evitar barrejar monedes.";
-"Refresh reminders" = "Refresca els recordatoris@ info: whatsthis";
-"Refresh upcoming reminders" = "Refresca els recordatoris propers@ info: whatsthis";
+"Refresh reminders" = "Refresca els recordatoris";
+"Refresh upcoming reminders" = "Refresca els recordatoris propers";
 "Refresh your cheque reminders" = "Refresca els recordatoris de xecs";
 "Reload prices" = "Recarrega els preus";
 "Remaining" = "Resta";
@@ -373,15 +373,15 @@
 "Remind me in 1 hour" = "Recorda’m d’aquí a 1 hora";
 "Reminder options" = "Opcions de recordatori";
 "Reminder time" = "Hora del recordatori";
-"Reminders" = "Recordatoris@ info: whatsthis";
+"Reminders" = "Recordatoris";
 "Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Els recordatoris es programen en aquest dispositiu. Vostè controla els permisos, el temps i si les detalls del xec apareixen en les alertes.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Els recordatoris cobreixen un període limitat. Obre l’aplicació abans que acabi la cobertura per preparar la resta.";
-"Reminders disabled" = "Recordatoris deshabilitats@ info: whatsthis";
-"Reminders enabled" = "Recordatoris habilitats@ info: whatsthis";
+"Reminders disabled" = "Recordatoris deshabilitats";
+"Reminders enabled" = "Recordatoris habilitats";
 "Reminders stop when a cheque is settled or cancelled." = "Els recordatoris s’aturen quan un xec és liquidat o cancel· lat.";
 "Reminders stop when a cheque is settled or cancelled. Past reminder times are skipped." = "Els recordatoris s’aturen quan es liquida o cancel· la un xec. S’omplin els temps de recordatori passats.";
 "Remove image" = "Elimina imatge";
-"Remove reminder" = "Elimina el recordatori@ info: whatsthis";
+"Remove reminder" = "Elimina el recordatori";
 "Reorder cheques" = "Reordena els xecs";
 "Replace cheque" = "Substitueix el xec";
 "Replace matching existing cheques" = "Substitueix els xecs existents coincidents";
@@ -398,7 +398,7 @@
 "Restore deleted cheques within 30 days. After that, only permanent deletion is available." = "Restaura els xecs esborrats en un termini de 30 dies. Després d’això, només està disponible l’esborrat permanent.";
 "Restore preview" = "Restaura la vista prèvia";
 "Restore purchases" = "Restaura les compres";
-"Restore reminder preferences" = "Restaura les preferències de recordatori@ info: whatsthis";
+"Restore reminder preferences" = "Restaura les preferències de recordatori";
 "Restore reviewed backup" = "Restaura la còpia de seguretat revisada";
 "Restore this backup?" = "Restaure aquesta còpia de seguretat?";
 "Restore this cheque before changing it." = "Restaura aquest xec abans de canviar-lo.";
@@ -473,7 +473,7 @@
 "Some later reminders still need scheduling." = "Alguns recordatoris posteriors encara necessiten ser planificats.";
 "Some purchase options are unavailable. Please try again later." = "Algunes opcions de compra no estan disponibles. Torneu- ho a provar més tard.";
 "Some reminders could not be scheduled. Check notification settings and refresh." = "No s’han pogut planificar alguns recordatoris. Comproveu l’arranjament de notificació i refresqueu- lo.";
-"Some reminders could not be scheduled. Check permission and refresh the queue." = "No s’han pogut planificar alguns recordatoris. Comproveu els permisos i refresqueu la cua. @ info: status";
+"Some reminders could not be scheduled. Check permission and refresh the queue." = "No s’han pogut planificar alguns recordatoris. Comproveu els permisos i refresqueu la cua.";
 "Sort by" = "Ordena per";
 "Sort cheques" = "Ordena els xecs";
 "Start legal follow-up" = "Comença el seguiment legal";
@@ -557,8 +557,8 @@
 "Use selected" = "Usa la selecció";
 "Use the template's English column names, YYYY-MM-DD dates and your selected currency. Keep cheque numbers as text in Excel to preserve leading zeros." = "Usa els noms de columna en anglès de la plantilla, les dates AAAA- MM- DD i la moneda seleccionada. Mantingueu els números de xec com a text a l’Excel per preservar els zeros inicials.";
 "Used before" = "Usat abans";
-"Uses default reminder time" = "Usa l’hora de recordatori per omissió@ info: whatsthis";
-"Uses default reminders" = "Usa recordatoris per omissió@ info: whatsthis";
+"Uses default reminder time" = "Usa l’hora de recordatori per omissió";
+"Uses default reminders" = "Usa recordatoris per omissió";
 "Valid rows" = "Files vàlides";
 "Value" = "Valor";
 "Version" = "Versió";

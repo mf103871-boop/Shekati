@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "اس کے تفصیلات اور یاد دہانی ایک ساتھ رکھنے کے لئے آپ کا پہلا چک شامل کریں.";
 "Adjustment" = "تناسب";
 "All" = "سب";
-"All and history" = "تاریخ";
+"All and history" = "سابقہ ریکارڈ سمیت تمام چیک";
 "All banks" = "تمام بينک";
 "All dates" = "تمام تاریخیں";
 "All features included. One purchase. No subscription." = "سب خصوصیات شامل ایک خرید. کوئی سبسکرینشیپ نہیں.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "فرض کرتا ہے کہ آنے والے چک انکے مقررہ تاریخوں پر جمع کیے جاتے ہیں.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "توثیق ناکام۔بائیومیٹرکس یا آپ کے آی فون پاس ورڈ کا استعمال کرکے دوبارہ کوشش کریں۔";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "توثیق iOS کے ذریعے ہینڈل کی جاتی ہے. Shekati آپ کی بایومیٹرک معلومات یا ڈیوائس پاس ورڈ کو رسائی نہیں دیتا یا محفوظ نہیں کرتا.";
-"Back" = "واپس";
+"Back" = "پچھلا رخ";
 "Backup" = "بک اپ";
 "Backup password" = "پاس ورڈ کی بک اپ";
 "Backup restored" = "بک اپ بحال کیا گیا";
@@ -80,7 +80,7 @@
 "Check the details" = "تفصیلات چکیں";
 "Checking iCloud" = "iCloud چیک کررہا ہے";
 "Cheque" = "چیک";
-"Cheque actions" = "عمل";
+"Cheque actions" = "چیک کی کارروائیاں";
 "Cheque book" = "چیک بک";
 "Cheque book name" = "چیک بک کا نام";
 "Cheque books" = "چیک بکس";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "خفیہ بک اپ بنائیں";
 "Currency" = "رقم";
 "Currency cannot change while any saved cheque exists, including history." = "پیسہ تبدیل نہیں کیا جاسکتا جب تک کوئی محفوظ چک موجود ہے، تاریخِ عمل کو شامل کر کے.";
-"Current account" = "جاری اکاؤنٹ";
+"Current account" = "کرنٹ اکاؤنٹ";
 "Current holder" = "موجودہ چیک ہولڈر";
 "Daily summary" = "روزانہ خلاصہ";
 "Daily summary is enabled; no individual reminder days are selected." = "روزانہ خلاصہ فعال ہے؛ کوئی انفرادی یاد دلا ئے دن منتخب نہیں کیا گیا.";
@@ -172,9 +172,9 @@
 "Download CSV template" = "CSV ٹیمپلیٹ ڈاؤن لوڈ کریں";
 "Draft" = "مسودہ";
 "Drag cheques to change their order." = "انکے ترتيب کو تبديل کر نے کے ليے چکس کھينچیں";
-"Due date" = "ادائیگی کی تاریخ";
+"Due date" = "ادائیگی کی مقررہ تاریخ";
 "Due dates" = "تا ريخ";
-"Due today" = "آج ختم ہونے والا";
+"Due today" = "آج واجب الادا";
 "Edit" = "ایڈٹ";
 "Edit cheque" = "چیک تغیر دیں";
 "Enable in iPhone Settings" = "آی فون ترتیبات میں فعال کریں";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "مفت میں ایک اکاؤنٹ اور دس فعال چک شامل ہیں. آپ کے ریکارڈ پڑھنے، بند کرنے اور برآمد کرنے کے لئے دستیاب رہتے ہیں۔";
 "From" = "سے";
 "From date" = "تاریخ سے";
-"Front" = "آگے";
+"Front" = "سامنے کا رخ";
 "Front image" = "تصویر";
 "Hide amounts" = "مقداریں چھپائیں";
 "Hide notification details" = "اطلاع کی تفصیلات چھپائیں";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "باہر جانے والا چک لیڈر";
 "Outgoing cheques you add appear here in date order." = "باہر جانے والے چک آپ شامل یہاں تاریخ کے ترتیب میں دکھائی دیتے ہیں.";
 "Outgoing due within 7 days" = "7 دنوں میں واجب الادا جاری کردہ چیک";
-"Outstanding" = "ممتاز";
-"Outstanding cheques" = "باقی چک";
-"Outstanding only" = "صرف ممتاز";
-"Overdue" = "دیر";
+"Outstanding" = "غیر ادا شدہ";
+"Outstanding cheques" = "غیر ادا شدہ چیک";
+"Outstanding only" = "صرف غیر ادا شدہ";
+"Overdue" = "ادائیگی کی تاریخ گزر چکی ہے";
 "Overdue by 1 day" = "1 دن سے دیر ہو چکی";
 "Overdue by 2 days" = "2 دن سے دیر ہو چکی";
 "Page" = "صفحہ";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "یاد دہانی پیغام پیش منظر";
 "Previous month" = "پہلے مہینے";
 "Privacy" = "نجی";
-"Privacy policy" = "نجی پالیسی";
+"Privacy policy" = "رازداری کی پالیسی";
 "Read details from front image" = "تصوير سے معلومات پڑھيں";
 "Reason" = "وجہ";
 "Recently Deleted" = "حالیہ حذف کردہ";
@@ -486,7 +486,7 @@
 "Syncing" = "سنک کر رہا ہے";
 "System" = "نظام";
 "Tap a day to add an outgoing cheque with this due date." = "اس تاریخِ ختم کے ساتھ ایک باہر جانے والے چک کو شامل کرنے کے لیے ایک دن ٹک کریں.";
-"Terms of use" = "استعمال کے شرطیں";
+"Terms of use" = "استعمال کی شرائط";
 "The 30-day restore period has ended." = "30 دن کی بحالی کا دور ختم ہو گیا ہے.";
 "The actual payment or collection date cannot be before the issue date." = "حقیقی ادائیگی یا جمعہ کی تاریخ اطلاق کی تاریخ سے پہلے نہیں ہو سکتی.";
 "The actual payment or collection date cannot be in the future." = "حقیقی ادائیگی یا جمعہ کی تاریخ مستقبل میں نہیں ہو سکتی.";

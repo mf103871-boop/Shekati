@@ -25,9 +25,9 @@
 "Add your first cheque to keep its details and reminders together." = "Adăugați primul cec pentru a păstra detaliile și mementourile împreună.";
 "Adjustment" = "Ajustare";
 "All" = "Toate";
-"All and history" = "Toate și istorie";
+"All and history" = "Toate, inclusiv istoricul";
 "All banks" = "Toate băncile din România";
-"All dates" = "Toate datele de călătorie";
+"All dates" = "Toate datele";
 "All features included. One purchase. No subscription." = "Toate caracteristicile incluse. O singură achiziție. Fără abonament.";
 "All individual reminder times for this cheque have passed." = "Toate perioadele individuale de reamintire pentru acest cec au trecut.";
 "Amount" = "Sumă";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Presupune că cecurile de intrare sunt colectate la datele lor scadente.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Încearcă din nou să folosești biometria sau codul de acces al dispozitivului iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Autentificare este gestionată de iOS. Shekati nu accesează sau stochează informațiile dvs. biometrice sau codul de acces al dispozitivului.";
-"Back" = "Înapoi.";
+"Back" = "Verso";
 "Backup" = "Copie de rezervă";
 "Backup password" = "Parolă de rezervă";
 "Backup restored" = "Backup restaurat";
@@ -80,7 +80,7 @@
 "Check the details" = "Verificați detaliile";
 "Checking iCloud" = "Verificarea serviciului iCloud";
 "Cheque" = "Cec";
-"Cheque actions" = "Cec de acțiuni";
+"Cheque actions" = "Operațiuni cu cecul";
 "Cheque book" = "Carnet de cecuri";
 "Cheque book name" = "Numele carnetului de cecuri";
 "Cheque books" = "Carnete de cecuri";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Trageți cecuri pentru a schimba ordinea lor.";
 "Due date" = "Data scadenței";
 "Due dates" = "Datele scadente";
-"Due today" = "Se datorează astăzi";
+"Due today" = "Scadent astăzi";
 "Edit" = "Editează";
 "Edit cheque" = "Editează cecul";
 "Enable in iPhone Settings" = "Activează în Setări iPhone";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "Registru de cecuri de ieșire";
 "Outgoing cheques you add appear here in date order." = "Cecurile de ieșire pe care le adăugați apar aici în ordinea datei.";
 "Outgoing due within 7 days" = "Cecuri emise scadente în 7 zile";
-"Outstanding" = "În curs";
+"Outstanding" = "Nedecontate";
 "Outstanding cheques" = "Cecuri în circulație";
-"Outstanding only" = "Numai în curs de desfășurare";
-"Overdue" = "Întârziat";
+"Outstanding only" = "Numai nedecontate";
+"Overdue" = "Termen depășit";
 "Overdue by 1 day" = "Întârziat cu 1 zi";
 "Overdue by 2 days" = "Întârziat cu 2 zile";
 "Page" = "Pagină";

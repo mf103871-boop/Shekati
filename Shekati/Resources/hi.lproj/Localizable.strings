@@ -13,7 +13,7 @@
 "Action to reverse" = "उलटने के लिए क्रिया";
 "Activity history" = "क्रिया इतिहास";
 "Add" = "जोड़ें";
-"Add a cheque to keep its dates and reminders here." = "इसकी तिथियों और स्मरणों को यहाँ रखने के लिए एक चेक जोड़ें. @ info: whatsthis";
+"Add a cheque to keep its dates and reminders here." = "इसकी तिथियों और स्मरणों को यहाँ रखने के लिए एक चेक जोड़ें.";
 "Add an outgoing cheque on this day" = "इस दिन एक बाहर जाने वाला चेक जोड़ें";
 "Add bank account" = "बैंक खाता जोड़ें";
 "Add cheque" = "चेक जोड़ें";
@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "अपने विवरण और स्मरण एक साथ रखने के लिए अपना पहला चेक जोड़ें.";
 "Adjustment" = "समायोजन";
 "All" = "सभी";
-"All and history" = "इतिहास";
+"All and history" = "इतिहास सहित सभी चेक";
 "All banks" = "सभी बैंक";
 "All dates" = "सभी तिथियां";
 "All features included. One purchase. No subscription." = "सभी विशेषताएँ शामिल हैं. एक खरीदारी. कोई सदस्यता नहीं.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "यह मानता है कि आने वाले चेक उनकी निर्धारित तिथि पर जमा किए जाते हैं.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "सत्यापन असफल. बायोमेट्रिक या आपके iPhone पासवर्ड का प्रयोग करके फिर कोशिश करें.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "सत्यापन iOS द्वारा संभाला जाता है. Shekati आपके बायोमेट्रिक जानकारी या उपकरण पासवर्ड को एक्सेस नहीं करता है या भंडारित नहीं करता है.";
-"Back" = "पीछे";
+"Back" = "पिछला भाग";
 "Backup" = "बैकअप";
 "Backup password" = "बैकअप कूटशब्द";
 "Backup restored" = "बैकअप बहाल किया गया";
@@ -80,7 +80,7 @@
 "Check the details" = "विवरण जाँचें";
 "Checking iCloud" = "आईक्लाउड जाँच";
 "Cheque" = "चेक";
-"Cheque actions" = "क्रियाएँ जाँचें";
+"Cheque actions" = "चेक की कार्रवाइयाँ";
 "Cheque book" = "चेकबुक";
 "Cheque book name" = "चेकबुक नाम";
 "Cheque books" = "चेकबुक";
@@ -140,10 +140,10 @@
 "Create encrypted backup" = "एनक्रिप्टेड बैकअप बनाएँ";
 "Currency" = "मुद्रा";
 "Currency cannot change while any saved cheque exists, including history." = "किसी भी संरक्षित चेक के मौजूद होने पर मुद्रा बदल नहीं सकती, इतिहास सहित।";
-"Current account" = "वर्तमान खाता";
+"Current account" = "चालू खाता";
 "Current holder" = "वर्तमान चेकधारक";
 "Daily summary" = "दैनिक सारांश";
-"Daily summary is enabled; no individual reminder days are selected." = "दैनिक सारांश सक्षम है; कोई व्यक्तिगत स्मरण दिन चुना नहीं गया. @ info: whatsthis";
+"Daily summary is enabled; no individual reminder days are selected." = "दैनिक सारांश सक्षम है; कोई व्यक्तिगत स्मरण दिन चुना नहीं गया.";
 "Dark" = "अंधेरा";
 "Data and backup" = "डाटा तथा बैकअप";
 "Date" = "तारीख़";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "उनके क्रम बदलने के लिये चेक खींच लाएँ.";
 "Due date" = "देय तिथि";
 "Due dates" = "समाप्ति तिथि";
-"Due today" = "आज का दिन";
+"Due today" = "आज देय";
 "Edit" = "संपादन";
 "Edit cheque" = "चेक संपादित करें";
 "Enable in iPhone Settings" = "आईफोन विन्यास में सक्षम करें";
@@ -204,14 +204,14 @@
 "Exported files contain readable cheque details. Share only with people you choose." = "निर्यात फ़ाइलों में पढ़ने योग्य चेक विवरण होते हैं. सिर्फ उन लोगों के साथ साझा करें जिन्हें आप चुनते हैं.";
 "Filters" = "फ़िल्टर";
 "Filters and sort" = "फ़िल्टर तथा छांटें";
-"First reminder not scheduled" = "प्रथम स्मरण नियत नहीं है@ info: whatsthis";
+"First reminder not scheduled" = "प्रथम स्मरण नियत नहीं है";
 "Forecast duration" = "पूर्वानुमान अवधि";
 "Free days" = "मुक्त दिन";
 "Free due dates" = "मुक्त तिथि";
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "मुफ्त में एक खाता और दस सक्रिय चेक शामिल हैं. आपके रिकॉर्ड पढ़ने, बंद करने और निर्यात करने के लिए उपलब्ध रहते हैं.";
 "From" = "से";
 "From date" = "तिथि से";
-"Front" = "अग्रभाग";
+"Front" = "अगला भाग";
 "Front image" = "सामने की छवि";
 "Hide amounts" = "मात्रा छुपाएँ";
 "Hide notification details" = "अधिसूचना विवरण छुपाएँ";
@@ -223,7 +223,7 @@
 "Import reviewed rows" = "समीक्षा की गई पंक्तियों को आयात करें";
 "Import these cheques?" = "इन चेक को आयात करें?";
 "In 2 days" = "2 दिनों में";
-"In hand" = "पास में";
+"In hand" = "अपने पास";
 "Include possible duplicates" = "संभावित नक़ल शामिल करें";
 "Incoming" = "प्राप्त";
 "Incoming cheque" = "आने वाला चेक";
@@ -255,7 +255,7 @@
 "Monthly subscription" = "मासिक सदस्यता";
 "More" = "अधिक";
 "More details" = "अधिक विवरण";
-"Move reminders to the preceding banking day" = "स्मरण को पिछले बैंकिंग दिन पर ले जाएँ@ info: whatsthis";
+"Move reminders to the preceding banking day" = "स्मरण को पिछले बैंकिंग दिन पर ले जाएँ";
 "My order" = "मेरा आदेश";
 "Name" = "नाम";
 "Name / number / bank / status" = "नाम / संख्या / बैंक / स्थिति";
@@ -271,7 +271,7 @@
 "Next 7 days" = "अगले7दिन";
 "Next cheques" = "अगला चेक";
 "Next month" = "अगला माह";
-"Next scheduled reminder" = "अगला अनुसूचित स्मरण@ info: whatsthis";
+"Next scheduled reminder" = "अगला अनुसूचित स्मरण";
 "No active subscription was found." = "कोई सक्रिय सदस्यता नहीं मिली.";
 "No cheques due on this day" = "इस दिन कोई चेक जमा नहीं है";
 "No cheques yet" = "अभी कोई चेक नहीं";
@@ -282,7 +282,7 @@
 "No outgoing cheques" = "कोई बाहर जाने वाला चेक नहीं";
 "No outstanding cheques" = "कोई बकाया चेक नहीं";
 "No paid cheques" = "कोई भुगतान चेक नहीं";
-"No reminder days selected" = "कोई स्मरण दिन चयनित नहीं@ info: whatsthis";
+"No reminder days selected" = "कोई स्मरण दिन चयनित नहीं";
 "No upcoming reminder is currently scheduled for this cheque." = "इस चेक के लिए कोई आने वाली याद दिलाने की क्रिया नहीं है.";
 "No." = "नहीं, मैं नहीं.";
 "Not provided" = "उपलब्ध नहीं";
@@ -305,7 +305,7 @@
 "Open Shekati to review your reminder." = "अपने स्मरण की समीक्षा करने के लिए शेकाटी खोलें.";
 "Open Shekati to view today's summary." = "आज के दिन की घटनाओं को देखने के लिए शेकाटी खोलें।";
 "Open WhatsApp" = "व्हाट्सएप खोलें";
-"Open reminder settings" = "स्मरण विन्यास खोलें@ info: whatsthis";
+"Open reminder settings" = "स्मरण विन्यास खोलें";
 "Open the app before" = "इससे पहले अनुप्रयोग खोलें";
 "Open the app before this time to renew the queue. Later reminders are not yet covered." = "कतार को अद्यतन करने के लिए इस समय से पहले अनुप्रयोग खोलें. बाद में स्मरण अभी तक कवर नहीं किए गए हैं.";
 "Opening backup" = "बैकअप खोल रहा है";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "बाहर जाने वाला चेक लेजर";
 "Outgoing cheques you add appear here in date order." = "बाहर जाने वाले चेक जो आप जोड़ते हैं वे यहाँ तिथि क्रम में दिखाई देते हैं.";
 "Outgoing due within 7 days" = "7 दिन में देय जारी किए गए चेक";
-"Outstanding" = "असाधारण";
+"Outstanding" = "बकाया";
 "Outstanding cheques" = "बकाया चेक";
-"Outstanding only" = "सिर्फ बाहरी";
-"Overdue" = "समय समाप्त";
+"Outstanding only" = "केवल बकाया";
+"Overdue" = "देय तिथि बीत चुकी है";
 "Overdue by 1 day" = "1 दिन से अधिक";
 "Overdue by 2 days" = "2दिनों से बीत गया";
 "Page" = "पृष्ठ";
@@ -344,7 +344,7 @@
 "Possible duplicates" = "संभावित नक़ल";
 "Postdated cheques" = "पोस्टडेटेड चेक";
 "Preparing file" = "फ़ाइल तैयार कर रहा है";
-"Preview reminder message" = "स्मरण संदेश का पूर्वावलोकन करें@ info: whatsthis";
+"Preview reminder message" = "स्मरण संदेश का पूर्वावलोकन करें";
 "Previous month" = "पिछला माह";
 "Privacy" = "गोपनीयता";
 "Privacy policy" = "गोपनीयता नीति";
@@ -376,12 +376,12 @@
 "Reminders" = "स्मरण";
 "Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "इस उपकरण पर स्मरण समयबद्ध हैं. आप अनुमति, समय और क्या चेक विवरण सचेतक में दिखाई देता है को नियंत्रित करते हैं.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "स्मरण एक सीमित अवधि को कवर करते हैं. बाकी तैयार करने के लिए कवर समाप्त होने से पहले अनुप्रयोग खोलें.";
-"Reminders disabled" = "स्मरण अक्षम@ info: whatsthis";
-"Reminders enabled" = "स्मरण सक्षम करें@ info: whatsthis";
+"Reminders disabled" = "स्मरण अक्षम";
+"Reminders enabled" = "स्मरण सक्षम करें";
 "Reminders stop when a cheque is settled or cancelled." = "जब एक चेक तय किया जाता है या रद्द कर दिया जाता है तो याद दिलाने बंद हो जाते हैं।";
 "Reminders stop when a cheque is settled or cancelled. Past reminder times are skipped." = "जब कोई चेक जमा किया जाता है या रद्द किया जाता है तो स्मरण बंद हो जाते हैं. पिछले स्मरण समय छोड़ दिए जाते हैं.";
 "Remove image" = "छवि मिटाएँ";
-"Remove reminder" = "स्मरण मिटाएँ@ info: whatsthis";
+"Remove reminder" = "स्मरण मिटाएँ";
 "Reorder cheques" = "चेक रीऑर्डर करें";
 "Replace cheque" = "चेक बदलें";
 "Replace matching existing cheques" = "मौजूदा चेक को बदलें";
@@ -514,7 +514,7 @@
 "The password is incorrect or the backup has been damaged." = "पासवर्ड गलत है या बैकअप खराब हो गया है.";
 "The purchase could not be completed. Please try again." = "खरीदारी पूर्ण नहीं हो सकी. कृपया फिर से कोशिश करें.";
 "The purchase is awaiting approval." = "इसकी खरीद पर अनुदान दिया जाता है।";
-"The reminder days and time from Settings will be used." = "विन्यास से स्मरण दिवस तथा समय उपयोग में लिया जाएगा. @ info: whatsthis";
+"The reminder days and time from Settings will be used." = "विन्यास से स्मरण दिवस तथा समय उपयोग में लिया जाएगा.";
 "The report includes the cheques and order shown in your filtered list." = "रिपोर्ट में आपके फ़िल्टर सूची में दिखाए गए चेक तथा अनुक्रम शामिल हैं.";
 "The reversal is recorded in the activity history." = "इसका इतिहास इतिहास के इतिहास में दर्ज है।";
 "This action is unavailable for the current cheque." = "यह क्रिया मौज़ूदा चेक के लिए उपलब्ध नहीं है.";
@@ -558,7 +558,7 @@
 "Use the template's English column names, YYYY-MM-DD dates and your selected currency. Keep cheque numbers as text in Excel to preserve leading zeros." = "टैम्प्लेट के अंग्रेजी स्तम्भ नाम, YYYY-MM-DD तिथियां तथा आपकी चयनित मुद्रा का प्रयोग करें. अग्रणी शून्य को संरक्षित करने के लिए एक्सेल में चेक संख्याओं को पाठ के रूप में रखें.";
 "Used before" = "इससे पहले इस्तेमाल किया गया";
 "Uses default reminder time" = "डिफ़ॉल्ट स्मरण समय इस्तेमाल करता है";
-"Uses default reminders" = "डिफ़ॉल्ट स्मरण का उपयोग करता है@ info: whatsthis";
+"Uses default reminders" = "डिफ़ॉल्ट स्मरण का उपयोग करता है";
 "Valid rows" = "वैध पंक्तियाँ";
 "Value" = "मूल्य";
 "Version" = "संस्करण";
