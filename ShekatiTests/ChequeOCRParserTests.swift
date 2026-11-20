@@ -53,6 +53,65 @@ final class ChequeOCRParserTests: XCTestCase {
         XCTAssertEqual(value.dueDate?.iso, "2026-10-25")
     }
 
+    func testGermanChequeUsesAppLanguageForAmountsDatesAndPartyRoles() {
+        let text = """
+        Schecknummer: 000241
+        Bank: Musterbank
+        Aussteller: Winter GmbH
+        Zahlungsempfänger: Hafen GmbH
+        Betrag: EUR 1.250,50
+        Fälligkeit: 25.10.2026
+        """
+        let incoming = ChequeOCRParser.parse(text: text, currencyCode: "EUR", direction: .incoming, languageCode: "de")
+        XCTAssertEqual(incoming.number, "000241")
+        XCTAssertEqual(incoming.party, "Winter GmbH")
+        XCTAssertEqual(incoming.bank, "Musterbank")
+        XCTAssertEqual(incoming.amountText, "1250.50")
+        XCTAssertEqual(incoming.dueDate?.iso, "2026-10-25")
+        let outgoing = ChequeOCRParser.parse(text: text, currencyCode: "EUR", direction: .outgoing, languageCode: "de")
+        XCTAssertEqual(outgoing.party, "Hafen GmbH")
+
+        let uncertain = ChequeOCRParser.parse(text: "Betrag: 1,250\nFälligkeit: 05.06.2026", currencyCode: "JOD", languageCode: "de")
+        XCTAssertNil(uncertain.amountText)
+        XCTAssertNil(uncertain.dueDate)
+        XCTAssertNil(ChequeOCRParser.parse(text: "Betrag -200", currencyCode: "EUR", languageCode: "de").amountText)
+        let duplicate = ChequeOCRParser.parse(text: "Betrag: 20,55\nBetrag: 3,555", currencyCode: "EUR", languageCode: "de")
+        XCTAssertNil(duplicate.amountText)
+    }
+
+    func testFrenchChequeUsesSpacedGroupingAndStraightApostropheInPrintedLabel() {
+        let text = """
+        Numéro de chèque : 000743
+        Banque : Banque de démonstration
+        Bénéficiaire : Atelier Rivage
+        Montant : 1\u{202F}250,50 EUR
+        Date d'échéance : 25/10/2026
+        """
+        let result = ChequeOCRParser.parse(text: text, currencyCode: "EUR", direction: .outgoing, languageCode: "fr")
+        XCTAssertEqual(result.number, "000743")
+        XCTAssertEqual(result.bank, "Banque de démonstration")
+        XCTAssertEqual(result.party, "Atelier Rivage")
+        XCTAssertEqual(result.amountText, "1250.50")
+        XCTAssertEqual(result.dueDate?.iso, "2026-10-25")
+        XCTAssertNil(ChequeOCRParser.parse(text: "Montant : 12 50,50", currencyCode: "EUR", languageCode: "fr").amountText)
+    }
+
+    func testJapaneseChequeAcceptsFullwidthDelimitersAndPreservesRecognizedText() {
+        let text = """
+        小切手番号：０００１２６
+        銀行：試験銀行
+        金額：１２，５００
+        支払期日：２０２６／１０／２５
+        """
+        let result = ChequeOCRParser.parse(text: text, currencyCode: "JPY", languageCode: "ja")
+        XCTAssertEqual(result.number, "000126")
+        XCTAssertEqual(result.bank, "試験銀行")
+        XCTAssertEqual(result.amountText, "12500")
+        XCTAssertEqual(result.dueDate?.iso, "2026-10-25")
+        XCTAssertEqual(result.recognizedText, text)
+        XCTAssertNil(ChequeOCRParser.parse(text: "銀行員：佐藤", currencyCode: "JPY", languageCode: "ja").bank)
+    }
+
     func testSuggestedChequeNumbersAreDigitsOnlyAndKeepLeadingZeros() {
         for input in ["A000123", "000-123", "000/123", "000 123", "+000123", "000123!"] {
             XCTAssertNil(ChequeOCRParser.parse(text: "Cheque No: " + input, currencyCode: "USD").number, input)
