@@ -66,6 +66,12 @@ public enum CurrencyMath {
         return (minorUnits < 0 ? "-" : "") + magnitude
     }
 
+    /// Exact, ungrouped display digits for narrow fields where the ISO currency code is shown separately.
+    public static func compactDisplay(minorUnits: Int64, currencyCode: String, locale: Locale) -> String {
+        editable(minorUnits: minorUnits, currencyCode: currencyCode)
+            .replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".")
+    }
+
     /// Spreadsheet-style text: Western digits, no symbol or grouping, no trailing fractional zeros.
     /// `950.000` JOD becomes `950` and `731.250` becomes `731.25`.
     public static func plain(minorUnits: Int64, currencyCode: String) -> String {

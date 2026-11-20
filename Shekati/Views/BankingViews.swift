@@ -210,7 +210,9 @@ struct AccountLiquidityView: View {
             if let outlook = try? BankingLedger.outlook(account: account, records: records, events: events, today: app.today) {
                 VStack(alignment: .leading, spacing: 10) {
                     Text(app.tr("Estimated available in 7 days")).font(.subheadline)
-                    Text(money(outlook.available7)).font(.largeTitle.bold()).monospacedDigit().minimumScaleFactor(0.65)
+                    ReadableCurrencyAmount(minorUnits: outlook.available7, currencyCode: account.currencyCode,
+                                           formatted: money(outlook.available7))
+                        .font(.largeTitle.bold())
                     Divider().overlay(.white.opacity(0.5))
                     ResponsiveValueRow(title: app.tr("Recorded balance"), value: money(outlook.recorded),
                                        stackedTitleStyle: AnyShapeStyle(.white))
