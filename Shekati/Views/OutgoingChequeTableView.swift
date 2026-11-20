@@ -117,9 +117,7 @@ private struct CurrencyOutgoingTable: View {
         .onChange(of: visibleIDs) { _, ids in selectedIDs.formIntersection(ids) }
         .sheet(isPresented: $showingFreeDays) { ChequeFreeDaysView() }
         .sheet(isPresented: $showingEditor) {
-            NavigationStack { ChequeEditorView(initialDirection: .outgoing) }
-                .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
+            ChequeEditorSheet(initialDirection: .outgoing)
         }
     }
 

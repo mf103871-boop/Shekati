@@ -116,7 +116,7 @@ struct DashboardView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) { AmountPrivacyButton() }
             }
-            .sheet(isPresented: $showingEditor) { NavigationStack { ChequeEditorView() } }
+            .sheet(isPresented: $showingEditor) { ChequeEditorSheet() }
     }
 }
 

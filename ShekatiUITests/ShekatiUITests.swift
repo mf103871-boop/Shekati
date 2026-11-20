@@ -51,7 +51,7 @@ final class ShekatiUITests: XCTestCase {
         app.buttons["saveCheque"].tap()
         allowNotificationPromptIfPresented()
         waitForEditorDismissal(in: app)
-        app.tabBars.buttons["Cheques"].tap()
+        app.tabBars.buttons["tabCheques"].tap()
         let row = app.descendants(matching: .any).matching(NSPredicate(
             format: "identifier BEGINSWITH %@ AND label CONTAINS %@ AND label CONTAINS %@",
             "cheque-row-", "CI cheque", "000182"
@@ -100,14 +100,14 @@ final class ShekatiUITests: XCTestCase {
         allowNotificationPromptIfPresented()
         waitForEditorDismissal(in: app)
         captureScreenshot(app, name: "Arabic simple home with cheques")
-        app.tabBars.buttons["الشيكات"].tap()
+        app.tabBars.buttons["tabCheques"].tap()
         let incoming = chequeRow(in: app, named: "Demo incoming")
         let outgoing = chequeRow(in: app, named: "Demo outgoing")
         XCTAssertTrue(outgoing.waitForExistence(timeout: 5))
         XCTAssertTrue(outgoing.label.contains("000102"))
         XCTAssertTrue(outgoing.label.contains("760"), "The sheet shows plain amounts such as 760")
         XCTAssertTrue(incoming.waitForExistence(timeout: 5), "The primary ledger includes cheques in both directions")
-        openMoreDestination("outgoingLedgerLink", in: app, arabic: true)
+        openMoreDestination("outgoingLedgerLink", in: app)
         XCTAssertFalse(incoming.exists, "The outgoing register lists outgoing cheques only")
         let title = app.staticTexts["outgoingTableTitle"]
         XCTAssertTrue(title.exists)
@@ -163,7 +163,7 @@ final class ShekatiUITests: XCTestCase {
         app.buttons["saveCheque"].tap()
         allowNotificationPromptIfPresented()
         waitForEditorDismissal(in: app)
-        app.tabBars.buttons["Cheques"].tap()
+        app.tabBars.buttons["tabCheques"].tap()
         let row = chequeRow(in: app, named: "Large text demo")
         XCTAssertTrue(row.waitForExistence(timeout: 5))
         XCTAssertTrue(row.label.contains("000999"))
@@ -236,33 +236,38 @@ final class ShekatiUITests: XCTestCase {
 
     func testArabicFirstRunAndEnglishLanguageSwitch() {
         let app = launch(arabic: true)
-        XCTAssertTrue(app.tabBars.buttons["الرئيسية"].exists)
+        XCTAssertEqual(app.tabBars.buttons["tabHome"].label, "الرئيسية")
         captureScreenshot(app, name: "Arabic home")
-        openMoreDestination("moreSettingsLink", in: app, arabic: true)
+        openMoreDestination("moreSettingsLink", in: app)
         let language = app.descendants(matching: .any).matching(identifier: "languagePicker").firstMatch
         XCTAssertTrue(language.waitForExistence(timeout: 5))
         language.tap()
         app.buttons["language-en-US"].tap()
-        XCTAssertTrue(app.tabBars.buttons["More"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.tabBars.buttons["tabMore"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Appearance and language"].exists || app.staticTexts["APPEARANCE AND LANGUAGE"].exists)
-        XCTAssertTrue(app.tabBars.buttons["More"].isSelected)
+        XCTAssertEqual(app.tabBars.buttons["tabMore"].label, "More")
+        XCTAssertTrue(app.tabBars.buttons["tabMore"].isSelected)
         waitForStableEnglishSettingsLayout(in: app)
         captureScreenshot(app, name: "English settings after language switch")
     }
 
     private func waitForStableEnglishSettingsLayout(in app: XCUIApplication) {
-        let brand = app.staticTexts["settingsBrandTitle"]
+        let languageLabel = app.staticTexts["Language"]
+        let languagePicker = app.buttons["languagePicker"]
+        let homeTab = app.tabBars.buttons["tabHome"]
+        let moreTab = app.tabBars.buttons["tabMore"]
         var previousFrame = CGRect.null
         var stableSince: Date?
         let layout = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-            guard brand.exists, brand.isHittable else {
+            guard languageLabel.exists, languagePicker.isHittable, homeTab.exists, moreTab.exists else {
                 stableSince = nil
                 return false
             }
-            let frame = brand.frame
-            // Arabic places the brand text on the right. English must rebuild on the left,
-            // rather than leaving translated text inside the old mirrored Form container.
-            guard frame.width > 0, frame.midX < app.windows.firstMatch.frame.midX else {
+            let frame = languageLabel.frame
+            // A Form can expose the brand as a full-width cell. Its native picker label
+            // has a text-sized frame, and the tab positions independently verify navigation.
+            guard frame.width > 0, frame.maxX < app.windows.firstMatch.frame.midX,
+                  homeTab.frame.midX < moreTab.frame.midX else {
                 stableSince = nil
                 return false
             }
@@ -272,7 +277,7 @@ final class ShekatiUITests: XCTestCase {
                 return false
             }
             return Date().timeIntervalSince(stableSince!) >= 0.6
-        }, object: brand)
+        }, object: languageLabel)
         let result = XCTWaiter.wait(for: [layout], timeout: 8)
         if result != .completed { captureDiagnostics(app, name: "English Settings layout did not settle") }
         XCTAssertEqual(result, .completed, "Expected stable left-to-right English Settings layout")

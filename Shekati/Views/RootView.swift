@@ -63,7 +63,7 @@ struct RootView: View {
             }
         }
         .sheet(isPresented: $addingCheque) {
-            NavigationStack { ChequeEditorView() }
+            ChequeEditorSheet()
         }
         .sheet(item: $linkedCheque, onDismiss: {
             if let id = app.openedChequeID { app.notifications.acknowledgeOpenCheque(id) }

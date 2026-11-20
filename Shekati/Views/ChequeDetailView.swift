@@ -174,13 +174,7 @@ struct ChequeDetailView: View {
             }
         }
         .sheet(isPresented: $showingEditor) {
-            NavigationStack {
-                ChequeEditorView(record: record)
-                    .environment(\.locale, app.preferences.language.locale)
-                    .environment(\.layoutDirection, sheetDirection)
-            }
-            .environment(\.locale, app.preferences.language.locale)
-            .environment(\.layoutDirection, sheetDirection)
+            ChequeEditorSheet(record: record)
         }
         .sheet(isPresented: $showingReminder) {
             if let amount = reminderAmount {

@@ -11,8 +11,8 @@ extension XCTestCase {
         return formatter.string(from: date)
     }
 
-    func openMoreDestination(_ identifier: String, in app: XCUIApplication, arabic: Bool = false) {
-        let more = app.tabBars.buttons[arabic ? "المزيد" : "More"]
+    func openMoreDestination(_ identifier: String, in app: XCUIApplication) {
+        let more = app.tabBars.buttons["tabMore"]
         XCTAssertTrue(more.waitForExistence(timeout: 5))
         more.tap()
         if !app.buttons[identifier].exists {

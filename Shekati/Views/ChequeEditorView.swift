@@ -7,6 +7,27 @@ import UserNotifications
 import ShekatiCore
 
 @MainActor
+struct ChequeEditorSheet: View {
+    @Environment(AppState.self) private var app
+    var record: ChequeRecord? = nil
+    var initialDirection: ChequeDirection? = nil
+    var initialDueDate: LocalDay? = nil
+
+    var body: some View {
+        let language = app.preferences.language
+        let direction: LayoutDirection = language.isRTL ? .rightToLeft : .leftToRight
+        NavigationStack {
+            ChequeEditorView(record: record, initialDirection: initialDirection, initialDueDate: initialDueDate)
+                .environment(\.locale, language.locale)
+                .environment(\.layoutDirection, direction)
+        }
+        // A presented navigation bar and its UIKit-backed form each host a view hierarchy.
+        .environment(\.locale, language.locale)
+        .environment(\.layoutDirection, direction)
+    }
+}
+
+@MainActor
 struct ChequeEditorView: View {
     @Environment(AppState.self) private var app
     @EnvironmentObject private var plus: ShekatiPlusStore

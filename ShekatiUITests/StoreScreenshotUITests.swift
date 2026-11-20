@@ -11,7 +11,7 @@ final class StoreScreenshotUITests: XCTestCase {
         XCTAssertTrue(app.buttons["addCheque"].waitForExistence(timeout: 12))
         let homeDue = app.descendants(matching: .any).matching(identifier: "outgoingDueAmount").firstMatch
         XCTAssertTrue(homeDue.label.contains("3,200.000"))
-        app.tabBars.buttons["Cheques"].tap()
+        app.tabBars.buttons["tabCheques"].tap()
         let row = app.descendants(matching: .any).matching(identifier:
             "cheque-row-00000000-0000-4000-8000-000000007309").firstMatch
         for _ in 0..<7 where !row.isHittable { app.swipeUp() }
@@ -35,7 +35,7 @@ final class StoreScreenshotUITests: XCTestCase {
         let confirm = app.buttons.matching(identifier: "commitOperation").firstMatch
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         confirm.tap()
-        app.tabBars.buttons["Home"].tap()
+        app.tabBars.buttons["tabHome"].tap()
         let updated = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label CONTAINS %@", "3,050.000"), object: homeDue)
         XCTAssertEqual(XCTWaiter.wait(for: [updated], timeout: 8), .completed)
         openMoreDestination("outgoingLedgerLink", in: app)

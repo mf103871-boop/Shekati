@@ -122,11 +122,7 @@ struct ChequeFreeDaysView: View {
                 }
             }
             .sheet(item: $plannedDate) { plan in
-                NavigationStack {
-                    ChequeEditorView(initialDirection: .outgoing, initialDueDate: plan.day)
-                }
-                .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, layoutDirection)
+                ChequeEditorSheet(initialDirection: .outgoing, initialDueDate: plan.day)
             }
         }
         .environment(\.locale, app.preferences.language.locale)

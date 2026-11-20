@@ -99,13 +99,7 @@ struct ChequeListView: View {
             }
             .onChange(of: filter.direction) { _, _ in editMode = .inactive }
             .sheet(isPresented: $showingEditor) {
-                NavigationStack {
-                    ChequeEditorView()
-                        .environment(\.locale, app.preferences.language.locale)
-                        .environment(\.layoutDirection, sheetDirection)
-                }
-                .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, sheetDirection)
+                ChequeEditorSheet()
             }
             .sheet(isPresented: $showingFilters) {
                 NavigationStack {

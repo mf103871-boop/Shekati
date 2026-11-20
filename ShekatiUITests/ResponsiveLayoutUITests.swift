@@ -103,9 +103,9 @@ final class ResponsiveLayoutUITests: XCTestCase {
                        "The dashboard must expose the complete precise amount with English digits")
         capture(app, "06 large amount dashboard portrait")
 
-        let chequesTab = app.tabBars.buttons[arabic ? "الشيكات" : "Cheques"]
+        let chequesTab = app.tabBars.buttons["tabCheques"]
         assertVisibleBounds(chequesTab, in: app)
-        openMoreDestination("outgoingLedgerLink", in: app, arabic: arabic)
+        openMoreDestination("outgoingLedgerLink", in: app)
         if !largeText {
             // The title belongs to the viewport while the wide columns scroll underneath it.
             let title = app.staticTexts["outgoingTableTitle"]
@@ -175,7 +175,7 @@ final class ResponsiveLayoutUITests: XCTestCase {
         waitForAbsence(app.buttons["saveCheque"])
         app.buttons["closeFreeDays"].tap()
         waitForAbsence(app.buttons["closeFreeDays"])
-        openMoreDestination("moreSettingsLink", in: app, arabic: arabic)
+        openMoreDestination("moreSettingsLink", in: app)
         let dataTools = element("dataTools", in: app)
         reveal(dataTools, in: app)
         assertVisibleBounds(dataTools, in: app)
