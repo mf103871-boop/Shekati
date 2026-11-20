@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Adicione seu primeiro cheque para manter seus detalhes e lembretes juntos.";
 "Adjustment" = "Ajuste";
 "All" = "Todos";
-"All and history" = "História e história";
+"All and history" = "Todos, incluindo o histórico";
 "All banks" = "Todos os bancos";
 "All dates" = "Todas as datas";
 "All features included. One purchase. No subscription." = "Todos os recursos incluídos. Uma compra. Sem assinatura.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Assume que os cheques recebidos são coletados em suas datas de vencimento.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Tente novamente usando a biometria ou o código de acesso do iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "A autenticação é feita pelo iOS, e o Shekati não acessa nem armazena suas informações biométricas ou senha do dispositivo.";
-"Back" = "Voltar";
+"Back" = "Verso";
 "Backup" = "Cópia de segurança";
 "Backup password" = "Senha de backup";
 "Backup restored" = "Backup restaurado";
@@ -72,7 +72,7 @@
 "Cash forecast" = "Previsão de tesouraria";
 "Change status" = "Alterar o status";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Renova automaticamente até ser cancelado na sua Conta Apple.";
-"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Verifique cada sugestão com o cheque. Nada é salvo até que você toque em Salvar.";
+"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Compare cada dado sugerido com o seu cheque. Nada será guardado até tocar em Guardar.";
 "Check iCloud status" = "Verificar o status do iCloud";
 "Check the account name and opening balance." = "Verifique o nome da conta e saldo inicial.";
 "Check the amount, date and selected account." = "Verifique o valor, data e conta selecionada.";
@@ -80,7 +80,7 @@
 "Check the details" = "Confira os detalhes";
 "Checking iCloud" = "Verificando o iCloud";
 "Cheque" = "Cheque";
-"Cheque actions" = "Cheque de ações";
+"Cheque actions" = "Operações do cheque";
 "Cheque book" = "Livro de cheques";
 "Cheque book name" = "Nome do livro de cheques";
 "Cheque books" = "Livros de cheques";
@@ -142,7 +142,7 @@
 "Currency cannot change while any saved cheque exists, including history." = "A moeda não pode ser alterada enquanto existir qualquer cheque salvo, incluindo o histórico.";
 "Current account" = "Conta corrente";
 "Current holder" = "Atual portador do cheque";
-"Daily summary" = "Resumo diário de 2016";
+"Daily summary" = "Resumo diário";
 "Daily summary is enabled; no individual reminder days are selected." = "O resumo diário está ativado; nenhum dia de lembrete individual é selecionado.";
 "Dark" = "Escuro";
 "Data and backup" = "Dados e backup";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Arraste cheques para mudar a ordem.";
 "Due date" = "Vencimento";
 "Due dates" = "Datas de vencimento";
-"Due today" = "Deve ser hoje";
+"Due today" = "Vence hoje";
 "Edit" = "Editar";
 "Edit cheque" = "Editar cheque";
 "Enable in iPhone Settings" = "Ativar nas configurações do iPhone";
@@ -269,7 +269,7 @@
 "Next" = "Próximo";
 "Next 3 days" = "Próximos 3 dias";
 "Next 7 days" = "Próximos 7 dias";
-"Next cheques" = "Próximo cheques";
+"Next cheques" = "Próximos cheques";
 "Next month" = "Próximo mês";
 "Next scheduled reminder" = "Próximo lembrete agendado";
 "No active subscription was found." = "Nenhuma assinatura ativa foi encontrada.";
@@ -319,8 +319,8 @@
 "Outgoing due within 7 days" = "Cheques emitidos com vencimento em 7 dias";
 "Outstanding" = "Em aberto";
 "Outstanding cheques" = "Cheques em aberto";
-"Outstanding only" = "Apenas em destaque";
-"Overdue" = "Atraso";
+"Outstanding only" = "Apenas em aberto";
+"Overdue" = "Em atraso";
 "Overdue by 1 day" = "Atraso de 1 dia";
 "Overdue by 2 days" = "Atraso de 2 dias";
 "Page" = "Página";
@@ -554,7 +554,7 @@
 "Use at least 10 characters. Your password is not saved or sent anywhere." = "Use pelo menos 10 caracteres. Sua senha não é salva nem enviada para nenhum lugar.";
 "Use default reminders" = "Usar lembretes padrão";
 "Use incoming or outgoing, a positive amount and a valid YYYY-MM-DD date." = "Use entrada ou saída, um valor positivo e uma data válida AAAA-MM-DD.";
-"Use selected" = "Usar selected";
+"Use selected" = "Usar a seleção";
 "Use the template's English column names, YYYY-MM-DD dates and your selected currency. Keep cheque numbers as text in Excel to preserve leading zeros." = "Use os nomes das colunas em inglês do modelo, as datas YYYY-MM-DD e a moeda selecionada. Mantenha números de cheque como texto no Excel para preservar zeros à esquerda.";
 "Used before" = "Usado antes de";
 "Uses default reminder time" = "Usa o tempo de lembrete padrão";

@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Fügen Sie Ihren ersten Scheck hinzu, um die Details und Erinnerungen zusammen zu halten.";
 "Adjustment" = "Anpassung";
 "All" = "Alle";
-"All and history" = "Geschichte und Geschichte";
+"All and history" = "Alle mit Verlauf";
 "All banks" = "Alle Banken anzeigen";
 "All dates" = "Alle Termine anzeigen";
 "All features included. One purchase. No subscription." = "Alle Funktionen inklusive. Ein Kauf. Kein Abonnement.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Nimmt an, dass eingehende Schecks am Fälligkeitsdatum abgehoben werden.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Versuchen Sie es erneut mit Biometrie oder dem Code Ihres iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Die Authentifizierung wird von iOS durchgeführt. Shekati greift nicht auf Ihre biometrischen Informationen oder Gerätepasscode zu und speichert diese auch nicht.";
-"Back" = "Zurück";
+"Back" = "Rückseite";
 "Backup" = "Sicherung";
 "Backup password" = "Backup-Passwort erstellen";
 "Backup restored" = "Backup wiederhergestellt";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Verschlüsseltes Backup erstellen";
 "Currency" = "Währung";
 "Currency cannot change while any saved cheque exists, including history." = "Währung kann nicht geändert werden, solange ein gespeicherter Scheck existiert, einschließlich der Geschichte.";
-"Current account" = "Leistungsbilanz";
+"Current account" = "Girokonto";
 "Current holder" = "Aktueller Inhaber";
 "Daily summary" = "Tägliche Zusammenfassung";
 "Daily summary is enabled; no individual reminder days are selected." = "Die tägliche Zusammenfassung ist aktiviert; es werden keine einzelnen Erinnerungstage ausgewählt.";
@@ -319,7 +319,7 @@
 "Outgoing due within 7 days" = "Innerhalb von 7 Tagen fällige ausgestellte Schecks";
 "Outstanding" = "Offen";
 "Outstanding cheques" = "Ausstehende Schecks";
-"Outstanding only" = "Nur noch herausragende";
+"Outstanding only" = "Nur offene";
 "Overdue" = "Überfällig";
 "Overdue by 1 day" = "1 Tag überfällig";
 "Overdue by 2 days" = "2 Tage überfällig";
@@ -554,7 +554,7 @@
 "Use at least 10 characters. Your password is not saved or sent anywhere." = "Bitte verwenden Sie mindestens 10 Zeichen. Ihr Passwort wird nicht gespeichert oder an Dritte gesendet.";
 "Use default reminders" = "Standarderinnerungen verwenden";
 "Use incoming or outgoing, a positive amount and a valid YYYY-MM-DD date." = "Verwenden Sie eingehendes oder ausgehendes Geld, einen positiven Betrag und ein gültiges Datum YYYY-MM-DD.";
-"Use selected" = "Verwenden Sie ausgewählte";
+"Use selected" = "Auswahl übernehmen";
 "Use the template's English column names, YYYY-MM-DD dates and your selected currency. Keep cheque numbers as text in Excel to preserve leading zeros." = "Verwenden Sie die englischen Spaltennamen der Vorlage, Datumsangaben in JJJJ-MM-TT und Ihre ausgewählte Währung. Schecknummern als Text in Excel behalten, um führende Nullen zu erhalten.";
 "Used before" = "Vorher verwendet";
 "Uses default reminder time" = "Verwendet Standarderinnerungszeit";

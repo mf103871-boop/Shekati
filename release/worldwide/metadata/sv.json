@@ -3,8 +3,8 @@
   "applicationLocale": "sv",
   "name": "Shekati",
   "subtitle": "Checköversikt",
-  "keywords": "checkar,Bankkonton och banktjänster,kalender,påminnelser",
-  "description": "Spela inkommande och utgående checkar, se deras förfallodatum och hålla dina check bilder tillsammans.\n\nDen fria planen innehåller ett bankkonto, tio aktiva checkar, manuell inmatning, en kalender och påminnelser.\n\nShekati Plus lägger till fler konton, obegränsat aktiva checkar, check skanning, påskrifter, partiella avvecklingar, ersättningar och kassaflödesprognoser.\n\nVälj mellan månads- eller årsprenumeration. Prenumerationer förnyas automatiskt tills de avslutas i ditt Apple-konto, och du kan välja att betala en gång per år eller månad.\n\nDu kan läsa, stänga och exportera befintliga checkar efter att en prenumeration har upphört.\n\nAnvändarvillkor\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nIntegritetspolicy - IKEA\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "keywords": "checkar,bankkonton,kalender,påminnelser",
+  "description": "Registrera mottagna och utställda checkar, följ förfallodagarna och spara en bild av varje check. Gratisversionen omfattar ett bankkonto och upp till 10 öppna checkar samt manuell registrering, kalender och påminnelser.\n\nMed Shekati Plus kan du hantera valfritt antal konton och checkar. Skanna checkar, registrera överlåtelser genom indossament, delbetalningar och ersättningscheckar samt se en prognos för ditt kassaflöde.\n\nVälj en månads- eller årsprenumeration. Du ser det lokala priset före köpet. Prenumerationen förnyas automatiskt tills du säger upp den via ditt Apple-konto. När den löper ut kan du fortfarande visa, avsluta och exportera befintliga checkar.\n\nAnvändarvillkor\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nIntegritetspolicy - IKEA\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {
@@ -17,7 +17,7 @@
     }
   },
   "screenshotHeadings": [
-    "Ditt konto -",
+    "Ditt bankkonto",
     "Checkregister",
     "Granska skannade detaljer · Shekati Plus",
     "Checkuppgifter",

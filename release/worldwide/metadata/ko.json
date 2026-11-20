@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "수표 관리",
   "keywords": "수표,은행 계좌,달력,알림",
-  "description": "받은 수표와 발행한 수표를 기록하고 지급기일과 수표 이미지를 한곳에서 관리하세요.\n\n무료 플랜에서는 은행 계좌 한 개와 미결제 수표 최대 열 장을 관리할 수 있습니다. 직접 입력, 캘린더, 알림 기능이 포함됩니다.\n\nShekati Plus에서는 계좌와 미결제 수표를 수량 제한 없이 등록할 수 있습니다. 수표 스캔, 배서, 부분 결제, 수표 교체 및 현금 흐름 예측 기능도 제공합니다.\n\n월간 또는 연간 구독을 선택할 수 있습니다. 구매 전 해당 지역의 가격이 표시되며, Apple 계정에서 취소할 때까지 구독이 자동 갱신됩니다.\n\n구독이 끝난 뒤에도 기존 수표를 조회하고 처리를 마치거나 데이터를 내보낼 수 있습니다.\n\n이용 약관\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\n개인정보 보호 정책\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "description": "받은 수표와 발행한 수표를 이미지, 지급기일과 함께 기록하세요. 달력에서 다가오는 지급기일을 확인하고 알림을 설정할 수 있습니다.\n\n무료 플랜에서는 은행 계좌 한 개와 미결제 수표 최대 열 장을 관리할 수 있습니다. 수표 직접 입력, 달력, 알림 기능이 포함됩니다.\n\nShekati Plus에서는 여러 은행 계좌를 관리할 수 있으며 미결제 수표 수에는 제한이 없습니다. 수표를 스캔한 뒤 인식된 정보를 확인하고, 배서 양도와 일부 지급, 수표 교체 내역을 기록할 수 있습니다. 예상 현금 흐름도 확인할 수 있습니다.\n\n월간 또는 연간 구독을 선택할 수 있습니다. 구매 전에 해당 지역의 가격이 표시됩니다. 구독은 Apple 계정에서 취소할 때까지 자동으로 갱신됩니다.\n\n구독이 만료된 뒤에도 기존 수표를 조회하고 처리를 마치거나 기록을 내보낼 수 있습니다.\n\n이용 약관\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\n개인정보 보호 정책\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {

@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "ଏହାର ବିବରଣୀ ଏବଂ ସ୍ମାରକପତ୍ରକୁ ଏକାଠି ରଖିବା ପାଇଁ ଆପଣଙ୍କର ପ୍ରଥମ ଚେକ ଯୋଗ କରନ୍ତୁ।";
 "Adjustment" = "ସଂରଚନା";
 "All" = "ସମସ୍ତ";
-"All and history" = "ସମସ୍ତ ଏବଂ ପୁରୁଣା ତଥ୍ୟ";
+"All and history" = "ପୂର୍ବ ରେକର୍ଡ ସହ ସମସ୍ତ ଚେକ୍";
 "All banks" = "ସମସ୍ତ ବ୍ୟାଙ୍କଗୁଡ଼ିକ";
 "All dates" = "ସମସ୍ତ ତାରିଖ";
 "All features included. One purchase. No subscription." = "ସମସ୍ତ ବିଶେଷତ୍ୱ ଅନ୍ତର୍ଭୁକ୍ତ। ଗୋଟିଏ କ୍ରୟ। କୌଣସି ସଦସ୍ୟତା ନାହିଁ।";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "ଆଗତ ଚେକଗୁଡ଼ିକ ସେମାନଙ୍କର ଅବଧି ତାରିଖରେ ସଂଗ୍ରହ କରାଯାଇଥିବା ଅନୁମାନ କରେ।";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "ବୈଧିକରଣ ବିଫଳ ହୋଇଛି। ବାୟୋମେଟ୍ରିକ କିମ୍ବା ଆପଣଙ୍କର iPhone ପ୍ରବେଶ ସଂକେତ ବ୍ୟବହାର କରି ପୁଣିଥରେ ଚେଷ୍ଟାକରନ୍ତୁ।";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "ବୈଧିକରଣ iOS ଦ୍ୱାରା ପରିଚାଳିତ ହୋଇଥାଏ। Shekati ଆପଣଙ୍କର ବାୟୋମେଟ୍ରିକ ସୂଚନା କିମ୍ବା ଉପକରଣ ପ୍ରବେଶ ସଂକେତକୁ ଭର୍ତ୍ତି କରିଥାଏ କିମ୍ବା ସଂରକ୍ଷଣ କରେ ନାହିଁ।";
-"Back" = "ପଛକୁ";
+"Back" = "ପଛ ପାର୍ଶ୍ୱ";
 "Backup" = "ନକଲ ସଂରକ୍ଷଣ";
 "Backup password" = "ନକଲ ସଂରକ୍ଷଣ ପ୍ରବେଶ ସଂକେତ";
 "Backup restored" = "ନକଲ ସଂରକ୍ଷଣ ପୁନଃସ୍ଥାପନ କରାଯାଇଛି";
@@ -72,7 +72,7 @@
 "Cash forecast" = "ନଗଦ ପ୍ରବାହ ପୂର୍ବାନୁମାନ";
 "Change status" = "ସ୍ଥିତି ପରିବର୍ତ୍ତନ କରନ୍ତୁ";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "କ୍ରୟ ସମୟରେ ଚଳାଇଥାଏ। ଆପଣଙ୍କର Apple ଖାତାରେ ବାତିଲ ନହେବା ପର୍ଯ୍ୟନ୍ତ ସ୍ୱୟଂଚାଳିତ ଭାବରେ ନବିକରଣ ହୋଇଥାଏ।";
-"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "ଆପଣଙ୍କର ଚେକ ସହିତ ପ୍ରତ୍ୟେକ ପ୍ରସ୍ତାବକୁ ଯାଞ୍ଚ କରନ୍ତୁ। ସଂରକ୍ଷଣକୁ ଟାଇପ କରିବା ପର୍ଯ୍ୟନ୍ତ କିଛି ସଂରକ୍ଷିତ ହୋଇନଥାଏ।";
+"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "ପ୍ରତ୍ୟେକ ତଥ୍ୟକୁ ଆପଣଙ୍କ ଚେକ୍ ସହିତ ମେଳ କରନ୍ତୁ। ସଂରକ୍ଷଣ ବଟନ୍ ଦବାଇବା ପର୍ଯ୍ୟନ୍ତ କିଛି ସଂରକ୍ଷିତ ହେବ ନାହିଁ।";
 "Check iCloud status" = "iCloud ସ୍ଥିତି ଯାଞ୍ଚ କରନ୍ତୁ";
 "Check the account name and opening balance." = "ଖାତା ନାମ ଏବଂ ଖୋଲିବା ବଳୟ ଯାଞ୍ଚ କରନ୍ତୁ।";
 "Check the amount, date and selected account." = "ପରିମାଣ, ତାରିଖ ଏବଂ ବଚ୍ଛିତ ଖାତାକୁ ଯାଞ୍ଚ କରନ୍ତୁ।";
@@ -80,7 +80,7 @@
 "Check the details" = "ବିବରଣୀ ଯାଞ୍ଚ କରନ୍ତୁ";
 "Checking iCloud" = "iCloud ଯାଞ୍ଚ କରୁଅଛି";
 "Cheque" = "ଚେକ";
-"Cheque actions" = "କାର୍ଯ୍ୟଗୁଡିକୁ ଯାଞ୍ଚ କରନ୍ତୁ";
+"Cheque actions" = "ଚେକ୍ ସମ୍ବନ୍ଧୀୟ କାର୍ଯ୍ୟ";
 "Cheque book" = "ଚେକ ପୁସ୍ତିକା";
 "Cheque book name" = "ଚେକ ବୁକ୍ ନାମ";
 "Cheque books" = "ଚେକ ପୁସ୍ତିକା";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "ସଂଗୁପ୍ତ ନକଲକୁ ନିର୍ମାଣ କରନ୍ତୁ";
 "Currency" = "ମୁଦ୍ରା";
 "Currency cannot change while any saved cheque exists, including history." = "କୌଣସି ସଂରକ୍ଷିତ ଚେକ ଅବସ୍ଥିତ ଥିବା ସମୟରେ ମୁଦ୍ରା ପରିବର୍ତ୍ତନ କରାଯାଇପାରିବ ନାହିଁ, ପୁରୁଣା ତଥ୍ୟ ସମେତ।";
-"Current account" = "ପ୍ରଚଳିତ ଖାତା";
+"Current account" = "ଚଳନ୍ତି ଖାତା";
 "Current holder" = "ବର୍ତ୍ତମାନର ଚେକ୍ ଧାରକ";
 "Daily summary" = "ଦିନିକିଆ ସାରାଂଶ";
 "Daily summary is enabled; no individual reminder days are selected." = "ଦିନିକିଆ ସାରାଂଶ ସକ୍ରିୟ ଅଛି; କୌଣସି ବ୍ୟକ୍ତିଗତ ସ୍ମାରକପତ୍ର ଦିନ ବଚ୍ଛିତ ନାହିଁ।";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "ସେମାନଙ୍କର ଧାଡ଼ିକୁ ବଦଳାଇବା ପାଇଁ ଚେକଗୁଡ଼ିକୁ ଟାଣି ନିଅନ୍ତୁ।";
 "Due date" = "ଦେୟ ତାରିଖ";
 "Due dates" = "ଅବଧି ତାରିଖ";
-"Due today" = "ଆଜିର ତାରିଖ";
+"Due today" = "ଆଜି ଦେୟ";
 "Edit" = "ସମ୍ପାଦନ କରନ୍ତୁ (E)";
 "Edit cheque" = "ଚେକକୁ ସମ୍ପାଦନ କରନ୍ତୁ";
 "Enable in iPhone Settings" = "iPhone ବିନ୍ୟାସଗୁଡ଼ିକରେ ସକ୍ରିୟ କରନ୍ତୁ";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "ମୁକ୍ତରେ ଗୋଟିଏ ଖାତା ଏବଂ ଦଶଟି ସକ୍ରିୟ ଚେକ ସାମିଲ ଅଛି। ଆପଣଙ୍କର ରେକର୍ଡ ପଢିବା, ବନ୍ଦ କରିବା ଏବଂ ରପ୍ତାନୀ କରିବା ପାଇଁ ଉପଲବ୍ଧ ରହିଥାଏ।";
 "From" = "ଠାରୁ";
 "From date" = "ତାରିଖରୁ";
-"Front" = "ଆଗପଟ";
+"Front" = "ଆଗ ପାର୍ଶ୍ୱ";
 "Front image" = "ଆଗ ପ୍ରତିଛବି";
 "Hide amounts" = "ପରିମାଣ ଲୁଚାଇ ରଖନ୍ତୁ";
 "Hide notification details" = "ବିଜ୍ଞପ୍ତି ବିବରଣୀଗୁଡ଼ିକୁ ଲୁଚାନ୍ତୁ";
@@ -269,9 +269,9 @@
 "Next" = "ପରବର୍ତ୍ତୀ";
 "Next 3 days" = "ପରବର୍ତ୍ତୀ3ଦିନ";
 "Next 7 days" = "ପରବର୍ତ୍ତୀ7ଦିନ";
-"Next cheques" = "ପରବର୍ତ୍ତୀ ଯାଞ୍ଚଗୁଡ଼ିକ";
+"Next cheques" = "ଆଗାମୀ ଚେକ୍‌ଗୁଡ଼ିକ";
 "Next month" = "ପରବର୍ତ୍ତୀ ମାସ";
-"Next scheduled reminder" = "ପରବର୍ତ୍ତୀ ସମୟ ସୀମା ଅନୁଯାୟୀ ସ୍ମାରକପତ୍ର@ action";
+"Next scheduled reminder" = "ପରବର୍ତ୍ତୀ ସମୟ ସୀମା ଅନୁଯାୟୀ ସ୍ମାରକପତ୍ର";
 "No active subscription was found." = "କୌଣସି ସକ୍ରିୟ ଭରଣପତ୍ର ମିଳିଲା ନାହିଁ।";
 "No cheques due on this day" = "ଏହି ଦିନରେ କୌଣସି ଚେକ ଅବଧି ନାହିଁ";
 "No cheques yet" = "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଚେକ ନାହିଁ";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "ଯାଉଥିବା ଚେକ ଲେଡର";
 "Outgoing cheques you add appear here in date order." = "ଆପଣ ଯୋଗ କରିଥିବା ବାହାରୁଥିବା ଚେକଗୁଡ଼ିକ ତାରିଖ ଧାର୍ଯ୍ୟରେ ଏଠାରେ ଦେଖାଯାଏ।";
 "Outgoing due within 7 days" = "7 ଦିନ ମଧ୍ୟରେ ଦେବାକୁ ଥିବା ଚେକ୍";
-"Outstanding" = "ଅପରିବର୍ତ୍ତିତ";
+"Outstanding" = "ବକେୟା";
 "Outstanding cheques" = "ବାକି ଥିବା ଚେକ";
-"Outstanding only" = "କେବଳ ଚଳିତ";
-"Overdue" = "ଅବଧି ସମାପ୍ତ";
+"Outstanding only" = "କେବଳ ବକେୟା";
+"Overdue" = "ଦେୟ ତାରିଖ ପାର ହୋଇଛି";
 "Overdue by 1 day" = "1 ଦିନ ପରେ ଅବଧି ସମାପ୍ତ";
 "Overdue by 2 days" = "୨ ଦିନ ପରେ ଶେଷ ହୋଇଛି";
 "Page" = "ପୃଷ୍ଠା";
@@ -486,7 +486,7 @@
 "Syncing" = "ସମକାଳୀନ କରୁଅଛି";
 "System" = "ତନ୍ତ୍ର";
 "Tap a day to add an outgoing cheque with this due date." = "ଏହି ଅବଧି ତାରିଖ ସହିତ ଗୋଟିଏ ଯାଉଥିବା ଚେକ ଯୋଗ କରିବା ପାଇଁ ଗୋଟିଏ ଦିନକୁ ଟ୍ୟାପ କରନ୍ତୁ।";
-"Terms of use" = "ବ୍ୟବହାର ବିଧି";
+"Terms of use" = "ବ୍ୟବହାରର ସର୍ତ୍ତାବଳୀ";
 "The 30-day restore period has ended." = "30 ଦିନର ପୁନଃସ୍ଥାପନ ସମୟ ସମାପ୍ତ ହୋଇଛି।";
 "The actual payment or collection date cannot be before the issue date." = "ପ୍ରକୃତ ପେମେଣ୍ଟ କିମ୍ବା ସଂଗ୍ରହ ତାରିଖ ନିର୍ଗମ ତାରିଖ ପୂର୍ବରୁ ହୋଇପାରିବ ନାହିଁ।";
 "The actual payment or collection date cannot be in the future." = "ପ୍ରକୃତ ପୈଠ କିମ୍ବା ସଂଗ୍ରହ ତାରିଖ ଭବିଷ୍ୟତରେ ରହିବା ଉଚିତ ନୁହେଁ ।";

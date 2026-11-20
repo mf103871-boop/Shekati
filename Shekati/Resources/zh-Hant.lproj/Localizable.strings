@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "添加第一張支票以保存支票的細節和提醒。";
 "Adjustment" = "調整";
 "All" = "所有";
-"All and history" = "所有的歷史";
+"All and history" = "全部（含歷史紀錄）";
 "All banks" = "所有銀行";
 "All dates" = "所有日期";
 "All features included. One purchase. No subscription." = "所有功能都包含在內，一次購買，沒有訂閱。";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "假設收到的支票在到期日期被領取。";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "身份驗證失敗。請使用生物識別或 iPhone 密碼重試。";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "身份驗證由 iOS 處理。 Shekati 不會存取或儲存您的生物特徵信息或裝置密碼。";
-"Back" = "回來";
+"Back" = "背面";
 "Backup" = "備份";
 "Backup password" = "備份密碼";
 "Backup restored" = "備份恢復";
@@ -80,7 +80,7 @@
 "Check the details" = "查看詳細";
 "Checking iCloud" = "檢查 iCloud";
 "Cheque" = "支票";
-"Cheque actions" = "查看行動";
+"Cheque actions" = "支票操作";
 "Cheque book" = "支票簿";
 "Cheque book name" = "支票簿名稱";
 "Cheque books" = "支票簿";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "加密備份";
 "Currency" = "貨幣";
 "Currency cannot change while any saved cheque exists, including history." = "只要任何已保存支票存在，包括歷史，貨幣就不能改變。";
-"Current account" = "經常帳戶";
+"Current account" = "活期帳戶";
 "Current holder" = "目前持票人";
 "Daily summary" = "每日總結";
 "Daily summary is enabled; no individual reminder days are selected." = "每日摘要已啟用；未選擇單獨的提醒日期。";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "免費版包括一個帳戶和十張活躍支票。 您的記錄仍可閱讀、關閉和輸出。";
 "From" = "從";
 "From date" = "從日期";
-"Front" = "前面";
+"Front" = "正面";
 "Front image" = "前面的圖片";
 "Hide amounts" = "隱藏數量";
 "Hide notification details" = "隱藏通知詳細";
@@ -228,7 +228,7 @@
 "Incoming" = "收到的支票";
 "Incoming cheque" = "收到的支票";
 "Issue cheque" = "發支票";
-"Issue date" = "發行日期";
+"Issue date" = "出票日期";
 "Issue date must not be after the due date or actual settlement date." = "發行日期不得晚於到期日或實際結算日。";
 "Issued" = "已簽發";
 "It was permanently deleted, possibly from another device." = "它被永久刪除了 ， 可能是從另一台裝置上 。";
@@ -317,9 +317,9 @@
 "Outgoing cheque ledger" = "支票帳戶";
 "Outgoing cheques you add appear here in date order." = "您添加的出境支票按日期順序顯示在此。";
 "Outgoing due within 7 days" = "7 天內到期應付支票";
-"Outstanding" = "很棒";
-"Outstanding cheques" = "未清支票";
-"Outstanding only" = "只有優秀的";
+"Outstanding" = "未結清";
+"Outstanding cheques" = "未結清支票";
+"Outstanding only" = "僅未結清";
 "Overdue" = "逾期";
 "Overdue by 1 day" = "逾期一天";
 "Overdue by 2 days" = "已逾期 2 天";
@@ -352,7 +352,7 @@
 "Reason" = "理由";
 "Recently Deleted" = "最近删除";
 "Recently deleted" = "最近刪除";
-"Recognized text" = "認識的文字";
+"Recognized text" = "辨識出的文字";
 "Reconcile account" = "核對帳戶";
 "Record bank settlement" = "登記銀行結算";
 "Record collection" = "登記收款";
@@ -473,7 +473,7 @@
 "Some later reminders still need scheduling." = "一些後續的提醒仍然需要安排 。";
 "Some purchase options are unavailable. Please try again later." = "某些購買選項不可用。 請稍後再試。";
 "Some reminders could not be scheduled. Check notification settings and refresh." = "某些提醒無法安排。 檢查通知設定並刷新。";
-"Some reminders could not be scheduled. Check permission and refresh the queue." = "某些提醒無法安排。 請檢查權限並刷新列表。 @ info";
+"Some reminders could not be scheduled. Check permission and refresh the queue." = "某些提醒無法安排。 請檢查權限並刷新列表。";
 "Sort by" = "排序方式";
 "Sort cheques" = "分類支票";
 "Start legal follow-up" = "開始法律追蹤";
@@ -554,7 +554,7 @@
 "Use at least 10 characters. Your password is not saved or sent anywhere." = "至少使用 10 個字符。 您的密碼不會被保存或發送到任何地方。";
 "Use default reminders" = "使用默認提醒";
 "Use incoming or outgoing, a positive amount and a valid YYYY-MM-DD date." = "使用收入或發出，正值和有效的 YYYY-MM-DD 日期。";
-"Use selected" = "使用選定的";
+"Use selected" = "使用所選項目";
 "Use the template's English column names, YYYY-MM-DD dates and your selected currency. Keep cheque numbers as text in Excel to preserve leading zeros." = "使用模板的英文列名、YYYY-MM-DD日期和您選擇的貨幣。 在Excel中保留支票數字作為文本以保留前面的零。";
 "Used before" = "之前使用的";
 "Uses default reminder time" = "使用默認提醒時間";

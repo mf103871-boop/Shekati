@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Tambah cek pertama anda untuk menyimpan perincian dan peringatan bersama.";
 "Adjustment" = "Laras";
 "All" = "Semua";
-"All and history" = "Semua dan sejarah";
+"All and history" = "Semua, termasuk sejarah";
 "All banks" = "Semua bank";
 "All dates" = "Semua tarikh";
 "All features included. One purchase. No subscription." = "Semua ciri-ciri termasuk. Satu pembelian. Tiada langganan.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Asumsi cek masuk dikumpul pada tarikh tamat tempoh mereka.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Pengesahan gagal. Cuba lagi menggunakan biometrik atau kod laluan iPhone anda.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Pengesahan diuruskan oleh iOS. Shekati tidak mengakses atau menyimpan maklumat biometrik anda atau kod laluan peranti.";
-"Back" = "Balik";
+"Back" = "Bahagian belakang";
 "Backup" = "Sandaran";
 "Backup password" = "Katalaluan sandaran";
 "Backup restored" = "Sandaran telah dipulihkan";
@@ -80,7 +80,7 @@
 "Check the details" = "Periksa perincian";
 "Checking iCloud" = "Menyemak iCloud";
 "Cheque" = "Cek";
-"Cheque actions" = "Tindakan";
+"Cheque actions" = "Tindakan untuk cek";
 "Cheque book" = "Buku cek";
 "Cheque book name" = "Nama buku cek";
 "Cheque books" = "Buku cek";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Seret cek untuk ubah urutannya.";
 "Due date" = "Tarikh matang";
 "Due dates" = "Tarikh tamat";
-"Due today" = "Diperbaharui";
+"Due today" = "Matang hari ini";
 "Edit" = "Sunting";
 "Edit cheque" = "Edit cek";
 "Enable in iPhone Settings" = "Aktifkan dalam Tetapan iPhone";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Bebas termasuk satu akaun dan sepuluh cek aktif. Rekod anda masih boleh dibaca, ditutup dan diekspor.";
 "From" = "Daripada";
 "From date" = "Dari tarikh";
-"Front" = "& Depan";
+"Front" = "Bahagian hadapan";
 "Front image" = "Imej depan";
 "Hide amounts" = "Sorok jumlah";
 "Hide notification details" = "Sembunyikan perincian pemberitahuan";
@@ -269,7 +269,7 @@
 "Next" = "Seterusnya";
 "Next 3 days" = "3 hari seterusnya";
 "Next 7 days" = "7 hari seterusnya";
-"Next cheques" = "Semakan seterusnya";
+"Next cheques" = "Cek seterusnya";
 "Next month" = "Bulan seterusnya";
 "Next scheduled reminder" = "Peringatan dijadualkan seterusnya";
 "No active subscription was found." = "Tiada langganan aktif ditemui.";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "Buku cek keluaran";
 "Outgoing cheques you add appear here in date order." = "cek keluaran anda tambah muncul di sini mengikut tertib tarikh.";
 "Outgoing due within 7 days" = "Cek dikeluarkan yang matang dalam 7 hari";
-"Outstanding" = "Terutama";
-"Outstanding cheques" = "Cekupan";
-"Outstanding only" = "Terlebih sahaja";
-"Overdue" = "Terlambat";
+"Outstanding" = "Belum dijelaskan";
+"Outstanding cheques" = "Cek yang belum dijelaskan";
+"Outstanding only" = "Yang belum dijelaskan sahaja";
+"Overdue" = "Melepasi tarikh matang";
 "Overdue by 1 day" = "Terlewat 1 hari";
 "Overdue by 2 days" = "Terlewat 2 hari";
 "Page" = "Halaman";
@@ -479,7 +479,7 @@
 "Start legal follow-up" = "Mulakan pemerhatian undang-undang";
 "Statement balance" = "Baki pada penyata bank";
 "Status" = "Status";
-"Suggested details" = "Perincian Diperlukan";
+"Suggested details" = "Butiran yang dicadangkan";
 "Swipe to see all columns" = "Selitkan semua lajur";
 "Sync paused — records remain on this iPhone" = "Segerakkan dijeda — rekod masih ada pada iPhone ini";
 "Synced" = "Disegerakkan";

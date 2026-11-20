@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Thêm tờ séc đầu tiên để giữ lại chi tiết và nhắc nhở cùng nhau.";
 "Adjustment" = "Điều chỉnh";
 "All" = "Tất cả";
-"All and history" = "Tất cả và lịch sử";
+"All and history" = "Tất cả, gồm cả lịch sử";
 "All banks" = "Tất cả các ngân hàng";
 "All dates" = "Tất cả ngày";
 "All features included. One purchase. No subscription." = "Tất cả các tính năng được bao gồm. Một lần mua, không đăng ký.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Giả sử các tờ séc được thu vào ngày phải trả.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Lỗi xác thực. Hãy thử lại bằng cách sử dụng sinh trắc học hoặc mật khẩu iPhone của bạn.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Việc xác thực được xử lý bởi iOS. Shekati không truy cập hay lưu trữ thông tin sinh học hoặc mật khẩu thiết bị của bạn.";
-"Back" = "Lùi lại.";
+"Back" = "Mặt sau";
 "Backup" = "Bản sao";
 "Backup password" = "Mật khẩu dự trữ";
 "Backup restored" = "Bản sao đã khôi phục";
@@ -72,7 +72,7 @@
 "Cash forecast" = "Dự báo dòng tiền";
 "Change status" = "Thay đổi trạng thái";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Tự động cập nhật cho đến khi bị hủy trong tài khoản Apple của bạn.";
-"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Kiểm tra mỗi gợi ý với kiểm tra của bạn. Không có gì được lưu cho đến khi bạn nhấn Lưu.";
+"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Đối chiếu từng thông tin gợi ý với tờ séc. Thông tin chỉ được lưu khi bạn chạm vào Lưu.";
 "Check iCloud status" = "Kiểm tra trạng thái iCloud";
 "Check the account name and opening balance." = "Kiểm tra tên tài khoản và số dư mở.";
 "Check the amount, date and selected account." = "Kiểm tra số tiền, ngày và tài khoản đã chọn.";
@@ -80,7 +80,7 @@
 "Check the details" = "Kiểm tra chi tiết";
 "Checking iCloud" = "Đang kiểm tra iCloud";
 "Cheque" = "Séc";
-"Cheque actions" = "Hành động";
+"Cheque actions" = "Thao tác với séc";
 "Cheque book" = "Sổ séc";
 "Cheque book name" = "Tên sổ séc";
 "Cheque books" = "Sổ séc";
@@ -94,8 +94,8 @@
 "Cheque images" = "Xem ảnh";
 "Cheque moved to Recently Deleted" = "Đang xóa";
 "Cheque no." = "Không có tờ séc.";
-"Cheque number" = "Số thẻ";
-"Cheque number (optional)" = "Số thẻ (tự chọn)";
+"Cheque number" = "Số séc";
+"Cheque number (optional)" = "Số séc (tùy chọn)";
 "Cheque register" = "Kiểm tra";
 "Cheque reminder" = "Nhắc nhở";
 "Cheque report" = "Báo cáo";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Tạo bản sao lưu mã hóa";
 "Currency" = "Tiền tệ";
 "Currency cannot change while any saved cheque exists, including history." = "Tiền tệ không thể thay đổi trong khi bất kỳ séc nào được lưu trữ tồn tại, bao gồm lịch sử.";
-"Current account" = "Tài khoản hiện tại";
+"Current account" = "Tài khoản thanh toán";
 "Current holder" = "Người đang giữ séc";
 "Daily summary" = "Tóm tắt hàng ngày";
 "Daily summary is enabled; no individual reminder days are selected." = "Đã bật tổng hợp hàng ngày; không chọn ngày nhắc nhở cá nhân nào.";
@@ -164,7 +164,7 @@
 "Descending" = "Từ nhỏ";
 "Device lock unavailable" = "Không có khóa thiết bị";
 "Different currencies found" = "Tìm thấy các loại tiền tệ khác nhau";
-"Direction" = "Đường";
+"Direction" = "Loại séc";
 "Discard" = "Bỏ qua";
 "Discard changes?" = "Bỏ qua những thay đổi?";
 "Dismiss conflicting entry" = "Bỏ mục mâu thuẫn";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Kéo các tờ séc để thay đổi thứ tự.";
 "Due date" = "Ngày đến hạn";
 "Due dates" = "Ngày hết hạn";
-"Due today" = "Đến ngày hôm nay";
+"Due today" = "Đến hạn hôm nay";
 "Edit" = "Sửa";
 "Edit cheque" = "Sửa thẻ";
 "Enable in iPhone Settings" = "Bật trong Thiết lập iPhone";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Miễn phí bao gồm một tài khoản và mười tờ séc hoạt động. Các hồ sơ của bạn vẫn có thể đọc, đóng và xuất.";
 "From" = "Từ";
 "From date" = "Từ ngày";
-"Front" = "Phía trước";
+"Front" = "Mặt trước";
 "Front image" = "Hình trước";
 "Hide amounts" = "Ẩn số lượng";
 "Hide notification details" = "Ẩn thông báo chi tiết";
@@ -269,9 +269,9 @@
 "Next" = "Tiếp theo";
 "Next 3 days" = "3 ngày tới";
 "Next 7 days" = "7 ngày tới";
-"Next cheques" = "Kiểm tra tiếp theo";
+"Next cheques" = "Các séc sắp đến hạn";
 "Next month" = "Tháng tới";
-"Next scheduled reminder" = "Nhắc nhở sắp xếp tiếp theo@ info: whatsthis";
+"Next scheduled reminder" = "Nhắc nhở sắp xếp tiếp theo";
 "No active subscription was found." = "Không tìm thấy đăng ký hoạt động.";
 "No cheques due on this day" = "Không có séc nào hết hạn ngày nay";
 "No cheques yet" = "Chưa có séc.";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "Đang gửi";
 "Outgoing cheques you add appear here in date order." = "Các séc ra bạn thêm sẽ xuất hiện ở đây theo thứ tự ngày.";
 "Outgoing due within 7 days" = "Séc đã phát hành đến hạn trong 7 ngày";
-"Outstanding" = "Đáng chú ý";
-"Outstanding cheques" = "Tờ séc còn dư";
-"Outstanding only" = "Chỉ còn lại";
-"Overdue" = "Thời hạn";
+"Outstanding" = "Chưa thanh toán";
+"Outstanding cheques" = "Séc chưa thanh toán";
+"Outstanding only" = "Chỉ séc chưa thanh toán";
+"Overdue" = "Quá hạn";
 "Overdue by 1 day" = "Thời hạn 1 ngày";
 "Overdue by 2 days" = "Đang quá hạn 2 ngày";
 "Page" = "Trang";

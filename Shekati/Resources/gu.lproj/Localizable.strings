@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "તેની વિગતો અને યાદ અપાવનારાઓ એક સાથે રાખવા માટે તમારી પહેલી ચેક ઉમેરો.";
 "Adjustment" = "સુયોજન";
 "All" = "બધા";
-"All and history" = "બધા અને ઇતિહાસ";
+"All and history" = "ઇતિહાસ સહિત બધા ચેક";
 "All banks" = "બધી બેંકો";
 "All dates" = "બધી તારીખો";
 "All features included. One purchase. No subscription." = "બધા લક્ષણો સમાવેલ છે. એક ખરીદી. કોઈ સબસ્ક્રાઇબ નથી.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "એવી ધારણા કરે છે કે આવતા ચેક તેમના સમયમર્યાદા પર એકત્રિત થાય છે.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "સત્તાધિકરણ નિષ્ફળ. બાયોમેટ્રીક અથવા તમારા iPhone પાસકોડની મદદથી ફરીથી પ્રયત્ન કરો.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "સત્તાધિકરણ iOS દ્દારા સંભાળવામાં આવે છે. Shekati તમારી બાયોમેટ્રિક જાણકારી અથવા ઉપકરણ પાસવર્ડને વાપરી શકતું નથી અથવા સંગ્રહી શકતું નથી.";
-"Back" = "પાછળ";
+"Back" = "પાછળની બાજુ";
 "Backup" = "બેકઅપ";
 "Backup password" = "બેકઅપ પાસવર્ડ";
 "Backup restored" = "બેકઅપ પુનઃસંગ્રહ થયેલ છે";
@@ -80,7 +80,7 @@
 "Check the details" = "વિગતો ચકાસો";
 "Checking iCloud" = "iCloud ચકાસી રહ્યા છે";
 "Cheque" = "ચેક";
-"Cheque actions" = "ક્રિયાઓ ચકાસો";
+"Cheque actions" = "ચેક માટેની ક્રિયાઓ";
 "Cheque book" = "ચેકબુક";
 "Cheque book name" = "ચેકબુક નામ";
 "Cheque books" = "ચેકબુક";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "એનક્રિપ્ટ થયેલ બેકઅપ બનાવો";
 "Currency" = "ચલણ";
 "Currency cannot change while any saved cheque exists, including history." = "ચલણ બદલી શકાતુ નથી જ્યારે કોઈપણ સંગ્રહાયેલ ચેક અસ્તિત્વ ધરાવે છે, ઇતિહાસ સમાવતા.";
-"Current account" = "વર્તમાન ખાતું";
+"Current account" = "ચાલુ ખાતું";
 "Current holder" = "હાલનો ચેકધારક";
 "Daily summary" = "દિવસનો સાર";
 "Daily summary is enabled; no individual reminder days are selected." = "રોજનો સાર સક્રિય થયેલ છે; કોઈ વ્યક્તિગત યાદ અપાવનાર દિવસો પસંદ થયેલ નથી.";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "તેમના ક્રમને બદલવા માટે ચેક ખેંચો.";
 "Due date" = "નિયત તારીખ";
 "Due dates" = "અંતિમ તારીખો";
-"Due today" = "આજે પૂર્ણ થવુ જોઇએ";
+"Due today" = "ચુકવણીની નિયત તારીખ આજે";
 "Edit" = "ફેરફાર કરો";
 "Edit cheque" = "ચેકમાં ફેરફાર કરો";
 "Enable in iPhone Settings" = "iPhone સુયોજનો માં સક્રિય કરો";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "મુક્ત એક ખાતું અને દસ સક્રિય ચેક સમાવે છે. તમારા રેકોર્ડ વાંચી શકાય તેવા, બંધ કરી શકાય તેવા અને નિકાસ કરી શકાય તેવા રહે છે.";
 "From" = "માંથી";
 "From date" = "તારીખ થી";
-"Front" = "આગળ";
+"Front" = "આગળની બાજુ";
 "Front image" = "આગળનું ચિત્ર";
 "Hide amounts" = "રકમ છુપાવો";
 "Hide notification details" = "સૂચના વિગતો છુપાવો";
@@ -269,7 +269,7 @@
 "Next" = "આગળનું (_N)";
 "Next 3 days" = "આગળના ૩ દિવસો";
 "Next 7 days" = "આગળના ૭ દિવસો";
-"Next cheques" = "આગળની ચકાસણી";
+"Next cheques" = "આગામી ચેક";
 "Next month" = "આગળનો મહિનો";
 "Next scheduled reminder" = "આગળનું સુયોજિત યાદ અપાવનાર";
 "No active subscription was found." = "કોઈ સક્રિય ઉમેદવારી મળતી નથી.";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "બહાર નીકળતી ચેક લેડર";
 "Outgoing cheques you add appear here in date order." = "બહાર નીકળતી ચેક તમે ઉમેરો છો તે અહીં તારીખ ક્રમમાં દેખાય છે.";
 "Outgoing due within 7 days" = "7 દિવસમાં ચૂકવવાના ચેક";
-"Outstanding" = "બાકી રહેલ";
+"Outstanding" = "બાકી";
 "Outstanding cheques" = "બાકી રહેલ ચેક";
 "Outstanding only" = "માત્ર બાકી રહેલ";
-"Overdue" = "સમય સમાપ્તિ";
+"Overdue" = "નિયત તારીખ વીતી ગઈ";
 "Overdue by 1 day" = "૧ દિવસથી મોડું થયેલ છે";
 "Overdue by 2 days" = "૨ દિવસોથી મોડું થયેલ છે";
 "Page" = "પાનું";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "યાદ અપાવનાર સંદેશાનું પૂર્વદર્શન";
 "Previous month" = "પહેલાનો મહિનો";
 "Privacy" = "ખાનગી";
-"Privacy policy" = "ખાનગી નીતિ";
+"Privacy policy" = "ગોપનીયતા નીતિ";
 "Read details from front image" = "આગળના ચિત્રમાંથી વિગતો વાંચો";
 "Reason" = "કારણ";
 "Recently Deleted" = "તાજેતરમાં કાઢી નાંખાયેલ";

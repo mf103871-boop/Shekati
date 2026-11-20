@@ -16,6 +16,8 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+      - name: Validate app and store localizations
+        run: python3 Tools/Localization/audit_release.py
       - name: Show build tools
         run: |
           xcodebuild -version

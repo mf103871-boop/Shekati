@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Lägg till din första check för att hålla dess detaljer och påminnelser tillsammans.";
 "Adjustment" = "Justering";
 "All" = "Alla";
-"All and history" = "Allt och historia";
+"All and history" = "Alla, inklusive historik";
 "All banks" = "Alla banker";
 "All dates" = "Alla datum";
 "All features included. One purchase. No subscription." = "Alla funktioner ingår. Ett köp. Ingen prenumeration.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Antar att inkommande checkar hämtas på förfallodatum.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Försök igen med biometri eller lösenkoden för din iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Autentiseringen hanteras av iOS och Shekati har inte tillgång till eller lagrar din biometriska information eller enhetens lösenkod.";
-"Back" = "Tillbaka";
+"Back" = "Baksida";
 "Backup" = "Säkerhetskopia";
 "Backup password" = "Lösenord för säkerhetskopiering";
 "Backup restored" = "Säkerhetskopia återställd";
@@ -58,7 +58,7 @@
 "Bank accounts" = "Bankkonton";
 "Bank holidays" = "Bankhelgdagar";
 "Bank region" = "Bankregion";
-"Banking calendar" = "Bankkalender för 2018";
+"Banking calendar" = "Bankkalender";
 "Branch" = "Bankkontor";
 "Branch (optional)" = "Filial (valfritt)";
 "CSV contains cheque details without photos. It can be opened in Excel. Review the file before importing." = "CSV-filen innehåller checkuppgifter utan foton och kan öppnas i Excel. Granska filen innan du importerar.";
@@ -80,7 +80,7 @@
 "Check the details" = "Kolla detaljerna";
 "Checking iCloud" = "Kontrollera iCloud-kontot";
 "Cheque" = "Check";
-"Cheque actions" = "Checka åtgärder";
+"Cheque actions" = "Åtgärder för checken";
 "Cheque book" = "Checkhäfte";
 "Cheque book name" = "Checkbokens namn";
 "Cheque books" = "Checkböcker";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Skapa krypterad säkerhetskopia";
 "Currency" = "Valuta";
 "Currency cannot change while any saved cheque exists, including history." = "Valutan kan inte ändras så länge som sparade checkar finns, inklusive historik.";
-"Current account" = "Bytesbalans";
+"Current account" = "Transaktionskonto";
 "Current holder" = "Nuvarande innehavare";
 "Daily summary" = "Daglig sammanfattning";
 "Daily summary is enabled; no individual reminder days are selected." = "Daglig sammanfattning är aktiverad, inga enskilda påminnelsedagar väljs.";
@@ -320,7 +320,7 @@
 "Outstanding" = "Utestående";
 "Outstanding cheques" = "Utestående checkar";
 "Outstanding only" = "Endast utestående";
-"Overdue" = "Försenad";
+"Overdue" = "Förfallen";
 "Overdue by 1 day" = "Försenat med 1 dag";
 "Overdue by 2 days" = "Försenad med 2 dagar";
 "Page" = "Sida";

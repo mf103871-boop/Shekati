@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Dodajte prvi ček, da boste skupaj shranili podrobnosti in opomnike.";
 "Adjustment" = "Prilagoditev";
 "All" = "Vse";
-"All and history" = "Zgodovina in zgodovina";
+"All and history" = "Vsi, tudi pretekli";
 "All banks" = "Vse banke";
 "All dates" = "Vsi datumi";
 "All features included. One purchase. No subscription." = "Vse funkcije so vključene. En nakup. Brez naročnine.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Predpostavlja, da so dohodni čeki pobrani na datume zapadlosti.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Poskusi znova z biometričnimi podatki ali geslom za iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Shekati ne dostopa ali shranjuje vaše biometrične podatke ali geslo naprave, zato je preverjanje pristnosti enostavno in hitro.";
-"Back" = "Nazaj.";
+"Back" = "Hrbtna stran";
 "Backup" = "Varnostna kopija";
 "Backup password" = "Geslo za varnostno kopijo";
 "Backup restored" = "Varnostna kopija obnovljena";
@@ -80,7 +80,7 @@
 "Check the details" = "Preverite podrobnosti";
 "Checking iCloud" = "Preverjanje storitve iCloud";
 "Cheque" = "Ček";
-"Cheque actions" = "Ček";
+"Cheque actions" = "Opravila s čekom";
 "Cheque book" = "Čekovnica";
 "Cheque book name" = "Ime čekovne knjižice";
 "Cheque books" = "Čekovnice";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Povlecite čeke, da spremenite svoj vrstni red.";
 "Due date" = "Datum zapadlosti";
 "Due dates" = "Roki";
-"Due today" = "Zapadla danes";
+"Due today" = "Zapade danes";
 "Edit" = "Uredi";
 "Edit cheque" = "Uredi ček";
 "Enable in iPhone Settings" = "Omogoči v nastavitvah iPhone";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "Odhodna čekovna knjiga";
 "Outgoing cheques you add appear here in date order." = "Odhodni čeki, ki jih dodate, so prikazani tukaj v vrstnem redu datuma.";
 "Outgoing due within 7 days" = "Izdani čeki z zapadlostjo v 7 dneh";
-"Outstanding" = "Neporavnana";
+"Outstanding" = "Neporavnani";
 "Outstanding cheques" = "Neporavnani čeki";
-"Outstanding only" = "Samo neplačane obveznosti";
-"Overdue" = "Zastarelo";
+"Outstanding only" = "Samo neporavnani";
+"Overdue" = "Po zapadlosti";
 "Overdue by 1 day" = "Zamudna plačila za 1 dan";
 "Overdue by 2 days" = "Zamudna plačila za 2 dni";
 "Page" = "Stran";

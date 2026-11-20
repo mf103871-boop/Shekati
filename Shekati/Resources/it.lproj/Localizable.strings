@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Aggiungi il tuo primo assegno per tenere insieme i dettagli e i promemoria.";
 "Adjustment" = "Adeguamento";
 "All" = "Tutti";
-"All and history" = "Storia e storia";
+"All and history" = "Tutti, cronologia inclusa";
 "All banks" = "Tutte le banche";
 "All dates" = "Tutte le date";
 "All features included. One purchase. No subscription." = "Tutte le funzionalità incluse. Un acquisto. Nessun abbonamento.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Assume che gli assegni in entrata vengano riscossi nelle date di scadenza.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Prova di nuovo a utilizzare la biometria o il codice del tuo iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Shekati non accede o memorizza le tue informazioni biometriche o il passcode del dispositivo, ma ti consente di accedere al tuo account in qualsiasi momento.";
-"Back" = "Indietro";
+"Back" = "Retro";
 "Backup" = "Backup";
 "Backup password" = "Password di backup";
 "Backup restored" = "Backup ripristinato";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Trascinare gli assegni per cambiare il loro ordine.";
 "Due date" = "Scadenza";
 "Due dates" = "Date di scadenza";
-"Due today" = "Dovuto oggi";
+"Due today" = "In scadenza oggi";
 "Edit" = "Modifica";
 "Edit cheque" = "Modifica assegno";
 "Enable in iPhone Settings" = "Abilita nelle impostazioni di iPhone";
@@ -319,8 +319,8 @@
 "Outgoing due within 7 days" = "Assegni emessi in scadenza entro 7 giorni";
 "Outstanding" = "In sospeso";
 "Outstanding cheques" = "Assegni in essere";
-"Outstanding only" = "Solo in uscita";
-"Overdue" = "In ritardo";
+"Outstanding only" = "Solo in sospeso";
+"Overdue" = "Scaduto";
 "Overdue by 1 day" = "In ritardo di 1 giorno";
 "Overdue by 2 days" = "In ritardo di 2 giorni";
 "Page" = "Pagina";

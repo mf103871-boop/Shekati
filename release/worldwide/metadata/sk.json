@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "Evidencia šekov",
   "keywords": "šeky,bankové účty,kalendár,pripomienky",
-  "description": "Záznam prichádzajúce a odchádzajúce šeky, vidieť ich termíny splatnosti a udržať svoje obrázky šeku spolu.\n\nBezplatný plán zahŕňa jeden bankový účet, desať aktívnych šekov, manuálne zadávanie, kalendár a pripomienky.\n\nShekati Plus pridáva viac účtov, neobmedzené aktívne šeky, skenovanie šekov, potvrdenia, čiastočné zúčtovanie, náhrady a prognózy peňažných tokov.\n\nPredplatné sa automaticky obnovuje, kým ho nezrušíte vo svojom účte Apple ID. Môžete si vybrať mesačné alebo ročné predplatné a predplatné sa vám automaticky obnoví po uplynutí platnosti.\n\nExistujúce šeky môžete čítať, zatvárať a exportovať po skončení predplatného.\n\nPodmienky používania\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nOchrana osobných údajov - GDPR\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "description": "Evidujte prijaté aj vystavené šeky, sledujte ich splatnosť a ukladajte si ich fotografie. Bezplatne môžete spravovať jeden bankový účet a najviac 10 otvorených šekov. K dispozícii máte ručné zadávanie, kalendár a pripomienky.\n\nSo službou Shekati Plus môžete viesť ľubovoľný počet účtov a šekov. Skenujte šeky, evidujte prevody rubopisom, čiastočné úhrady aj náhradné šeky a sledujte predpokladaný peňažný tok.\n\nVyberte si mesačné alebo ročné predplatné. Miestnu cenu uvidíte pred nákupom. Predplatné sa automaticky obnovuje, kým ho nezrušíte vo svojom Apple účte. Po skončení môžete naďalej prezerať, uzatvárať a exportovať už evidované šeky.\n\nPodmienky používania\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nOchrana osobných údajov - GDPR\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {
@@ -17,9 +17,9 @@
     }
   },
   "screenshotHeadings": [
-    "Váš účet |",
-    "Registračný šek",
-    "Skontrolujte naskenované podrobnosti · Shekati Plus",
+    "Váš bankový účet",
+    "Evidencia šekov",
+    "Skontrolujte naskenované údaje · Shekati Plus",
     "Podrobnosti o šeku",
     "Dátumy splatnosti"
   ]

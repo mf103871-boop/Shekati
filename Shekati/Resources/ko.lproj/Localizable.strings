@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "첫 번째 수표를 추가하여 세부 정보와 미리 알림을 함께 보관하세요.";
 "Adjustment" = "조정";
 "All" = "모두";
-"All and history" = "항목 및 역사";
+"All and history" = "전체 및 거래 이력";
 "All banks" = "모든 은행";
 "All dates" = "모든 날짜";
 "All features included. One purchase. No subscription." = "모든 기능이 포함되어 있습니다. 한 번 구매하십시오.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "수신 수표가 만기일에 청구된다고 가정합니다.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "인증에 실패했습니다. 생체인식 또는 iPhone 암호를 사용하여 다시 시도해 보십시오.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "인증은 iOS에서 처리됩니다. Shekati는 생체인식 정보 또는 장치 암호에 액세스하거나 저장하지 않습니다.";
-"Back" = "뒤로";
+"Back" = "뒷면";
 "Backup" = "백업";
 "Backup password" = "백업 비밀번호";
 "Backup restored" = "백업이 복원되었습니다";
@@ -80,7 +80,7 @@
 "Check the details" = "세부 사항을 확인하십시오.";
 "Checking iCloud" = "iCloud 확인";
 "Cheque" = "수표";
-"Cheque actions" = "체크 동작";
+"Cheque actions" = "수표 작업";
 "Cheque book" = "수표책";
 "Cheque book name" = "수표책 이름";
 "Cheque books" = "수표책";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "암호화된 백업 만들기";
 "Currency" = "통화";
 "Currency cannot change while any saved cheque exists, including history." = "기록을 포함하여 저장된 수표가 존재하는 동안 통화는 변경할 수 없습니다.";
-"Current account" = "현금 계좌";
+"Current account" = "당좌 계좌";
 "Current holder" = "현재 소지인";
 "Daily summary" = "일일 요약";
 "Daily summary is enabled; no individual reminder days are selected." = "일일 요약이 활성화되어 있으며 개별 알림 일은 선택되지 않습니다.";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "수표를 드래그하여 순서를 바꿉니다.";
 "Due date" = "만기일";
 "Due dates" = "날짜";
-"Due today" = "오늘 끝날 때까지";
+"Due today" = "오늘 만기";
 "Edit" = "편집";
 "Edit cheque" = "수표 편집";
 "Enable in iPhone Settings" = "iPhone 설정에서 활성화";
@@ -204,14 +204,14 @@
 "Exported files contain readable cheque details. Share only with people you choose." = "내보내기된 파일에는 읽을 수 있는 수표 세부 정보가 포함됩니다.";
 "Filters" = "필터";
 "Filters and sort" = "필터 및 정렬";
-"First reminder not scheduled" = "첫 번째 알림 예약되지 않음@ info: whatsthis";
+"First reminder not scheduled" = "첫 번째 알림 예약되지 않음";
 "Forecast duration" = "예측 기간";
 "Free days" = "자유 일";
 "Free due dates" = "무료 만기일";
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "무료 계정과 10 개의 활성 수표가 포함되어 있습니다. 기록은 읽기, 닫기 및 내보내기를 할 수 있습니다.";
 "From" = "메시지 보내기";
 "From date" = "날짜부터";
-"Front" = "전면";
+"Front" = "앞면";
 "Front image" = "앞면 이미지";
 "Hide amounts" = "금액 숨기기";
 "Hide notification details" = "알림 세부 정보 숨기기";
@@ -282,7 +282,7 @@
 "No outgoing cheques" = "나가는 수표 없음";
 "No outstanding cheques" = "미결제 수표 없음";
 "No paid cheques" = "지불 수표 없음";
-"No reminder days selected" = "알림 날짜 선택되지 않음@ info: whatsthis";
+"No reminder days selected" = "알림 날짜 선택되지 않음";
 "No upcoming reminder is currently scheduled for this cheque." = "이 수표에 대해 현재 예약된 미리 알림이 없습니다.";
 "No." = "네가 죽었어";
 "Not provided" = "제공되지 않음";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "보내는 수표 대장";
 "Outgoing cheques you add appear here in date order." = "추가한 발신 수표는 날짜순으로 여기에 나타납니다.";
 "Outgoing due within 7 days" = "7일 이내 만기인 발행 수표";
-"Outstanding" = "뛰어난";
+"Outstanding" = "미결제";
 "Outstanding cheques" = "미결제 수표";
-"Outstanding only" = "잔여";
-"Overdue" = "초과 기한";
+"Outstanding only" = "미결제만";
+"Overdue" = "만기 경과";
 "Overdue by 1 day" = "1일 미만";
 "Overdue by 2 days" = "2일 지연됨";
 "Page" = "페이지";
@@ -367,7 +367,7 @@
 "Refresh upcoming reminders" = "다가오는 미리 알림 새로 고침";
 "Refresh your cheque reminders" = "수표 알림 새로 고침";
 "Reload prices" = "가격 재로드";
-"Remaining" = "남은 시간";
+"Remaining" = "남은 금액";
 "Remaining after payment" = "지급 후 잔액";
 "Remaining amount" = "남은 금액";
 "Remind me in 1 hour" = "1시간 후에 알림";
@@ -376,7 +376,7 @@
 "Reminders" = "알림";
 "Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "알림은 이 기기에서 예약됩니다. 권한, 시간 및 수표 세부 정보가 알림에 나타날지 여부를 제어할 수 있습니다.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "미리 알림은 한정된 기간 동안만 제공됩니다. 나머지를 준비하려면 미리 알림이 끝나기 전에 앱을 엽니다.";
-"Reminders disabled" = "알림 활성화됨@ info: whatsthis";
+"Reminders disabled" = "알림 활성화됨";
 "Reminders enabled" = "알림 활성화됨";
 "Reminders stop when a cheque is settled or cancelled." = "수표가 청구되거나 취소될 때 알림이 중지됩니다.";
 "Reminders stop when a cheque is settled or cancelled. Past reminder times are skipped." = "수표가 청구되거나 취소될 때 미리 알림이 중지됩니다. 과거의 미리 알림 시간은 건너뜁니다.";

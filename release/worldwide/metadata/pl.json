@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "Ewidencja czeków",
   "keywords": "Czeki,Konta bankowe,kalendarz,Przypomnienia",
-  "description": "Zapisuj przychodzące i wychodzące czeki, zobacz ich terminy płatności i przechowuj razem obrazy czeków.\n\nDarmowy plan obejmuje jedno konto bankowe, dziesięć aktywnych czeków, ręczne wprowadzanie danych, kalendarz i przypomnienia.\n\nShekati Plus dodaje więcej kont, nieograniczone aktywne czeki, skanowanie czeków, zatwierdzenia, rozliczenia częściowe, zastępstwa i prognozy przepływów pieniężnych.\n\nWybierz subskrypcję miesięczną lub roczną. Cena lokalna jest wyświetlana przed zakupem, a subskrypcje są odnawiane automatycznie do momentu anulowania na koncie Apple ID.\n\nMożesz odczytać, zamknąć i wyeksportować istniejące czeki po zakończeniu subskrypcji.\n\nWarunki użytkowania\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolityka prywatności |\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "description": "Rejestruj otrzymane i wystawione czeki, śledź ich terminy i przechowuj zdjęcia. W wersji bezpłatnej możesz prowadzić jeden rachunek bankowy i maksymalnie 10 otwartych czeków. Masz do dyspozycji ręczne wprowadzanie danych, kalendarz i przypomnienia.\n\nZ Shekati Plus możesz prowadzić dowolną liczbę rachunków i czeków. Skanuj czeki, zapisuj indosy, częściowe płatności i czeki zastępcze oraz sprawdzaj prognozy przepływów pieniężnych.\n\nWybierz subskrypcję miesięczną lub roczną. Przed zakupem zobaczysz cenę obowiązującą w Twoim regionie. Subskrypcja odnawia się automatycznie do chwili anulowania jej na koncie Apple. Po jej zakończeniu nadal możesz przeglądać, zamykać i eksportować zapisane czeki.\n\nWarunki użytkowania\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolityka prywatności |\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {
@@ -17,10 +17,10 @@
     }
   },
   "screenshotHeadings": [
-    "Twoje konto",
-    "Rejestracja czeków",
-    "Przejrzyj zeskanowane szczegóły · Shekati Plus",
-    "Szczegóły dotyczące czeku",
+    "Twoje konto bankowe",
+    "Rejestr czeków",
+    "Sprawdź zeskanowane dane · Shekati Plus",
+    "Szczegóły czeku",
     "Terminy płatności"
   ]
 }

@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Ajoutez votre premier chèque pour conserver ses détails et rappels ensemble.";
 "Adjustment" = "Ajustement";
 "All" = "Toutes";
-"All and history" = "Tout et histoire";
+"All and history" = "Tous, historique inclus";
 "All banks" = "Toutes les banques";
 "All dates" = "Toutes les dates";
 "All features included. One purchase. No subscription." = "Toutes les fonctionnalités incluses. Un seul achat. Pas d’abonnement.";
@@ -317,7 +317,7 @@
 "Outgoing cheque ledger" = "Grand livre des chèques sortants";
 "Outgoing cheques you add appear here in date order." = "Les chèques sortants que vous ajoutez apparaissent ici dans l’ordre de la date.";
 "Outgoing due within 7 days" = "Chèques émis à échéance sous 7 jours";
-"Outstanding" = "En souffrance";
+"Outstanding" = "Non réglés";
 "Outstanding cheques" = "Chèques en cours";
 "Outstanding only" = "En cours seulement";
 "Overdue" = "En retard";
@@ -367,7 +367,7 @@
 "Refresh upcoming reminders" = "Actualiser les rappels à venir";
 "Refresh your cheque reminders" = "Actualisez vos rappels de chèques";
 "Reload prices" = "Prix de recharge";
-"Remaining" = "Restants";
+"Remaining" = "Montant restant";
 "Remaining after payment" = "Solde restant après paiement";
 "Remaining amount" = "Montant restant";
 "Remind me in 1 hour" = "Rappelez-moi dans 1 heure";

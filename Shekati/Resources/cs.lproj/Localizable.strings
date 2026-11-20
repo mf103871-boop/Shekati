@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Přidejte první šek, abyste měli jeho podrobnosti a připomínky pohromadě.";
 "Adjustment" = "Úprava";
 "All" = "Všechny";
-"All and history" = "Historie a historie";
+"All and history" = "Vše včetně historie";
 "All banks" = "Všechny banky";
 "All dates" = "Všechny termíny";
 "All features included. One purchase. No subscription." = "Zahrnuje všechny funkce. Jeden nákup. Žádné předplatné.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Předpokládá, že příchozí šeky jsou vybrány v jejich termínech splatnosti.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Zkuste to znova pomocí biometrických údajů nebo kódu iPhonu.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Aplikace Shekati nemá přístup k vašim biometrickým údajům ani heslu zařízení a neukládá je.";
-"Back" = "Zpět";
+"Back" = "Zadní strana";
 "Backup" = "Zálohování";
 "Backup password" = "Záložní heslo";
 "Backup restored" = "Záloha obnovena";
@@ -80,7 +80,7 @@
 "Check the details" = "Zkontrolujte podrobnosti";
 "Checking iCloud" = "Kontrola iCloudu";
 "Cheque" = "Šek";
-"Cheque actions" = "Šek";
+"Cheque actions" = "Operace se šekem";
 "Cheque book" = "Šeková knížka";
 "Cheque book name" = "Název šekové knížky";
 "Cheque books" = "Šekové knížky";
@@ -317,9 +317,9 @@
 "Outgoing cheque ledger" = "Odchozí šeková kniha";
 "Outgoing cheques you add appear here in date order." = "Přidané odchozí šeky se zde zobrazí v pořadí podle data.";
 "Outgoing due within 7 days" = "Vydané šeky splatné do 7 dní";
-"Outstanding" = "Vynikající";
+"Outstanding" = "Nevypořádané";
 "Outstanding cheques" = "Nesplacené šeky";
-"Outstanding only" = "Pouze vynikající";
+"Outstanding only" = "Pouze nevypořádané";
 "Overdue" = "Po splatnosti";
 "Overdue by 1 day" = "Pozastaveno o 1 den";
 "Overdue by 2 days" = "Pozastaveno o 2 dny";

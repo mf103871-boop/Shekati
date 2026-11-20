@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Tambahkan cek pertama Anda untuk menyimpan rincian dan peringatan bersama.";
 "Adjustment" = "Penyesuaian";
 "All" = "Semua";
-"All and history" = "Semua dan sejarah";
+"All and history" = "Semua, termasuk riwayat";
 "All banks" = "Semua bank";
 "All dates" = "Semua tanggal";
 "All features included. One purchase. No subscription." = "Semua fitur termasuk, satu pembelian, tidak ada langganan.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Asumsikan cek masuk dikumpulkan pada tanggal jatuh tempo mereka.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Otentikasi gagal. Coba lagi menggunakan biometrik atau kode sandi iPhone Anda.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Otentikasi ditangani oleh iOS. Shekati tidak mengakses atau menyimpan informasi biometrik Anda atau kode sandi perangkat.";
-"Back" = "Kembali";
+"Back" = "Sisi belakang";
 "Backup" = "Sambungan";
 "Backup password" = "Kata sandi cadangan";
 "Backup restored" = "Backup telah dipulihkan";
@@ -80,7 +80,7 @@
 "Check the details" = "Periksa rinciannya";
 "Checking iCloud" = "Menyaring iCloud";
 "Cheque" = "Cek";
-"Cheque actions" = "Aksi periksa";
+"Cheque actions" = "Tindakan cek";
 "Cheque book" = "Buku cek";
 "Cheque book name" = "Nama buku cek";
 "Cheque books" = "Buku cek";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Buat salinan cadangan yang terenkripsi";
 "Currency" = "Mata Uang";
 "Currency cannot change while any saved cheque exists, including history." = "Mata uang tidak dapat berubah selama cek yang disimpan ada, termasuk sejarah.";
-"Current account" = "Akun saat ini";
+"Current account" = "Rekening giro";
 "Current holder" = "Pemegang cek saat ini";
 "Daily summary" = "Ringkasan harian";
 "Daily summary is enabled; no individual reminder days are selected." = "Ringkasan harian diaktifkan; tidak ada hari pengingat individu yang dipilih.";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "Seret cek untuk mengubah urutannya.";
 "Due date" = "Tanggal jatuh tempo";
 "Due dates" = "Tanggal jatuh tempo";
-"Due today" = "Diperkirakan hari ini";
+"Due today" = "Jatuh tempo hari ini";
 "Edit" = "Ubah";
 "Edit cheque" = "Sunting cek";
 "Enable in iPhone Settings" = "Aktifkan di Pengaturan iPhone";
@@ -211,7 +211,7 @@
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Gratis termasuk satu akun dan sepuluh cek aktif. catatan Anda tetap tersedia untuk membaca, menutup dan mengekspor.";
 "From" = "Dari";
 "From date" = "Dari tanggal";
-"Front" = "Depan";
+"Front" = "Sisi depan";
 "Front image" = "Gambar depan";
 "Hide amounts" = "Sembunyikan jumlah";
 "Hide notification details" = "Sembunyikan rincian notifikasi";
@@ -269,7 +269,7 @@
 "Next" = "Berikutnya";
 "Next 3 days" = "3 hari ke depan";
 "Next 7 days" = "7 hari berikutnya";
-"Next cheques" = "Periksa berikutnya";
+"Next cheques" = "Cek berikutnya";
 "Next month" = "Bulan depan";
 "Next scheduled reminder" = "Pengingat terjadwal berikutnya";
 "No active subscription was found." = "Tidak ada langganan aktif yang ditemukan.";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "Buku cek keluaran";
 "Outgoing cheques you add appear here in date order." = "cek keluaran yang Anda tambahkan muncul di sini dalam urutan tanggal.";
 "Outgoing due within 7 days" = "Cek terbit yang jatuh tempo dalam 7 hari";
-"Outstanding" = "Luar Biasa";
-"Outstanding cheques" = "Ceko yang belum dibayar";
-"Outstanding only" = "Hanya yang luar biasa";
-"Overdue" = "Terlambat";
+"Outstanding" = "Belum diselesaikan";
+"Outstanding cheques" = "Cek yang belum diselesaikan";
+"Outstanding only" = "Hanya yang belum diselesaikan";
+"Overdue" = "Lewat jatuh tempo";
 "Overdue by 1 day" = "Terlambat 1 hari";
 "Overdue by 2 days" = "Terlambat 2 hari";
 "Page" = "Halaman";
@@ -352,7 +352,7 @@
 "Reason" = "Alasan";
 "Recently Deleted" = "Baru-baru ini Dihapus";
 "Recently deleted" = "Baru-baru ini dihapus";
-"Recognized text" = "Teks yang diakui";
+"Recognized text" = "Teks hasil pemindaian";
 "Reconcile account" = "Rekonsiliasi rekening";
 "Record bank settlement" = "Catat penyelesaian melalui bank";
 "Record collection" = "Catat penerimaan pembayaran";

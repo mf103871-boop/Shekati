@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "உங்கள் முதல் செக் விவரங்கள் மற்றும் நினைவூட்டல்களை ஒன்றாக வைத்திருக்க சேர்க்கவும்.";
 "Adjustment" = "சரிவு";
 "All" = "அனைத்து";
-"All and history" = "வரலாறு";
+"All and history" = "வரலாறு உட்பட அனைத்தும்";
 "All banks" = "அனைத்து வங்கிகளும்";
 "All dates" = "அனைத்து தேதிகள்";
 "All features included. One purchase. No subscription." = "அனைத்து அம்சங்களும் உள்ளன. ஒரு வாங்குதல். பதிவு இல்லை.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "வருகின்ற சோதனைகள் தங்கள் காலாவதியான தேதிகளில் சேகரிக்கப்படுகின்றன என்று கருதுகிறது.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "உரிமம் பெற முடியவில்லை. உயிர்மெய்யியல் அல்லது உங்கள் ஐபோன் கடவுச்சொல்லை பயன்படுத்தி மீண்டும் முயற்சிக்கவும்.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "உரிமம் iOS மூலம் கையாளப்படுகிறது. ஷேக்கட்டி உங்கள் பயோமீட்டர் தகவல் அல்லது சாதன கடவுச்சொல்லை அணுகவோ சேமிக்கவோ செய்யாது.";
-"Back" = "பின்";
+"Back" = "பின்பக்கம்";
 "Backup" = "காப்புக்கோப்பு";
 "Backup password" = "கடவுச்சொல்லை காப்புக்கோப்பு";
 "Backup restored" = "காப்பு மீட்டமைக்கப்பட்டது";
@@ -72,7 +72,7 @@
 "Cash forecast" = "பணப்புழக்க முன்னறிவிப்பு";
 "Change status" = "நிலையை மாற்று";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "வாங்கும் போது செலுத்தப்படும். உங்கள் ஆப்பிள் கணக்கில் ரத்து செய்யப்படும் வரை தானாகவே புதுப்பிக்கிறது.";
-"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "ஒவ்வொரு பரிந்துரையும் உங்கள் சோதனைக்கு ஒப்பாக சரிபார்க்கவும். நீங்கள் சேமிக்கும்போது வரை எதுவுமே சேமிக்கப்படாது.";
+"Check each suggestion against your cheque. Nothing is saved until you tap Save." = "பரிந்துரைக்கப்பட்ட ஒவ்வொரு விவரத்தையும் உங்கள் காசோலையுடன் ஒப்பிடவும். சேமி என்பதைத் தட்டும் வரை எதுவும் சேமிக்கப்படாது.";
 "Check iCloud status" = "ஐக்லூட் நிலையை சரிபார்";
 "Check the account name and opening balance." = "கணக்குப் பெயர் மற்றும் திறக்கும் சமநிலையை சரிபார்க்கவும்.";
 "Check the amount, date and selected account." = "தொகை, தேதி மற்றும் தேர்ந்தெடுக்கப்பட்ட கணக்கை சரிபார்க்கவும்.";
@@ -80,7 +80,7 @@
 "Check the details" = "விவரங்களை சரிபார்";
 "Checking iCloud" = "ஐக்லூட் சரிபார்க்கிறது";
 "Cheque" = "செக்";
-"Cheque actions" = "செயல்களை சரிபார்";
+"Cheque actions" = "காசோலை நடவடிக்கைகள்";
 "Cheque book" = "செக் புத்தகம்";
 "Cheque book name" = "செக் புத்தக பெயர்";
 "Cheque books" = "செக் புத்தகங்கள்";
@@ -143,7 +143,7 @@
 "Current account" = "நடப்பு கணக்கு";
 "Current holder" = "தற்போதைய காசோலை வைத்திருப்பவர்";
 "Daily summary" = "தினசரி சுருக்கம்";
-"Daily summary is enabled; no individual reminder days are selected." = "நாள் சுருக்கம் செயல்படுத்தப்பட்டுள்ளது; தனி அலார நாட்கள் தேர்ந்தெடுக்கப்படவில்லை. @ info: whatsthis";
+"Daily summary is enabled; no individual reminder days are selected." = "நாள் சுருக்கம் செயல்படுத்தப்பட்டுள்ளது; தனி அலார நாட்கள் தேர்ந்தெடுக்கப்படவில்லை.";
 "Dark" = "இருள்";
 "Data and backup" = "தரவு மற்றும் காப்புக்கோப்பு";
 "Date" = "தேதி";
@@ -174,7 +174,7 @@
 "Drag cheques to change their order." = "அவற்றின் வரிசை மாற்ற செக்களை இழுக்கவும்.";
 "Due date" = "செலுத்த வேண்டிய தேதி";
 "Due dates" = "காலாவதியான தேதிகள்";
-"Due today" = "இன்று வரவேண்டிய";
+"Due today" = "இன்று செலுத்த வேண்டியது";
 "Edit" = "& தொகு";
 "Edit cheque" = "செக் தொகு";
 "Enable in iPhone Settings" = "iPhone அமைப்புகளில் செயல்படுத்து";
@@ -204,14 +204,14 @@
 "Exported files contain readable cheque details. Share only with people you choose." = "ஏற்றுமதி செய்யப்பட்ட கோப்புகளில் படிக்கக்கூடிய சோதனை விவரங்கள் உள்ளன. நீங்கள் தேர்ந்தெடுத்தவர்களுடன் மட்டுமே பகிர்ந்து கொள்ளவும்.";
 "Filters" = "வடிகட்டிகள்";
 "Filters and sort" = "வடிகட்டிகள் மற்றும் வரிசைப்படுத்துதல்";
-"First reminder not scheduled" = "முதல் நினைவுக்குறிப்பு@ info: whatsthis";
+"First reminder not scheduled" = "முதல் நினைவுக்குறிப்பு";
 "Forecast duration" = "முன்னறிவிப்பு காலம்";
 "Free days" = "விடுமுறை நாட்கள்";
 "Free due dates" = "காலாவதியான தேதிகள்";
 "Free includes one account and ten active cheques. Your records remain available to read, close and export." = "இலவசமாக ஒரு கணக்கு மற்றும் பத்து செக்களை உள்ளடக்கியது. உங்கள் பதிவுகள் படிப்பதற்கு, மூடுவதற்கும் ஏற்றுமதி செய்யவும் கிடைக்கும்";
 "From" = "& அனுப்புநர்";
 "From date" = "தேதியில் இருந்து";
-"Front" = "முன்புறம்";
+"Front" = "முன்பக்கம்";
 "Front image" = "முன் படம்";
 "Hide amounts" = "அளவுகளை மறை";
 "Hide notification details" = "அறிவிப்பு விவரங்களை மறை";
@@ -255,7 +255,7 @@
 "Monthly subscription" = "மாதச் செலவு";
 "More" = "மேலும்";
 "More details" = "மேலும் விவரங்கள்";
-"Move reminders to the preceding banking day" = "முன்னாள் வங்கிக் நாள் நினைவூட்டல்@ action: inmenu";
+"Move reminders to the preceding banking day" = "முன்னாள் வங்கிக் நாள் நினைவூட்டல்";
 "My order" = "என் ஆர்டர்";
 "Name" = "பெயர்";
 "Name / number / bank / status" = "பெயர் / எண் / வங்கி / நிலை";
@@ -269,7 +269,7 @@
 "Next" = "அடுத்த";
 "Next 3 days" = "அடுத்த3நாட்கள்";
 "Next 7 days" = "அடுத்த7நாட்கள்";
-"Next cheques" = "அடுத்த சோதனை";
+"Next cheques" = "அடுத்து வரவுள்ள காசோலைகள்";
 "Next month" = "அடுத்த மாதம்";
 "Next scheduled reminder" = "அடுத்த திட்டமிடப்பட்ட நினைவுக்குறிப்பு";
 "No active subscription was found." = "செயல்படும் பயனர் சேர்ப்புகள் எதுவும் இல்லை.";
@@ -317,10 +317,10 @@
 "Outgoing cheque ledger" = "வெளியேறும் செக் புத்தகம்";
 "Outgoing cheques you add appear here in date order." = "நீங்கள் சேர்த்த வெளிவரும் சோதனைகள் தேதி வரிசை இங்கே தோன்றும்.";
 "Outgoing due within 7 days" = "7 நாட்களுக்குள் செலுத்த வேண்டிய காசோலைகள்";
-"Outstanding" = "திறந்த";
-"Outstanding cheques" = "வெளிப்படாத காசோலைகள்";
-"Outstanding only" = "திறக்கப்படாத";
-"Overdue" = "காலாவதியான";
+"Outstanding" = "நிலுவையில் உள்ளவை";
+"Outstanding cheques" = "நிலுவையில் உள்ள காசோலைகள்";
+"Outstanding only" = "நிலுவையில் உள்ளவை மட்டும்";
+"Overdue" = "கெடு கடந்தது";
 "Overdue by 1 day" = "1 நாளுக்கு தாமதமான";
 "Overdue by 2 days" = "2நாட்கள் தாமதமான";
 "Page" = "பக்கம்";

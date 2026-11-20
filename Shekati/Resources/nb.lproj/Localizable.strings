@@ -25,7 +25,7 @@
 "Add your first cheque to keep its details and reminders together." = "Legg til den første sjekken for å holde detaljene og påminnelser sammen.";
 "Adjustment" = "Justering";
 "All" = "Alle";
-"All and history" = "Historie og historie";
+"All and history" = "Alle, inkludert historikk";
 "All banks" = "Alle banker";
 "All dates" = "Alle datoer";
 "All features included. One purchase. No subscription." = "Alle funksjoner er inkludert. Ett kjøp. Ingen abonnement.";
@@ -46,7 +46,7 @@
 "Assumes incoming cheques are collected on their due dates." = "Forutsetter at innkommende sjekker samles inn på forfallsdatoene.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Autentiseringen mislyktes. Prøv igjen med biometri eller iPhone-passordet ditt.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Autentisering håndteres av iOS. Shekati ikke får tilgang til eller lagrer din biometriske informasjon eller enhetens passord.";
-"Back" = "Tilbake";
+"Back" = "Bakside";
 "Backup" = "Sikkerhetskopi";
 "Backup password" = "Sikkerhetskopipassord";
 "Backup restored" = "Sikkerhetskopi gjenopprettet";
@@ -80,7 +80,7 @@
 "Check the details" = "Sjekk detaljene";
 "Checking iCloud" = "Sjekker iCloud";
 "Cheque" = "Sjekk";
-"Cheque actions" = "Sjekk handlinger";
+"Cheque actions" = "Handlinger for sjekken";
 "Cheque book" = "Sjekkbok";
 "Cheque book name" = "Sjekkboknavn";
 "Cheque books" = "Sjekkbøker";
@@ -128,7 +128,7 @@
 "Confirm holder collected" = "Bekreft at innehaveren har fått utbetalt beløpet";
 "Confirm password" = "Bekreft passord";
 "Confirm reconciliation" = "Bekreft avstemming";
-"Confirm this due date" = "Bekreft denne forfallsdatoen@ info: whatsthis";
+"Confirm this due date" = "Bekreft denne forfallsdatoen";
 "Contacts" = "Kontakter";
 "Correct last action" = "Rett opp siste handling";
 "Could not complete operation" = "Klarte ikke fullføre operasjonen";
@@ -140,7 +140,7 @@
 "Create encrypted backup" = "Lag kryptert sikkerhetskopi";
 "Currency" = "Valuta";
 "Currency cannot change while any saved cheque exists, including history." = "Valuta kan ikke endres mens noen lagret sjekk eksisterer, inkludert historie.";
-"Current account" = "Gjeldskonto";
+"Current account" = "Brukskonto";
 "Current holder" = "Nåværende innehaver";
 "Daily summary" = "Daglig oppsummering";
 "Daily summary is enabled; no individual reminder days are selected." = "Daglig sammendrag er aktivert; ingen individuelle påminnelsesdager er valgt.";
@@ -204,7 +204,7 @@
 "Exported files contain readable cheque details. Share only with people you choose." = "Eksporterte filer inneholder lesbare sjekkdetaljer. Del bare med personer du velger.";
 "Filters" = "Filtre";
 "Filters and sort" = "Filtre og sortering";
-"First reminder not scheduled" = "Første påminnelse ikke planlagt@ info: whatsthis";
+"First reminder not scheduled" = "Første påminnelse ikke planlagt";
 "Forecast duration" = "Varselvarighet";
 "Free days" = "Frie dager";
 "Free due dates" = "Gratis forfallsdatoer";
@@ -271,7 +271,7 @@
 "Next 7 days" = "Neste 7 dager";
 "Next cheques" = "Neste sjekk";
 "Next month" = "Neste måned";
-"Next scheduled reminder" = "Neste planlagte påminnelse@ info: whatsthis";
+"Next scheduled reminder" = "Neste planlagte påminnelse";
 "No active subscription was found." = "Ingen aktive abonnementer ble funnet.";
 "No cheques due on this day" = "Ingen sjekker forfaller denne dagen";
 "No cheques yet" = "Ingen sjekker ennå";
@@ -282,7 +282,7 @@
 "No outgoing cheques" = "Ingen utgående sjekker";
 "No outstanding cheques" = "Ingen utestående sjekker";
 "No paid cheques" = "Ingen betalte sjekker";
-"No reminder days selected" = "Ingen påminnelsesdager valgt@ info: whatsthis";
+"No reminder days selected" = "Ingen påminnelsesdager valgt";
 "No upcoming reminder is currently scheduled for this cheque." = "Ingen kommende påminnelse er for øyeblikket planlagt for denne sjekken.";
 "No." = "- Nei, det er ikke sant.";
 "Not provided" = "Ikke oppgitt";
@@ -318,7 +318,7 @@
 "Outgoing cheques you add appear here in date order." = "Utgående sjekker du legger til, vises her i datorekkefølge.";
 "Outgoing due within 7 days" = "Utstedte sjekker med forfall innen 7 dager";
 "Outstanding" = "Utestående";
-"Outstanding cheques" = "Udekkede sjekker";
+"Outstanding cheques" = "Utestående sjekker";
 "Outstanding only" = "Bare utestående";
 "Overdue" = "Forfalt";
 "Overdue by 1 day" = "Forsinket med 1 dag";
@@ -344,7 +344,7 @@
 "Possible duplicates" = "Mulige duplikater";
 "Postdated cheques" = "Postdaterte sjekker";
 "Preparing file" = "Klargjør fil";
-"Preview reminder message" = "Forhåndsvis påminnelsesmelding@ info: whatsthis";
+"Preview reminder message" = "Forhåndsvis påminnelsesmelding";
 "Previous month" = "Forrige måned";
 "Privacy" = "Personvern";
 "Privacy policy" = "Personvern og cookies";
@@ -363,7 +363,7 @@
 "Recorded balance" = "Registrert saldo";
 "Recorded operations protect the original cheque details." = "Innspilte operasjoner beskytter de opprinnelige sjekkdetaljene.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Poster fra en annen enhet bruker en annen valuta. Løs disse postene før du legger til nye sjekker. Totaler er skjult for å unngå blanding av valutaer.";
-"Refresh reminders" = "Oppdater påminnelser@ info: whatsthis";
+"Refresh reminders" = "Oppdater påminnelser";
 "Refresh upcoming reminders" = "Oppdater kommende påminnelser";
 "Refresh your cheque reminders" = "Oppdater sjekkpåminnelser";
 "Reload prices" = "Last inn priser på nytt";
@@ -371,17 +371,17 @@
 "Remaining after payment" = "Gjenstående etter betaling";
 "Remaining amount" = "Resterende beløp";
 "Remind me in 1 hour" = "Påminn meg om 1 time";
-"Reminder options" = "Påminnelsesvalg@ info: whatsthis";
-"Reminder time" = "Påminnelsestidspunkt@ info: whatsthis";
-"Reminders" = "Påminnelser@ info: whatsthis";
+"Reminder options" = "Påminnelsesvalg";
+"Reminder time" = "Påminnelsestidspunkt";
+"Reminders" = "Påminnelser";
 "Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Du kontrollerer tillatelse, tidspunkt og om sjekkdetaljer vises i varsler. Du kan også endre påminnelser for å tilpasse dem etter dine behov.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Påminnelser dekker en begrenset periode, så åpne appen før dekningen slutter for å forberede resten.";
-"Reminders disabled" = "Påminnelser slått av@ info: whatsthis";
-"Reminders enabled" = "Påminnelser slått på@ info: whatsthis";
+"Reminders disabled" = "Påminnelser slått av";
+"Reminders enabled" = "Påminnelser slått på";
 "Reminders stop when a cheque is settled or cancelled." = "Påminnelser stopper når en sjekk er oppgjort eller kansellert.";
 "Reminders stop when a cheque is settled or cancelled. Past reminder times are skipped." = "Påminnelser stopper når en sjekk er betalt eller kansellert. Tidligere påminnelsestider hoppes over.";
 "Remove image" = "Fjern bilde";
-"Remove reminder" = "Fjern påminnelse@ info: whatsthis";
+"Remove reminder" = "Fjern påminnelse";
 "Reorder cheques" = "Omordne sjekker";
 "Replace cheque" = "Erstatt sjekk";
 "Replace matching existing cheques" = "Erstatt matchende eksisterende sjekker";
@@ -532,8 +532,8 @@
 "Time zone" = "Tidssone";
 "To collect" = "Til innbetaling";
 "To pay" = "Å betale";
-"Today" = "I dag@ option today";
-"Tomorrow" = "I morgen@ option tomorrow";
+"Today" = "I dag";
+"Tomorrow" = "I morgen";
 "Total exceeds limit" = "Totalt overstiger grensen";
 "Total exceeds supported range" = "Totalt overstiger støttet område";
 "Total outstanding cheques" = "Totalt utestående sjekker";
