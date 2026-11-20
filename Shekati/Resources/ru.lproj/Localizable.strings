@@ -68,10 +68,10 @@
 "Cancel" = "Отмена";
 "Cancel cheque" = "Аннулирование чека";
 "Cancelled" = "Аннулирован";
-"Cash flow forecasts and advanced reports" = "Прогнозы движения денежной наличности и предварительные отчеты";
+"Cash flow forecasts and advanced reports" = "Прогнозы денежных потоков и расширенные отчёты";
 "Cash forecast" = "Прогноз денежных потоков";
 "Change status" = "Изменить статус";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Считывается при покупке. Автоматически возобновляется до отмены в вашем Apple Account.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Оплата взимается при покупке. Подписка продлевается автоматически, пока вы не отмените её в своём Аккаунте Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Проверьте каждое предложение с вашим чеком. Ничто не будет сохранено, пока вы не нажмете Сохранить.";
 "Check iCloud status" = "Проверьте статус iCloud";
 "Check the account name and opening balance." = "Проверьте название счета и баланс на начало периода.";
@@ -86,7 +86,7 @@
 "Cheque books" = "Чековые книжки";
 "Cheque continuation" = "Продолжение чековой операции";
 "Cheque date" = "Дата чек";
-"Cheque details" = "Чек Детали";
+"Cheque details" = "Сведения о чеке";
 "Cheque details and photos are stored on this iPhone. When iCloud is available, they sync to your private Apple account." = "Подробности о чеке и фотографии хранятся на этом iPhone. Когда iCloud доступен, они синхронизируются с вашей личной учетной записью Apple.";
 "Cheque due soon" = "Чек подлежит выплате в ближайшее время";
 "Cheque due today" = "Чек подлежит выплате сегодня";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Обновить напоминания";
 "Refresh upcoming reminders" = "Обновить предстоящие напоминания";
 "Refresh your cheque reminders" = "Обновить напоминания о чеках";
-"Reload prices" = "Цены на перезагрузку";
+"Reload prices" = "Обновить цены";
 "Remaining" = "Остаток";
 "Remaining after payment" = "Остаток после платежа";
 "Remaining amount" = "Остающаяся сумма";
@@ -374,7 +374,7 @@
 "Reminder options" = "Варианты напоминаний";
 "Reminder time" = "Время напоминания";
 "Reminders" = "Напоминания";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Напоминания планируются на этом устройстве. Вы контролируете разрешение, время и отображаются ли подробности чеков в предупреждениях.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Напоминания планируются на этом устройстве. Вы выбираете, разрешать ли уведомления, когда их получать и показывать ли в них данные чека.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Напоминания покрывают ограниченный период. Откройте приложение до окончания охвата, чтобы подготовить остальные.";
 "Reminders disabled" = "Напоминания отключены";
 "Reminders enabled" = "Напоминания включены";
@@ -434,7 +434,7 @@
 "Scheduled notifications" = "Запланированные уведомления";
 "Search currencies" = "Поиск валют";
 "Search number, bank or name" = "Поиск номера, банка или названия";
-"Search number, name, bank or reference" = "Поиск номера, названия, банка или ссылки";
+"Search number, name, bank or reference" = "Поиск по номеру, имени, банку или идентификатору";
 "See all" = "Посмотреть все";
 "Select" = "Выбрать";
 "Select a bank account in the cheque currency." = "Выберите банковский счет в валюте чеков.";
@@ -513,7 +513,7 @@
 "The number of columns does not match the header." = "Число столбцов не соответствует заголовку.";
 "The password is incorrect or the backup has been damaged." = "Пароль неверный или резервная копия повреждена.";
 "The purchase could not be completed. Please try again." = "Покупка не может быть завершена. Пожалуйста, попробуйте еще раз.";
-"The purchase is awaiting approval." = "Закупка ожидает утверждения.";
+"The purchase is awaiting approval." = "Покупка ожидает одобрения.";
 "The reminder days and time from Settings will be used." = "Будут использоваться дни и время напоминания из Настроек.";
 "The report includes the cheques and order shown in your filtered list." = "Отчет включает чеки и заказы, отображаемые в вашем фильтрованном списке.";
 "The reversal is recorded in the activity history." = "Отмена записывается в журнал действий.";

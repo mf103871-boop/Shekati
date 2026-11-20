@@ -1,6 +1,6 @@
 "1 day before" = "1 dag innan";
 "3 days before" = "3 dagar innan";
-"30 days" = "30 dagars öppet köp";
+"30 days" = "30 dagar";
 "60 days" = "60 dagar";
 "A clear view of your next commitments." = "En tydlig bild av dina nästa åtaganden.";
 "A fresh start" = "En nystart";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Aktivera meddelanden för att ta emot check påminnelser.";
 "Endorse cheque" = "Endossera checken";
 "Endorsed" = "Endosserad";
-"Endorsements, partial settlements and replacements" = "Införande, partiell avveckling och ersättning";
+"Endorsements, partial settlements and replacements" = "Överlåtelser genom endossement, delbetalningar och ersättningscheckar";
 "Enter a positive amount and the date written on the cheque." = "Ange ett positivt belopp och datumet som står på checken.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Ange ett giltigt belopp som är större än noll med valutans decimaler.";
 "Enter a whole number of days from 1 to 365." = "Ange ett heltal från 1 till 365 dagar.";
@@ -252,7 +252,7 @@
 "Mark paid" = "Markera som betald";
 "Mark pending" = "Markera som utestående";
 "Mark returned" = "Markera som returnerad";
-"Monthly subscription" = "Månadsprenumeration på 12 månader";
+"Monthly subscription" = "Månadsprenumeration";
 "More" = "Mer";
 "More details" = "Mer detaljer";
 "Move reminders to the preceding banking day" = "Flytta påminnelser till föregående bankdag";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "Förhandsgranska påminnelsemeddelande";
 "Previous month" = "Föregående månad";
 "Privacy" = "Sekretess";
-"Privacy policy" = "Integritetspolicy - IKEA";
+"Privacy policy" = "Integritetspolicy";
 "Read details from front image" = "Läs detaljer från framsidan";
 "Reason" = "Orsak";
 "Recently Deleted" = "Nyligen raderade bilder";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Uppdatera påminnelser";
 "Refresh upcoming reminders" = "Uppdatera kommande påminnelser";
 "Refresh your cheque reminders" = "Uppdatera dina checkpåminnelser";
-"Reload prices" = "Reload priser";
+"Reload prices" = "Läs in priserna igen";
 "Remaining" = "Återstående";
 "Remaining after payment" = "Kvar efter betalning";
 "Remaining amount" = "Återstående belopp";
@@ -374,7 +374,7 @@
 "Reminder options" = "Alternativ för påminnelse";
 "Reminder time" = "Påminnelsetid";
 "Reminders" = "Påminnelser";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Du styr behörighet, tidpunkt och om checkuppgifter visas i påminnelserna, så att du kan lägga till fler checkar.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Påminnelser schemaläggs på den här enheten. Du bestämmer om notiser tillåts, när de visas och om de ska innehålla uppgifter om checken.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Påminnelserna gäller en begränsad tid, så öppna appen innan påminnelsen upphör för att förbereda resten.";
 "Reminders disabled" = "Påminnelser inaktiverade";
 "Reminders enabled" = "Påminnelser aktiverade";
@@ -435,7 +435,7 @@
 "Search currencies" = "Sök efter valutor";
 "Search number, bank or name" = "Sök nummer, bank eller namn";
 "Search number, name, bank or reference" = "Sök nummer, namn, bank eller referens";
-"See all" = "Se alla produkter";
+"See all" = "Visa alla";
 "Select" = "Välj";
 "Select a bank account in the cheque currency." = "Välj ett bankkonto i checkens valuta.";
 "Select a chequebook for this account." = "Välj en checkbok för det här kontot.";

@@ -125,8 +125,8 @@ final class ShekatiUITests: XCTestCase {
     private func fillQuickCheque(in app: XCUIApplication, amount: String, party: String, number: String) {
         for (index, entry) in [("amountField", amount), ("partyField", party), ("chequeNumberField", number)].enumerated() {
             let (identifier, text) = entry
-            let field = app.textFields[identifier]
             if index == 0 {
+                let field = app.textFields[identifier]
                 reveal(field, in: app)
                 field.tap()
             } else {
@@ -136,12 +136,15 @@ final class ShekatiUITests: XCTestCase {
                 XCTAssertTrue(next.waitForExistence(timeout: 5))
                 next.tap()
             }
-            let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-                field.exists && field.isEnabled && app.keyboards.firstMatch.exists
-            }, object: field)
-            let result = XCTWaiter.wait(for: [ready], timeout: 5)
-            if result != .completed { captureDiagnostics(app, name: "Input or keyboard was not ready") }
-            XCTAssertEqual(result, .completed, "Expected the target field and keyboard to be ready before typing")
+            // Switching from the number pad to the alphabetic keyboard rebuilds its AX
+            // subtree. Resolve the field after that transition, using a fresh query.
+            let keyboardReady = app.keyboards.firstMatch.waitForExistence(timeout: 15)
+            let field = app.textFields.matching(identifier: identifier).firstMatch
+            guard keyboardReady && field.waitForExistence(timeout: 15) && field.isEnabled else {
+                captureDiagnostics(app, name: "Input or keyboard was not ready")
+                XCTFail("Expected a visible keyboard and an enabled \(identifier) after keyboard navigation")
+                return
+            }
             let value = (field.value as? String) ?? ""
             let existing = value == field.placeholderValue ? "" : value
             // Do not retap after Next. typeText requires real keyboard focus, and the exact

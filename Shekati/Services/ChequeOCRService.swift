@@ -81,11 +81,11 @@ enum ChequeOCRParser {
                       unsupportedArabic: Bool = false, languageCode: String = "en") -> OCRSuggestion {
         let normalized = normalizeDigits(text)
         let language = AppLanguage(rawValue: languageCode) ?? .english
-        func values(_ key: String, aliases: String) -> [String] {
+        func values(_ key: String, aliases: String, acceptsCurrencyQualifier: Bool = false) -> [String] {
             let label = Localization.text(key, language: language)
             let escaped = NSRegularExpression.escapedPattern(for: label)
                 .replacingOccurrences(of: "’", with: "['’]")
-            return labelValues("(?:\(aliases)|\(escaped))", in: normalized)
+            return labelValues("(?:\(aliases)|\(escaped))", in: normalized, acceptsCurrencyQualifier: acceptsCurrencyQualifier)
         }
         let number = unique(values("Cheque number", aliases: #"che(?:que|ck)\h*(?:number|no\.?|#)|رقم\h*الشيك|رقم\h*شيك"#)
             .compactMap { value -> String? in
@@ -103,8 +103,8 @@ enum ChequeOCRParser {
         case .some(.outgoing): party = unique(payees)
         case .none: party = unique(payers + payees)
         }
-        let code = NSRegularExpression.escapedPattern(for: currencyCode)
-        let amountFields = values("Amount", aliases: #"amount(?:\h*\(\#(code)\))?|المبلغ(?:\h*بالأرقام|\h*بالارقام)?|القيمة"#)
+        let amountFields = values("Amount", aliases: #"amount|المبلغ(?:\h*بالأرقام|\h*بالارقام)?|القيمة"#,
+                                  acceptsCurrencyQualifier: true)
         let amount = unambiguous(amountFields) { parseAmount($0, currencyCode: currencyCode, locale: language.locale) }
         let dateFields = values("Due date", aliases: #"due\h*date|maturity\h*date|تاريخ\h*الاستحقاق|تاريخ\h*الصرف|الاستحقاق"#)
         return OCRSuggestion(number: number, bank: bank, party: party, amountText: amount,
@@ -129,14 +129,19 @@ enum ChequeOCRParser {
         return result
     }
 
-    private static func labelValues(_ labels: String, in text: String) -> [String] {
+    private static func labelValues(_ labels: String, in text: String, acceptsCurrencyQualifier: Bool) -> [String] {
         // A label may sit on its own line. A broad unlabeled number/date is deliberately never used.
-        let pattern = #"(?im)^\h*\#(labels)(?=[:：#=\s])\h*[:：#=]?\h*(?:\r?\n\h*)?([^\r\n]+)$"#
+        let qualifier = acceptsCurrencyQualifier ? #"(?:\h*\(\h*([a-z]{3})\h*\))?"# : ""
+        let pattern = #"(?im)^\h*\#(labels)\#(qualifier)(?=[:：#=\s])\h*[:：#=]?\h*(?:\r?\n\h*)?([^\r\n]+)$"#
         guard let expression = try? NSRegularExpression(pattern: pattern) else { return [] }
         let range = NSRange(text.startIndex..<text.endIndex, in: text)
         return expression.matches(in: text, range: range).compactMap { match in
-            guard let value = Range(match.range(at: 1), in: text) else { return nil }
-            return String(text[value]).trimmingCharacters(in: .whitespacesAndNewlines)
+            guard let value = Range(match.range(at: match.numberOfRanges - 1), in: text) else { return nil }
+            let field = String(text[value]).trimmingCharacters(in: .whitespacesAndNewlines)
+            if acceptsCurrencyQualifier, let code = Range(match.range(at: 1), in: text) {
+                return "(" + String(text[code]) + ") " + field
+            }
+            return field
         }
     }
 
@@ -148,7 +153,10 @@ enum ChequeOCRParser {
 
     private static func parseAmount(_ value: String, currencyCode: String, locale: Locale) -> String? {
         let escapedCode = NSRegularExpression.escapedPattern(for: currencyCode)
-        let pattern = #"^\h*(?:\#(escapedCode)\h*)?([0-9](?:[0-9.,٫٬ \u00A0\u202F'’]*[0-9])?)(?:\h*\#(escapedCode))?\h*$"#
+        // Keep a printed code such as "(JOD):" with its value so a different currency
+        // cannot be silently stripped from a labeled amount.
+        let qualifier = #"(?:\(\h*\#(escapedCode)\h*\)\h*[:：#=]?\h*)?"#
+        let pattern = #"^\h*\#(qualifier)(?:\#(escapedCode)\h*)?([0-9](?:[0-9.,٫٬ \u00A0\u202F'’]*[0-9])?)(?:\h*\#(escapedCode))?\h*$"#
         guard let expression = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive),
               let match = expression.firstMatch(in: value, range: NSRange(value.startIndex..<value.endIndex, in: value)),
               let range = Range(match.range(at: 1), in: value) else { return nil }
@@ -168,10 +176,17 @@ enum ChequeOCRParser {
         }
         let groupPattern = NSRegularExpression.escapedPattern(for: grouping)
         let decimalPattern = NSRegularExpression.escapedPattern(for: decimal)
-        let format = #"^(?:[0-9]+|[0-9]{1,3}(?:\#(groupPattern)[0-9]{3})+)(?:\#(decimalPattern)[0-9]+)?$"#
-        guard candidate.range(of: format, options: .regularExpression) != nil else { return nil }
-        candidate = candidate.replacingOccurrences(of: grouping, with: "")
-            .replacingOccurrences(of: decimal, with: ".")
+        let format = #"^(?:[0-9]+|[1-9][0-9]{0,2}(?:\#(groupPattern)[0-9]{3})+)(?:\#(decimalPattern)[0-9]+)?$"#
+        if candidate.range(of: format, options: .regularExpression) != nil {
+            candidate = candidate.replacingOccurrences(of: grouping, with: "").replacingOccurrences(of: decimal, with: ".")
+        } else {
+            // Paper cheques can use another decimal mark. With a matching printed ISO code,
+            // accept a single ungrouped decimal only. The three-digit ambiguity guard above
+            // still rejects 1.250 JOD, and CurrencyMath enforces the currency's exact precision.
+            guard !arabicMarks, currencyCode.range(of: #"^[A-Za-z]{3}$"#, options: .regularExpression) != nil,
+                  value.range(of: currencyCode, options: .caseInsensitive) != nil,
+                  candidate.range(of: #"^(?:0|[1-9][0-9]*)[.,][0-9]+$"#, options: .regularExpression) != nil else { return nil }
+        }
         guard let minor = CurrencyMath.parseMinorUnits(candidate, currencyCode: currencyCode) else { return nil }
         return CurrencyMath.editable(minorUnits: minor, currencyCode: currencyCode)
     }

@@ -36,11 +36,11 @@
 "Amount paid" = "Ποσό που καταβλήθηκε";
 "Amounts hidden" = "Ποσά κρυμμένα";
 "Analytics" = "Αναλυτικά στοιχεία";
-"Annual subscription" = "Ετήσια συνδρομή 10 €";
+"Annual subscription" = "Ετήσια συνδρομή";
 "App lock" = "Κλείδωμα εφαρμογών";
 "Appearance" = "Εμφάνιση";
 "Appearance and language" = "Εμφάνιση και γλώσσα";
-"Apple could not verify this purchase." = "Η εταιρεία δεν μπόρεσε να επαληθεύσει αυτήν την αγορά.";
+"Apple could not verify this purchase." = "Η Apple δεν μπόρεσε να επαληθεύσει αυτήν την αγορά.";
 "Apply" = "Εφαρμογή";
 "Ascending" = "Αύξουσα σειρά";
 "Assumes incoming cheques are collected on their due dates." = "Υποθέτει ότι οι εισερχόμενες επιταγές συλλέγονται στις ημερομηνίες λήξης τους.";
@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Προβλέψεις ταμειακής ροής και προηγμένες αναφορές";
 "Cash forecast" = "Πρόβλεψη ταμειακών ροών";
 "Change status" = "Αλλαγή της κατάστασης";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Η συνδρομή ανανεώνεται αυτόματα μέχρι να ακυρωθεί από τον λογαριασμό σας.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Η χρέωση γίνεται κατά την αγορά. Η συνδρομή ανανεώνεται αυτόματα μέχρι να την ακυρώσετε από τον λογαριασμό σας Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Ελέγξτε κάθε πρόταση με την επιταγή σας. Τίποτα δεν αποθηκεύεται μέχρι να πατήσετε Αποθήκευση.";
 "Check iCloud status" = "Έλεγχος κατάστασης δικτύου";
 "Check the account name and opening balance." = "Ελέγξτε το όνομα του λογαριασμού και το αρχικό υπόλοιπο.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Ενεργοποιήστε τις ειδοποιήσεις για να λάβετε υπενθυμίσεις επιταγών.";
 "Endorse cheque" = "Οπισθογράφηση επιταγής";
 "Endorsed" = "Οπισθογραφήθηκε";
-"Endorsements, partial settlements and replacements" = "Εγκρίσεις, μερικοί διακανονισμοί και αντικαταστάσεις";
+"Endorsements, partial settlements and replacements" = "Οπισθογραφήσεις, μερικές εξοφλήσεις και αντικαταστάσεις επιταγών";
 "Enter a positive amount and the date written on the cheque." = "Εισάγετε ένα θετικό ποσό και την ημερομηνία που αναγράφεται στην επιταγή.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Εισαγάγετε ένα έγκυρο ποσό μεγαλύτερο από το μηδέν, χρησιμοποιώντας τα δεκαδικά ψηφία του νομίσματος.";
 "Enter a whole number of days from 1 to 365." = "Πληκτρολογήστε έναν ακέραιο αριθμό ημερών από 1 έως 365.";
@@ -252,7 +252,7 @@
 "Mark paid" = "Σήμανση ως πληρωμένη";
 "Mark pending" = "Σήμανση ως εκκρεμής";
 "Mark returned" = "Σήμανση ως επιστραφείσα";
-"Monthly subscription" = "Μηνιαία συνδρομή 10€";
+"Monthly subscription" = "Μηνιαία συνδρομή";
 "More" = "Περισσότερα";
 "More details" = "Περισσότερες λεπτομέρειες »";
 "Move reminders to the preceding banking day" = "Μετακίνηση υπενθυμίσεων στην προηγούμενη τραπεζική ημέρα";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "Προεπισκόπηση μηνύματος υπενθύμισης";
 "Previous month" = "Προηγούμενος μήνας";
 "Privacy" = "Ιδιωτικότητα";
-"Privacy policy" = "Πολιτική απορρήτου - Αρχική";
+"Privacy policy" = "Πολιτική απορρήτου";
 "Read details from front image" = "Διαβάστε τις λεπτομέρειες από την μπροστινή εικόνα";
 "Reason" = "Αιτιολογία";
 "Recently Deleted" = "Πρόσφατα διαγραμμένα άρθρα";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Ανανέωση των υπενθυμίσεων";
 "Refresh upcoming reminders" = "Ανανέωση επερχόμενων υπενθυμίσεων";
 "Refresh your cheque reminders" = "Ανανεώστε τις υπενθυμίσεις επιταγών σας";
-"Reload prices" = "Τιμές επαναφόρτωσης";
+"Reload prices" = "Επαναφόρτωση τιμών";
 "Remaining" = "Υπόλοιπο";
 "Remaining after payment" = "Υπόλοιπο μετά την πληρωμή";
 "Remaining amount" = "Υπόλοιπο ποσό";
@@ -374,7 +374,7 @@
 "Reminder options" = "Επιλογές υπενθύμισης";
 "Reminder time" = "Χρόνος υπενθύμισης";
 "Reminders" = "Υπενθυμίσεις";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Εσείς ελέγχετε την άδεια, το χρονοδιάγραμμα και αν τα στοιχεία της επιταγής εμφανίζονται στις ειδοποιήσεις.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Οι υπενθυμίσεις προγραμματίζονται σε αυτή τη συσκευή. Εσείς επιλέγετε αν θα επιτρέπονται οι ειδοποιήσεις, πότε θα εμφανίζονται και αν θα περιέχουν στοιχεία της επιταγής.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Οι υπενθυμίσεις καλύπτουν περιορισμένο χρονικό διάστημα. Ανοίξτε την εφαρμογή πριν από τη λήξη της κάλυψης για να προετοιμάσετε το υπόλοιπο.";
 "Reminders disabled" = "Οι υπενθυμίσεις είναι απενεργοποιημένες";
 "Reminders enabled" = "Υπενθυμίσεις ενεργοποιημένες";
@@ -435,7 +435,7 @@
 "Search currencies" = "Αναζήτηση νομισμάτων";
 "Search number, bank or name" = "Αναζήτηση αριθμού, τράπεζας ή ονόματος";
 "Search number, name, bank or reference" = "Αναζήτηση αριθμού, ονόματος, τράπεζας ή αναφοράς";
-"See all" = "Δείτε όλα τα προϊόντα";
+"See all" = "Προβολή όλων";
 "Select" = "Επιλογή";
 "Select a bank account in the cheque currency." = "Επιλέξτε έναν τραπεζικό λογαριασμό στο νόμισμα της επιταγής.";
 "Select a chequebook for this account." = "Επιλέξτε ένα βιβλιάριο επιταγών για αυτόν το λογαριασμό.";

@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Prévisions de trésorerie et rapports avancés";
 "Cash forecast" = "Prévision de trésorerie";
 "Change status" = "Changer le statut";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Chargement au moment de l’achat. Renouvellement automatique jusqu’à annulation dans votre compte Apple.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Le montant est facturé au moment de l’achat. L’abonnement se renouvelle automatiquement jusqu’à son annulation dans votre compte Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Comparez chaque donnée proposée avec votre chèque. Rien ne sera enregistré avant que vous touchiez Enregistrer.";
 "Check iCloud status" = "Vérifier l’état iCloud";
 "Check the account name and opening balance." = "Vérifiez le nom du compte et le solde d’ouverture.";
@@ -374,7 +374,7 @@
 "Reminder options" = "Options de rappel";
 "Reminder time" = "Heure du rappel";
 "Reminders" = "Rappels";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Les rappels sont planifiés sur cet appareil. Vous contrôlez l’autorisation, la durée et si les détails du chèque apparaissent dans les alertes.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Les rappels sont programmés sur cet appareil. Vous choisissez d’autoriser ou non les notifications, le moment où elles s’affichent et si elles contiennent les détails du chèque.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Les rappels couvrent une période limitée. Ouvrez l’application avant la fin de la couverture pour préparer le reste.";
 "Reminders disabled" = "Rappels désactivés";
 "Reminders enabled" = "Rappels activés";
@@ -434,7 +434,7 @@
 "Scheduled notifications" = "Notifications planifiées";
 "Search currencies" = "Recherche de devises";
 "Search number, bank or name" = "Chercher un numéro, une banque ou un nom";
-"Search number, name, bank or reference" = "Chercher un numéro, un nom, une banque ou une référence";
+"Search number, name, bank or reference" = "Rechercher par numéro, nom, banque ou référence";
 "See all" = "Voir tous";
 "Select" = "Sélectionner";
 "Select a bank account in the cheque currency." = "Sélectionnez un compte bancaire dans la devise du chèque.";

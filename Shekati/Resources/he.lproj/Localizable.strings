@@ -132,7 +132,7 @@
 "Contacts" = "אנשי קשר";
 "Correct last action" = "תיקון הפעולה האחרונה";
 "Could not complete operation" = "לא ניתן להשלים את הפעולה";
-"Could not load subscription prices. Please try again." = "לא ניתן היה למלא את מחירי המנויים. בבקשה נסה שוב.";
+"Could not load subscription prices. Please try again." = "לא ניתן לטעון את מחירי המינויים. נא לנסות שוב.";
 "Could not restore purchases. Please try again." = "לא ניתן לשחזר את הרכישות. בבקשה נסה שוב.";
 "Could not save changes" = "לא ניתן לשמור את השינויים";
 "Could not save changes." = "לא ניתן לשמור שינויים.";
@@ -175,7 +175,7 @@
 "Due date" = "תאריך פירעון";
 "Due dates" = "תאריך תום";
 "Due today" = "מועד הפירעון היום";
-"Edit" = "עריכת";
+"Edit" = "עריכה";
 "Edit cheque" = "ערוך את החשבון";
 "Enable in iPhone Settings" = "הפעל בהגדרות iPhone";
 "Enable notifications" = "הפעל תזכורות";
@@ -268,7 +268,7 @@
 "New operations" = "פעולות חדשות";
 "Next" = "הבא";
 "Next 3 days" = "שלושה ימים";
-"Next 7 days" = "שבעה ימים";
+"Next 7 days" = "7 הימים הבאים";
 "Next cheques" = "הצ’קים הבאים";
 "Next month" = "בחודש הבא";
 "Next scheduled reminder" = "התזכורת הבאה";
@@ -339,7 +339,7 @@
 "Period" = "תקופה";
 "Permanent deletion also syncs to iCloud. Keep an independent backup if needed." = "מחיקת קבע גם מסנכרת ל- iCloud. שמור גיבוי עצמאי אם דרוש.";
 "Photos" = "תמונות";
-"Please check your subscription status." = "בבקשה בדוק את מעמד הרשמה שלך.";
+"Please check your subscription status." = "יש לבדוק את מצב המינוי שלך.";
 "Possible duplicate" = "כפולה אפשרית";
 "Possible duplicates" = "כפילים אפשריים";
 "Postdated cheques" = "צ’קים מאוחר יותר";
@@ -374,7 +374,7 @@
 "Reminder options" = "אפשרויות התזכורת";
 "Reminder time" = "זמן התזכורת";
 "Reminders" = "תזכורות";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "תזכורות מתוכננות במכשיר זה. אתה שולט ברשיון, בתזמון ובאם פרטים על צ’קים מופיעים בתצוגות.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "התזכורות מתוזמנות במכשיר הזה. אפשר לבחור אם לאפשר התראות, מתי יוצגו ואם יכללו את פרטי ההמחאה.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "תזכורות מכסות תקופה מוגבלת, פתחו את האפליקציה לפני שהסיקור מסתיים כדי להכין את השאר.";
 "Reminders disabled" = "התזכורות מושבתות";
 "Reminders enabled" = "תזכורות מופעלות";
@@ -434,7 +434,7 @@
 "Scheduled notifications" = "הודעת הודעה חדשה";
 "Search currencies" = "חיפוש מטבעות";
 "Search number, bank or name" = "חיפוש מספר, בנק או שם";
-"Search number, name, bank or reference" = "חיפוש מספר, שם, בנק או התייחסות";
+"Search number, name, bank or reference" = "חיפוש לפי מספר, שם, בנק או אסמכתה";
 "See all" = "ראה הכל";
 "Select" = "בחר";
 "Select a bank account in the cheque currency." = "בחר חשבון בנק במטבע הצ’ק.";
@@ -462,7 +462,7 @@
 "Show cheques" = "הראה צ’קים";
 "Showing the first 200 rows. The counts include every row." = "מראה את 200 השורות הראשונות, הספור כולל כל שורה.";
 "Shown amount" = "כמות מופיעה";
-"Shown cheques" = "צ’קים מופיעים";
+"Shown cheques" = "המחאות מוצגות";
 "Shown incoming" = "הודעות פנימיות מופיעות";
 "Shown outgoing" = "הודעה חדשה";
 "Sign in to iCloud to sync" = "כנס ל-iCloud כדי לסנכרן";

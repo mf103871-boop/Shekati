@@ -1,6 +1,6 @@
 "1 day before" = "1 dia antes";
 "3 days before" = "3 dias antes";
-"30 days" = "30 dias de garantia";
+"30 days" = "30 dias";
 "60 days" = "60 dias";
 "A clear view of your next commitments." = "Uma visão clara dos seus próximos compromissos.";
 "A fresh start" = "Um novo começo";
@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Previsões de fluxo de caixa e relatórios avançados";
 "Cash forecast" = "Previsão de tesouraria";
 "Change status" = "Alterar o status";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Renova automaticamente até ser cancelado na sua Conta Apple.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "O montante é cobrado no momento da compra. A assinatura renova-se automaticamente até ser cancelada na sua Conta Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Compare cada dado sugerido com o seu cheque. Nada será guardado até tocar em Guardar.";
 "Check iCloud status" = "Verificar o status do iCloud";
 "Check the account name and opening balance." = "Verifique o nome da conta e saldo inicial.";
@@ -147,7 +147,7 @@
 "Dark" = "Escuro";
 "Data and backup" = "Dados e backup";
 "Date" = "Data";
-"Date added" = "Data adicionada:";
+"Date added" = "Data de registo";
 "Days before" = "Dias antes de";
 "Days before (1–365)" = "Dias antes (1–365)";
 "Days with no unpaid outgoing cheques due, across all banks. Choose a period of up to 366 days." = "Dias sem cheques de saída vencidos, em todos os bancos. Escolha um período de até 366 dias.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Habilite notificações para receber lembretes de cheques.";
 "Endorse cheque" = "Endossar cheque";
 "Endorsed" = "Endossado";
-"Endorsements, partial settlements and replacements" = "Apontamentos, liquidações parciais e substituições";
+"Endorsements, partial settlements and replacements" = "Endossos, pagamentos parciais e substituição de cheques";
 "Enter a positive amount and the date written on the cheque." = "Digite um valor positivo e a data escrita no cheque.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Insira um valor válido maior que zero, usando as casas decimais da moeda.";
 "Enter a whole number of days from 1 to 365." = "Insira um número inteiro de dias, de 1 a 365.";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Atualizar lembretes";
 "Refresh upcoming reminders" = "Atualizar próximos lembretes";
 "Refresh your cheque reminders" = "Atualize seus lembretes de cheque";
-"Reload prices" = "Preços de recarga";
+"Reload prices" = "Voltar a carregar os preços";
 "Remaining" = "Restante";
 "Remaining after payment" = "Saldo após o pagamento";
 "Remaining amount" = "Montante restante";
@@ -374,7 +374,7 @@
 "Reminder options" = "Opções de lembrete";
 "Reminder time" = "Tempo de lembrete";
 "Reminders" = "Lembretes";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Você controla a permissão, o tempo e se os detalhes do cheque aparecem nos alertas.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Os lembretes são agendados neste dispositivo. Pode escolher se permite notificações, quando aparecem e se mostram os dados do cheque.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Abra o app antes do fim da cobertura para preparar o resto.";
 "Reminders disabled" = "Lembretes desativados";
 "Reminders enabled" = "Lembretes ativados";
@@ -434,8 +434,8 @@
 "Scheduled notifications" = "Notificações agendadas";
 "Search currencies" = "Pesquisar moedas";
 "Search number, bank or name" = "Buscar número, banco ou nome";
-"Search number, name, bank or reference" = "Buscar número, nome, banco ou referência";
-"See all" = "Ver todos os produtos";
+"Search number, name, bank or reference" = "Pesquisar por número, nome, banco ou referência";
+"See all" = "Ver todos";
 "Select" = "Selecionar";
 "Select a bank account in the cheque currency." = "Selecione uma conta bancária na moeda do cheque.";
 "Select a chequebook for this account." = "Selecione um talão de cheques para esta conta.";

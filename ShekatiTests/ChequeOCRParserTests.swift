@@ -53,6 +53,21 @@ final class ChequeOCRParserTests: XCTestCase {
         XCTAssertEqual(value.dueDate?.iso, "2026-10-25")
     }
 
+    func testForeignDecimalOnLabeledAmountRequiresMatchingCurrencyAndUnambiguousDigits() {
+        for language in ["cs", "da", "hr", "nl"] {
+            XCTAssertEqual(ChequeOCRParser.parse(text: "Amount (JOD): 1250.000", currencyCode: "JOD",
+                                                languageCode: language).amountText, "1250.000", language)
+            for input in ["Amount (JOD): 1.250", "Amount: 1250.000", "1250.000 JOD",
+                          "Amount (USD): 1250.000", "Amount (JOD): 1250.000 USD",
+                          "Amount (JOD): 1250.0000", "Amount (JOD): 12.50.000",
+                          "Amount (JOD): 1250.000\nAmount (USD): 1250.000"] {
+                XCTAssertNil(ChequeOCRParser.parse(text: input, currencyCode: "JOD", languageCode: language).amountText, input)
+            }
+        }
+        XCTAssertEqual(ChequeOCRParser.parse(text: "Částka(JOD):\n1250.000", currencyCode: "JOD", languageCode: "cs").amountText, "1250.000")
+        XCTAssertEqual(ChequeOCRParser.parse(text: "Amount: 1250,75 USD", currencyCode: "USD", languageCode: "en-US").amountText, "1250.75")
+    }
+
     func testGermanChequeUsesAppLanguageForAmountsDatesAndPartyRoles() {
         let text = """
         Schecknummer: 000241

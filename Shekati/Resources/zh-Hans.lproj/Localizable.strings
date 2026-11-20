@@ -132,7 +132,7 @@
 "Contacts" = "联系人";
 "Correct last action" = "修正上次操作";
 "Could not complete operation" = "无法完成操作";
-"Could not load subscription prices. Please try again." = "无法加载模块:AddThis到服务器上。";
+"Could not load subscription prices. Please try again." = "无法载入订阅价格。请重试。";
 "Could not restore purchases. Please try again." = "无法恢复购买内容,请重试。";
 "Could not save changes" = "无法保存更改";
 "Could not save changes." = "无法保存更改。";
@@ -208,7 +208,7 @@
 "Forecast duration" = "预计期限";
 "Free days" = "休假日";
 "Free due dates" = "免费到期日";
-"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "免费版包括一个账户和十张有效支票,您的记录仍可读取、关闭和导出。";
+"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "免费版可管理一个银行账户和十张处理中支票。你仍可查看现有记录、结清支票或导出记录。";
 "From" = "从";
 "From date" = "从日期";
 "Front" = "正面";
@@ -268,7 +268,7 @@
 "New operations" = "新业务";
 "Next" = "下一步";
 "Next 3 days" = "下一个3天";
-"Next 7 days" = "下一个7天";
+"Next 7 days" = "未来7天";
 "Next cheques" = "下一期支票";
 "Next month" = "下个月";
 "Next scheduled reminder" = "下一个计划的提醒";
@@ -374,7 +374,7 @@
 "Reminder options" = "提醒选项";
 "Reminder time" = "提醒时间";
 "Reminders" = "提醒";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "您可以控制权限、时间以及支票详细信息是否会显示在提醒中。";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "提醒在此设备上安排。你可以选择是否允许通知、何时提醒，以及通知中是否显示支票详情。";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "提醒覆盖的时间有限,请在覆盖结束前打开应用,以准备其余内容。";
 "Reminders disabled" = "禁用提醒";
 "Reminders enabled" = "启用提醒";
@@ -434,7 +434,7 @@
 "Scheduled notifications" = "排定通知";
 "Search currencies" = "搜索货币";
 "Search number, bank or name" = "搜索号码、银行或名称";
-"Search number, name, bank or reference" = "搜索号码、名称、银行或参考";
+"Search number, name, bank or reference" = "按号码、名称、银行或参考编号搜索";
 "See all" = "查看所有";
 "Select" = "选择";
 "Select a bank account in the cheque currency." = "选择支票货币的银行账户。";
@@ -462,7 +462,7 @@
 "Show cheques" = "出示支票";
 "Showing the first 200 rows. The counts include every row." = "显示前200行。 计数包括每行。";
 "Shown amount" = "所示数额";
-"Shown cheques" = "出示的支票";
+"Shown cheques" = "显示的支票";
 "Shown incoming" = "显示的入境";
 "Shown outgoing" = "显示为出境";
 "Sign in to iCloud to sync" = "登录 iCloud 以同步";
@@ -538,7 +538,7 @@
 "Total exceeds supported range" = "总数超过支助范围";
 "Total outstanding cheques" = "未清支票共计";
 "Total unavailable" = "无法提供的总数";
-"Track unlimited active cheques across your bank accounts." = "跟踪您的银行账户无限活跃支票。";
+"Track unlimited active cheques across your bank accounts." = "可在各个银行账户中跟踪处理中支票，数量不限。";
 "Track what you owe and what you will collect, with timely reminders and everything in one place." = "跟踪您欠的款项和将收取的款项,并及时提醒您。";
 "Try another search or clear the filters." = "尝试其他搜索或清除筛选器。";
 "Unable to open your records" = "无法打开文件";

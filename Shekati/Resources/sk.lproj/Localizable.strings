@@ -36,7 +36,7 @@
 "Amount paid" = "Zaplatená suma";
 "Amounts hidden" = "Skryté sumy";
 "Analytics" = "Analýza";
-"Annual subscription" = "Ročné predplatné 10 €";
+"Annual subscription" = "Ročné predplatné";
 "App lock" = "Zámok aplikácie";
 "Appearance" = "Vzhľad";
 "Appearance and language" = "Vzhľad a jazyk";
@@ -252,7 +252,7 @@
 "Mark paid" = "Označiť ako zaplatený";
 "Mark pending" = "Označiť ako čakajúci";
 "Mark returned" = "Označiť ako vrátený";
-"Monthly subscription" = "Mesačné predplatné 10 €";
+"Monthly subscription" = "Mesačné predplatné";
 "More" = "Viac";
 "More details" = "Viac detailov »";
 "Move reminders to the preceding banking day" = "Presunutie pripomienok na predchádzajúci pracovný deň";
@@ -347,7 +347,7 @@
 "Preview reminder message" = "Ukážka správy s pripomenutím";
 "Previous month" = "Predchádzajúci mesiac";
 "Privacy" = "Ochrana osobných údajov";
-"Privacy policy" = "Ochrana osobných údajov - GDPR";
+"Privacy policy" = "Ochrana osobných údajov";
 "Read details from front image" = "Prečítajte si podrobnosti z predného obrázku";
 "Reason" = "Dôvod";
 "Recently Deleted" = "Nedávno odstránené položky";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Obnovenie pripomienok";
 "Refresh upcoming reminders" = "Obnovenie nadchádzajúcich pripomienok";
 "Refresh your cheque reminders" = "Obnovte svoje šekové pripomenutia";
-"Reload prices" = "Ceny za opätovné načítanie";
+"Reload prices" = "Znova načítať ceny";
 "Remaining" = "Zostávajúce";
 "Remaining after payment" = "Zostatok po úhrade";
 "Remaining amount" = "Zostávajúca suma";
@@ -374,7 +374,7 @@
 "Reminder options" = "Možnosti pripomenutia";
 "Reminder time" = "Čas pripomenutia";
 "Reminders" = "Pripomenutia";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Pripomienky sú naplánované na tomto zariadení. Vy ovládate povolenie, časovanie a či sa podrobnosti šeku zobrazujú v upozorneniach.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Pripomienky sa plánujú na tomto zariadení. Môžete nastaviť, či a kedy sa budú zobrazovať oznámenia a či budú obsahovať údaje o šeku.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Pripomienky sa vzťahujú na obmedzené obdobie. Otvorte aplikáciu pred koncom pokrytia, aby ste pripravili zvyšok.";
 "Reminders disabled" = "Pripomienky sú vypnuté";
 "Reminders enabled" = "Pripomenutia sú povolené";
@@ -435,7 +435,7 @@
 "Search currencies" = "Vyhľadávanie mien";
 "Search number, bank or name" = "Vyhľadávanie čísla, banky alebo názvu";
 "Search number, name, bank or reference" = "Vyhľadávanie čísla, mena, banky alebo referencie";
-"See all" = "Pozrieť všetky produkty";
+"See all" = "Zobraziť všetky";
 "Select" = "Vybrať";
 "Select a bank account in the cheque currency." = "Vyberte bankový účet v mene šeku.";
 "Select a chequebook for this account." = "Vyberte šekovú knižku pre tento účet.";

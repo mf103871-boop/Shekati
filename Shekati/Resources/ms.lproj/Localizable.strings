@@ -117,7 +117,7 @@
 "Choose one currency for your records. It stays fixed while saved cheques exist." = "Pilih satu mata wang untuk rekod anda. Ia tetap selagi cek disimpan wujud.";
 "Choose the app currency in Settings before adding a cheque." = "Pilih matawang aplikasi dalam Tetapan sebelum menambah cek.";
 "Choose the currency for this account and its first chequebook." = "Pilih mata wang untuk akaun ini dan buku cek pertamanya.";
-"Choose the date the cheque actually cleared." = "Pilih tarikh cek sebenarnya dikeluarkan.";
+"Choose the date the cheque actually cleared." = "Pilih tarikh cek benar-benar dijelaskan oleh bank.";
 "Clear filters" = "Kosongkan penapis";
 "Clear search and filters" = "Kosongkan carian dan penapis";
 "Clear selection" = "Kosongkan pemilihan";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Benarkan pemberitahuan untuk menerima peringatan cek.";
 "Endorse cheque" = "Endoskan cek";
 "Endorsed" = "Diendors";
-"Endorsements, partial settlements and replacements" = "Kelulusan, penyelesaian sebahagian dan penggantian";
+"Endorsements, partial settlements and replacements" = "Pengendorsan cek, bayaran separa dan cek gantian";
 "Enter a positive amount and the date written on the cheque." = "Masukkan jumlah positif dan tarikh yang ditulis pada cek.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Masukkan jumlah yang sah lebih besar daripada sifar, menggunakan tempat desimal mata wang.";
 "Enter a whole number of days from 1 to 365." = "Masukkan bilangan hari integer dari 1 hingga 365.";
@@ -208,7 +208,7 @@
 "Forecast duration" = "Tempoh ramalan";
 "Free days" = "Hari cuti";
 "Free due dates" = "Tarikh tamat bebas";
-"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Bebas termasuk satu akaun dan sepuluh cek aktif. Rekod anda masih boleh dibaca, ditutup dan diekspor.";
+"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "Pelan percuma membenarkan satu akaun dan sepuluh cek aktif. Rekod sedia ada masih boleh dibaca, ditutup dan dieksport.";
 "From" = "Daripada";
 "From date" = "Dari tarikh";
 "Front" = "Bahagian hadapan";
@@ -237,7 +237,7 @@
 "Keep type, bank and name for the next cheque" = "Simpan jenis, bank dan nama untuk cek seterusnya";
 "Know what is due" = "Tahu apa yang perlu dilakukan";
 "Language" = "Bahasa";
-"Last reconciliation" = "Penyelarasan terakhir";
+"Last reconciliation" = "Penyesuaian bank terakhir";
 "Last sync" = "Segerakkan terakhir";
 "Legal follow-up" = "Pemantauan undang-undang";
 "Light" = "Cahaya";
@@ -295,7 +295,7 @@
 "Notifications currently arrive quietly. Enable alerts and sound in iPhone Settings." = "Pemakluman kini tiba secara senyap. Hidupkan amaran dan bunyi dalam Tetapan iPhone.";
 "Notifications enabled" = "Pemberitahuan diaktifkan";
 "OK" = "OK";
-"Off by default. New cheques are added; existing cheques remain unchanged. Turn on only to replace matching records with this backup's contents." = "Matikan secara default. Periksaan baru ditambah; periksaan sedia ada tidak berubah. Hidupkan hanya untuk menggantikan rekod yang sepadan dengan kandungan sandaran ini.";
+"Off by default. New cheques are added; existing cheques remain unchanged. Turn on only to replace matching records with this backup's contents." = "Secara lalai, pilihan ini dimatikan. Cek baharu ditambah dan cek sedia ada kekal seperti asal. Hidupkan hanya jika anda mahu menggantikan rekod yang sepadan dengan kandungan sandaran ini.";
 "Offline — saved on this iPhone" = "Luar talian — disimpan pada iPhone ini";
 "On due date" = "Pada tarikh tamat";
 "On the due date" = "Pada tarikh tamat tempoh";
@@ -374,7 +374,7 @@
 "Reminder options" = "Opsyen peringatan";
 "Reminder time" = "Masa peringatan";
 "Reminders" = "Peringatan";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Peringatan dijadualkan pada peranti ini. Anda kawal keizinan, masa dan sama ada perincian cek muncul dalam amaran.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Peringatan dijadualkan pada peranti ini. Anda menentukan sama ada pemberitahuan dibenarkan, masanya dan sama ada butiran cek dipaparkan.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Pengingat merangkumi tempoh yang terhad. Buka aplikasi sebelum liputan berakhir untuk menyediakan selebihnya.";
 "Reminders disabled" = "Peringatan dilumpuhkan";
 "Reminders enabled" = "Peringatan diaktifkan";
@@ -451,10 +451,10 @@
 "Set an iPhone passcode to unlock Shekati." = "Tetapkan kod laluan iPhone untuk membuka Shekati.";
 "Settings" = "Tetapan";
 "Settled" = "Diselesaikan";
-"Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "cek yang diluluskan memerlukan tarikh sebenar. Tarikh mesti menggunakan YYYY-MM-DD.";
+"Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Cek yang telah diselesaikan memerlukan tarikh pembayaran atau kutipan sebenar. Masukkan tarikh dalam format YYYY-MM-DD.";
 "Shekati" = "Shekati";
 "Shekati Plus" = "Shekati Plus";
-"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Shekati Plus menambah lebih banyak akaun, cek aktif tanpa had, imbasan cek, pengesahan, penyelesaian sebahagian, penggantian dan ramalan aliran tunai.";
+"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Shekati Plus membolehkan anda menambah lebih banyak akaun dan menyimpan cek aktif tanpa had. Imbas cek, rekod pengendorsan, bayaran separa dan cek gantian serta lihat unjuran aliran tunai.";
 "Shekati includes no advertising or third-party analytics SDK. Apple may provide store and crash diagnostics according to your Apple settings." = "Shekati tidak termasuk iklan atau SDK analisis pihak ketiga. Apple mungkin menyediakan storan dan diagnostik crash mengikut tetapan Apple anda.";
 "Shekati — Cheque report" = "Shekati — Laporan cek";
 "Show all and history" = "Papar semua dan sejarah";
@@ -462,7 +462,7 @@
 "Show cheques" = "Papar cek";
 "Showing the first 200 rows. The counts include every row." = "Papar 200 baris pertama. Kiraan termasuk setiap baris.";
 "Shown amount" = "Jumlah yang ditunjukkan";
-"Shown cheques" = "Cekupan dipaparkan";
+"Shown cheques" = "Cek yang dipaparkan";
 "Shown incoming" = "Papar masukan";
 "Shown outgoing" = "Papar keluaran";
 "Sign in to iCloud to sync" = "Log masuk ke iCloud untuk menyegerakkan";
@@ -491,13 +491,13 @@
 "The actual payment or collection date cannot be before the issue date." = "Tarikh pembayaran atau pengumpulan sebenar tidak boleh sebelum tarikh pengeluaran.";
 "The actual payment or collection date cannot be in the future." = "Tarikh pembayaran atau pengumpulan sebenar tidak boleh berada di masa hadapan.";
 "The balance changed. Review the new difference before confirming." = "Saldo berubah. Lihat perbezaan baru sebelum mengesahkan.";
-"The bank balance changes when collection is confirmed." = "Saldo bank berubah apabila pengumpulan disahkan.";
+"The bank balance changes when collection is confirmed." = "Baki akaun bank berubah apabila kutipan bayaran cek disahkan.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Kamera hanya digunakan bila anda memilih imbas. Pengenalan teks berlaku pada iPhone ini. Tiada foto cek dihantar ke perkhidmatan pengecaman luaran.";
 "The cheque could not be deleted. Please try again." = "cek tidak dapat dipadam. Sila cuba lagi.";
 "The cheque could not be restored. Please try again." = "cek tidak dapat dipulihkan. Sila cuba lagi.";
 "The cheque could not be saved. Your draft is still here; please try again." = "cek tidak dapat disimpan. draf anda masih di sini; sila cuba lagi.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "Semakan akan dipindahkan ke Baru-baru Ini Dipadam selama 30 hari. Peringatannya berhenti; anda boleh pulihkan perincian dan fotonya.";
-"The cheque stays in follow-up until the new holder confirms collection." = "cek akan terus diproses sehingga pemilik baru mengesahkan penerimaan.";
+"The cheque stays in follow-up until the new holder confirms collection." = "Cek terus dipantau sehingga pemegang baharu mengesahkan bahawa bayaran cek telah diterima.";
 "The end date must be on or after the start date." = "Tarikh akhir mesti pada atau selepas tarikh mula.";
 "The file contains invalid cheque information." = "Fail mengandungi maklumat cek tidak sah.";
 "The file could not be read or saved. Please try again." = "Fail tidak dapat dibaca atau disimpan. Sila cuba lagi.";

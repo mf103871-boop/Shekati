@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Prediccions de fluxos de caixa i informes avançats";
 "Cash forecast" = "Previsió de tresoreria";
 "Change status" = "Canvia l’estat";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Carga en comprar. Es renova automàticament fins que es cancel· la al vostre compte Apple.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "L’import es cobra en el moment de la compra. La subscripció es renova automàticament fins que la cancel·leu al vostre compte d’Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Compareu cada dada amb el xec. No es desarà res fins que toqueu Desa.";
 "Check iCloud status" = "Comproveu l’estat de l’iCloud";
 "Check the account name and opening balance." = "Comproveu el nom del compte i el saldo inicial.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Habilita les notificacions per rebre recordatoris de xecs.";
 "Endorse cheque" = "Endossa el xec";
 "Endorsed" = "Endossat";
-"Endorsements, partial settlements and replacements" = "Endorsements, acords parcials i substitucions";
+"Endorsements, partial settlements and replacements" = "Endossos de xecs, pagaments parcials i xecs de substitució";
 "Enter a positive amount and the date written on the cheque." = "Introduïu una quantitat positiva i la data escrita al xec.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Introduïu una quantitat vàlida més gran que zero, usant les places decimals de la moneda.";
 "Enter a whole number of days from 1 to 365." = "Introduïu un nombre sencer de dies entre 1 i 365.";
@@ -208,7 +208,7 @@
 "Forecast duration" = "Durada del pronòstic";
 "Free days" = "Dies lliures";
 "Free due dates" = "Dates de venciment lliures";
-"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "El lliure inclou un compte i deu xecs actius. Els vostres registres segueixen disponibles per a llegir, tancar i exportar.";
+"Free includes one account and ten active cheques. Your records remain available to read, close and export." = "El pla gratuït inclou un compte i deu xecs actius. Podeu continuar consultant, tancant i exportant els vostres registres.";
 "From" = "Des de";
 "From date" = "Des de data";
 "Front" = "Anvers";
@@ -257,7 +257,7 @@
 "More details" = "Més detalls";
 "Move reminders to the preceding banking day" = "Mou els recordatoris al dia anterior";
 "My order" = "El meu ordre";
-"Name" = "Noms";
+"Name" = "Nom";
 "Name / number / bank / status" = "Nom / número / banc / estat";
 "Name and number" = "Nom i número";
 "Needs review" = "Cal revisar";
@@ -268,7 +268,7 @@
 "New operations" = "Noves operacions";
 "Next" = "Següent";
 "Next 3 days" = "3 dies següents";
-"Next 7 days" = "Següents 7 dies";
+"Next 7 days" = "Pròxims 7 dies";
 "Next cheques" = "Següent xec";
 "Next month" = "Mes següent";
 "Next scheduled reminder" = "Recordatori següent planificat";
@@ -374,7 +374,7 @@
 "Reminder options" = "Opcions de recordatori";
 "Reminder time" = "Hora del recordatori";
 "Reminders" = "Recordatoris";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Els recordatoris es programen en aquest dispositiu. Vostè controla els permisos, el temps i si les detalls del xec apareixen en les alertes.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Els recordatoris es programen en aquest dispositiu. Tu decideixes si permets els avisos, quan els reps i si hi apareixen les dades dels xecs.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Els recordatoris cobreixen un període limitat. Obre l’aplicació abans que acabi la cobertura per preparar la resta.";
 "Reminders disabled" = "Recordatoris deshabilitats";
 "Reminders enabled" = "Recordatoris habilitats";
@@ -435,7 +435,7 @@
 "Search currencies" = "Cerca monedes";
 "Search number, bank or name" = "Cerca número, banc o nom";
 "Search number, name, bank or reference" = "Cerca número, nom, banc o referència";
-"See all" = "Veure- ho tot";
+"See all" = "Mostra-ho tot";
 "Select" = "Selecciona";
 "Select a bank account in the cheque currency." = "Seleccioneu un compte bancari en la moneda del xec.";
 "Select a chequebook for this account." = "Seleccioneu un llibre de xecs per a aquest compte.";
@@ -462,7 +462,7 @@
 "Show cheques" = "Mostra els xecs";
 "Showing the first 200 rows. The counts include every row." = "Mostra les primeres 200 files. El recompte inclou totes les files.";
 "Shown amount" = "Quantitat mostrada";
-"Shown cheques" = "Cheques mostrats";
+"Shown cheques" = "Xecs mostrats";
 "Shown incoming" = "Entrant mostrat";
 "Shown outgoing" = "Sortida mostrada";
 "Sign in to iCloud to sync" = "Inicieu sessió a l’iCloud per sincronitzar";

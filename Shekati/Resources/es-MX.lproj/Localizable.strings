@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "Previsiones de flujos de caja e informes avanzados";
 "Cash forecast" = "Previsión de flujo de caja";
 "Change status" = "Cambiar el estado";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Se renueva automáticamente hasta que se cancela en tu cuenta de Apple.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Se te cobrará al realizar la compra. La suscripción se renueva automáticamente hasta que la canceles en tu cuenta de Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Compare cada dato sugerido con su cheque. No se guardará nada hasta que toque Guardar.";
 "Check iCloud status" = "Comprobar el estado de iCloud";
 "Check the account name and opening balance." = "Revise el nombre de la cuenta y el saldo inicial.";
@@ -183,7 +183,7 @@
 "Enable notifications to receive cheque reminders." = "Habilitar notificaciones para recibir recordatorios de cheques.";
 "Endorse cheque" = "Endosar cheque";
 "Endorsed" = "Endosado";
-"Endorsements, partial settlements and replacements" = "Adoptaciones, liquidaciones parciales y sustituciones";
+"Endorsements, partial settlements and replacements" = "Endosos, pagos parciales y cheques de reemplazo";
 "Enter a positive amount and the date written on the cheque." = "Ingrese una cantidad positiva y la fecha escrita en el cheque.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Ingrese una cantidad válida mayor que cero, utilizando las cifras decimales de la moneda.";
 "Enter a whole number of days from 1 to 365." = "Ingrese un número entero de días desde 1 hasta 365.";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "Actualizar recordatorios";
 "Refresh upcoming reminders" = "Actualizar próximos recordatorios";
 "Refresh your cheque reminders" = "Actualice sus recordatorios de cheques";
-"Reload prices" = "Precios de recarga";
+"Reload prices" = "Volver a cargar los precios";
 "Remaining" = "Resto";
 "Remaining after payment" = "Pendiente tras el pago";
 "Remaining amount" = "Cantidad restante";
@@ -374,7 +374,7 @@
 "Reminder options" = "Opciones de recordatorio";
 "Reminder time" = "Hora de recordatorio";
 "Reminders" = "Recordatorios";
-"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Los recordatorios se programan en este dispositivo, y usted controla el permiso, la hora y si los detalles del cheque aparecen en las alertas.";
+"Reminders are scheduled on this device. You control permission, timing and whether cheque details appear in alerts." = "Los recordatorios se programan en este dispositivo. Tú decides si permites las notificaciones, cuándo se muestran y si incluyen los datos del cheque.";
 "Reminders cover a limited period. Open the app before coverage ends to prepare the rest." = "Los recordatorios cubren un período limitado, así que abre la app antes de que finalice el periodo para prepararte.";
 "Reminders disabled" = "Recordatorios deshabilitados";
 "Reminders enabled" = "Recordatorios habilitados";
@@ -435,7 +435,7 @@
 "Search currencies" = "Buscar monedas";
 "Search number, bank or name" = "Buscar número, banco o nombre";
 "Search number, name, bank or reference" = "Buscar número, nombre, banco o referencia";
-"See all" = "Ver todo el contenido";
+"See all" = "Ver todos";
 "Select" = "Seleccionar";
 "Select a bank account in the cheque currency." = "Seleccione una cuenta bancaria en la moneda del cheque.";
 "Select a chequebook for this account." = "Seleccione un chequero para esta cuenta.";
