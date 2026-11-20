@@ -76,6 +76,12 @@ def inspect(require_release):
                 length = len(value.encode("utf8")) if unit == "bytes" else len(value)
                 if not (0 < length <= limit):
                     raise ValueError(f"{field} has {length} {unit}; limit {limit}")
+            for label, url in (
+                ("Terms of use", "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"),
+                ("Privacy policy", "https://mf103871-boop.github.io/Shekati/privacy.html"),
+            ):
+                if ui[label] + "\n" + url not in metadata["description"]:
+                    raise ValueError(f"Missing localized subscription disclosure: {label}")
             for product in ("monthly","annual"):
                 item=metadata["subscriptionLocalizations"][product]
                 if not (0<len(item["name"])<=30 and 0<len(item["description"])<=45):

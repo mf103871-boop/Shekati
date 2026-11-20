@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "Gestão de cheques",
   "keywords": "cheques,contas bancárias,calendário,Lembretes",
-  "description": "Registre cheques de entrada e saída, veja suas datas de vencimento e mantenha as imagens dos cheques juntas.\n\nO plano gratuito inclui uma conta bancária, dez cheques ativos, entrada manual, um calendário e lembretes.\n\nShekati Plus adiciona mais contas, cheques ativos ilimitados, verificação de cheques, endossos, liquidações parciais, substituições e previsões de fluxo de caixa.\n\nEscolha entre uma assinatura mensal ou anual. O preço local é exibido antes da compra e as assinaturas são renovadas automaticamente até serem canceladas na sua Conta Apple.\n\nVocê pode ler, fechar e exportar cheques existentes após o término de uma assinatura.",
+  "description": "Registre cheques de entrada e saída, veja suas datas de vencimento e mantenha as imagens dos cheques juntas.\n\nO plano gratuito inclui uma conta bancária, dez cheques ativos, entrada manual, um calendário e lembretes.\n\nShekati Plus adiciona mais contas, cheques ativos ilimitados, verificação de cheques, endossos, liquidações parciais, substituições e previsões de fluxo de caixa.\n\nEscolha entre uma assinatura mensal ou anual. O preço local é exibido antes da compra e as assinaturas são renovadas automaticamente até serem canceladas na sua Conta Apple.\n\nVocê pode ler, fechar e exportar cheques existentes após o término de uma assinatura.\n\nTermos de uso\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolítica de privacidade\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {

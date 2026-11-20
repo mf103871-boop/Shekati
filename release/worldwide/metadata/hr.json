@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "Praćenje čekova",
   "keywords": "Čekovi,Bankovni računi i krediti,kalendar,podsjetnici",
-  "description": "Snimite dolazne i odlazne čekove, pogledajte njihove datume dospijeća i držite slike čekova zajedno.\n\nBesplatni plan uključuje jedan bankovni račun, deset aktivnih čekova, ručni unos, kalendar i podsjetnike.\n\nShekati Plus dodaje više računa, neograničene aktivne čekove, skeniranje čekova, potvrde, djelomična nagodba, zamjene i prognoze novčanog toka.\n\nOdaberite mjesečnu ili godišnju pretplatu. Vaša lokalna cijena prikazat će se prije kupnje, a pretplate se automatski obnavljaju dok ih ne otkažete na svom Apple računu.\n\nMožete čitati, zatvoriti i izvoz postojećih čekova nakon što pretplata završi.",
+  "description": "Snimite dolazne i odlazne čekove, pogledajte njihove datume dospijeća i držite slike čekova zajedno.\n\nBesplatni plan uključuje jedan bankovni račun, deset aktivnih čekova, ručni unos, kalendar i podsjetnike.\n\nShekati Plus dodaje više računa, neograničene aktivne čekove, skeniranje čekova, potvrde, djelomična nagodba, zamjene i prognoze novčanog toka.\n\nOdaberite mjesečnu ili godišnju pretplatu. Vaša lokalna cijena prikazat će se prije kupnje, a pretplate se automatski obnavljaju dok ih ne otkažete na svom Apple računu.\n\nMožete čitati, zatvoriti i izvoz postojećih čekova nakon što pretplata završi.\n\nUvjeti korištenja\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolitika privatnosti\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {

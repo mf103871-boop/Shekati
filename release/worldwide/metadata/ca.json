@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "Gestió de xecs",
   "keywords": "xecs,comptes bancaris,calendari,recordatoris",
-  "description": "Registreu els xecs entrants i sortints, vegeu les seves dates de venciment i mantingueu les imatges dels vostres xecs junts.\n\nEl pla gratuït inclou un compte bancari, deu xecs actius, entrada manual, calendari i recordatoris.\n\nShekati Plus afegeix més comptes, xecs actius il·limitats, escaneig de xecs, endossats, liquidacions parcials, reemplaçaments i previsions de fluxos de caixa.\n\nEscolliu una subscripció mensual o anual. El preu local es mostra abans de la compra. Les subscripcions es renoven automàticament fins que no es cancel·lin al vostre compte Apple.\n\nPodeu llegir, tancar i exportar xecs existents després que acabi una subscripció.",
+  "description": "Registreu els xecs entrants i sortints, vegeu les seves dates de venciment i mantingueu les imatges dels vostres xecs junts.\n\nEl pla gratuït inclou un compte bancari, deu xecs actius, entrada manual, calendari i recordatoris.\n\nShekati Plus afegeix més comptes, xecs actius il·limitats, escaneig de xecs, endossats, liquidacions parcials, reemplaçaments i previsions de fluxos de caixa.\n\nEscolliu una subscripció mensual o anual. El preu local es mostra abans de la compra. Les subscripcions es renoven automàticament fins que no es cancel·lin al vostre compte Apple.\n\nPodeu llegir, tancar i exportar xecs existents després que acabi una subscripció.\n\nCondicions d’ús\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolítica de privacitat\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {

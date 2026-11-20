@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "支票管理",
   "keywords": "支票,银行账户,日历,催复通知",
-  "description": "记录收到和开出的支票，查看到期日，集中保存支票图片。\n\n免费版可管理一个银行账户和最多十张未结清的支票，支持手动录入、日历和提醒。\n\n使用 Shekati Plus 可管理不限数量的银行账户和未结清支票，还可扫描支票、背书转让、记录部分结算和换票，并查看现金流预测。\n\n可选择按月或按年订阅。购买前会显示当地价格。订阅会自动续期，直到你在 Apple 账户中取消。\n\n订阅到期后，你仍可查看、结清和导出已登记的支票。",
+  "description": "记录收到和开出的支票，查看到期日，集中保存支票图片。\n\n免费版可管理一个银行账户和最多十张未结清的支票，支持手动录入、日历和提醒。\n\n使用 Shekati Plus 可管理不限数量的银行账户和未结清支票，还可扫描支票、背书转让、记录部分结算和换票，并查看现金流预测。\n\n可选择按月或按年订阅。购买前会显示当地价格。订阅会自动续期，直到你在 Apple 账户中取消。\n\n订阅到期后，你仍可查看、结清和导出已登记的支票。\n\n使用条款\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\n隐私政策\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {

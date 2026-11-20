@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "Šekkien seuranta",
   "keywords": "shekit,Pankkitilit,kalenteri,muistutukset",
-  "description": "Tallenna saapuvat ja lähtevät sekit, katso niiden eräpäivät ja pidä sekin kuvia yhdessä.\n\nIlmainen tilaus sisältää yhden pankkitilin, kymmenen aktiivista sekkiä, manuaalisen syöttötavan, kalenterin ja muistutuksia.\n\nShekati Plus lisää enemmän tilejä, rajoittamaton aktiivinen shekki, sekin skannaus, hyväksynnät, osittaiset ratkaisut, korvaukset ja kassavirtaennusteet.\n\nValitse kuukausi- tai vuositilaus. Paikallinen hinta näkyy ennen ostoa, ja tilaukset uusiutuvat automaattisesti, kunnes ne peruutetaan Apple-tililläsi.\n\nVoit lukea, sulkea ja viedä olemassa olevia sekkejä tilauksen päättymisen jälkeen.",
+  "description": "Tallenna saapuvat ja lähtevät sekit, katso niiden eräpäivät ja pidä sekin kuvia yhdessä.\n\nIlmainen tilaus sisältää yhden pankkitilin, kymmenen aktiivista sekkiä, manuaalisen syöttötavan, kalenterin ja muistutuksia.\n\nShekati Plus lisää enemmän tilejä, rajoittamaton aktiivinen shekki, sekin skannaus, hyväksynnät, osittaiset ratkaisut, korvaukset ja kassavirtaennusteet.\n\nValitse kuukausi- tai vuositilaus. Paikallinen hinta näkyy ennen ostoa, ja tilaukset uusiutuvat automaattisesti, kunnes ne peruutetaan Apple-tililläsi.\n\nVoit lukea, sulkea ja viedä olemassa olevia sekkejä tilauksen päättymisen jälkeen.\n\nKäyttöehdot\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nTietosuojakäytäntö |\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {

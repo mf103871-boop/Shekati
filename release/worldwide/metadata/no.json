@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "Sjekkoversikt",
   "keywords": "sjekker,Bankkontoer,kalender,påminnelser",
-  "description": "Ta opp innkommende og utgående sjekker, se deres forfallsdatoer og hold sjekkbildene sammen.\n\nGratis planen inkluderer en bankkonto, ti aktive sjekker, manuell oppføring, en kalender og påminnelser.\n\nShekati Plus legger til flere kontoer, ubegrensede aktive sjekker, sjekk skanning, påtegninger, delvise oppgjør, erstatninger og kontantstrømsprognoser.\n\nVelg mellom månedlig eller årlig abonnement. Abonnementene fornyes automatisk til de avsluttes i Apple-kontoen din, og du kan velge å betale én gang eller flere ganger.\n\nDu kan lese, lukke og eksportere eksisterende sjekker etter at et abonnement slutter.",
+  "description": "Ta opp innkommende og utgående sjekker, se deres forfallsdatoer og hold sjekkbildene sammen.\n\nGratis planen inkluderer en bankkonto, ti aktive sjekker, manuell oppføring, en kalender og påminnelser.\n\nShekati Plus legger til flere kontoer, ubegrensede aktive sjekker, sjekk skanning, påtegninger, delvise oppgjør, erstatninger og kontantstrømsprognoser.\n\nVelg mellom månedlig eller årlig abonnement. Abonnementene fornyes automatisk til de avsluttes i Apple-kontoen din, og du kan velge å betale én gang eller flere ganger.\n\nDu kan lese, lukke og eksportere eksisterende sjekker etter at et abonnement slutter.\n\nBruksvilkår for nettstedet\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPersonvern og cookies\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {
