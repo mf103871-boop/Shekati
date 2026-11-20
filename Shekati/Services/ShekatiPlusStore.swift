@@ -29,6 +29,12 @@ final class ShekatiPlusStore: ObservableObject {
     deinit { listener?.cancel() }
 
     func refreshEntitlement() async {
+        #if DEBUG && targetEnvironment(simulator)
+        if CommandLine.arguments.contains("--ui-testing") && CommandLine.arguments.contains("--store-screens") {
+            isPlus = true
+            return
+        }
+        #endif
         refreshNumber += 1
         let request = refreshNumber
         var entitled = false

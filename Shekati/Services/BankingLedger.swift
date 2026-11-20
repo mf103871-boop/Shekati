@@ -9,6 +9,7 @@ enum BankingError: String, LocalizedError {
     case accountRequired = "Select a bank account in the cheque currency."
     case paidFeature = "This action requires Shekati Plus."
     case limit = "The free plan includes one bank account."
+    case chequeLimit = "The free plan includes ten active cheques."
     case missing = "Some financial records are still syncing."
     case staleBalance = "The balance changed. Review the new difference before confirming."
     var errorDescription: String? { rawValue }
@@ -25,6 +26,43 @@ enum BankingLedger {
             ?? PaperState.initial(record.status, direction: record.direction)
         return ChequePosition(original: record.amountMinorUnits, direction: record.direction, baseline: baseline,
                               currency: record.currencyCode, operations: operations)
+    }
+
+    /// Inactive replacement branches stay available to the history view while the active
+    /// register, quota, calendar and notifications use only the accepted lineage.
+    static func effectivePositions(records: [ChequeRecord], events: [LedgerEventRecord]) -> [UUID: ChequePosition] {
+        let groups = Dictionary(grouping: records, by: \.id)
+        let eventGroups = Dictionary(grouping: events, by: \.chequeID)
+        var positions: [UUID: ChequePosition] = [:]
+        var unresolved = [UUID: [ChequeRecord]]()
+        var queue = [ChequeRecord]()
+        for group in groups.values where group.count == 1 {
+            let record = group[0]
+            if let parentID = record.replacesChequeID { unresolved[parentID, default: []].append(record) }
+            else { queue.append(record) }
+        }
+        while let record = queue.popLast() {
+            let current = position(for: record, events: eventGroups[record.id] ?? [])
+            positions[record.id] = current
+            if current.conflicts.isEmpty, let child = current.replacementID,
+               let replacement = unresolved[record.id]?.first(where: { $0.id == child }) {
+                queue.append(replacement)
+            }
+        }
+        return positions
+    }
+
+    static func reminderInputs(records: [ChequeRecord], events: [LedgerEventRecord]) -> [ChequeReminderInput] {
+        let effective = effectivePositions(records: records, events: events)
+        return records.compactMap { record in
+            guard record.isActive, let position = effective[record.id], position.conflicts.isEmpty,
+                  [.inHand, .deposited, .issued, .returned, .lost].contains(position.state), position.remaining > 0 else { return nil }
+            var snapshot = record.snapshot
+            snapshot.status = position.legacyStatus
+            snapshot.amountMinorUnits = position.remaining
+            return ChequeReminderInput(snapshot: snapshot, enabled: record.remindersEnabled,
+                                       offsets: record.reminderOffsets, hour: record.reminderHour, minute: record.reminderMinute)
+        }
     }
 
     static func addAccount(name: String, currency: String, opening: Int64, isPlus: Bool, context: ModelContext) throws {
@@ -98,7 +136,11 @@ enum BankingLedger {
         let all = try context.fetch(FetchDescriptor<LedgerEventRecord>())
         let position = self.position(for: record, events: all)
         let reason = reason.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !reason.isEmpty, position.conflicts.contains(op), op.chequeID == record.id else { throw BankingError.invalid }
+        guard !reason.isEmpty, (position.conflicts.contains(op) || position.accepted.last?.id == op.id),
+              op.chequeID == record.id else { throw BankingError.invalid }
+        if op.kind == .replace, let child = op.relatedID {
+            guard !all.contains(where: { $0.chequeID == child }) else { throw BankingError.unavailable }
+        }
         let correction = LedgerOperation(chequeID: record.id, accountID: record.bankAccountID, kind: .discardConflict,
                                          day: .today, party: reason, relatedID: op.id, currency: record.currencyCode)
         let event = LedgerEventRecord(correction)
@@ -107,7 +149,7 @@ enum BankingLedger {
         try save(context)
     }
 
-    private static func reflect(_ projection: ChequePosition, record: ChequeRecord) {
+    static func reflect(_ projection: ChequePosition, record: ChequeRecord) {
         record.status = projection.legacyStatus
         record.actualDate = projection.state == .settled ? projection.accepted.last?.day : nil
     }
@@ -116,7 +158,12 @@ enum BankingLedger {
         let raw = events.filter { $0.accountID == account.id && $0.chequeID == nil }
         let decoded = raw.compactMap(\.operation)
         guard decoded.count == raw.count else { throw BankingError.missing }
-        let ignored = Set(decoded.filter { $0.kind == .discardConflict }.compactMap(\.relatedID))
+        var ignored = Set(decoded.filter { $0.kind == .discardConflict }.compactMap(\.relatedID))
+        let children = Dictionary(grouping: decoded.filter { $0.kind == .reconcile }, by: \.parentID)
+        var obsolete = Array(ignored)
+        while let parent = obsolete.popLast() {
+            for child in children[parent] ?? [] where ignored.insert(child.id).inserted { obsolete.append(child.id) }
+        }
         let candidates = Dictionary(grouping: decoded.filter { $0.kind == .reconcile && !ignored.contains($0.id) }, by: \.id)
         guard candidates.values.allSatisfy({ group in group.allSatisfy { $0 == group[0] } }) else { throw BankingError.conflict }
         var result: [LedgerOperation] = []
@@ -130,6 +177,31 @@ enum BankingLedger {
         }
         guard result.count == candidates.count else { throw BankingError.conflict }
         return result
+    }
+
+    static func reconciliationConflicts(account: BankAccountRecord, events: [LedgerEventRecord]) -> [LedgerOperation] {
+        let data = events.filter { $0.accountID == account.id && $0.chequeID == nil }.compactMap(\.operation)
+        let ignored = Set(data.filter { $0.kind == .discardConflict }.compactMap(\.relatedID))
+        let candidates = data.filter { $0.kind == .reconcile && !ignored.contains($0.id) }
+        let groups = Dictionary(grouping: candidates, by: \.parentID)
+        var parent: UUID?
+        var seen = Set<UUID>()
+        while let siblings = groups[parent], let first = siblings.first {
+            let ids = Set(siblings.map(\.id))
+            if ids.count > 1 { return siblings.filter { seen.insert($0.id).inserted } }
+            guard seen.insert(first.id).inserted else { break }
+            parent = first.id
+        }
+        return []
+    }
+
+    static func discardAdjustment(_ op: LedgerOperation, reason: String, account: BankAccountRecord, context: ModelContext) throws {
+        let events = try context.fetch(FetchDescriptor<LedgerEventRecord>())
+        let note = reason.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !note.isEmpty, reconciliationConflicts(account: account, events: events).contains(op) else { throw BankingError.invalid }
+        context.insert(LedgerEventRecord(LedgerOperation(chequeID: nil, accountID: account.id, kind: .discardConflict,
+                       day: .today, party: note, relatedID: op.id, currency: account.currencyCode)))
+        try save(context)
     }
 
     static func outlook(account: BankAccountRecord, records: [ChequeRecord], events: [LedgerEventRecord],
@@ -162,7 +234,8 @@ enum BankingLedger {
         return try AccountOutlook(opening: account.openingMinor, movements: movements, items: items, today: today, horizon: horizon)
     }
 
-    static func reconcile(_ account: BankAccountRecord, statement: Int64, expected: Int64, context: ModelContext) throws {
+    static func reconcile(_ account: BankAccountRecord, statement: Int64, expected: Int64, day: LocalDay = .today, reason: String = "", context: ModelContext) throws {
+        guard day <= .today else { throw BankingError.invalid }
         let records = try context.fetch(FetchDescriptor<ChequeRecord>())
         let events = try context.fetch(FetchDescriptor<LedgerEventRecord>())
         let current = try outlook(account: account, records: records, events: events, today: .today).recorded
@@ -171,7 +244,7 @@ enum BankingLedger {
         guard !delta.overflow else { throw TreasuryError.overflow }
         let parent = try adjustments(account: account, events: events).last?.id
         let operation = LedgerOperation(parentID: parent, chequeID: nil, accountID: account.id, kind: .reconcile,
-                                       day: .today, amount: delta.partialValue, currency: account.currencyCode)
+                                       day: day, amount: delta.partialValue, party: reason.trimmingCharacters(in: .whitespacesAndNewlines), currency: account.currencyCode)
         context.insert(LedgerEventRecord(operation))
         try save(context)
     }

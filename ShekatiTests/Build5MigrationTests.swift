@@ -46,11 +46,11 @@ final class Build5MigrationTests: XCTestCase {
     func testPopulatedBuild5StoreMigratesWithoutRenamingEntitiesLosingDataOrImages() throws {
         let oldModel = try XCTUnwrap(NSManagedObjectModel.makeManagedObjectModel(
             for: [Build5Models.ChequeRecord.self, Build5Models.AppConfiguration.self]))
-        let newModel = try XCTUnwrap(NSManagedObjectModel.makeManagedObjectModel(for: [ChequeRecord.self, AppConfiguration.self]))
-        XCTAssertEqual(Set(oldModel.entities.compactMap(\.name)), Set(newModel.entities.compactMap(\.name)))
+        let newModel = try XCTUnwrap(NSManagedObjectModel.makeManagedObjectModel(for: [ChequeRecord.self, AppConfiguration.self, BankAccountRecord.self, ChequeBookRecord.self, LedgerEventRecord.self]))
+        XCTAssertTrue(Set(oldModel.entities.compactMap(\.name)).isSubset(of: Set(newModel.entities.compactMap(\.name))))
         let oldEntity = try XCTUnwrap(oldModel.entities.first { $0.name?.hasSuffix("ChequeRecord") == true })
         let newEntity = try XCTUnwrap(newModel.entities.first { $0.name == oldEntity.name })
-        XCTAssertEqual(Set(newEntity.attributesByName.keys).subtracting(oldEntity.attributesByName.keys), ["deletedAt"])
+        XCTAssertEqual(Set(newEntity.attributesByName.keys).subtracting(oldEntity.attributesByName.keys), ["deletedAt", "bankAccountID", "chequeBookID", "ledgerBaselineStatusRaw", "replacesChequeID"])
         for (name, attribute) in oldEntity.attributesByName {
             XCTAssertEqual(newEntity.attributesByName[name]?.attributeType, attribute.attributeType, name)
             XCTAssertEqual(newEntity.attributesByName[name]?.isOptional, attribute.isOptional, name)
@@ -81,7 +81,7 @@ final class Build5MigrationTests: XCTestCase {
             try context.save()
         }
         try autoreleasepool {
-            let schema = Schema([ChequeRecord.self, AppConfiguration.self])
+            let schema = Schema([ChequeRecord.self, AppConfiguration.self, BankAccountRecord.self, ChequeBookRecord.self, LedgerEventRecord.self])
             let configuration = ModelConfiguration("Shekati", schema: schema, url: url, cloudKitDatabase: .none)
             let newContainer = try ModelContainer(for: schema, configurations: [configuration])
             let context = ModelContext(newContainer)
@@ -101,7 +101,7 @@ final class Build5MigrationTests: XCTestCase {
             loaded.deletedAt = Date(timeIntervalSince1970: 1_700_000_000)
             try context.save()
         }
-        let schema = Schema([ChequeRecord.self, AppConfiguration.self])
+        let schema = Schema([ChequeRecord.self, AppConfiguration.self, BankAccountRecord.self, ChequeBookRecord.self, LedgerEventRecord.self])
         let container = try ModelContainer(for: schema, configurations: [
             ModelConfiguration("Shekati", schema: schema, url: url, cloudKitDatabase: .none)
         ])

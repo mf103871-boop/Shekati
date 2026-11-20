@@ -24,10 +24,20 @@ struct ShekatiApp: App {
             startupError = failure
             let testDefaults = UserDefaults(suiteName: "com.shekati.ui-testing")!
             testDefaults.removePersistentDomain(forName: "com.shekati.ui-testing")
-            testDefaults.set(CommandLine.arguments.contains("--arabic") ? "ar" : "en", forKey: "language")
+            let screenshotLocale = CommandLine.arguments.contains("--store-screens") ? UserDefaults.standard.string(forKey: "ShekatiStoreLocale") : nil
+            testDefaults.set(screenshotLocale ?? (CommandLine.arguments.contains("--arabic") ? "ar" : "en"), forKey: "language")
             testDefaults.set([Int](), forKey: "reminderOffsets")
             let appState = AppState(localOnlyReason: "UI test storage", defaults: testDefaults)
-            if let built { appState.configureNotificationContext(container: built) }
+            if let built {
+                #if DEBUG && targetEnvironment(simulator)
+                if CommandLine.arguments.contains("--store-screens") {
+                    do { try StoreScreenshotFixtures.seedIfRequested(in: built, language: appState.preferences.language) }
+                    catch { assertionFailure("Screenshot fixtures failed: \(error)") }
+                    appState.today = StoreScreenshotFixtures.referenceDay
+                }
+                #endif
+                appState.configureNotificationContext(container: built)
+            }
             _state = State(initialValue: appState)
             return
         }

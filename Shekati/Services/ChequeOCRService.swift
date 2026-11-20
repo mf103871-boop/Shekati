@@ -36,9 +36,16 @@ enum ChequeOCRService {
             request.automaticallyDetectsLanguage = true
             let supported = try request.supportedRecognitionLanguages()
             let arabic = supported.filter { $0.lowercased().hasPrefix("ar") }
-            let english = supported.filter { $0.lowercased().hasPrefix("en") }
-            let selected = arabic + Array(english.prefix(1))
-            if !selected.isEmpty { request.recognitionLanguages = Array(selected) }
+            let preferred = UserDefaults.standard.string(forKey: "language") ?? Locale.preferredLanguages.first ?? "en"
+            let requested = Locale(identifier: preferred).language.languageCode?.identifier ?? "en"
+            let priority = [requested, "en", "ar"]
+            var selected: [String] = []
+            for code in priority {
+                if let candidate = supported.first(where: { $0.lowercased().hasPrefix(code.lowercased()) }), !selected.contains(candidate) {
+                    selected.append(candidate)
+                }
+            }
+            if !selected.isEmpty { request.recognitionLanguages = selected }
             let handler = VNImageRequestHandler(cgImage: cgImage, orientation: orientation, options: [:])
             try handler.perform([request])
             let observations = (request.results ?? []).sorted { lhs, rhs in

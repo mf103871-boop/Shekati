@@ -71,10 +71,15 @@ struct ChequeOperationsView: View {
                         else { sheet = OperationIntent(action: action, parent: position.accepted.last?.id, related: nil) }
                     } label: {
                         Label(app.tr(action.title), systemImage: action.isPremium && !isPlus ? "lock" : "arrow.forward.circle")
-                    }.buttonStyle(.bordered)
+                    }.buttonStyle(.bordered).accessibilityIdentifier("operation-" + action.rawValue)
                 }
             }
             if let error { Text(app.tr(error)).foregroundStyle(.red) }
+            if position.conflicts.isEmpty, let last = position.accepted.last {
+                Button(app.tr("Correct last action"), role: .destructive) {
+                    sheet = OperationIntent(action: .discardConflict, parent: nil, related: last)
+                }
+            }
             if !history.isEmpty {
                 Divider()
                 Text(app.tr("Activity history")).font(.headline)
@@ -126,31 +131,56 @@ private struct OperationForm: View {
         partial ? CurrencyMath.parseMinorUnits(amount, currencyCode: record.currencyCode) :
             ([.settle, .acknowledgeEndorsement, .replace].contains(intent.action) ? remaining : 0)
     }
+    private func display(_ value: Int64) -> String {
+        hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: value, currencyCode: record.currencyCode, locale: app.preferences.language.locale)
+    }
+    private var remainderAfterPayment: Int64? {
+        guard partial, let value = effectiveAmount, value > 0, value <= remaining else { return nil }
+        return remaining - value
+    }
     private var summary: String {
         let amountText = hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: effectiveAmount ?? 0, currencyCode: record.currencyCode, locale: app.preferences.language.locale)
         let parts = [app.tr(intent.action.title), record.number, app.formatDay(LocalDay(date: date)), (effectiveAmount ?? 0) == 0 ? "" : amountText,
                      accounts.first(where: { $0.id == record.bankAccountID })?.name ?? "", party, number,
-                     intent.action == .replace ? app.formatDay(LocalDay(date: due)) : ""]
+                     intent.action == .replace ? app.formatDay(LocalDay(date: due)) : "",
+                     remainderAfterPayment.map { app.tr("Remaining after payment") + " · " + display($0) } ?? ""]
         return parts.filter { !$0.isEmpty }.joined(separator: " · ")
     }
     var body: some View {
         NavigationStack {
             Form {
                 LabeledContent(app.tr("Cheque number"), value: record.number)
-                DatePicker(app.tr("Date"), selection: $date, in: ...Date(), displayedComponents: .date)
+                if let related = intent.related {
+                    LabeledContent(app.tr("Action to reverse"), value: app.tr(related.kind.title) + " · " + app.formatDay(related.day))
+                    Text(app.tr("The reversal is recorded in the activity history.")).font(.footnote)
+                } else {
+                    DatePicker(app.tr("Date"), selection: $date, in: ...Date(), displayedComponents: .date)
+                        .accessibilityIdentifier("operationDate")
+                }
                 if partial {
-                    TextField(app.tr("Amount"), text: $amount).keyboardType(.decimalPad)
+                    LabeledContent(app.tr("Original amount"), value: display(record.amountMinorUnits))
+                    LabeledContent(app.tr("Remaining"), value: display(remaining))
+                    if hidesAmounts {
+                        SecureField(app.tr("Amount"), text: $amount).keyboardType(.decimalPad)
+                    } else {
+                        TextField(app.tr("Amount"), text: $amount).keyboardType(.decimalPad)
+                    }
+                    if let after = remainderAfterPayment {
+                        LabeledContent(app.tr("Remaining after payment"), value: display(after))
+                    }
                 }
                 if let account = accounts.first(where: { $0.id == record.bankAccountID }) {
                     LabeledContent(app.tr("Bank account"), value: account.name)
                 }
                 if intent.action == .endorse {
                     TextField(app.tr("New holder"), text: $party)
+                    Text(app.tr("The cheque stays in follow-up until the new holder confirms collection.")).font(.footnote)
                 } else if intent.action == .discardConflict || intent.action == .markReturned || intent.action == .cancel {
                     TextField(app.tr("Reason"), text: $party)
                 }
                 if intent.action == .replace {
                     TextField(app.tr("Replacement cheque number"), text: $number)
+                    TextField(app.tr("Reason"), text: $party)
                     DatePicker(app.tr("Replacement due date"), selection: $due, in: Calendar.current.startOfDay(for: date)..., displayedComponents: .date)
                 }
                 if intent.action == .deposit {
@@ -158,14 +188,15 @@ private struct OperationForm: View {
                 }
                 if let error { Text(app.tr(error)).foregroundStyle(.red) }
                 Button(app.tr("Review action")) { confirmation = true }
-                    .disabled(effectiveAmount == nil || (partial && (effectiveAmount ?? 0) > remaining) ||
+                    .accessibilityIdentifier("reviewOperation")
+                    .disabled(effectiveAmount == nil || (partial && remainderAfterPayment == nil) ||
                               ([.endorse, .discardConflict, .markReturned, .cancel].contains(intent.action) && party.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) ||
                               (intent.action == .replace && number.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty))
             }
             .navigationTitle(app.tr(intent.action.title)).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button(app.tr("Cancel")) { dismiss() } } }
             .confirmationDialog(app.tr("Confirm action"), isPresented: $confirmation, titleVisibility: .visible) {
-                Button(app.tr("Confirm")) { commit() }
+                Button(app.tr("Confirm")) { commit() }.accessibilityIdentifier("commitOperation")
                 Button(app.tr("Cancel"), role: .cancel) {}
             } message: { Text(summary) }
         }

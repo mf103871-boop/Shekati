@@ -382,7 +382,7 @@ final class ChequeTransferTests: XCTestCase {
             createdAt: Date(timeIntervalSince1970: 1_700_000_000), manualRank: 9))
     }
     private func makeContext() throws -> ModelContext {
-        let schema = Schema([ChequeRecord.self, AppConfiguration.self])
+        let schema = Schema([ChequeRecord.self, AppConfiguration.self, BankAccountRecord.self, ChequeBookRecord.self, LedgerEventRecord.self])
         let container = try ModelContainer(for: schema, configurations: [
             ModelConfiguration(schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)
         ])

@@ -58,10 +58,8 @@ final class AppState {
             guard let self else { return nil }
             do {
                 let records = try container.mainContext.fetch(FetchDescriptor<ChequeRecord>())
-                return ReminderContext(inputs: records.filter { $0.deletedAt == nil }.map {
-                    ChequeReminderInput(snapshot: $0.snapshot, enabled: $0.remindersEnabled,
-                                        offsets: $0.reminderOffsets, hour: $0.reminderHour, minute: $0.reminderMinute)
-                }, settings: self.reminderSettings)
+                let events = try container.mainContext.fetch(FetchDescriptor<LedgerEventRecord>())
+                return ReminderContext(inputs: BankingLedger.reminderInputs(records: records, events: events), settings: self.reminderSettings)
             } catch { return nil }
         }
     }

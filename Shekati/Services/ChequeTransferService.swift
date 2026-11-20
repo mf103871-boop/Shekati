@@ -25,6 +25,10 @@ struct ChequeBackupEntry: Codable, Equatable, Sendable {
     var reminderHour: Int?
     var reminderMinute: Int?
     var deletedAt: Date?
+    var bankAccountID: UUID?
+    var chequeBookID: UUID?
+    var replacesChequeID: UUID?
+    var ledgerBaselineStatusRaw: String?
 
     @MainActor init(record: ChequeRecord) {
         snapshot = record.snapshot
@@ -35,6 +39,10 @@ struct ChequeBackupEntry: Codable, Equatable, Sendable {
         reminderHour = record.reminderHour
         reminderMinute = record.reminderMinute
         deletedAt = record.deletedAt
+        bankAccountID = record.bankAccountID
+        chequeBookID = record.chequeBookID
+        replacesChequeID = record.replacesChequeID
+        ledgerBaselineStatusRaw = record.ledgerBaselineStatusRaw
     }
 
     init(snapshot: ChequeSnapshot, remindersEnabled: Bool = true) {
@@ -48,6 +56,7 @@ struct ChequeBackupEntry: Codable, Equatable, Sendable {
                                   reminderOffsets: reminderOffsets.map(deduplicatedOffsets), reminderHour: reminderHour,
                                   reminderMinute: reminderMinute)
         record.deletedAt = deletedAt
+        applyFinancialLinks(to: record)
         return record
     }
 
@@ -60,6 +69,14 @@ struct ChequeBackupEntry: Codable, Equatable, Sendable {
         record.reminderHour = reminderHour
         record.reminderMinute = reminderMinute
         record.deletedAt = deletedAt
+        applyFinancialLinks(to: record)
+    }
+
+    @MainActor private func applyFinancialLinks(to record: ChequeRecord) {
+        record.bankAccountID = bankAccountID
+        record.chequeBookID = chequeBookID
+        record.replacesChequeID = replacesChequeID
+        record.ledgerBaselineStatusRaw = ledgerBaselineStatusRaw
     }
 
     /// Backups may repeat reminder days. Previews and restores compare this form with stored
@@ -109,9 +126,11 @@ struct ChequeBackupPayload: Codable, Sendable {
     var currencyCode: String
     var records: [ChequeBackupEntry]
     var globalReminders: GlobalReminderBackup? = nil
+    var banking: BankingArchive? = nil
 
     func validate() throws {
-        guard version == 1 else { throw ChequeTransferError.unsupportedVersion }
+        guard version == 1 || version == 2 else { throw ChequeTransferError.unsupportedVersion }
+        guard (version == 2) == (banking != nil) else { throw ChequeTransferError.invalidRecords }
         try globalReminders?.validate()
         guard Locale.commonISOCurrencyCodes.contains(currencyCode), records.count <= 20_000,
               Set(records.map { $0.snapshot.id }).count == records.count,
@@ -119,7 +138,7 @@ struct ChequeBackupPayload: Codable, Sendable {
         for entry in records {
             let value = entry.snapshot
             let texts = [value.number, value.bank, value.branch, value.party, value.accountReference, value.notes]
-            guard value.currencyCode == currencyCode, value.amountMinorUnits > 0,
+            guard (version == 1 ? value.currencyCode == currencyCode : Locale.commonISOCurrencyCodes.contains(value.currencyCode)), value.amountMinorUnits > 0,
                   Self.isRepresentableTimestamp(value.createdAt),
                   entry.deletedAt.map(Self.isRepresentableTimestamp) ?? true,
                   texts.allSatisfy({ $0.utf8.count <= 100_000 }),
@@ -136,7 +155,7 @@ struct ChequeBackupPayload: Codable, Sendable {
         }
     }
 
-    private static func isRepresentableTimestamp(_ date: Date) -> Bool {
+    static func isRepresentableTimestamp(_ date: Date) -> Bool {
         // UTC 0001-01-02 through 9999-12-30. Reserve one day at each civil-date
         // boundary so a device's time zone cannot move a timestamp into year 0/10000.
         // Merely checking Double.isFinite would still allow dates such as 1e99.
@@ -150,13 +169,45 @@ struct BackupRestorePreview {
     var identicalCount: Int
     var changedCount: Int
     var recentlyDeletedCount: Int
+    var newAccounts = 0
+    var newBooks = 0
+    var newOperations = 0
+    var hasBankingChanges: Bool { newAccounts + newBooks + newOperations > 0 }
 }
 
 @MainActor
 enum ChequeTransferService {
-    static func preview(_ payload: ChequeBackupPayload, existing: [ChequeRecord]) throws -> BackupRestorePreview {
+    /// CSV rows are newly created cheques. Recovering an encrypted archive is a distinct
+    /// operation and must remain possible after a subscription expires.
+    @discardableResult
+    static func importCSV(_ payload: ChequeBackupPayload, into context: ModelContext, isPlus: Bool) throws -> Int {
+        guard payload.version == 1, payload.banking == nil else { throw ChequeTransferError.invalidFile }
         try payload.validate()
-        try validateCurrency(payload.currencyCode, existing: existing)
+        let existing = try context.fetch(FetchDescriptor<ChequeRecord>())
+        let ids = Set(existing.map(\.id))
+        let additions = payload.records.filter { !ids.contains($0.snapshot.id) }
+        if !isPlus {
+            let opening = additions.filter { $0.snapshot.isOutstanding && $0.deletedAt == nil }.count
+            if opening > 0 {
+                let events = try context.fetch(FetchDescriptor<LedgerEventRecord>())
+                let effective = BankingLedger.effectivePositions(records: existing, events: events)
+                let active = existing.filter { $0.isActive && effective[$0.id]?.isOpen == true }.count
+                guard opening <= max(10 - active, 0) else { throw BankingError.chequeLimit }
+            }
+        }
+        do {
+            for entry in additions { context.insert(entry.makeRecord()) }
+            try context.save()
+            return additions.count
+        } catch {
+            context.rollback()
+            throw error
+        }
+    }
+
+    static func preview(_ payload: ChequeBackupPayload, existing: [ChequeRecord], context: ModelContext? = nil) throws -> BackupRestorePreview {
+        try payload.validate()
+        try payload.banking?.validate(records: payload.records)
         let byID = Dictionary(existing.map { ($0.id, ChequeBackupEntry(record: $0)) }, uniquingKeysWith: { first, _ in first })
         var preview = BackupRestorePreview(newCount: 0, identicalCount: 0, changedCount: 0,
                                           recentlyDeletedCount: payload.records.filter { $0.deletedAt != nil }.count)
@@ -165,6 +216,14 @@ enum ChequeTransferService {
                 if old == entry { preview.identicalCount += 1 }
                 else { preview.changedCount += 1 }
             } else { preview.newCount += 1 }
+        }
+        if let archive = payload.banking, let context {
+            let savedAccounts = Set(try context.fetch(FetchDescriptor<BankAccountRecord>()).map(\.id))
+            let savedBooks = Set(try context.fetch(FetchDescriptor<ChequeBookRecord>()).map(\.id))
+            let savedEvents = Set(try context.fetch(FetchDescriptor<LedgerEventRecord>()).map(\.id))
+            preview.newAccounts = archive.accounts.filter { !savedAccounts.contains($0.id) }.count
+            preview.newBooks = archive.books.filter { !savedBooks.contains($0.id) }.count
+            preview.newOperations = archive.events.filter { !savedEvents.contains($0.id) }.count
         }
         return preview
     }
@@ -175,12 +234,36 @@ enum ChequeTransferService {
         // Validate everything before touching the live context. Save is one transaction.
         try payload.validate()
         let existing = try context.fetch(FetchDescriptor<ChequeRecord>())
-        try validateCurrency(payload.currencyCode, existing: existing)
+        try payload.banking?.validate(records: payload.records)
         let byID = Dictionary(existing.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         var changed = 0
         do {
-            for entry in payload.records.map(\.normalized) {
+            for var entry in payload.records.map(\.normalized) {
                 if let record = byID[entry.snapshot.id] {
+                    if payload.version == 1 && !replaceExisting { continue }
+                    if record.ledgerBaselineStatusRaw != nil || record.bankAccountID != nil {
+                        // Never erase a newer journal with an older backup, including when replacing metadata.
+                        guard entry.bankAccountID == nil || record.bankAccountID == entry.bankAccountID,
+                              entry.ledgerBaselineStatusRaw == nil || record.ledgerBaselineStatusRaw == nil || record.ledgerBaselineStatusRaw == entry.ledgerBaselineStatusRaw,
+                              entry.replacesChequeID == nil || record.replacesChequeID == entry.replacesChequeID,
+                              record.amountMinorUnits == entry.snapshot.amountMinorUnits,
+                              record.currencyCode == entry.snapshot.currencyCode,
+                              record.direction == entry.snapshot.direction else { throw ChequeTransferError.invalidRecords }
+                        entry.bankAccountID = record.bankAccountID ?? entry.bankAccountID
+                        entry.chequeBookID = record.chequeBookID ?? entry.chequeBookID
+                        entry.ledgerBaselineStatusRaw = record.ledgerBaselineStatusRaw ?? entry.ledgerBaselineStatusRaw
+                        entry.replacesChequeID = record.replacesChequeID ?? entry.replacesChequeID
+                        if record.ledgerBaselineStatusRaw == nil { record.ledgerBaselineStatusRaw = entry.ledgerBaselineStatusRaw }
+                    } else if !replaceExisting && (entry.ledgerBaselineStatusRaw != nil || entry.bankAccountID != nil) {
+                        guard record.amountMinorUnits == entry.snapshot.amountMinorUnits,
+                              record.currencyCode == entry.snapshot.currencyCode,
+                              record.direction == entry.snapshot.direction else { throw ChequeTransferError.invalidRecords }
+                        record.bankAccountID = entry.bankAccountID
+                        record.chequeBookID = entry.chequeBookID
+                        record.ledgerBaselineStatusRaw = entry.ledgerBaselineStatusRaw
+                        record.replacesChequeID = entry.replacesChequeID
+                        changed += 1
+                    }
                     if replaceExisting && ChequeBackupEntry(record: record) != entry {
                         entry.apply(to: record); changed += 1
                     }
@@ -188,9 +271,16 @@ enum ChequeTransferService {
                     context.insert(entry.makeRecord()); changed += 1
                 }
             }
+            try payload.banking?.merge(into: context)
+            let touched = Set(payload.records.map(\.snapshot.id))
+            let events = try context.fetch(FetchDescriptor<LedgerEventRecord>())
+            let eventGroups = Dictionary(grouping: events, by: \.chequeID)
+            for record in try context.fetch(FetchDescriptor<ChequeRecord>()) where touched.contains(record.id) {
+                guard let journal = eventGroups[record.id], !journal.isEmpty else { continue }
+                BankingLedger.reflect(BankingLedger.position(for: record, events: journal), record: record)
+            }
             let configurations = try context.fetch(FetchDescriptor<AppConfiguration>(sortBy: [SortDescriptor(\.createdAt)]))
-            if let configuration = configurations.first { configuration.currencyCode = payload.currencyCode }
-            else { context.insert(AppConfiguration(currencyCode: payload.currencyCode)) }
+            if configurations.isEmpty { context.insert(AppConfiguration(currencyCode: payload.currencyCode)) }
             try context.save()
             return changed
         } catch {

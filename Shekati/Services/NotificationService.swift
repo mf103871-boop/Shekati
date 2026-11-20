@@ -229,10 +229,12 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate {
         } else { message = nil }
     }
 
-    private func localized(_ arabic: String, _ english: String) -> String { languageCode.hasPrefix("ar") ? arabic : english }
+    private func localized(_ arabic: String, _ english: String) -> String {
+        languageCode.hasPrefix("ar") ? arabic : Localization.text(english, language: AppLanguage(rawValue: languageCode) ?? .english)
+    }
 
     private func registerCategories(languageCode: String) {
-        let title = languageCode.hasPrefix("ar") ? "ذكّرني بعد ساعة" : "Remind me in 1 hour"
+        let title = localized("ذكّرني بعد ساعة", "Remind me in 1 hour")
         let snooze = UNNotificationAction(identifier: ReminderRequestPolicy.snoozeAction, title: title,
                                           options: [.authenticationRequired])
         center.setNotificationCategories([UNNotificationCategory(identifier: ReminderRequestPolicy.chequeCategory,

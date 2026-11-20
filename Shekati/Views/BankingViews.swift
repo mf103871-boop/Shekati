@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import Charts
+import UniformTypeIdentifiers
 import ShekatiCore
 
 @MainActor
@@ -79,7 +80,10 @@ private struct BankingAccountDetail: View {
     @Query private var events: [LedgerEventRecord]
     @State private var bookName = ""
     @State private var statement = ""
+    @State private var reconciliationNote = ""
     @State private var review: ReconciliationReview?
+    @State private var discarded: LedgerOperation?
+    @State private var reason = ""
     @State private var error: String?
     let account: BankAccountRecord
     let isPlus: Bool
@@ -107,7 +111,20 @@ private struct BankingAccountDetail: View {
                 }.disabled(bookName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
             Section(app.tr("Reconcile account")) {
-                TextField(app.tr("Statement balance"), text: $statement).keyboardType(.numbersAndPunctuation)
+                ForEach(BankingLedger.reconciliationConflicts(account: account, events: events)) { entry in
+                    Button {
+                        discarded = entry; reason = ""
+                    } label: {
+                        let value = hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: entry.amount, currencyCode: account.currencyCode, locale: app.preferences.language.locale)
+                        Text(app.tr("Review conflicting entries") + " · " + app.formatDay(entry.day) + " · " + value)
+                    }
+                }
+                if hidesAmounts {
+                    SecureField(app.tr("Statement balance"), text: $statement).keyboardType(.numbersAndPunctuation)
+                } else {
+                    TextField(app.tr("Statement balance"), text: $statement).keyboardType(.numbersAndPunctuation)
+                }
+                TextField(app.tr("Reason"), text: $reconciliationNote)
                 Button(app.tr("Review difference")) {
                     do {
                         guard let target = BankingLedger.signedAmount(statement, currency: account.currencyCode) else { throw BankingError.invalid }
@@ -121,6 +138,21 @@ private struct BankingAccountDetail: View {
             if let error { Text(app.tr(error)).foregroundStyle(.red) }
         }
         .navigationTitle(account.name)
+        .sheet(item: $discarded) { operation in
+            NavigationStack {
+                Form {
+                    TextField(app.tr("Reason"), text: $reason)
+                    Button(app.tr("Dismiss conflicting entry"), role: .destructive) {
+                        do {
+                            try BankingLedger.discardAdjustment(operation, reason: reason, account: account, context: context)
+                            app.didMutate(); error = nil
+                        } catch { self.error = error.localizedDescription }
+                        discarded = nil
+                    }.disabled(reason.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }.navigationTitle(app.tr("Review conflicting entries"))
+                .toolbar { ToolbarItem(placement: .cancellationAction) { Button(app.tr("Cancel")) { discarded = nil } } }
+            }
+        }
         .sheet(item: $review) { item in
             NavigationStack {
                 Form {
@@ -128,10 +160,12 @@ private struct BankingAccountDetail: View {
                     ForEach([("Recorded balance", item.balance), ("Statement balance", item.statement), ("Adjustment", item.difference)], id: \.0) { label, value in
                         LabeledContent(app.tr(label), value: hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: value, currencyCode: code, locale: app.preferences.language.locale))
                     }
+                    LabeledContent(app.tr("Date"), value: app.formatDay(app.today))
+                    if !reconciliationNote.isEmpty { LabeledContent(app.tr("Reason"), value: reconciliationNote) }
                     Button(app.tr("Confirm reconciliation")) {
                         do {
-                            try BankingLedger.reconcile(account, statement: item.statement, expected: item.balance, context: context)
-                            app.didMutate(); statement = ""; error = nil
+                            try BankingLedger.reconcile(account, statement: item.statement, expected: item.balance, reason: reconciliationNote, context: context)
+                            app.didMutate(); statement = ""; reconciliationNote = ""; error = nil
                         } catch { self.error = error.localizedDescription }
                         review = nil
                     }
@@ -163,6 +197,7 @@ struct AccountLiquidityView: View {
                     Divider().overlay(.white.opacity(0.5))
                     ResponsiveValueRow(title: app.tr("Recorded balance"), value: money(outlook.recorded))
                     ResponsiveValueRow(title: app.tr("Outgoing due within 7 days"), value: money(outlook.outgoing7))
+                        .accessibilityIdentifier("outgoingDueAmount")
                     if let reconciled = try? BankingLedger.adjustments(account: account, events: events).last?.day {
                         Text(app.tr("Last reconciliation") + " · " + app.formatDay(reconciled)).font(.caption)
                     } else {
@@ -203,6 +238,8 @@ private struct LiquidityForecast: View {
     let account: BankAccountRecord
     let hidesAmounts: Bool
     @State private var horizon = 30
+    @State private var report = ChequeTransferDocument(data: Data())
+    @State private var exportingReport = false
 
     var body: some View {
         List {
@@ -221,6 +258,12 @@ private struct LiquidityForecast: View {
                     }.chartYAxisLabel(account.currencyCode).frame(height: 175)
                 }
                 Text(app.tr("Assumes incoming cheques are collected on their due dates.")).font(.footnote)
+                if !hidesAmounts {
+                    Button(app.tr("Export forecast PDF")) {
+                        report = ChequeTransferDocument(data: CashFlowReport.generate(outlook, account: account, language: app.preferences.language))
+                        exportingReport = true
+                    }
+                }
                 ForEach(outlook.points) { point in
                     Section {
                         ForEach(point.contributors, id: \.self) { id in
@@ -237,5 +280,8 @@ private struct LiquidityForecast: View {
                 }
             } else { Text(app.tr("Review the conflicting entries before continuing.")) }
         }.navigationTitle(app.tr("Cash forecast"))
+            .fileExporter(isPresented: $exportingReport, document: report, contentType: .pdf, defaultFilename: "Shekati-\(app.today.iso).pdf") { result in
+                if case .failure = result { app.persistenceMessage = app.tr("The file could not be saved. Please try again.") }
+            }
     }
 }
