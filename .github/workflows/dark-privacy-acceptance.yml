@@ -1,0 +1,53 @@
+name: Build 13 dark amount privacy acceptance
+on:
+  push:
+    branches: [qa/native-dark-privacy-build13]
+permissions:
+  contents: read
+jobs:
+  acceptance:
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact product source
+        run: |
+          git diff --exit-code 2a288127c0834cdb394a6f124dfa20f1ecf69446 HEAD -- Shekati Packages project.yml
+          git diff --name-only 2a288127c0834cdb394a6f124dfa20f1ecf69446 HEAD
+      - name: Generate project and enable system dark appearance
+        run: |
+          brew install xcodegen
+          xcodegen generate
+          python3 - <<'PY'
+          import json, subprocess, os
+          devices = json.loads(subprocess.check_output(['xcrun','simctl','list','devices','available','-j']))['devices']
+          candidates = [(runtime, d) for runtime, ds in devices.items() if '.iOS-' in runtime for d in ds if d['isAvailable'] and d['name'].startswith('iPhone')]
+          runtime, d = max(candidates, key=lambda it:(it[0].endswith('iOS-26-2'), it[1]['name']=='iPhone Air',it[0],it[1]['name']))
+          sim = d['udid']
+          subprocess.run(['xcrun','simctl','bootstatus',sim,'-b'],check=True)
+          subprocess.run(['xcrun','simctl','ui',sim,'appearance','dark'],check=True)
+          print(d['name'],runtime,subprocess.check_output(['xcrun','simctl','ui',sim,'appearance'],text=True))
+          with open(os.environ['GITHUB_ENV'],'a') as f:print('SIM='+sim,file=f)
+          PY
+      - name: Inspect the two language interfaces with fixtures on iPhone
+        run: |
+          mkdir -p evidence
+          xcodebuild test -project Shekati.xcodeproj -scheme Shekati -destination "platform=iOS Simulator,id=$SIM" -derivedDataPath "$RUNNER_TEMP/DarkDerived" -resultBundlePath "$RUNNER_TEMP/DarkPrivacy.xcresult" -only-testing:ShekatiUITests/DarkAmountPrivacyAcceptanceTests -parallel-testing-enabled NO -test-iterations 1 CODE_SIGNING_ALLOWED=NO
+      - name: Export original screenshots, accessibility trees and test results
+        if: always()
+        run: |
+          mkdir -p evidence
+          if test -d "$RUNNER_TEMP/DarkPrivacy.xcresult"; then
+            xcrun xcresulttool get test-results summary --path "$RUNNER_TEMP/DarkPrivacy.xcresult" > evidence/summary.json
+            xcrun xcresulttool get test-results tests --path "$RUNNER_TEMP/DarkPrivacy.xcresult" > evidence/tests.json
+            xcrun xcresulttool export attachments --path "$RUNNER_TEMP/DarkPrivacy.xcresult" --output-path evidence/attachments
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-dark-privacy-build13
+          path: evidence
+          if-no-files-found: ignore
+          retention-days: 14
