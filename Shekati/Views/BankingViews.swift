@@ -140,6 +140,17 @@ private struct BankingAccountDetail: View {
                     } catch { self.error = error.localizedDescription }
                 }
             }
+            if let checkpoints = try? BankingLedger.adjustments(account: account, events: events), !checkpoints.isEmpty {
+                Section(app.tr("Activity history")) {
+                    ForEach(Array(checkpoints.reversed())) { entry in
+                        VStack(alignment: .leading, spacing: 4) {
+                            let amount = hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: entry.amount, currencyCode: account.currencyCode, locale: app.preferences.language.locale)
+                            LabeledContent(app.formatDay(entry.day), value: amount)
+                            if !entry.party.isEmpty { Text(entry.party).font(.footnote).foregroundStyle(.secondary) }
+                        }
+                    }
+                }
+            }
             if let error { Text(app.tr(error)).foregroundStyle(.red) }
         }
         .navigationTitle(account.name)
@@ -215,13 +226,16 @@ struct AccountLiquidityView: View {
                 ResponsiveValueRow(title: app.tr("Expected incoming in 7 days"), value: money(outlook.incoming7))
                 if isPlus {
                     NavigationLink {
-                        LiquidityForecast(account: account, hidesAmounts: hidesAmounts)
+                        LiquidityForecast(account: account, focusDay: outlook.points.first(where: { $0.balance < 0 })?.day,
+                                          today: app.today)
                     } label: {
                         if let deficit = outlook.points.first(where: { $0.balance < 0 }) {
                             Label(app.tr("Expected shortfall") + " · " + app.formatDay(deficit.day) + " · " + money(deficit.balance),
                                   systemImage: "exclamationmark.triangle")
-                        } else {
-                            Label(app.tr("Cash forecast"), systemImage: "chart.xyaxis.line")
+                        } else if let ending = outlook.points.last(where: { !$0.contributors.isEmpty }) ?? outlook.points.last {
+                            let value = hidesAmounts || ending.balance <= 0 ? money(ending.balance) : "+" + money(ending.balance)
+                            Label(app.tr("Cash forecast") + " · " + app.formatDay(ending.day) + " · " + value,
+                                  systemImage: "chart.xyaxis.line")
                         }
                     }
                 } else {
@@ -241,8 +255,15 @@ private struct LiquidityForecast: View {
     @Query private var records: [ChequeRecord]
     @Query private var events: [LedgerEventRecord]
     let account: BankAccountRecord
-    let hidesAmounts: Bool
-    @State private var horizon = 30
+    let focusDay: LocalDay?
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
+    @State private var horizon: Int
+
+    init(account: BankAccountRecord, focusDay: LocalDay?, today: LocalDay) {
+        self.account = account
+        self.focusDay = focusDay
+        _horizon = State(initialValue: focusDay.map { $0 > today.adding(days: 30) } == true ? 60 : 30)
+    }
     @State private var report = ChequeTransferDocument(data: Data())
     @State private var exportingReport = false
 
@@ -253,6 +274,13 @@ private struct LiquidityForecast: View {
                 Text(app.tr("60 days")).tag(60)
             }.pickerStyle(.segmented)
             if let outlook = try? BankingLedger.outlook(account: account, records: records, events: events, today: app.today, horizon: horizon) {
+                if let focusDay, let point = outlook.points.first(where: { $0.day == focusDay && $0.balance < 0 }) {
+                    Section {
+                        let value = hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: point.balance, currencyCode: account.currencyCode, locale: app.preferences.language.locale)
+                        LabeledContent(app.formatDay(point.day), value: value)
+                        contributors(for: point)
+                    } header: { Label(app.tr("Expected shortfall"), systemImage: "exclamationmark.triangle") }
+                }
                 if !hidesAmounts {
                     let digits = CurrencyMath.fractionDigits(for: account.currencyCode)
                     let divisor = pow(10.0, Double(digits))
@@ -271,13 +299,7 @@ private struct LiquidityForecast: View {
                 }
                 ForEach(outlook.points) { point in
                     Section {
-                        ForEach(point.contributors, id: \.self) { id in
-                            if let record = records.first(where: { $0.id == id }) {
-                                NavigationLink { ChequeDetailView(record: record) } label: {
-                                    Text(record.party + " · " + record.number)
-                                }
-                            }
-                        }
+                        contributors(for: point)
                     } header: {
                         let amount = hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: point.balance, currencyCode: account.currencyCode, locale: app.preferences.language.locale)
                         Text(app.formatDay(point.day) + " · " + amount)
@@ -288,5 +310,17 @@ private struct LiquidityForecast: View {
             .fileExporter(isPresented: $exportingReport, document: report, contentType: .pdf, defaultFilename: "Shekati-\(app.today.iso).pdf") { result in
                 if case .failure = result { app.persistenceMessage = app.tr("The file could not be saved. Please try again.") }
             }
+    }
+
+    @ViewBuilder private func contributors(for point: CashPoint) -> some View {
+        ForEach(point.contributors, id: \.self) { id in
+            if let record = records.first(where: { $0.id == id }) {
+                NavigationLink {
+                    ChequeDetailView(record: record)
+                } label: {
+                    ChequeRowView(record: record, position: BankingLedger.position(for: record, events: events))
+                }
+            }
+        }
     }
 }
