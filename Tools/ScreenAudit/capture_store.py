@@ -26,7 +26,7 @@ def inject_locale(settings, locale):
     return 0
 
 
-def capture(entry, original_run, destination, device):
+def capture(entry, original_run, destination, device, app_info):
     code = entry["store"]
     bundle = entry["bundle"]
     settings = plistlib.loads(original_run.read_bytes())
@@ -69,6 +69,8 @@ def capture(entry, original_run, destination, device):
     subprocess.run(["xcrun", "swift", "Tools/ScreenAudit/frame_store.swift", str(folder),
                     str(MANIFEST.parent / "metadata" / (code + ".json"))], check=True)
     proof = {"store": code, "bundle": bundle, "source": os.environ["GITHUB_SHA"], "run": os.environ["GITHUB_RUN_ID"],
+             "version": app_info["CFBundleShortVersionString"], "build": app_info["CFBundleVersion"],
+             "captureEnvironment": "Debug iPhone simulator with fictional records",
              "device": device, "originalPNGHashes": shots, "storeArtworkHashes": {
                  name: hashlib.sha256((folder / "store" / (name + ".png")).read_bytes()).hexdigest() for name in shots}}
     (folder / "capture.json").write_text(json.dumps(proof, indent=2))
@@ -83,11 +85,14 @@ if __name__ == "__main__":
     args = parser.parse_args()
     rows = {entry["store"]: entry for entry in json.loads(MANIFEST.read_text())["locales"]}
     device = json.loads(Path("build/capture-device.json").read_text())
-    xctestrun, = Path("DerivedData/Build/Products").glob("*.xctestrun")
+    products = Path("DerivedData/Build/Products")
+    xctestrun, = products.glob("*.xctestrun")
+    info_path, = products.glob("*-iphonesimulator/Shekati.app/Info.plist")
+    app_info = plistlib.loads(info_path.read_bytes())
     failures = []
     for locale in args.locales.split(","):
         try:
-            capture(rows[locale], xctestrun, args.destination, device)
+            capture(rows[locale], xctestrun, args.destination, device, app_info)
         except (OSError, RuntimeError, ValueError, subprocess.CalledProcessError) as error:
             failures.append(f"{locale}: {error}")
             print(failures[-1], flush=True)
