@@ -32,7 +32,7 @@ final class StoreScreenshotUITests: XCTestCase {
         let review = app.buttons["reviewOperation"]
         for _ in 0..<5 where !review.isHittable { app.swipeUp() }
         review.tap()
-        let confirm = app.buttons["commitOperation"]
+        let confirm = app.buttons.matching(identifier: "commitOperation").firstMatch
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         confirm.tap()
         app.tabBars.buttons["Home"].tap()

@@ -163,7 +163,7 @@ final class EnhancementUITests: XCTestCase {
         let review = app.buttons["reviewOperation"]
         XCTAssertTrue(review.waitForExistence(timeout: 5))
         review.tap()
-        let confirm = app.buttons["commitOperation"]
+        let confirm = app.buttons.matching(identifier: "commitOperation").firstMatch
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         confirm.tap()
         app.tabBars.buttons["Home"].tap()

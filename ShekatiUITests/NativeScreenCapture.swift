@@ -36,7 +36,7 @@ extension XCTestCase {
         for _ in 0..<5 where !review.isHittable { app.swipeUp() }
         XCTAssertTrue(review.isHittable)
         review.tap()
-        let confirm = app.buttons["commitOperation"]
+        let confirm = app.buttons.matching(identifier: "commitOperation").firstMatch
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         confirm.tap()
     }
