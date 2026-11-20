@@ -109,7 +109,7 @@
 "Choose" = "בחר";
 "Choose CSV file" = "בחר קובץ CSV";
 "Choose a date range from today, with the end on or after the start, up to 366 days." = "בחר טווח תאריך מהיום, עם סיום ביום או אחרי ההתחלה, עד 366 יום.";
-"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "בחר מנוי חודשי או שנתי. המחיר המקומי שלך מופיע לפני הקניה. מנויים מתחדשים באופן אוטומטי עד לביטול בחשבון Apple שלך.";
+"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "אפשר לבחור מנוי חודשי או שנתי. המחיר המקומי מוצג לפני הרכישה. המנוי מתחדש אוטומטית עד לביטולו בחשבון Apple.";
 "Choose a subscription" = "בחר מנוי";
 "Choose at least one reminder day, or turn reminders off." = "בחר לפחות יום אחד של תזכורת, או כבה את התזכורות.";
 "Choose backup file" = "בחר קובץ גיבוי";
@@ -141,7 +141,7 @@
 "Currency" = "מטבע";
 "Currency cannot change while any saved cheque exists, including history." = "המטבע לא יכול להשתנות כל עוד יש צ’ק שמור, כולל היסטוריה.";
 "Current account" = "חשבון קיים";
-"Current holder" = "מחזיק נוכחי";
+"Current holder" = "המחזיק הנוכחי";
 "Daily summary" = "סיכום יומי";
 "Daily summary is enabled; no individual reminder days are selected." = "סיכום יומי מופעל; לא בוחרים ימים של תזכורת יחידה.";
 "Dark" = "כהה";
@@ -181,9 +181,9 @@
 "Enable notifications" = "הפעל תזכורות";
 "Enable notifications in Settings so your scheduled reminders can appear." = "הפעל את התראות בהגדרות כדי שתוכלו לראות את התזכורות המתוכננות.";
 "Enable notifications to receive cheque reminders." = "הפעל תזכורות כדי לקבל תזכורות על צ’קים.";
-"Endorse cheque" = "חתום על הצ’ק.";
-"Endorsed" = "הוסבה";
-"Endorsements, partial settlements and replacements" = "תעודות, פשרות חלקיות והחלפות.";
+"Endorse cheque" = "הסבת צ׳ק";
+"Endorsed" = "הוסב";
+"Endorsements, partial settlements and replacements" = "הסבות, פירעונות חלקיים והחלפות";
 "Enter a positive amount and the date written on the cheque." = "הכנס סכום חיובי והתאריך שכתוב על הצ’ק.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "הזן סכום תקין גדול יותר מאפס, בעזרת מקומות העשרוניים של המטבע.";
 "Enter a whole number of days from 1 to 365." = "הזן מספר שלם של ימים בין 1 ל- 365.";
@@ -237,7 +237,7 @@
 "Keep type, bank and name for the next cheque" = "שמור את הסוג, הבנק והשם לצ’ק הבא.";
 "Know what is due" = "ידע מה הוא חייב";
 "Language" = "שפה";
-"Last reconciliation" = "פיוס אחרון.";
+"Last reconciliation" = "התאמת הבנק האחרונה";
 "Last sync" = "הסנכרון האחרון";
 "Legal follow-up" = "מעקב משפטי.";
 "Light" = "אור";
@@ -309,7 +309,7 @@
 "Open the app before" = "פתוח את התוכנית לפני";
 "Open the app before this time to renew the queue. Later reminders are not yet covered." = "פתחו את התוכנית לפני הזמן הזה כדי לחדש את העמודה. תזכורות מאוחר יותר עדיין לא מכוסות.";
 "Opening backup" = "פתיחת גיבוי";
-"Opening balance" = "שווי פתיחה";
+"Opening balance" = "יתרת פתיחה";
 "Order" = "סדר";
 "Original amount" = "סכום המקורי";
 "Outgoing" = "המחאות שנמסרו";
@@ -357,7 +357,7 @@
 "Record bank settlement" = "רישום הסליקה בבנק";
 "Record collection" = "אוסף רשומות";
 "Record deposit" = "רישום הפקדה";
-"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "רשמו צ’קים נכנסים ויוצאים, ראו את תאריך הפירעון שלהם ושמרו על תמונות הצ’ק שלכם יחד.";
+"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "אפשר לרשום צ׳קים שהתקבלו וצ׳קים שנמסרו, לבדוק את מועדי הפירעון ולשמור את תמונות הצ׳קים במקום אחד.";
 "Record payment" = "תשלום רשומות";
 "Record return" = "חזרה לרשומה";
 "Recorded balance" = "יתרה רשומה";
@@ -454,7 +454,7 @@
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "צ’קים מוכנים צריכים תאריך אמיתי.";
 "Shekati" = "Shekati";
 "Shekati Plus" = "Shekati Plus";
-"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Shekati Plus מוסיף יותר חשבונות, צ’קים פעילים בלתי מוגבל, סריקת צ’קים, תמיכה, התיישנות חלקית, החלפות וחזון זרימת המזומנים.";
+"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "עם Shekati Plus אפשר לנהל חשבונות בנק וצ׳קים פתוחים ללא הגבלת כמות, לסרוק צ׳קים, להסב אותם, לתעד פירעון חלקי או החלפה ולצפות בתחזית תזרים המזומנים.";
 "Shekati includes no advertising or third-party analytics SDK. Apple may provide store and crash diagnostics according to your Apple settings." = "שקטאי לא כולל פרסום או SDK של צד שלישי. אפל יכולה לספק אבחון חנות וקריסה בהתאם להגדרות Apple שלך.";
 "Shekati — Cheque report" = "אתר האינטרנט הרשמי של שוקולד צ’יפס";
 "Show all and history" = "הראה את כל ההיסטוריה";
@@ -503,7 +503,7 @@
 "The file could not be read or saved. Please try again." = "לא ניתן לקרוא או לשמור את הקובץ. בבקשה נסה שוב.";
 "The file could not be saved. Please try again." = "לא ניתן לשמור את הקובץ. בבקשה נסה שוב.";
 "The file currency differs from your saved cheques." = "המטבע של הקבצים שונה מהצ’קים שנשמרו.";
-"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "התוכנית החופשית כוללת חשבון בנק אחד, עשר צ’קים פעילים, כניסתו ידנית, לוח שנה ותזכורות.";
+"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "המסלול החינמי כולל חשבון בנק אחד ועד עשרה צ׳קים פתוחים, הזנה ידנית, לוח שנה ותזכורות.";
 "The free plan includes one bank account." = "התוכנית החופשית כוללת חשבון בנק אחד.";
 "The free plan includes ten active cheques." = "התוכנית החופשית כוללת עשר צ’קים פעילים.";
 "The image could not be read. You can enter all details manually." = "לא ניתן לקרוא את התמונה. אתה יכול להזין את כל הפרטים ביד.";
@@ -568,7 +568,7 @@
 "Within 7 days" = "בתוך 7 ימים";
 "You can choose an image from Photos or enter all cheque details manually. Allow camera access in Settings to scan." = "אתה יכול לבחור תמונה מתוך תמונות או להכניס את כל הפרטים של הצ’ק ביד. תן גישה למצלמה בהגדרות כדי לסרוק.";
 "You can edit or delete individual cheques. Deletions also sync to iCloud. iCloud sync is not a separate backup of deleted records." = "אתה יכול לערוך או למחוק צ’קים יחידים. גם מחיקות מסנכרות ל- iCloud. הסנכרון ב- iCloud אינו גיבוי נפרד של רשומות שנמחקו.";
-"You can read, close and export existing cheques after a subscription ends." = "אתה יכול לקרוא, לסגור ולייצא צ’קים קיימים לאחר שהמנוי מסתיים.";
+"You can read, close and export existing cheques after a subscription ends." = "גם לאחר פקיעת המנוי ניתן לעיין בצ׳קים קיימים, לסגור אותם ולייצא את הנתונים.";
 "You can restore its details and photos for 30 days." = "אתה יכול לשחזר את הפרטים והתמונות שלו במשך 30 יום.";
 "Your account" = "החשבון שלך";
 "Your change was not saved. Please try again." = "השינוי שלך לא נשמר. בבקשה נסה שוב.";

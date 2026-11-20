@@ -109,7 +109,7 @@
 "Choose" = "Scegli";
 "Choose CSV file" = "Scegliere il file CSV";
 "Choose a date range from today, with the end on or after the start, up to 366 days." = "Scegli un intervallo di date da oggi, con la fine su o dopo l’inizio, fino a 366 giorni.";
-"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "Scegli un abbonamento mensile o annuale. Il prezzo locale viene visualizzato prima dell’acquisto e gli abbonamenti si rinnovano automaticamente fino alla cancellazione tramite il tuo account Apple.";
+"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "Scegli un abbonamento mensile o annuale. Il prezzo locale viene mostrato prima dell’acquisto. L’abbonamento si rinnova automaticamente finché non lo annulli dal tuo Apple Account.";
 "Choose a subscription" = "Scegli un abbonamento";
 "Choose at least one reminder day, or turn reminders off." = "Scegli almeno un giorno di promemoria o disattiva i promemoria.";
 "Choose backup file" = "Scegliere il file di backup";
@@ -141,7 +141,7 @@
 "Currency" = "Valuta";
 "Currency cannot change while any saved cheque exists, including history." = "La valuta non può essere modificata finché esiste un assegno salvato, inclusa la cronologia.";
 "Current account" = "Conto corrente";
-"Current holder" = "Attuale portatore dell’assegno";
+"Current holder" = "Attuale portatore";
 "Daily summary" = "Riepilogo giornaliero";
 "Daily summary is enabled; no individual reminder days are selected." = "Il riepilogo giornaliero è abilitato; non sono selezionati singoli giorni di promemoria.";
 "Dark" = "Scuro";
@@ -181,9 +181,9 @@
 "Enable notifications" = "Abilita le notifiche";
 "Enable notifications in Settings so your scheduled reminders can appear." = "Abilita le notifiche in Impostazioni in modo che i promemoria pianificati possano apparire.";
 "Enable notifications to receive cheque reminders." = "Abilita le notifiche per ricevere promemoria di assegni.";
-"Endorse cheque" = "Endorse check";
+"Endorse cheque" = "Girare l’assegno";
 "Endorsed" = "Girato";
-"Endorsements, partial settlements and replacements" = "Approvazioni, regolamenti parziali e sostituzioni";
+"Endorsements, partial settlements and replacements" = "Girate, pagamenti parziali e sostituzioni";
 "Enter a positive amount and the date written on the cheque." = "Inserisci un importo positivo e la data scritta sull’assegno.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Inserisci un importo valido maggiore di zero, utilizzando le cifre decimali della valuta.";
 "Enter a whole number of days from 1 to 365." = "Immettere un numero intero di giorni da 1 a 365.";
@@ -309,7 +309,7 @@
 "Open the app before" = "Apri l’app prima";
 "Open the app before this time to renew the queue. Later reminders are not yet covered." = "Apri l’app prima di questo orario per rinnovare la coda, i promemoria successivi non sono ancora coperti.";
 "Opening backup" = "Apertura del backup";
-"Opening balance" = "Saldo di apertura";
+"Opening balance" = "Saldo iniziale";
 "Order" = "Ordine";
 "Original amount" = "Importo originale";
 "Outgoing" = "Emessi";
@@ -357,10 +357,10 @@
 "Record bank settlement" = "Registra il regolamento bancario";
 "Record collection" = "Collezione di dischi";
 "Record deposit" = "Registra versamento";
-"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Registra gli assegni in entrata e in uscita, vedi le date di scadenza e tieni insieme le immagini dei tuoi assegni.";
+"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Registra gli assegni ricevuti ed emessi, consulta le scadenze e conserva le immagini di ciascun assegno.";
 "Record payment" = "Record di pagamento";
 "Record return" = "Record di ritorno";
-"Recorded balance" = "Saldo registrato";
+"Recorded balance" = "Saldo contabile";
 "Recorded operations protect the original cheque details." = "Le operazioni registrate proteggono i dettagli originali dell’assegno.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "I record di un altro dispositivo utilizzano una valuta diversa, quindi risolvi questi record prima di aggiungere nuovi assegni. I totali sono nascosti per evitare il mescolamento delle valute.";
 "Refresh reminders" = "Aggiorna i promemoria";
@@ -454,7 +454,7 @@
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Gli assegni liquidati devono avere una data effettiva. Le date devono utilizzare YYYY-MM-DD.";
 "Shekati" = "Shekati";
 "Shekati Plus" = "Shekati Plus";
-"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Shekati Plus aggiunge più conti, assegni attivi illimitati, scansione di assegni, adesioni, regolamenti parziali, sostituzioni e previsioni dei flussi di cassa.";
+"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Con Shekati Plus puoi gestire conti e assegni aperti senza limiti, scansionare gli assegni, registrare girate, pagamenti parziali e sostituzioni e consultare le previsioni di liquidità.";
 "Shekati includes no advertising or third-party analytics SDK. Apple may provide store and crash diagnostics according to your Apple settings." = "Apple può fornire la diagnostica del negozio e degli arresti anomali in base alle impostazioni di Apple.";
 "Shekati — Cheque report" = "Shekati — Rapporto sull’assegno";
 "Show all and history" = "Informazioni e cronologia";
@@ -503,7 +503,7 @@
 "The file could not be read or saved. Please try again." = "Il file non è stato letto o salvato. Si prega di riprovare.";
 "The file could not be saved. Please try again." = "Il file non è stato salvato. Si prega di riprovare.";
 "The file currency differs from your saved cheques." = "La valuta del file è diversa da quella degli assegni salvati.";
-"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "Il piano gratuito include un conto bancario, dieci assegni attivi, inserimento manuale, un calendario e promemoria.";
+"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "Il piano gratuito include un conto bancario e fino a dieci assegni aperti, con inserimento manuale, calendario e promemoria.";
 "The free plan includes one bank account." = "Il piano gratuito include un conto bancario.";
 "The free plan includes ten active cheques." = "Il piano gratuito include dieci assegni attivi.";
 "The image could not be read. You can enter all details manually." = "L’immagine non è stata letta. Puoi inserire tutti i dettagli manualmente.";
@@ -568,7 +568,7 @@
 "Within 7 days" = "Entro 7 giorni";
 "You can choose an image from Photos or enter all cheque details manually. Allow camera access in Settings to scan." = "Puoi scegliere un’immagine da Foto o inserire manualmente tutti i dettagli dell’assegno. Consenti l’accesso alla fotocamera in Impostazioni per la scansione.";
 "You can edit or delete individual cheques. Deletions also sync to iCloud. iCloud sync is not a separate backup of deleted records." = "Puoi modificare o eliminare singoli assegni e anche le eliminazioni vengono sincronizzate con iCloud. La sincronizzazione di iCloud non è un backup separato dei record eliminati.";
-"You can read, close and export existing cheques after a subscription ends." = "È possibile leggere, chiudere ed esportare gli assegni esistenti dopo la fine di un abbonamento.";
+"You can read, close and export existing cheques after a subscription ends." = "Anche dopo la scadenza dell’abbonamento puoi consultare, chiudere ed esportare gli assegni già registrati.";
 "You can restore its details and photos for 30 days." = "Puoi ripristinare i suoi dettagli e le foto per 30 giorni.";
 "Your account" = "Il tuo account";
 "Your change was not saved. Please try again." = "La modifica non è stata salvata. Riprova.";

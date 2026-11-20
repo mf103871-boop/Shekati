@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "Gestione assegni",
   "keywords": "Assegni,Conti bancari aperti,Calendario,promemoria",
-  "description": "Registra gli assegni in entrata e in uscita, vedi le date di scadenza e tieni insieme le immagini dei tuoi assegni.\n\nIl piano gratuito include un conto bancario, dieci assegni attivi, inserimento manuale, un calendario e promemoria.\n\nShekati Plus aggiunge più conti, assegni attivi illimitati, scansione di assegni, adesioni, regolamenti parziali, sostituzioni e previsioni dei flussi di cassa.\n\nScegli un abbonamento mensile o annuale. Il prezzo locale viene visualizzato prima dell’acquisto e gli abbonamenti si rinnovano automaticamente fino alla cancellazione tramite il tuo account Apple.\n\nÈ possibile leggere, chiudere ed esportare gli assegni esistenti dopo la fine di un abbonamento.",
+  "description": "Registra gli assegni ricevuti ed emessi, consulta le scadenze e conserva le immagini di ciascun assegno.\n\nIl piano gratuito include un conto bancario e fino a dieci assegni aperti, con inserimento manuale, calendario e promemoria.\n\nCon Shekati Plus puoi gestire conti e assegni aperti senza limiti, scansionare gli assegni, registrare girate, pagamenti parziali e sostituzioni e consultare le previsioni di liquidità.\n\nScegli un abbonamento mensile o annuale. Il prezzo locale viene mostrato prima dell’acquisto. L’abbonamento si rinnova automaticamente finché non lo annulli dal tuo Apple Account.\n\nAnche dopo la scadenza dell’abbonamento puoi consultare, chiudere ed esportare gli assegni già registrati.",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {
@@ -17,10 +17,10 @@
     }
   },
   "screenshotHeadings": [
-    "Il tuo account",
-    "Registro degli assegni",
-    "Rivedere i dettagli scansionati · Shekati Plus",
-    "Dettagli dell’assegno",
-    "Date di scadenza"
+    "Il tuo conto",
+    "Registro assegni",
+    "Verifica i dati acquisiti · Shekati Plus",
+    "Dettagli assegno",
+    "Scadenze"
   ]
 }

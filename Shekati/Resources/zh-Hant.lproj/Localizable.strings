@@ -109,7 +109,7 @@
 "Choose" = "選擇";
 "Choose CSV file" = "選擇CSV文件";
 "Choose a date range from today, with the end on or after the start, up to 366 days." = "從今天開始，選擇日期範圍，結束在或後於開始日期，最多366天。";
-"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "选择月度或年度订阅。 在购买前,您当地的价格会显示出来。 订阅将自动续订,直到您在 Apple 帐户中取消为止。";
+"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "可選擇月訂閱或年訂閱。購買前會顯示當地價格。訂閱將自動續期，直到你在 Apple 帳號中取消為止。";
 "Choose a subscription" = "選擇一個訂閱";
 "Choose at least one reminder day, or turn reminders off." = "至少選擇一個提醒日期，或關閉提醒。";
 "Choose backup file" = "選擇備份文件";
@@ -181,9 +181,9 @@
 "Enable notifications" = "啟用通知";
 "Enable notifications in Settings so your scheduled reminders can appear." = "在設定中啟用通知，以便您的預定提醒可以出現。";
 "Enable notifications to receive cheque reminders." = "啟用通知以接收支票提醒";
-"Endorse cheque" = "支票背書";
-"Endorsed" = "已背書";
-"Endorsements, partial settlements and replacements" = "認證、部分解決和替換";
+"Endorse cheque" = "背書轉讓支票";
+"Endorsed" = "已背書轉讓";
+"Endorsements, partial settlements and replacements" = "背書轉讓、部分清償及換票";
 "Enter a positive amount and the date written on the cheque." = "輸入正值金額和支票上的日期";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "输入一个有效的大于零的数额,使用货币的小数位。";
 "Enter a whole number of days from 1 to 365." = "輸入從1到365的整數天數。";
@@ -237,7 +237,7 @@
 "Keep type, bank and name for the next cheque" = "保留支票類型、銀行和名稱 以便下次使用";
 "Know what is due" = "知道該怎麼做";
 "Language" = "語言";
-"Last reconciliation" = "最後一次和解";
+"Last reconciliation" = "上次銀行對帳";
 "Last sync" = "上次同步";
 "Legal follow-up" = "法律追蹤";
 "Light" = "光";
@@ -309,7 +309,7 @@
 "Open the app before" = "打開應用程式之前";
 "Open the app before this time to renew the queue. Later reminders are not yet covered." = "在此时间之前打开应用程序以更新队列。 稍后的提醒尚未覆盖。";
 "Opening backup" = "打開備份";
-"Opening balance" = "期初結餘";
+"Opening balance" = "期初餘額";
 "Order" = "順序";
 "Original amount" = "原始金額";
 "Outgoing" = "開出的支票";
@@ -357,7 +357,7 @@
 "Record bank settlement" = "登記銀行結算";
 "Record collection" = "紀錄集";
 "Record deposit" = "登記存入銀行";
-"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "记录收到的和发出的支票,看到他们的到期日期,并保持你的支票图像在一起。";
+"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "記錄收到及開出的支票，查看到期日，並將支票影像集中保存。";
 "Record payment" = "創下了薪資紀錄";
 "Record return" = "創紀錄的回報率";
 "Recorded balance" = "帳面餘額";
@@ -454,7 +454,7 @@
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "支票需要實際日期。";
 "Shekati" = "Shekati";
 "Shekati Plus" = "Shekati Plus";
-"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Shekati Plus 增加了更多的帳戶,無限活躍支票,支票掃描,背書,部分結算,替換和現金流預測。";
+"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "使用 Shekati Plus 可管理不限數量的銀行帳戶和未結清支票，並支援支票掃描、背書轉讓、部分清償、換票及現金流量預測。";
 "Shekati includes no advertising or third-party analytics SDK. Apple may provide store and crash diagnostics according to your Apple settings." = "Shekati 不包含廣告或第三方分析SDK。 蘋果可能會根據您的蘋果設置提供商店和崩潰診斷。";
 "Shekati — Cheque report" = "Shekati — 支票報告";
 "Show all and history" = "顯示所有和歷史";
@@ -503,7 +503,7 @@
 "The file could not be read or saved. Please try again." = "文件无法读取或保存,请重试。";
 "The file could not be saved. Please try again." = "文件无法保存,请重试。";
 "The file currency differs from your saved cheques." = "文件中的貨幣與你保存的支票不同";
-"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "免费计划包括一个银行账户, 十个活跃支票, 手动输入, 日历和提醒.";
+"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "免費版可管理一個銀行帳戶和最多十張未結清的支票，包含手動輸入、行事曆和提醒功能。";
 "The free plan includes one bank account." = "免費計劃包括一個銀行帳戶 。";
 "The free plan includes ten active cheques." = "免費計劃包括十張活躍支票 。";
 "The image could not be read. You can enter all details manually." = "未能讀取圖像。 你可以手動輸入所有詳細資料。";
@@ -568,7 +568,7 @@
 "Within 7 days" = "七天內";
 "You can choose an image from Photos or enter all cheque details manually. Allow camera access in Settings to scan." = "你可以從照片中選擇一個圖像或手動輸入所有支票的細節。 允許相機在設置中的存取掃描.";
 "You can edit or delete individual cheques. Deletions also sync to iCloud. iCloud sync is not a separate backup of deleted records." = "您可以编辑或删除单独的支票。 删除也同步到 iCloud。 iCloud 同步不是删除记录的单独备份。";
-"You can read, close and export existing cheques after a subscription ends." = "您可以在订阅结束后读取、关闭和导出现有支票。";
+"You can read, close and export existing cheques after a subscription ends." = "訂閱到期後，仍可查看、結清及匯出已登錄的支票。";
 "You can restore its details and photos for 30 days." = "你可以恢復它的細節和照片 30 天。";
 "Your account" = "你的帳戶";
 "Your change was not saved. Please try again." = "您的更改未保存,請重試。";

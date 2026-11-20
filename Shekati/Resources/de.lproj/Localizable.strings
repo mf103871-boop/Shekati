@@ -109,7 +109,7 @@
 "Choose" = "Wählen";
 "Choose CSV file" = "CSV-Datei wählen";
 "Choose a date range from today, with the end on or after the start, up to 366 days." = "Wählen Sie einen Datumsbereich ab dem heutigen Tag, mit dem Ende am oder nach dem Start, bis zu 366 Tagen.";
-"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "Wähle zwischen einem monatlichen oder jährlichen Abo. Der Preis für deine Region wird vor dem Kauf angezeigt. Abonnements verlängern sich automatisch, bis sie in deinem Apple Account gekündigt werden.";
+"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "Wähle ein Monats- oder Jahresabo. Vor dem Kauf siehst du den Preis für deine Region. Das Abo verlängert sich automatisch, bis du es in deinem Apple Account kündigst.";
 "Choose a subscription" = "Wählen Sie ein Abonnement";
 "Choose at least one reminder day, or turn reminders off." = "Wählen Sie mindestens einen Erinnerungstag aus oder deaktivieren Sie Erinnerungen.";
 "Choose backup file" = "Backup-Datei auswählen";
@@ -181,9 +181,9 @@
 "Enable notifications" = "Benachrichtigungen aktivieren";
 "Enable notifications in Settings so your scheduled reminders can appear." = "Aktivieren Sie Benachrichtigungen in den Einstellungen, damit Ihre geplanten Erinnerungen angezeigt werden können.";
 "Enable notifications to receive cheque reminders." = "Aktivieren Sie Benachrichtigungen, um Scheckermahnungen zu erhalten.";
-"Endorse cheque" = "Endossieren Sie den Scheck";
+"Endorse cheque" = "Scheck indossieren";
 "Endorsed" = "Indossiert";
-"Endorsements, partial settlements and replacements" = "Annotations, Teilabrechnungen und Ersatz";
+"Endorsements, partial settlements and replacements" = "Indossamente, Teilzahlungen und Ersatzschecks";
 "Enter a positive amount and the date written on the cheque." = "Geben Sie einen positiven Betrag und das Datum auf dem Scheck ein.";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Geben Sie einen gültigen Betrag ein, der größer als Null ist und die Dezimalstellen der Währung verwendet.";
 "Enter a whole number of days from 1 to 365." = "Geben Sie eine ganze Anzahl von Tagen zwischen 1 und 365 ein.";
@@ -237,7 +237,7 @@
 "Keep type, bank and name for the next cheque" = "Bewahren Sie Typ, Bank und Name für den nächsten Scheck auf";
 "Know what is due" = "Wissen, was fällig ist";
 "Language" = "Sprache";
-"Last reconciliation" = "Letzte Versöhnung";
+"Last reconciliation" = "Letzter Kontoabgleich";
 "Last sync" = "Letzte Synchronisation";
 "Legal follow-up" = "Rechtliche Nachbereitung";
 "Light" = "Hell";
@@ -309,7 +309,7 @@
 "Open the app before" = "Öffnen Sie die App vor";
 "Open the app before this time to renew the queue. Later reminders are not yet covered." = "Öffnen Sie die App vor dieser Zeit, um die Warteschlange zu erneuern. Spätere Erinnerungen sind noch nicht abgedeckt.";
 "Opening backup" = "Öffnen der Sicherung";
-"Opening balance" = "Eröffnungssaldo";
+"Opening balance" = "Anfangssaldo";
 "Order" = "Reihenfolge";
 "Original amount" = "Ursprünglicher Betrag";
 "Outgoing" = "Ausgehend";
@@ -357,7 +357,7 @@
 "Record bank settlement" = "Bankabrechnung erfassen";
 "Record collection" = "Plattensammlung";
 "Record deposit" = "Einreichung erfassen";
-"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Erfassen Sie eingehende und ausgehende Schecks, sehen Sie ihre Fälligkeitsdaten und halten Sie Ihre Scheckbilder zusammen.";
+"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Erfasse erhaltene und ausgestellte Schecks, behalte ihre Fälligkeit im Blick und speichere die zugehörigen Bilder.";
 "Record payment" = "Rekordzahlung";
 "Record return" = "Rekordgewinn";
 "Recorded balance" = "Erfasster Kontostand";
@@ -454,7 +454,7 @@
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Bei ausgeglichenen Schecks muss ein Datum angegeben werden. Die Daten müssen JJJJ-MM-TT verwenden.";
 "Shekati" = "Shekati";
 "Shekati Plus" = "Shekati Plus";
-"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Shekati Plus fügt mehr Konten, unbegrenzte aktive Schecks, Scheckscanning, Einschreiben, Teilabrechnungen, Ersatz und Cashflow-Prognosen hinzu.";
+"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Mit Shekati Plus verwaltest du beliebig viele Konten und offene Schecks. Du kannst Schecks scannen und indossieren, Teilzahlungen und Ersatzschecks erfassen und deine Liquidität im Voraus planen.";
 "Shekati includes no advertising or third-party analytics SDK. Apple may provide store and crash diagnostics according to your Apple settings." = "Apple kann Store- und Absturzdiagnosen gemäß Ihren Apple-Einstellungen bereitstellen, die Sie für die Verwendung der App benötigen.";
 "Shekati — Cheque report" = "Shekati — Scheckbericht";
 "Show all and history" = "Alle anzeigen und Historie";
@@ -503,7 +503,7 @@
 "The file could not be read or saved. Please try again." = "Die Datei konnte nicht gelesen oder gespeichert werden. Bitte versuchen Sie es erneut.";
 "The file could not be saved. Please try again." = "Die Datei konnte nicht gespeichert werden, bitte versuchen Sie es erneut.";
 "The file currency differs from your saved cheques." = "Die Dateiwährung unterscheidet sich von Ihren gespeicherten Schecks.";
-"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "Der kostenlose Plan beinhaltet ein Bankkonto, zehn aktive Schecks, manuelle Eingabe, einen Kalender und Erinnerungen.";
+"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "Kostenlos kannst du ein Bankkonto und bis zu zehn offene Schecks verwalten. Die manuelle Erfassung, der Kalender und Erinnerungen sind enthalten.";
 "The free plan includes one bank account." = "Der kostenlose Plan beinhaltet ein Bankkonto.";
 "The free plan includes ten active cheques." = "Der kostenlose Plan beinhaltet zehn aktive Schecks.";
 "The image could not be read. You can enter all details manually." = "Das Bild konnte nicht gelesen werden. Sie können alle Details manuell eingeben.";
@@ -568,7 +568,7 @@
 "Within 7 days" = "Innerhalb von 7 Tagen";
 "You can choose an image from Photos or enter all cheque details manually. Allow camera access in Settings to scan." = "Sie können ein Bild aus Fotos wählen oder alle Scheckdetails manuell eingeben. Erlauben Sie in den Einstellungen Kamerazugriff zum Scannen.";
 "You can edit or delete individual cheques. Deletions also sync to iCloud. iCloud sync is not a separate backup of deleted records." = "Sie können einzelne Schecks bearbeiten oder löschen. Löschungen werden auch mit iCloud synchronisiert. Die iCloud-Synchronisierung ist kein separates Backup gelöschter Datensätze.";
-"You can read, close and export existing cheques after a subscription ends." = "Sie können bestehende Schecks nach Ablauf eines Abonnements lesen, schließen und exportieren.";
+"You can read, close and export existing cheques after a subscription ends." = "Auch nach Ablauf des Abos kannst du vorhandene Schecks einsehen, abschließen und exportieren.";
 "You can restore its details and photos for 30 days." = "Sie können die Details und Fotos für 30 Tage wiederherstellen.";
 "Your account" = "Ihr Konto erstellen";
 "Your change was not saved. Please try again." = "Ihre Änderung wurde nicht gespeichert. Bitte versuchen Sie es erneut.";

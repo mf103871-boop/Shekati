@@ -109,7 +109,7 @@
 "Choose" = "選択";
 "Choose CSV file" = "CSV ファイルを選択";
 "Choose a date range from today, with the end on or after the start, up to 366 days." = "今日から366 日までの期間を選択します。終了は開始時かその後です。";
-"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "月額または年間の購読を選択します。購入前に現地の価格が表示されます。Apple アカウントでキャンセルするまで自動的に更新されます。";
+"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "月額または年額のプランを選択できます。購入前にお住まいの地域の価格が表示されます。サブスクリプションはApple Accountで解約するまで自動更新されます。";
 "Choose a subscription" = "購読を選択";
 "Choose at least one reminder day, or turn reminders off." = "少なくとも一日のリマインダーを選択するか、リマインダーを無効にします。";
 "Choose backup file" = "バックアップファイルを選択";
@@ -181,9 +181,9 @@
 "Enable notifications" = "通知を有効にする";
 "Enable notifications in Settings so your scheduled reminders can appear." = "スケジュールされたリマインダーが表示されるように、設定で通知を有効にしてください。";
 "Enable notifications to receive cheque reminders." = "支払いリマインダーを受け取るための通知を有効にします。";
-"Endorse cheque" = "背書小切手";
+"Endorse cheque" = "小切手に裏書する";
 "Endorsed" = "裏書済み";
-"Endorsements, partial settlements and replacements" = "背書・部分解決・置換";
+"Endorsements, partial settlements and replacements" = "裏書、一部決済、差し替え";
 "Enter a positive amount and the date written on the cheque." = "金額と小切手の日付を入力してください。";
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "ゼロより大きい有効な金額を入力してください。通貨の小数点以下を使用します。";
 "Enter a whole number of days from 1 to 365." = "1 から 365 までの日数を入力してください。";
@@ -237,7 +237,7 @@
 "Keep type, bank and name for the next cheque" = "次の小切手に種類、銀行、名前を保存";
 "Know what is due" = "知っておけ";
 "Language" = "言語";
-"Last reconciliation" = "最後の和解";
+"Last reconciliation" = "前回の残高照合";
 "Last sync" = "最後の同期";
 "Legal follow-up" = "法的追跡";
 "Light" = "ライト";
@@ -309,7 +309,7 @@
 "Open the app before" = "開く前にアプリケーションを開きます";
 "Open the app before this time to renew the queue. Later reminders are not yet covered." = "キューを更新するには、この時間以前にアプリケーションを開きます。後のリマインダーはまだカバーされていません。";
 "Opening backup" = "バックアップを開く";
-"Opening balance" = "開業時の余剰金";
+"Opening balance" = "開始残高";
 "Order" = "順序";
 "Original amount" = "元の金額";
 "Outgoing" = "振出";
@@ -357,10 +357,10 @@
 "Record bank settlement" = "銀行決済を記録";
 "Record collection" = "レコードコレクション";
 "Record deposit" = "銀行への預入を記録";
-"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "入出金小切手を記録し、到期日を見て、小切手の画像を一緒に保存します。";
+"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "受け取った小切手と振り出した小切手を記録し、支払期日と小切手の画像をまとめて管理できます。";
 "Record payment" = "記録支払い";
 "Record return" = "レコードリターン";
-"Recorded balance" = "記録上の残高";
+"Recorded balance" = "帳簿残高";
 "Recorded operations protect the original cheque details." = "記録された操作は元のチェックの詳細を保護する。";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "他のデバイスからのレコードは異なる通貨を使用しています。新しいチェックを追加する前にこれらのレコードを解決してください。合計は通貨混在を防ぐために隠します。";
 "Refresh reminders" = "リマインダーを更新@info:whatsthis";
@@ -454,7 +454,7 @@
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "決済した小切手には実際の日付が必要です。日付は YYYY-MM-DD でなければなりません。";
 "Shekati" = "Shekati";
 "Shekati Plus" = "Shekati Plus";
-"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Ｓｈｅｋａｔｉ　Ｐｌｕｓは，さらなる口座数，無制限の活動小切手，小切手スキャン，印鑑，部分決済，代替および現金流予測を追加した。";
+"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Shekati Plusでは銀行口座と未決済の小切手を件数制限なく管理できます。小切手のスキャン、裏書、一部決済、差し替え、資金繰りの予測にも対応しています。";
 "Shekati includes no advertising or third-party analytics SDK. Apple may provide store and crash diagnostics according to your Apple settings." = "Shekatiは広告やサードパーティ分析 SDK を含まない。Apple はあなたの Apple 設定に従ってストアとクラッシュ診断を提供するかもしれません。";
 "Shekati — Cheque report" = "チェックレポート";
 "Show all and history" = "すべてと履歴を表示";
@@ -503,7 +503,7 @@
 "The file could not be read or saved. Please try again." = "ファイルを読み込まずに保存できませんでした。もう一度試してください。";
 "The file could not be saved. Please try again." = "ファイルを保存できませんでした。もう一度試してください。";
 "The file currency differs from your saved cheques." = "ファイルの通貨は、あなたの保存した小切手と異なります。";
-"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "無料プランは1つの銀行口座、10枚の活動小切手、手動入力、カレンダーとリマインダを含む。";
+"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "無料プランでは、銀行口座1件と未決済の小切手10枚までを登録できます。手入力、カレンダー、リマインダーが使えます。";
 "The free plan includes one bank account." = "無料プランは１つの銀行口座を含む。";
 "The free plan includes ten active cheques." = "無料プランには10枚の活動小切手が含まれています。";
 "The image could not be read. You can enter all details manually." = "画像を読み込めませんでした。詳細は手動で入力してください。";
@@ -568,7 +568,7 @@
 "Within 7 days" = "7日以内";
 "You can choose an image from Photos or enter all cheque details manually. Allow camera access in Settings to scan." = "写真から画像を選択したり、手動で全ての小切手の詳細を入力できます。設定でカメラにアクセスしてスキャンすることができます。";
 "You can edit or delete individual cheques. Deletions also sync to iCloud. iCloud sync is not a separate backup of deleted records." = "個々のチェックを編集または削除できます。削除も iCloud に同期されます。iCloud 同期は削除されたレコードの別のバックアップではありません。";
-"You can read, close and export existing cheques after a subscription ends." = "購読期間が終了した後に既存の小切手を読み込み、閉じ、エクスポートできます。";
+"You can read, close and export existing cheques after a subscription ends." = "契約終了後も、登録済みの小切手の閲覧、処理の完了、書き出しができます。";
 "You can restore its details and photos for 30 days." = "30日間の詳細と写真を復元できます。";
 "Your account" = "あなたのアカウント";
 "Your change was not saved. Please try again." = "変更は保存されませんでした。もう一度試してください。";

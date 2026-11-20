@@ -109,7 +109,7 @@
 "Choose" = "Choisir";
 "Choose CSV file" = "Choisir un fichier CSV";
 "Choose a date range from today, with the end on or after the start, up to 366 days." = "Choisissez une plage de dates à partir d’aujourd’hui, avec la fin sur ou après le début, jusqu’à 366 jours.";
-"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "Choisissez un abonnement mensuel ou annuel. Le prix local est affiché avant l’achat. Les abonnements se renouvellent automatiquement jusqu’à ce qu’ils soient annulés dans votre compte Apple.";
+"Choose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until cancelled in your Apple Account." = "Choisissez un abonnement mensuel ou annuel. Le prix applicable dans votre région s’affiche avant l’achat. L’abonnement se renouvelle automatiquement jusqu’à sa résiliation depuis votre compte Apple.";
 "Choose a subscription" = "Choisir un abonnement";
 "Choose at least one reminder day, or turn reminders off." = "Choisissez au moins un jour de rappel, ou désactivez les rappels.";
 "Choose backup file" = "Choisir un fichier de sauvegarde";
@@ -141,7 +141,7 @@
 "Currency" = "Monnaie";
 "Currency cannot change while any saved cheque exists, including history." = "La devise ne peut pas être changée tant qu’un chèque enregistré existe, y compris l’historique.";
 "Current account" = "Compte courant";
-"Current holder" = "Détenteur actuel";
+"Current holder" = "Porteur actuel";
 "Daily summary" = "Résumé quotidien";
 "Daily summary is enabled; no individual reminder days are selected." = "Le résumé quotidien est activé; aucun jour de rappel individuel n’est sélectionné.";
 "Dark" = "Sombre";
@@ -181,7 +181,7 @@
 "Enable notifications" = "Activer les notifications";
 "Enable notifications in Settings so your scheduled reminders can appear." = "Activez les notifications dans Paramètres pour que vos rappels planifiés puissent apparaître.";
 "Enable notifications to receive cheque reminders." = "Activer les notifications pour recevoir des rappels de chèques.";
-"Endorse cheque" = "Endossez le chèque";
+"Endorse cheque" = "Endosser le chèque";
 "Endorsed" = "Endossé";
 "Endorsements, partial settlements and replacements" = "Endossements, règlements partiels et remplacements";
 "Enter a positive amount and the date written on the cheque." = "Entrez un montant positif et la date inscrite sur le chèque.";
@@ -237,7 +237,7 @@
 "Keep type, bank and name for the next cheque" = "Gardez le type, la banque et le nom pour le prochain chèque";
 "Know what is due" = "Savoir ce qui est dû";
 "Language" = "Langue";
-"Last reconciliation" = "Dernière réconciliation";
+"Last reconciliation" = "Dernier rapprochement bancaire";
 "Last sync" = "Dernière synchronisation";
 "Legal follow-up" = "Suivi juridique";
 "Light" = "Clair";
@@ -357,10 +357,10 @@
 "Record bank settlement" = "Enregistrer le règlement bancaire";
 "Record collection" = "Collection de disques";
 "Record deposit" = "Enregistrer le dépôt";
-"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Enregistrez les chèques entrants et sortants, voyez leurs dates d’échéance et conservez vos images de chèque ensemble.";
+"Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Enregistrez les chèques reçus et émis, consultez leurs échéances et conservez leurs images au même endroit.";
 "Record payment" = "Record de paiement";
 "Record return" = "Retour de l’enregistrement";
-"Recorded balance" = "Solde enregistré";
+"Recorded balance" = "Solde comptable";
 "Recorded operations protect the original cheque details." = "Les opérations enregistrées protègent les détails originaux du chèque.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Les enregistrements d’un autre appareil utilisent une devise différente. Résolvez ces enregistrements avant d’ajouter de nouveaux chèques. Les totaux sont masqués pour éviter le mélange des devises.";
 "Refresh reminders" = "Actualiser les rappels";
@@ -454,7 +454,7 @@
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Les chèques réglés doivent avoir une date réelle. Les dates doivent utiliser AAAA-MM-JJ.";
 "Shekati" = "Shekati";
 "Shekati Plus" = "Shekati Plus";
-"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Shekati Plus ajoute plus de comptes, un nombre illimité de chèques actifs, la numérisation des chèques, les endossements, les règlements partiels, les remplacements et les prévisions de trésorerie.";
+"Shekati Plus adds more accounts, unlimited active cheques, cheque scanning, endorsements, partial settlements, replacements and cash flow forecasts." = "Avec Shekati Plus, gérez autant de comptes et de chèques en cours que nécessaire. Scannez vos chèques, enregistrez les endossements, les règlements partiels et les remplacements, et consultez vos prévisions de trésorerie.";
 "Shekati includes no advertising or third-party analytics SDK. Apple may provide store and crash diagnostics according to your Apple settings." = "Shekati n’inclut pas de publicité ni de SDK d’analyse tiers. Apple peut fournir des diagnostics de magasin et de plantage en fonction de vos paramètres Apple.";
 "Shekati — Cheque report" = "Shekati — Rapport de chèque";
 "Show all and history" = "Afficher tout et l’histoire";
@@ -503,7 +503,7 @@
 "The file could not be read or saved. Please try again." = "Le fichier n’a pas pu être lu ou enregistré. Veuillez réessayer.";
 "The file could not be saved. Please try again." = "Le fichier n’a pas pu être enregistré. Veuillez réessayer.";
 "The file currency differs from your saved cheques." = "La devise du fichier diffère de celle de vos chèques enregistrés.";
-"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "Le plan gratuit comprend un compte bancaire, dix chèques actifs, une entrée manuelle, un calendrier et des rappels.";
+"The free plan includes one bank account, ten active cheques, manual entry, a calendar and reminders." = "La formule gratuite permet de gérer un compte bancaire et jusqu’à dix chèques en cours. Elle comprend la saisie manuelle, le calendrier et les rappels.";
 "The free plan includes one bank account." = "Le plan gratuit comprend un compte bancaire.";
 "The free plan includes ten active cheques." = "Le plan gratuit comprend dix chèques actifs.";
 "The image could not be read. You can enter all details manually." = "L’image n’a pas pu être lue. Vous pouvez saisir tous les détails manuellement.";
@@ -568,7 +568,7 @@
 "Within 7 days" = "Dans les 7 jours";
 "You can choose an image from Photos or enter all cheque details manually. Allow camera access in Settings to scan." = "Vous pouvez choisir une image dans Photos ou entrer manuellement tous les détails du chèque. Autoriser l’accès à la caméra dans Paramètres pour numériser.";
 "You can edit or delete individual cheques. Deletions also sync to iCloud. iCloud sync is not a separate backup of deleted records." = "Vous pouvez modifier ou supprimer des chèques individuels. Les suppressions sont également synchronisées sur iCloud. La synchronisation iCloud n’est pas une sauvegarde séparée des enregistrements supprimés.";
-"You can read, close and export existing cheques after a subscription ends." = "Vous pouvez lire, fermer et exporter les chèques existants après la fin d’un abonnement.";
+"You can read, close and export existing cheques after a subscription ends." = "Une fois l’abonnement terminé, vous pouvez toujours consulter, clôturer et exporter les chèques déjà enregistrés.";
 "You can restore its details and photos for 30 days." = "Vous pouvez restaurer ses détails et photos pendant 30 jours.";
 "Your account" = "Votre compte";
 "Your change was not saved. Please try again." = "Votre modification n’a pas été enregistrée. Veuillez réessayer.";

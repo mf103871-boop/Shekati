@@ -15,7 +15,8 @@ final class ChequeTransferTests: XCTestCase {
         record.remindersEnabled = false
         record.reminderOffsets = [14, 3, 0]
         record.reminderHour = 8; record.reminderMinute = 25
-        record.deletedAt = Date(timeIntervalSince1970: 1_700_000_000)
+        // One reference-date ULP is lost by conversion to Unix milliseconds.
+        record.deletedAt = Date(timeIntervalSinceReferenceDate: (800_000_000.0).nextUp)
         let original = ChequeBackupPayload(currencyCode: "JOD", records: [ChequeBackupEntry(record: record)])
         let encrypted = try EncryptedBackup.encrypt(original, password: "اختبار كلمة السر 123")
         XCTAssertFalse(String(data: encrypted, encoding: .utf8)?.contains("000123") ?? false)

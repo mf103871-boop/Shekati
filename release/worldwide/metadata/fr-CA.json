@@ -4,7 +4,7 @@
   "name": "Shekati",
   "subtitle": "Suivi des chèques",
   "keywords": "Chèques,comptes bancaires,calendrier,rappels",
-  "description": "Enregistrez les chèques entrants et sortants, voyez leurs dates d’échéance et conservez vos images de chèque ensemble.\n\nLe plan gratuit comprend un compte bancaire, dix chèques actifs, une entrée manuelle, un calendrier et des rappels.\n\nShekati Plus ajoute plus de comptes, un nombre illimité de chèques actifs, la numérisation des chèques, les endossements, les règlements partiels, les remplacements et les prévisions de trésorerie.\n\nChoisissez un abonnement mensuel ou annuel. Le prix local est affiché avant l’achat. Les abonnements se renouvellent automatiquement jusqu’à ce qu’ils soient annulés dans votre compte Apple.\n\nVous pouvez lire, fermer et exporter les chèques existants après la fin d’un abonnement.",
+  "description": "Enregistrez les chèques reçus et émis, consultez leurs échéances et conservez leurs images au même endroit.\n\nLa formule gratuite permet de gérer un compte bancaire et jusqu’à dix chèques en cours. Elle comprend la saisie manuelle, le calendrier et les rappels.\n\nAvec Shekati Plus, gérez autant de comptes et de chèques en cours que nécessaire. Scannez vos chèques, enregistrez les endossements, les règlements partiels et les remplacements, et consultez vos prévisions de trésorerie.\n\nChoisissez un abonnement mensuel ou annuel. Le prix applicable dans votre région s’affiche avant l’achat. L’abonnement se renouvelle automatiquement jusqu’à sa résiliation depuis votre compte Apple.\n\nUne fois l’abonnement terminé, vous pouvez toujours consulter, clôturer et exporter les chèques déjà enregistrés.",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {
@@ -19,8 +19,8 @@
   "screenshotHeadings": [
     "Votre compte",
     "Registre des chèques",
-    "Vérifier les données du chèque · Shekati Plus",
+    "Vérifier les données numérisées · Shekati Plus",
     "Détails du chèque",
-    "Dates d’échéance"
+    "Échéances"
   ]
 }

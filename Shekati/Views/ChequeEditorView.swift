@@ -961,6 +961,13 @@ private struct OCRReviewSheet: View {
                           systemImage: "info.circle")
                         .font(.caption).foregroundStyle(.secondary)
                 }
+            } header: {
+                Text(app.tr("Review image details"))
+                    .font(.title2.bold())
+                    .foregroundStyle(.primary)
+                    .textCase(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityAddTraits(.isHeader)
             }
             Section(app.tr("Suggested details")) {
                 if let value = suggestion.number { suggestionRow(.number, title: "Cheque number", value: value) }
@@ -984,7 +991,6 @@ private struct OCRReviewSheet: View {
                 }
             }
         }
-        .navigationTitle(app.tr("Review image details"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
