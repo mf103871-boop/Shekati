@@ -139,6 +139,11 @@ struct DueCalendarView: View {
     private var start: Date {
         calendar.date(from: calendar.dateComponents([.year, .month], from: month)) ?? month
     }
+    private var monthTitle: String {
+        let style = Date.FormatStyle(locale: app.preferences.language.locale, calendar: calendar,
+                                     timeZone: calendar.timeZone).month(.wide).year()
+        return start.formatted(style)
+    }
     private var days: [Date] {
         (calendar.range(of: .day, in: .month, for: start) ?? 1..<29).compactMap {
             calendar.date(byAdding: .day, value: $0 - 1, to: start)
@@ -160,7 +165,7 @@ struct DueCalendarView: View {
                     Button { moveMonth(-1) } label: { Image(systemName: "chevron.backward").frame(width: 44, height: 44) }
                         .accessibilityLabel(app.tr("Previous month"))
                     Spacer()
-                    Text(start.formatted(.dateTime.month(.wide).year().locale(app.preferences.language.locale)))
+                    Text(monthTitle)
                         .font(.headline)
                     Spacer()
                     Button { moveMonth(1) } label: { Image(systemName: "chevron.forward").frame(width: 44, height: 44) }

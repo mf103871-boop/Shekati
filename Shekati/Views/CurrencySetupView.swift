@@ -39,6 +39,7 @@ struct CurrencySetupView: View {
                         .font(.footnote).foregroundStyle(.secondary)
                     Button { showingCurrencies = true } label: {
                         HStack { Text(app.tr("Choose currency")); Spacer(); Image(systemName: "arrow.forward") }
+                            .foregroundStyle(Theme.onAccent)
                             .padding(.vertical, 12)
                     }.buttonStyle(.borderedProminent).accessibilityIdentifier("chooseCurrency")
                     if let message = app.persistenceMessage {

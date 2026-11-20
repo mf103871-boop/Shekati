@@ -97,6 +97,7 @@ struct ChequeOperationsView: View {
                 if let main {
                     Button { begin(main) } label: {
                         Label(app.tr(main.title), systemImage: main == .deposit ? "tray.and.arrow.down" : "checkmark.circle")
+                            .foregroundStyle(Theme.onAccent)
                             .frame(maxWidth: .infinity, minHeight: 44)
                     }
                     .buttonStyle(.borderedProminent)

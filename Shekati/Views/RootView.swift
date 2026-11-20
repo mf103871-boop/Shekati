@@ -145,6 +145,7 @@ struct RootView: View {
                 Task { await app.lock.unlock() }
             } label: {
                 Label(app.tr("Unlock"), systemImage: "lock.open.fill")
+                    .foregroundStyle(Theme.onAccent)
                     .frame(maxWidth: .infinity).padding(.vertical, 12)
             }.buttonStyle(.borderedProminent).disabled(app.lock.isAuthenticating)
             if app.lock.errorMessage != nil {
