@@ -17,13 +17,16 @@ struct DashboardView: View {
         accounts.first { $0.id.uuidString == selectedID } ?? accounts.first
     }
 
-    private var upcoming: [ChequeRecord] {
+    private func upcoming(_ positions: [UUID: ChequePosition]) -> [ChequeRecord] {
         records.filter { record in
-            record.bankAccountID == account?.id && BankingLedger.position(for: record, events: events).isOpen
+            guard record.bankAccountID == account?.id, let position = positions[record.id] else { return false }
+            return position.isOpen && position.state != .draft && position.state != .endorsed
         }.sorted { ($0.dueDateISO, $0.number) < ($1.dueDateISO, $1.number) }
     }
 
     var body: some View {
+        let positions = BankingLedger.effectivePositions(records: records, events: events)
+        let upcoming = self.upcoming(positions)
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 if let account {
@@ -57,7 +60,7 @@ struct DashboardView: View {
                 }
                 ForEach(upcoming.prefix(4)) { record in
                     NavigationLink { ChequeDetailView(record: record) } label: {
-                        ChequeRowView(record: record).padding(.horizontal, 14)
+                        ChequeRowView(record: record, position: positions[record.id]).padding(.horizontal, 14)
                             .background(Theme.surface, in: RoundedRectangle(cornerRadius: 18))
                     }.buttonStyle(.plain)
                 }
@@ -69,10 +72,6 @@ struct DashboardView: View {
                         Label(app.tr("Review cheques without an account"), systemImage: "link.badge.plus")
                     }
                 }
-                Button { showingEditor = true } label: {
-                    Label(app.tr("Add cheque"), systemImage: "plus")
-                        .frame(maxWidth: .infinity, minHeight: 44)
-                }.buttonStyle(.bordered).accessibilityIdentifier("addCheque")
                 if let error = app.persistenceMessage { Text(error).foregroundStyle(Theme.red) }
                 if app.notifications.isDenied {
                     NavigationLink(app.tr("Notifications are off")) { SettingsView() }
@@ -84,7 +83,13 @@ struct DashboardView: View {
             }.padding(16)
         }.background(Theme.background).navigationTitle(app.tr("Shekati"))
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .topBarTrailing) { AmountPrivacyButton() } }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { showingEditor = true } label: { Label(app.tr("Add cheque"), systemImage: "plus") }
+                        .accessibilityIdentifier("addCheque")
+                }
+                ToolbarItem(placement: .topBarTrailing) { AmountPrivacyButton() }
+            }
             .sheet(isPresented: $showingEditor) { NavigationStack { ChequeEditorView() } }
     }
 }

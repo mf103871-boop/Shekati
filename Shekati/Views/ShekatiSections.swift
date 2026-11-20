@@ -2,6 +2,17 @@ import SwiftUI
 import SwiftData
 import ShekatiCore
 
+extension ChequeSnapshot {
+    func remainingObligation(using position: ChequePosition?) -> Self? {
+        guard let position, position.isOpen, position.state != .draft, position.state != .endorsed,
+              position.remaining > 0 else { return nil }
+        var row = self
+        row.amountMinorUnits = position.remaining
+        row.status = position.legacyStatus
+        return row
+    }
+}
+
 @MainActor
 struct AmountPrivacyButton: View {
     @Environment(AppState.self) private var app
@@ -31,7 +42,7 @@ struct ShekatiMoreView: View {
                 if !hidden {
                     NavigationLink { OutgoingChequeTableView() } label: {
                         Label(app.tr("Outgoing cheque ledger"), systemImage: "tablecells")
-                    }
+                    }.accessibilityIdentifier("outgoingLedgerLink")
                 }
             }
             Section {
@@ -46,7 +57,7 @@ struct ShekatiMoreView: View {
                 }
                 NavigationLink { SettingsView() } label: {
                     Label(app.tr("Settings"), systemImage: "gearshape")
-                }
+                }.accessibilityIdentifier("moreSettingsLink")
             }
         }.navigationTitle(app.tr("More"))
     }
@@ -78,6 +89,7 @@ private struct PartyDirectoryView: View {
 struct DueCalendarView: View {
     @Environment(AppState.self) private var app
     @Query(filter: #Predicate<ChequeRecord> { $0.deletedAt == nil }) private var records: [ChequeRecord]
+    @Query private var events: [LedgerEventRecord]
     @State private var selected = Date()
     @State private var month = Date()
     @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
@@ -96,12 +108,15 @@ struct DueCalendarView: View {
             calendar.date(byAdding: .day, value: $0 - 1, to: start)
         }
     }
-    private var dayRecords: [ChequeRecord] {
+    private func dayRecords(from records: [ChequeRecord]) -> [ChequeRecord] {
         records.filter { $0.dueDate == LocalDay(date: selected) }.sorted { ($0.number, $0.party) < ($1.number, $1.party) }
     }
 
     var body: some View {
-        let grouped = Dictionary(grouping: records, by: { $0.dueDateISO })
+        let positions = BankingLedger.effectivePositions(records: records, events: events)
+        let validRecords = records.filter { positions[$0.id] != nil }
+        let dayRecords = self.dayRecords(from: validRecords)
+        let grouped = Dictionary(grouping: validRecords, by: { $0.dueDateISO })
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
@@ -112,7 +127,7 @@ struct DueCalendarView: View {
                         .font(.headline)
                     Spacer()
                     Button { moveMonth(1) } label: { Image(systemName: "chevron.forward").frame(width: 44, height: 44) }
-                        .accessibilityLabel(app.tr("Next month"))
+                        .accessibilityLabel(app.tr("Next month")).accessibilityIdentifier("calendarNextMonth")
                 }
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 2) {
                     ForEach(0..<7, id: \.self) { index in
@@ -134,17 +149,17 @@ struct DueCalendarView: View {
                         ForEach(ChequeDirection.allCases, id: \.self) { direction in
                             let items = dayRecords.filter { $0.direction == direction }
                             ForEach(Array(Set(items.map(\.currencyCode))).sorted(), id: \.self) { code in
-                                let total = ChequeDirectionTotals(cheques: items.filter { $0.currencyCode == code }.map(\.snapshot))
+                                let total = ChequeDirectionTotals(cheques: items.filter { $0.currencyCode == code }.compactMap { $0.snapshot.remainingObligation(using: positions[$0.id]) })
                                 let minor = direction == .incoming ? total.incomingMinorUnits : total.outgoingMinorUnits
                                 if let minor {
-                                    ResponsiveValueRow(title: app.tr(direction == .incoming ? "Incoming" : "Outgoing"),
+                                    ResponsiveValueRow(title: app.tr(direction == .incoming ? "Incoming" : "Outgoing") + " · " + app.tr("Remaining"),
                                                        value: hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: minor, currencyCode: code, locale: app.preferences.language.locale))
                                 }
                             }
                         }
                         ForEach(dayRecords) { record in
                             NavigationLink { ChequeDetailView(record: record) } label: {
-                                ChequeRowView(record: record).padding(.horizontal, 14)
+                                ChequeRowView(record: record, position: positions[record.id]).padding(.horizontal, 14)
                                     .background(Theme.surface, in: RoundedRectangle(cornerRadius: 18))
                             }.buttonStyle(.plain)
                         }
@@ -168,6 +183,7 @@ struct DueCalendarView: View {
                 .foregroundStyle(current ? Color.white : .primary)
                 .background(current ? Theme.brandBackground : Color.clear, in: RoundedRectangle(cornerRadius: 10))
         }.buttonStyle(.plain)
+            .accessibilityIdentifier("dueDay-" + LocalDay(date: day).iso)
             .accessibilityLabel(app.formatDay(LocalDay(date: day)))
             .accessibilityValue(app.tr("Cheques") + " " + String(entries.count))
             .accessibilityAddTraits(current ? .isSelected : [])

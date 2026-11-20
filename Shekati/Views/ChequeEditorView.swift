@@ -133,7 +133,7 @@ struct ChequeEditorView: View {
     private var currency: String { recordCurrency ?? selectedAccount?.currencyCode ?? app.currencyCode }
     private var hasJournal: Bool {
         guard let recordID else { return false }
-        return events.contains { $0.chequeID == recordID || $0.relatedID == recordID }
+        return record?.replacesChequeID != nil || events.contains { $0.chequeID == recordID || $0.relatedID == recordID }
     }
     private var fractionDigits: Int { CurrencyMath.fractionDigits(for: currency) }
     private func numericFocus(_ field: EntryField) -> Binding<Bool> {
@@ -196,7 +196,7 @@ struct ChequeEditorView: View {
                     Toggle(app.tr("Add issue date"), isOn: $includeIssueDate)
                     if includeIssueDate {
                         DatePicker(app.tr("Issue date"), selection: $issueDate, displayedComponents: .date)
-                            .environment(\.locale, Locale(identifier: "en_GB"))
+                            .environment(\.locale, app.preferences.language.locale)
                             .environment(\.calendar, Calendar(identifier: .gregorian))
                     }
                     TextField(app.tr("Notes (optional)"), text: $notes.westernDigits, axis: .vertical)
@@ -220,6 +220,7 @@ struct ChequeEditorView: View {
                                 if isReadingImage { ProgressView() }
                             }
                         }
+                        .accessibilityIdentifier("readChequeImage")
                         .disabled(busy)
                     }
                 } label: {
@@ -247,7 +248,7 @@ struct ChequeEditorView: View {
                             DatePicker(app.tr("Reminder time"), selection: Binding(
                                 get: { effectiveReminderTime }, set: { reminderTime = $0 }
                             ), displayedComponents: .hourAndMinute)
-                                .environment(\.locale, Locale(identifier: "en_GB"))
+                                .environment(\.locale, app.preferences.language.locale)
                                 .environment(\.calendar, Calendar(identifier: .gregorian))
                             Toggle(app.tr("3 days before"), isOn: $before3)
                             Toggle(app.tr("1 day before"), isOn: $before1)
@@ -401,13 +402,13 @@ struct ChequeEditorView: View {
         )) {
             if let suggestion = ocrSuggestion {
                 NavigationStack {
-                    OCRReviewSheet(suggestion: suggestion) { selected in
+                    OCRReviewSheet(suggestion: suggestion, sourceImage: frontImageData) { selected in
                         applyOCR(suggestion, selected: selected)
                         ocrSuggestion = nil
                     }
                 }
                 .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+                .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
             }
         }
         .sheet(item: $duplicatePreview) { existing in
@@ -419,7 +420,7 @@ struct ChequeEditorView: View {
                     } }
             }
                 .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+                .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
         }
         .alert(app.tr("Similar cheque found"), isPresented: $showingDuplicate) {
             Button(app.tr("View existing cheque")) {
@@ -512,7 +513,7 @@ struct ChequeEditorView: View {
             get: { dueDate },
             set: { dueDate = $0; dueDateNeedsReview = false; dateError = nil }
         ), displayedComponents: .date)
-            .environment(\.locale, Locale(identifier: "en_GB"))
+            .environment(\.locale, app.preferences.language.locale)
             .environment(\.calendar, Calendar(identifier: .gregorian))
             .accessibilityIdentifier("dueDateField")
         Text(app.formatDay(LocalDay(date: dueDate)) + " · " + app.relativeDueDate(LocalDay(date: dueDate)))
@@ -724,7 +725,7 @@ struct ChequeEditorView: View {
             do {
                 let active = try context.fetch(FetchDescriptor<ChequeRecord>(predicate: #Predicate { $0.deletedAt == nil }))
                 let currentEvents = try context.fetch(FetchDescriptor<LedgerEventRecord>())
-                if Set(active.filter { BankingLedger.position(for: $0, events: currentEvents).isOpen }.map(\.id)).count >= 10 {
+                if BankingLedger.effectivePositions(records: active, events: currentEvents).values.filter(\.isOpen).count >= 10 {
                     showPlus = true
                     return
                 }
@@ -899,11 +900,13 @@ private struct OCRReviewSheet: View {
     @Environment(AppState.self) private var app
     @Environment(\.dismiss) private var dismiss
     let suggestion: OCRSuggestion
+    let sourceImage: Data?
     let apply: (Set<OCRField>) -> Void
     @State private var selected: Set<OCRField>
 
-    init(suggestion: OCRSuggestion, apply: @escaping (Set<OCRField>) -> Void) {
+    init(suggestion: OCRSuggestion, sourceImage: Data?, apply: @escaping (Set<OCRField>) -> Void) {
         self.suggestion = suggestion
+        self.sourceImage = sourceImage
         self.apply = apply
         var fields = Set<OCRField>()
         if suggestion.number != nil { fields.insert(.number) }
@@ -917,6 +920,13 @@ private struct OCRReviewSheet: View {
     var body: some View {
         Form {
             Section {
+                if let sourceImage, let image = UIImage(data: sourceImage) {
+                    Image(uiImage: image).resizable().scaledToFit().frame(maxWidth: .infinity)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .accessibilityLabel(app.tr("Front image"))
+                }
+                Label(app.tr("Shekati Plus"), systemImage: "sparkles").font(.caption.weight(.semibold))
+                    .foregroundStyle(Theme.accent)
                 Text(app.tr("Check each suggestion against your cheque. Nothing is saved until you tap Save."))
                     .font(.subheadline)
                 if suggestion.unsupportedArabic {
@@ -955,7 +965,7 @@ private struct OCRReviewSheet: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(app.tr("Use selected")) { apply(selected) }
-                    .fontWeight(.semibold).disabled(selected.isEmpty)
+                    .fontWeight(.semibold).disabled(selected.isEmpty).accessibilityIdentifier("useOCRFields")
             }
         }
     }

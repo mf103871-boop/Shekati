@@ -1,51 +1,13 @@
 import SwiftUI
 import ShekatiCore
 
-/// Name/number and amount/date use aligned groups that stay readable on an iPhone.
-@MainActor
-struct ChequeTableHeaderView: View {
-    @Environment(AppState.self) private var app
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @ScaledMetric(relativeTo: .subheadline) private var nameMinimum: CGFloat = 112
-    @ScaledMetric(relativeTo: .subheadline) private var amountMinimum: CGFloat = 146
-
-    var body: some View {
-        Group {
-            if dynamicTypeSize.isAccessibilitySize {
-                Text(app.tr("Name and number") + " · " + app.tr("Amount and due date"))
-                    .fixedSize(horizontal: false, vertical: true)
-            } else {
-                ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .top, spacing: 12) {
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text(app.tr("Name"))
-                            Text(app.tr("Cheque number")).font(.footnote).foregroundStyle(.secondary)
-                        }
-                        .frame(minWidth: nameMinimum, maxWidth: .infinity, alignment: .leading)
-                        VStack(alignment: .trailing, spacing: 3) {
-                            Text(app.tr("Amount"))
-                            Text(app.tr("Due date")).font(.footnote).foregroundStyle(.secondary)
-                        }
-                        .frame(minWidth: amountMinimum, alignment: .trailing)
-                    }
-                    Text(app.tr("Name and number") + " · " + app.tr("Amount and due date"))
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
-        }
-        .font(.subheadline.weight(.semibold))
-        .foregroundStyle(.secondary)
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(.isHeader)
-    }
-}
-
 @MainActor
 struct ChequeRowView: View {
     @Environment(AppState.self) private var app
     @AppStorage("shekati.hideAmounts") private var hidden = false
     let record: ChequeRecord
-    var stateLabel: String? = nil
+    var position: ChequePosition? = nil
+    var needsReview = false
     private var title: String { record.party.isEmpty ? app.tr("Cheque") : record.party }
     private var direction: String { app.tr(record.direction == .incoming ? "Incoming" : "Outgoing") }
     private var tint: Color { record.direction == .incoming ? Theme.incoming : Theme.outgoing }
@@ -64,11 +26,17 @@ struct ChequeRowView: View {
                 HStack { amount; Spacer(minLength: 8); number }
                 VStack(alignment: .leading, spacing: 3) { amount; number }
             }
+            if let position, position.isOpen && position.paid > 0 {
+                ResponsiveValueRow(title: app.tr("Remaining"), value: hidden ? "••••" :
+                    DisplayFormatting.amount(minorUnits: position.remaining, currencyCode: record.currencyCode,
+                                             locale: app.preferences.language.locale))
+                    .font(.footnote)
+            }
             HStack(alignment: .firstTextBaseline) {
                 Text(app.formatDay(record.dueDate)).font(.footnote).foregroundStyle(.secondary)
                 Spacer()
-                if let stateLabel {
-                    Text(app.tr(stateLabel)).font(.caption.weight(.semibold)).foregroundStyle(tint)
+                if needsReview || position != nil {
+                    Text(app.tr(needsReview ? "Needs review" : position?.state.title ?? "Pending")).font(.caption.weight(.semibold)).foregroundStyle(tint)
                 } else { StatusPill(snapshot: record.snapshot) }
             }
         }.padding(.vertical, 12).contentShape(Rectangle())

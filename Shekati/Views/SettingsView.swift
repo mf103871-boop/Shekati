@@ -28,7 +28,7 @@ struct SettingsView: View {
             }
             Section(app.tr("Appearance and language")) {
                 Picker(app.tr("Language"), selection: $preferences.language) {
-                    ForEach(AppLanguage.allCases) { language in Text(language.displayName).tag(language) }
+                    ForEach(AppLanguage.allCases) { language in Text(language.displayName).accessibilityIdentifier("language-" + language.rawValue).tag(language) }
                 }
                 .accessibilityIdentifier("languagePicker")
                 .pickerStyle(.menu)
@@ -77,7 +77,7 @@ struct SettingsView: View {
                     }.disabled(customOffsetValue.map { !(0...365).contains($0) } ?? true)
                 }
                 DatePicker(app.tr("Reminder time"), selection: timeBinding, displayedComponents: .hourAndMinute)
-                    .environment(\.locale, Locale(identifier: "en_GB"))
+                    .environment(\.locale, app.preferences.language.locale)
                     .environment(\.calendar, Calendar(identifier: .gregorian))
                 Toggle(app.tr("Daily summary"), isOn: $preferences.dailySummary)
                 Toggle(app.tr("Hide notification details"), isOn: $preferences.hideNotificationDetails)

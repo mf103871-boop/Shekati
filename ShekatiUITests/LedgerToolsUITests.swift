@@ -14,7 +14,7 @@ final class LedgerToolsUITests: XCTestCase {
         let app = launch()
         addOutgoingCheque(app, amount: "25.50", party: "Ledger A", number: "000901")
         addOutgoingCheque(app, amount: "74.50", party: "Ledger B", number: "000902")
-        app.tabBars.buttons["Cheques"].tap()
+        openMoreDestination("outgoingLedgerLink", in: app)
         let firstCheque = row(number: "000901", in: app)
         let secondCheque = row(number: "000902", in: app)
         XCTAssertTrue(firstCheque.waitForExistence(timeout: 5))
@@ -37,11 +37,7 @@ final class LedgerToolsUITests: XCTestCase {
 
         // Paying is a dated action. The original record leaves the primary scope and remains in history.
         firstCheque.tap()
-        XCTAssertTrue(app.buttons["primarySettlement"].waitForExistence(timeout: 5))
-        app.buttons["primarySettlement"].tap()
-        XCTAssertTrue(element("actualSettlementDate", in: app).waitForExistence(timeout: 5))
-        app.buttons["confirmSettlement"].tap()
-        waitForAbsence(app.buttons["confirmSettlement"])
+        recordBankSettlement(in: app)
         let paymentDate = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Payment date,")).firstMatch
         XCTAssertTrue(paymentDate.waitForExistence(timeout: 5))
         goBack(in: app)

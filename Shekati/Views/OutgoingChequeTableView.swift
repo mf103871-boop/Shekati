@@ -12,6 +12,8 @@ struct OutgoingChequeTableView: View {
     @ScaledMetric(relativeTo: .footnote) private var digitWidth: CGFloat = 8
     @Query(filter: #Predicate<ChequeRecord> { $0.deletedAt == nil && $0.directionRaw == "outgoing" })
     private var records: [ChequeRecord]
+    @Query private var events: [LedgerEventRecord]
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
     @State private var showsPaid = false
     @State private var isSelecting = false
     @State private var selectedIDs: Set<UUID> = []
@@ -20,12 +22,26 @@ struct OutgoingChequeTableView: View {
 
     var body: some View {
         let byID = Dictionary(records.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
-        let snapshots = byID.values.filter { showsPaid ? $0.status == .settled : $0.status != .settled }.map(\.snapshot)
+        let positions = BankingLedger.effectivePositions(records: records, events: events)
+        let snapshots: [ChequeSnapshot] = byID.values.compactMap { record in
+            guard let position = positions[record.id] else { return nil }
+            if showsPaid {
+                guard position.state == .settled else { return nil }
+            } else {
+                guard position.isOpen, position.state != .draft else { return nil }
+            }
+            var row = record.snapshot
+            row.status = position.legacyStatus
+            row.amountMinorUnits = showsPaid ? position.paid : position.remaining
+            return row
+        }
         let ledger = OutgoingChequeLedger(cheques: snapshots)
         let visibleIDs = Set(ledger.rows.map(\.id))
         let selected = ChequeSelectionSummary(cheques: snapshots, selectedIDs: selectedIDs)
         Group {
-            if dynamicTypeSize.isAccessibilitySize {
+            if hidesAmounts {
+                ContentUnavailableView(app.tr("Amounts hidden"), systemImage: "eye.slash")
+            } else if dynamicTypeSize.isAccessibilitySize {
                 accessibleContent(ledger, byID: byID, visibleIDs: visibleIDs, selected: selected)
             } else {
                 VStack(spacing: 0) {
@@ -54,11 +70,11 @@ struct OutgoingChequeTableView: View {
                 } label: { Image(systemName: "plus") }
                 .accessibilityLabel(app.tr("Add cheque"))
                 .accessibilityIdentifier("addOutgoingCheque")
-                .disabled(app.currencyConflict || app.currencyCode.isEmpty)
+                .disabled(app.currencyCode.isEmpty)
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if isSelecting && !dynamicTypeSize.isAccessibilitySize {
+            if isSelecting && !hidesAmounts && !dynamicTypeSize.isAccessibilitySize {
                 ChequeSelectionSummaryView(summary: selected, compact: verticalSizeClass == .compact)
             }
         }
@@ -68,7 +84,7 @@ struct OutgoingChequeTableView: View {
         .sheet(isPresented: $showingEditor) {
             NavigationStack { ChequeEditorView(initialDirection: .outgoing) }
                 .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+                .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
         }
     }
 
@@ -196,11 +212,11 @@ struct OutgoingChequeTableView: View {
                             }
                         }
                         .frame(width: width, height: tableGeometry.size.height)
-                        .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+                        .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
                     }
                     // Use a physical scroll axis with an explicit starting edge. The
                     // sheet itself retains the selected language's column direction.
-                    .defaultScrollAnchor(app.preferences.language == .arabic ? .topTrailing : .topLeading)
+                    .defaultScrollAnchor(app.preferences.language.isRTL ? .topTrailing : .topLeading)
                     .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
                     .environment(\.layoutDirection, .leftToRight)
                     .accessibilityIdentifier("outgoingChequeTable")

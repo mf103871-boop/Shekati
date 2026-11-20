@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import ShekatiCore
 
 @MainActor
 struct CurrencySetupView: View {
@@ -7,6 +8,8 @@ struct CurrencySetupView: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \AppConfiguration.createdAt) private var configurations: [AppConfiguration]
     @State private var showingCurrencies = false
+    @State private var accountName = ""
+    @State private var openingBalance = "0"
 
     var body: some View {
         NavigationStack {
@@ -22,7 +25,17 @@ struct CurrencySetupView: View {
                         feature("camera.viewfinder", "Scan, review, save")
                         feature("icloud", "Your records, with you")
                     }.shekatiCard()
-                    Text(app.tr("Choose your default currency. Each bank account keeps its own currency."))
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text(app.tr("Your first bank account")).font(.headline)
+                        TextField(app.tr("Current account"), text: $accountName)
+                            .textFieldStyle(.roundedBorder).accessibilityIdentifier("openingAccountName")
+                        LabeledContent(app.tr("Opening balance")) {
+                            TextField("0", text: $openingBalance)
+                                .keyboardType(.numbersAndPunctuation).multilineTextAlignment(.trailing)
+                                .accessibilityIdentifier("openingAccountBalance")
+                        }
+                    }.shekatiCard()
+                    Text(app.tr("Choose the currency for this account and its first chequebook."))
                         .font(.footnote).foregroundStyle(.secondary)
                     Button { showingCurrencies = true } label: {
                         HStack { Text(app.tr("Choose currency")); Spacer(); Image(systemName: "arrow.forward") }
@@ -34,7 +47,7 @@ struct CurrencySetupView: View {
                 }.padding(28)
             }.background(Theme.background)
                 .sheet(isPresented: $showingCurrencies) {
-                    NavigationStack { CurrencyPickerView() }
+                    NavigationStack { CurrencyPickerView(initialAccountName: accountName.isEmpty ? app.tr("Current account") : accountName, openingBalance: openingBalance) }
                 }
         }
     }
@@ -59,6 +72,8 @@ struct CurrencySetupView: View {
 
 @MainActor
 struct CurrencyPickerView: View {
+    var initialAccountName: String? = nil
+    var openingBalance = "0"
     @Environment(AppState.self) private var app
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
@@ -105,6 +120,26 @@ struct CurrencyPickerView: View {
     private func name(_ code: String) -> String { app.preferences.language.locale.localizedString(forCurrencyCode: code) ?? code }
     private func save(_ code: String) {
         guard Locale.commonISOCurrencyCodes.contains(code) else { return }
+        if let name = initialAccountName {
+            do {
+                if try context.fetchCount(FetchDescriptor<BankAccountRecord>()) == 0 {
+                    let text = NumericInput.latinDigits(openingBalance).trimmingCharacters(in: .whitespacesAndNewlines)
+                    let sign = text.hasPrefix("-") ? Int64(-1) : Int64(1)
+                    let digits = sign == -1 ? String(text.dropFirst()) : text
+                    guard let minor = CurrencyMath.parseMinorUnits(digits, currencyCode: code), minor >= 0,
+                          !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                        errorMessage = app.tr("Check the account name and opening balance.")
+                        return
+                    }
+                    let account = BankAccountRecord(name: name, currencyCode: code, openingMinor: minor * sign)
+                    context.insert(account)
+                    context.insert(ChequeBookRecord(accountID: account.id, name: name))
+                }
+            } catch {
+                errorMessage = app.tr("Could not save changes.")
+                return
+            }
+        }
         if let configuration = configurations.first { configuration.currencyCode = code }
         else { context.insert(AppConfiguration(currencyCode: code)) }
         do {

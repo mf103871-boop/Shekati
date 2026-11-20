@@ -18,7 +18,7 @@ struct ChequeDetailView: View {
     @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
     @Query private var events: [LedgerEventRecord]
     @State private var showingReminder = false
-    private var hasJournal: Bool { events.contains { $0.chequeID == record.id || $0.relatedID == record.id } }
+    private var hasJournal: Bool { record.replacesChequeID != nil || events.contains { $0.chequeID == record.id || $0.relatedID == record.id } }
     private var financialState: String { BankingLedger.position(for: record, events: events).state.title }
     @State private var showingDelete = false
     @State private var errorMessage: String?
@@ -158,7 +158,7 @@ struct ChequeDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(app.tr("Edit")) { showingEditor = true }.disabled(hasJournal || hidesAmounts)
+                Button(app.tr("Edit")) { showingEditor = true }.accessibilityIdentifier("editCheque").disabled(hasJournal || hidesAmounts)
             }
         }
         .sheet(isPresented: $showingEditor) {
@@ -199,7 +199,7 @@ struct ChequeDetailView: View {
     }
 
     private var sheetDirection: LayoutDirection {
-        app.preferences.language == .arabic ? .rightToLeft : .leftToRight
+        app.preferences.language.isRTL ? .rightToLeft : .leftToRight
     }
 
     private var directionLabel: some View {

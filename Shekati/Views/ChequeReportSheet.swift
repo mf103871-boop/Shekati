@@ -7,6 +7,8 @@ struct ChequeReportSheet: View {
     @Environment(AppState.self) private var app
     @Environment(\.dismiss) private var dismiss
     let cheques: [ChequeSnapshot]
+    let outstanding: [ChequeSnapshot]
+
     @State private var exporting = false
     @State private var document = ChequeTransferDocument(data: Data())
     @State private var failed = false
@@ -16,10 +18,14 @@ struct ChequeReportSheet: View {
                 LabeledContent(app.tr("Shown cheques"), value: DisplayFormatting.count(cheques.count, locale: app.preferences.language.locale))
                 Text(app.tr("The report includes the cheques and order shown in your filtered list."))
                     .foregroundStyle(.secondary)
-                Button(app.tr("Save PDF report")) {
+                Button(app.tr("Save PDF report") + " · " + app.tr("Original amount")) {
                     document = ChequeTransferDocument(data: ChequePDFReport.generate(cheques: cheques, language: app.preferences.language))
                     exporting = true
                 }.disabled(cheques.isEmpty)
+                Button(app.tr("Save PDF report") + " · " + app.tr("Remaining")) {
+                    document = ChequeTransferDocument(data: ChequePDFReport.generate(cheques: outstanding, language: app.preferences.language))
+                    exporting = true
+                }.disabled(outstanding.isEmpty)
                 Button(app.tr("Save CSV of shown cheques")) {
                     csvDocument = ChequeTransferDocument(data: ChequeCSV.export(cheques))
                     exportingCSV = true
