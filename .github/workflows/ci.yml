@@ -7,7 +7,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   test:
@@ -63,12 +63,20 @@ jobs:
           xcodebuild test-without-building -project Shekati.xcodeproj -scheme Shekati -destination "$DEST" \
             -derivedDataPath DerivedData -resultBundlePath build/Financial.xcresult \
             -only-testing:ShekatiTests -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+      - name: Summarize hosted unit tests
+        if: always() && steps.compile.outcome == 'success'
+        run: |
+          if [ -d build/Financial.xcresult ]; then
+            xcrun xcresulttool get test-results summary --path build/Financial.xcresult | tee build/unit-summary.json
+          fi
       - name: Save hosted unit test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Shekati-finance-migration-storekit
-          path: build/Financial.xcresult
+          path: |
+            build/Financial.xcresult
+            build/unit-summary.json
           if-no-files-found: ignore
           retention-days: 14
       - name: Run iPhone interaction tests
