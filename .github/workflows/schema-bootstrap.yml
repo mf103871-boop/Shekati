@@ -152,6 +152,13 @@ jobs:
               raise SystemExit('Expected exactly one setup app')
           app = apps[0]
           subprocess.run(['codesign', '--verify', '--deep', '--strict', str(app)], check=True)
+          chosen_profile = plistlib.loads((root / 'schema-profile.plist').read_bytes())
+          embedded_profile = plistlib.loads(subprocess.check_output(
+              ['security', 'cms', '-D', '-i', str(app / 'embedded.mobileprovision')], stderr=subprocess.DEVNULL))
+          if (embedded_profile.get('UUID') != chosen_profile['UUID'] or
+                  embedded_profile.get('ProvisionedDevices') != chosen_profile['ProvisionedDevices'] or
+                  embedded_profile.get('DeveloperCertificates') != chosen_profile['DeveloperCertificates']):
+              raise SystemExit('The IPA must embed the verified one-device provisioning profile')
           entitlements = plistlib.loads(subprocess.check_output(['codesign', '-d', '--entitlements', ':-', str(app)], stderr=subprocess.DEVNULL))
           if entitlements.get('com.apple.developer.icloud-container-environment') != 'Development':
               raise SystemExit('Refusing to deliver a schema initializer signed for Production')

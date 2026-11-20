@@ -40,4 +40,4 @@ if __name__ == "__main__":
         build = verify(args.ipa)
     except (BadZipFile, KeyError, OSError, ValueError, plistlib.InvalidFileException) as error:
         parser.exit(1, f"Setup identity check failed: {error}\n")
-    print(f"Verified setup identity {BUNDLE_ID}, build {build}, Development CloudKit.")
+    print(f"Verified packaged identity {BUNDLE_ID}, build {build}, declaring Development CloudKit.")
