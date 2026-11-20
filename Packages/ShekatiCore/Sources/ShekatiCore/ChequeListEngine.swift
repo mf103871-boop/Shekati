@@ -12,7 +12,7 @@ public enum ChequeListEngine {
             if let bank = filter.bank, searchable(cheque.bank) != searchable(bank) { return false }
             if let from = filter.from, cheque.dueDate < from { return false }
             if let through = filter.through, cheque.dueDate > through { return false }
-            if !query.isEmpty && ![cheque.number, cheque.party, cheque.bank].contains(where: { searchable($0).contains(query) }) { return false }
+            if !query.isEmpty && ![cheque.number, cheque.party, cheque.bank, cheque.accountReference].contains(where: { searchable($0).contains(query) }) { return false }
             switch filter.dateScope {
             case .all: break
             case .today: if !cheque.isOutstanding || cheque.dueDate != today { return false }

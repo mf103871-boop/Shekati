@@ -29,6 +29,10 @@ final class ChequeRecord {
     // Optional addition keeps the existing entity and populated stores compatible.
     // A tombstone is synced; removing it explicitly restores the original record.
     var deletedAt: Date? = nil
+    var bankAccountID: UUID?
+    var chequeBookID: UUID?
+    var replacesChequeID: UUID?
+    var ledgerBaselineStatusRaw: String?
 
     init(snapshot: ChequeSnapshot, frontImageData: Data? = nil,
          backImageData: Data? = nil, remindersEnabled: Bool = true,

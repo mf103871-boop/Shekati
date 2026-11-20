@@ -8,6 +8,7 @@ struct ReminderSettings: Equatable, Sendable {
     var dailySummary: Bool
     var hideDetails: Bool
     var languageCode: String
+    var bankingCalendar: BankingCalendar? = nil
 }
 
 struct ChequeReminderInput: Sendable {
@@ -69,7 +70,7 @@ enum ReminderPlanner {
                          now: Date = Date(), calendar suppliedCalendar: Calendar = .current,
                          snoozed: [SnoozedCheque] = []) -> ReminderPlan {
         var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = suppliedCalendar.timeZone
+        calendar.timeZone = settings.bankingCalendar.flatMap { TimeZone(identifier: $0.timeZoneID) } ?? suppliedCalendar.timeZone
         let active = inputs.filter { $0.enabled && $0.snapshot.isOutstanding }
         guard !active.isEmpty else { return ReminderPlan(items: [], firstUncoveredDate: nil) }
         let arabic = settings.languageCode.hasPrefix("ar")
@@ -83,11 +84,17 @@ enum ReminderPlanner {
             chequeSettings.minute = input.minute ?? settings.minute
             var sharedBody: String?
             for offset in Set(input.offsets ?? settings.offsets).filter({ (0...365).contains($0) }).sorted() {
-                let day = cheque.dueDate.adding(days: -offset, calendar: calendar)
+                let scheduled = cheque.dueDate.adding(days: -offset, calendar: calendar)
+                let day: LocalDay
+                if let banking = settings.bankingCalendar {
+                    guard let adjusted = banking.reminderDay(for: scheduled, calendar: calendar) else { continue }
+                    day = adjusted
+                } else { day = scheduled }
+                let effectiveOffset = day == cheque.dueDate ? 0 : max(1, offset)
                 guard let fireDate = fireDate(on: day, settings: chequeSettings, calendar: calendar), fireDate > now else { continue }
                 if sharedBody == nil { sharedBody = chequeContent(cheque: cheque, settings: settings, offset: offset).body }
                 candidates.append(PlannedReminder(id: "\(identifierPrefix)cheque.\(cheque.id.uuidString).\(offset)",
-                                                  fireDate: fireDate, title: chequeTitle(offset: offset, languageCode: settings.languageCode), body: sharedBody!,
+                                                  fireDate: fireDate, title: chequeTitle(offset: effectiveOffset, languageCode: settings.languageCode), body: sharedBody!,
                                                   chequeID: cheque.id, kind: .cheque))
             }
             if let snooze = snoozed.filter({ $0.chequeID == cheque.id && $0.dueDateISO == cheque.dueDate.iso && $0.fireDate > now })

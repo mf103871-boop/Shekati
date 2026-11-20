@@ -1,0 +1,241 @@
+import SwiftUI
+import SwiftData
+import Charts
+import ShekatiCore
+
+@MainActor
+struct BankingAccountsView: View {
+    @Environment(AppState.self) private var app
+    @Environment(\.modelContext) private var context
+    @Query(sort: \BankAccountRecord.createdAt) private var accounts: [BankAccountRecord]
+    @Query private var books: [ChequeBookRecord]
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
+    @State private var adding = false
+    @State private var showingPlus = false
+    let isPlus: Bool
+
+    var body: some View {
+        List {
+            ForEach(accounts) { account in
+                NavigationLink {
+                    BankingAccountDetail(account: account, isPlus: isPlus, hidesAmounts: hidesAmounts)
+                } label: {
+                    VStack(alignment: .leading) {
+                        Text(account.name)
+                        Text(account.currencyCode).font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+            }
+            Button {
+                if isPlus || accounts.isEmpty { adding = true } else { showingPlus = true }
+            } label: { Label(app.tr("Add bank account"), systemImage: "plus.circle") }
+        }
+        .navigationTitle(app.tr("Bank accounts"))
+        .sheet(isPresented: $adding) { AccountCreationView(isPlus: isPlus) }
+        .sheet(isPresented: $showingPlus) { ShekatiPlusView() }
+    }
+}
+
+@MainActor
+private struct AccountCreationView: View {
+    @Environment(AppState.self) private var app
+    @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
+    @State private var name = ""
+    @State private var currency = ""
+    @State private var opening = "0"
+    @State private var error: String?
+    let isPlus: Bool
+    var body: some View {
+        NavigationStack {
+            Form {
+                TextField(app.tr("Account name"), text: $name)
+                Picker(app.tr("Currency"), selection: $currency) {
+                    ForEach(Locale.commonISOCurrencyCodes.sorted(), id: \.self) { Text($0).tag($0) }
+                }
+                TextField(app.tr("Opening balance"), text: $opening).keyboardType(.numbersAndPunctuation)
+                if let error { Text(app.tr(error)).foregroundStyle(.red) }
+                Button(app.tr("Save")) {
+                    do {
+                        guard let amount = BankingLedger.signedAmount(opening, currency: currency) else { throw BankingError.invalid }
+                        try BankingLedger.addAccount(name: name, currency: currency, opening: amount, isPlus: isPlus, context: context)
+                        app.didMutate(); dismiss()
+                    } catch { self.error = error.localizedDescription }
+                }.disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+            .navigationTitle(app.tr("Add bank account"))
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button(app.tr("Cancel")) { dismiss() } } }
+            .onAppear { if currency.isEmpty { currency = app.currencyCode.isEmpty ? "USD" : app.currencyCode } }
+        }
+    }
+}
+
+@MainActor
+private struct BankingAccountDetail: View {
+    @Environment(AppState.self) private var app
+    @Environment(\.modelContext) private var context
+    @Query private var books: [ChequeBookRecord]
+    @Query private var records: [ChequeRecord]
+    @Query private var events: [LedgerEventRecord]
+    @State private var bookName = ""
+    @State private var statement = ""
+    @State private var review: ReconciliationReview?
+    @State private var error: String?
+    let account: BankAccountRecord
+    let isPlus: Bool
+    let hidesAmounts: Bool
+
+    private struct ReconciliationReview: Identifiable {
+        let id = UUID()
+        let balance: Int64
+        let statement: Int64
+        let difference: Int64
+    }
+
+    var body: some View {
+        Form {
+            AccountLiquidityView(account: account, isPlus: isPlus, hidesAmounts: hidesAmounts)
+            Section(app.tr("Cheque books")) {
+                ForEach(books.filter { $0.accountID == account.id }) { Text($0.name) }
+                TextField(app.tr("Cheque book name"), text: $bookName)
+                Button(app.tr("Add cheque book")) {
+                    let clean = bookName.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !clean.isEmpty else { return }
+                    context.insert(ChequeBookRecord(accountID: account.id, name: clean))
+                    do { try BankingLedger.save(context); bookName = ""; app.didMutate() }
+                    catch { self.error = error.localizedDescription }
+                }.disabled(bookName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+            Section(app.tr("Reconcile account")) {
+                TextField(app.tr("Statement balance"), text: $statement).keyboardType(.numbersAndPunctuation)
+                Button(app.tr("Review difference")) {
+                    do {
+                        guard let target = BankingLedger.signedAmount(statement, currency: account.currencyCode) else { throw BankingError.invalid }
+                        let expected = try BankingLedger.outlook(account: account, records: records, events: events, today: app.today).recorded
+                        let delta = target.subtractingReportingOverflow(expected)
+                        guard !delta.overflow else { throw BankingError.invalid }
+                        review = ReconciliationReview(balance: expected, statement: target, difference: delta.partialValue)
+                    } catch { self.error = error.localizedDescription }
+                }
+            }
+            if let error { Text(app.tr(error)).foregroundStyle(.red) }
+        }
+        .navigationTitle(account.name)
+        .sheet(item: $review) { item in
+            NavigationStack {
+                Form {
+                    let code = account.currencyCode
+                    ForEach([("Recorded balance", item.balance), ("Statement balance", item.statement), ("Adjustment", item.difference)], id: \.0) { label, value in
+                        LabeledContent(app.tr(label), value: hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: value, currencyCode: code, locale: app.preferences.language.locale))
+                    }
+                    Button(app.tr("Confirm reconciliation")) {
+                        do {
+                            try BankingLedger.reconcile(account, statement: item.statement, expected: item.balance, context: context)
+                            app.didMutate(); statement = ""; error = nil
+                        } catch { self.error = error.localizedDescription }
+                        review = nil
+                    }
+                }.navigationTitle(app.tr("Review difference"))
+                .toolbar { ToolbarItem(placement: .cancellationAction) { Button(app.tr("Cancel")) { review = nil } } }
+            }
+        }
+    }
+}
+
+@MainActor
+struct AccountLiquidityView: View {
+    let account: BankAccountRecord
+    let isPlus: Bool
+    var hidesAmounts = false
+    @Environment(AppState.self) private var app
+    @Query private var records: [ChequeRecord]
+    @Query private var events: [LedgerEventRecord]
+    @State private var showingPlus = false
+    private func money(_ n: Int64) -> String {
+        hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: n, currencyCode: account.currencyCode, locale: app.preferences.language.locale)
+    }
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if let outlook = try? BankingLedger.outlook(account: account, records: records, events: events, today: app.today) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(app.tr("Estimated available in 7 days")).font(.subheadline)
+                    Text(money(outlook.available7)).font(.largeTitle.bold()).monospacedDigit().minimumScaleFactor(0.65)
+                    Divider().overlay(.white.opacity(0.5))
+                    ResponsiveValueRow(title: app.tr("Recorded balance"), value: money(outlook.recorded))
+                    ResponsiveValueRow(title: app.tr("Outgoing due within 7 days"), value: money(outlook.outgoing7))
+                    if let reconciled = try? BankingLedger.adjustments(account: account, events: events).last?.day {
+                        Text(app.tr("Last reconciliation") + " · " + app.formatDay(reconciled)).font(.caption)
+                    } else {
+                        Text(app.tr("Opening balance") + " · " + app.formatDay(LocalDay(date: account.createdAt))).font(.caption)
+                    }
+                }
+                .padding(18).frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color(red: 0.06, green: 0.30, blue: 0.32), in: RoundedRectangle(cornerRadius: 18))
+                .foregroundStyle(.white)
+                ResponsiveValueRow(title: app.tr("Expected incoming in 7 days"), value: money(outlook.incoming7))
+                if isPlus {
+                    NavigationLink {
+                        LiquidityForecast(account: account, hidesAmounts: hidesAmounts)
+                    } label: {
+                        if let deficit = outlook.points.first(where: { $0.balance < 0 }) {
+                            Label(app.tr("Expected shortfall") + " · " + app.formatDay(deficit.day) + " · " + money(deficit.balance),
+                                  systemImage: "exclamationmark.triangle")
+                        } else {
+                            Label(app.tr("Cash forecast"), systemImage: "chart.xyaxis.line")
+                        }
+                    }
+                } else {
+                    Button { showingPlus = true } label: { Label(app.tr("Cash forecast") + " · " + app.tr("Shekati Plus"), systemImage: "chart.xyaxis.line") }
+                }
+            } else {
+                Label(app.tr("Review the conflicting entries before continuing."), systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
+            }
+        }
+        .sheet(isPresented: $showingPlus) { ShekatiPlusView() }
+    }
+}
+
+@MainActor
+private struct LiquidityForecast: View {
+    @Environment(AppState.self) private var app
+    @Query private var records: [ChequeRecord]
+    @Query private var events: [LedgerEventRecord]
+    let account: BankAccountRecord
+    let hidesAmounts: Bool
+    @State private var horizon = 30
+
+    var body: some View {
+        List {
+            Picker(app.tr("Forecast duration"), selection: $horizon) {
+                Text(app.tr("30 days")).tag(30)
+                Text(app.tr("60 days")).tag(60)
+            }.pickerStyle(.segmented)
+            if let outlook = try? BankingLedger.outlook(account: account, records: records, events: events, today: app.today, horizon: horizon) {
+                if !hidesAmounts {
+                    let digits = CurrencyMath.fractionDigits(for: account.currencyCode)
+                    let divisor = pow(10.0, Double(digits))
+                    Chart(outlook.points) { point in
+                        LineMark(x: .value(app.tr("Date"), point.day.date()), y: .value(account.currencyCode, Double(point.balance) / divisor))
+                            .interpolationMethod(.stepEnd)
+                        RuleMark(y: .value(account.currencyCode, 0)).foregroundStyle(.secondary)
+                    }.chartYAxisLabel(account.currencyCode).frame(height: 175)
+                }
+                Text(app.tr("Assumes incoming cheques are collected on their due dates.")).font(.footnote)
+                ForEach(outlook.points) { point in
+                    Section {
+                        ForEach(point.contributors, id: \.self) { id in
+                            if let record = records.first(where: { $0.id == id }) {
+                                NavigationLink { ChequeDetailView(record: record) } label: {
+                                    Text(record.party + " · " + record.number)
+                                }
+                            }
+                        }
+                    } header: {
+                        let amount = hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: point.balance, currencyCode: account.currencyCode, locale: app.preferences.language.locale)
+                        Text(app.formatDay(point.day) + " · " + amount)
+                    }
+                }
+            } else { Text(app.tr("Review the conflicting entries before continuing.")) }
+        }.navigationTitle(app.tr("Cash forecast"))
+    }
+}

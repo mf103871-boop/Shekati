@@ -22,14 +22,13 @@ struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(app.tr("Shekati")).font(.title2.bold())
                             .accessibilityIdentifier("settingsBrandTitle")
-                        Text(app.tr("Every cheque, at a glance.")).font(.footnote).foregroundStyle(.secondary)
+
                     }
                 }.padding(.vertical, 8)
             }
             Section(app.tr("Appearance and language")) {
                 Picker(app.tr("Language"), selection: $preferences.language) {
-                    Text("العربية").tag(AppLanguage.arabic)
-                    Text("English").tag(AppLanguage.english)
+                    ForEach(AppLanguage.allCases) { language in Text(language.displayName).tag(language) }
                 }
                 .accessibilityIdentifier("languagePicker")
                 .pickerStyle(.menu)
@@ -41,9 +40,9 @@ struct SettingsView: View {
                 .pickerStyle(.menu)
                 Button { showCurrencies = true } label: {
                     HStack { Text(app.tr("Currency")); Spacer(); Text(app.currencyCode).foregroundStyle(.secondary) }
-                }.disabled(!records.isEmpty)
+                }
                 if !records.isEmpty {
-                    Text(app.tr("Currency cannot change while any saved cheque exists, including history."))
+                    Text(app.tr("This default applies to new records. Existing amounts retain their currency."))
                         .font(.footnote).foregroundStyle(.secondary)
                 }
             }

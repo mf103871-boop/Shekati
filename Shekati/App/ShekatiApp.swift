@@ -7,9 +7,11 @@ struct ShekatiApp: App {
     private let container: ModelContainer?
     private let startupError: String?
     @State private var state: AppState
+    @StateObject private var plus = ShekatiPlusStore()
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
-        let schema = Schema([ChequeRecord.self, AppConfiguration.self])
+        let schema = Schema([ChequeRecord.self, AppConfiguration.self, BankAccountRecord.self, ChequeBookRecord.self, LedgerEventRecord.self])
         var built: ModelContainer?
         var fallbackReason: String?
         var failure: String?
@@ -61,9 +63,13 @@ struct ShekatiApp: App {
                 RootView()
                     .modelContainer(container)
                     .environment(state)
+                    .environmentObject(plus)
+                    .task(id: scenePhase) {
+                        if scenePhase == .active { await plus.refreshEntitlement() }
+                    }
                     .environment(\.locale, state.preferences.language.locale)
                     .environment(\.calendar, Calendar(identifier: .gregorian))
-                    .environment(\.layoutDirection, state.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+                    .environment(\.layoutDirection, state.preferences.language.isRTL ? .rightToLeft : .leftToRight)
                     .preferredColorScheme(state.preferences.appearance == .system ? nil :
                                           state.preferences.appearance == .dark ? .dark : .light)
                     .tint(Theme.accent)

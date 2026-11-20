@@ -9,7 +9,9 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Query private var records: [ChequeRecord]
     @Query(sort: \AppConfiguration.createdAt) private var configurations: [AppConfiguration]
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
     @State private var selectedTab = 0
+    @State private var addingCheque = false
     /// A deep link keeps only the identifier. The record is resolved from the live query when the
     /// sheet renders, so a cheque purged while the sheet is open is never read.
     private struct LinkedCheque: Identifiable { let id: UUID }
@@ -37,25 +39,33 @@ struct RootView: View {
                 if app.currencyCode.isEmpty && records.isEmpty {
                     CurrencySetupView()
                 } else {
-                    TabView(selection: $selectedTab) {
+                    TabView(selection: Binding(get: { selectedTab }, set: { tab in
+                        if tab == 2 { addingCheque = true } else { selectedTab = tab }
+                    })) {
                         NavigationStack {
                             DashboardView()
-                        }.tabItem { Label(app.tr("Home"), systemImage: "square.grid.2x2") }.tag(0)
+                        }.tabItem { Label(app.tr("Home"), systemImage: "house") }.tag(0)
                         NavigationStack {
-                            OutgoingChequeTableView()
+                            ChequeListView()
                         }.tabItem { Label(app.tr("Cheques"), systemImage: "list.bullet.rectangle") }.tag(1)
-                        NavigationStack { SettingsView() }
-                            .tabItem { Label(app.tr("Settings"), systemImage: "slider.horizontal.3") }.tag(2)
+                        Color.clear.tabItem { Label(app.tr("Add"), systemImage: "plus.circle.fill") }.tag(2)
+                        NavigationStack { DueCalendarView() }
+                            .tabItem { Label(app.tr("Calendar"), systemImage: "calendar") }.tag(3)
+                        NavigationStack { ShekatiMoreView() }
+                            .tabItem { Label(app.tr("More"), systemImage: "ellipsis") }.tag(4)
                     }
                 }
             }
             .disabled(app.lock.isLocked)
             .accessibilityHidden(app.lock.isLocked)
             if app.lock.isLocked { lockScreen }
-            if scenePhase != .active && app.preferences.appLockEnabled {
+            if scenePhase != .active && (app.preferences.appLockEnabled || hidesAmounts) {
                 Theme.background.ignoresSafeArea()
                 VStack(spacing: 16) { BrandMark(); Text(app.tr("Shekati")).font(.title.bold()) }
             }
+        }
+        .sheet(isPresented: $addingCheque) {
+            NavigationStack { ChequeEditorView() }
         }
         .sheet(item: $linkedCheque, onDismiss: {
             if let id = app.openedChequeID { app.notifications.acknowledgeOpenCheque(id) }
@@ -75,7 +85,7 @@ struct RootView: View {
                 } }
             }
             .environment(\.locale, app.preferences.language.locale)
-            .environment(\.layoutDirection, app.preferences.language == .arabic ? .rightToLeft : .leftToRight)
+            .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
         }
         .task(id: currencySignature) { reconcileCurrency() }
         .task(id: reminderSignature) {
@@ -95,6 +105,7 @@ struct RootView: View {
             app.lock.synchronize(enabled: value)
             app.privacy.update(app: app, phase: scenePhase)
         }
+        .onChange(of: hidesAmounts) { _, _ in app.didMutate() }
         .onChange(of: app.preferences.language) { _, language in app.lock.languageCode = language.rawValue }
         .onChange(of: app.openedChequeID) { _, _ in presentPendingLink() }
         .onChange(of: app.lock.isLocked) { _, locked in
@@ -166,13 +177,8 @@ struct RootView: View {
 
     private func reconcileCurrency() {
         let currencies = Set(records.map(\.currencyCode).filter { !$0.isEmpty })
+        // A cheque retains its currency. The configuration is only the default for new records.
         app.currencyConflict = currencies.count > 1
-        if currencies.count == 1, let code = currencies.first {
-            app.currencyCode = code
-            if let configuration = configurations.first, configuration.currencyCode != code {
-                configuration.currencyCode = code
-                do { try context.save() } catch { context.rollback(); app.persistenceMessage = app.tr("Could not save changes.") }
-            }
-        } else { app.currencyCode = configurations.first?.currencyCode ?? currencies.sorted().first ?? "" }
+        app.currencyCode = configurations.first?.currencyCode ?? currencies.sorted().first ?? ""
     }
 }

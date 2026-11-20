@@ -69,7 +69,8 @@ final class AppState {
     var reminderSettings: ReminderSettings {
         ReminderSettings(offsets: preferences.reminderOffsets, hour: preferences.reminderHour,
                          minute: preferences.reminderMinute, dailySummary: preferences.dailySummary,
-                         hideDetails: preferences.hideNotificationDetails, languageCode: preferences.language.rawValue)
+                         hideDetails: preferences.hideNotificationDetails || UserDefaults.standard.bool(forKey: "shekati.hideAmounts"),
+                         languageCode: preferences.language.rawValue, bankingCalendar: preferences.bankingCalendar)
     }
 
     func requestNotificationPermissionIfNeeded() async {

@@ -5,7 +5,9 @@ import ShekatiCore
 enum Theme {
     static let accent = Color("AccentColor")
     static let navy = Color("Navy")
-    static let brandBackground = Color(red: 19 / 255, green: 42 / 255, blue: 70 / 255)
+    static let brandBackground = Color(red: 18 / 255, green: 78 / 255, blue: 82 / 255)
+    static let incoming = Color(uiColor: UIColor { $0.userInterfaceStyle == .dark ? UIColor(red: 0.53, green: 0.85, blue: 0.69, alpha: 1) : UIColor(red: 0.14, green: 0.44, blue: 0.30, alpha: 1) })
+    static let outgoing = Color(uiColor: UIColor { $0.userInterfaceStyle == .dark ? UIColor(red: 0.60, green: 0.76, blue: 0.97, alpha: 1) : UIColor(red: 0.19, green: 0.36, blue: 0.58, alpha: 1) })
     static let background = Color(uiColor: .systemGroupedBackground)
     static let surface = Color(uiColor: .secondarySystemGroupedBackground)
     static let red = Color.red
@@ -16,7 +18,7 @@ private struct ShekatiCard: ViewModifier {
     func body(content: Content) -> some View {
         content.padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Theme.surface, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .background(Theme.surface, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 }
 
@@ -69,14 +71,15 @@ struct EmptyStateView: View {
 
 @MainActor
 struct AmountText: View {
+    @AppStorage("shekati.hideAmounts") private var hidden = false
     @Environment(AppState.self) private var app
     let minorUnits: Int64
     var direction: ChequeDirection? = nil
     var body: some View {
-        Text(app.formatAmount(minorUnits))
+        Text(hidden ? "••••" : app.formatAmount(minorUnits))
             .monospacedDigit()
             .foregroundStyle(direction == .incoming ? Theme.accent : .primary)
-            .accessibilityLabel(app.formatAmount(minorUnits))
+            .accessibilityLabel(hidden ? app.tr("Amounts hidden") : app.formatAmount(minorUnits))
     }
 }
 
@@ -84,11 +87,14 @@ struct AmountText: View {
 /// Keep the preferred font; long values use a separate currency label and can pan.
 @MainActor
 struct ReadableCurrencyAmount: View {
+    @AppStorage("shekati.hideAmounts") private var hidden = false
+    @Environment(AppState.self) private var app
     let minorUnits: Int64
     let currencyCode: String
     let formatted: String
 
     var body: some View {
+        if hidden { Text("••••").accessibilityLabel(app.tr("Amounts hidden")) } else {
         ViewThatFits(in: .horizontal) {
             Text(formatted).fixedSize(horizontal: true, vertical: false)
             VStack(alignment: .leading, spacing: 4) {
@@ -105,6 +111,7 @@ struct ReadableCurrencyAmount: View {
         .environment(\.layoutDirection, .leftToRight)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(formatted)
+        }
     }
 }
 
@@ -146,7 +153,7 @@ struct BrandMark: View {
         ZStack {
             RoundedRectangle(cornerRadius: 18).fill(Theme.brandBackground)
             Image(systemName: "checkmark.rectangle.stack.fill")
-                .font(.system(size: 28, weight: .semibold)).foregroundStyle(Theme.accent)
+                .font(.system(size: 28, weight: .semibold)).foregroundStyle(.white)
         }.frame(width: 60, height: 60).accessibilityHidden(true)
     }
 }

@@ -60,6 +60,10 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: ShekatiTests
+        excludes:
+          - Resources
+      - path: ShekatiTests/Resources
+        buildPhase: resources
     dependencies:
       - target: Shekati
       - package: ShekatiCore

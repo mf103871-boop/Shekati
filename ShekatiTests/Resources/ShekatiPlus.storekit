@@ -1,0 +1,64 @@
+{
+  "identifier": "435AB3B1-D5B7-49BD-ACC4-F6E53F0412EB",
+  "nonRenewingSubscriptions": [],
+  "products": [],
+  "settings": {
+    "_locale": "en_US",
+    "_storefront": "USA"
+  },
+  "subscriptionGroups": [
+    {
+      "id": "3C152597-E3AD-4E8E-B622-C2E17FCD2C4E",
+      "localizations": [],
+      "name": "Shekati Plus",
+      "subscriptions": [
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "4.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "B5855891-86DE-41CB-BD8D-FFE75B5CDA30",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "Shekati Plus",
+              "displayName": "Monthly Plus",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "com.mf103871.shekati.plus.monthly",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Monthly",
+          "subscriptionGroupID": "3C152597-E3AD-4E8E-B622-C2E17FCD2C4E",
+          "type": "RecurringSubscription"
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "39.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "99468724-3C4E-417F-9230-0DA117D2A8A8",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "Shekati Plus",
+              "displayName": "Annual Plus",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "com.mf103871.shekati.plus.annual",
+          "recurringSubscriptionPeriod": "P1Y",
+          "referenceName": "Annual",
+          "subscriptionGroupID": "3C152597-E3AD-4E8E-B622-C2E17FCD2C4E",
+          "type": "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version": {
+    "major": 3,
+    "minor": 0
+  }
+}

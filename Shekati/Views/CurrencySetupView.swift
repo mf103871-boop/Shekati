@@ -22,7 +22,7 @@ struct CurrencySetupView: View {
                         feature("camera.viewfinder", "Scan, review, save")
                         feature("icloud", "Your records, with you")
                     }.shekatiCard()
-                    Text(app.tr("Choose one currency for your records. It stays fixed while saved cheques exist."))
+                    Text(app.tr("Choose your default currency. Each bank account keeps its own currency."))
                         .font(.footnote).foregroundStyle(.secondary)
                     Button { showingCurrencies = true } label: {
                         HStack { Text(app.tr("Choose currency")); Spacer(); Image(systemName: "arrow.forward") }
@@ -41,10 +41,11 @@ struct CurrencySetupView: View {
 
     private var languagePicker: some View {
         Menu {
-            Button("العربية") { app.preferences.language = .arabic }
-            Button("English") { app.preferences.language = .english }
+            ForEach(AppLanguage.allCases) { choice in
+                Button(choice.displayName) { app.preferences.language = choice }
+            }
         } label: {
-            Label(app.preferences.language == .arabic ? "العربية" : "English", systemImage: "globe")
+            Label(app.preferences.language.displayName, systemImage: "globe")
                 .font(.subheadline)
         }
     }
@@ -87,11 +88,11 @@ struct CurrencyPickerView: View {
                             Spacer()
                             if app.currencyCode == code { Image(systemName: "checkmark.circle.fill").foregroundStyle(Theme.accent) }
                         }.padding(.vertical, 3)
-                    }.disabled(!records.isEmpty)
+                    }
                         .accessibilityIdentifier("currency_\(code)")
                 }
             } footer: {
-                Text(app.tr("Currency cannot change while any saved cheque exists, including history."))
+                Text(app.tr("This default applies to new records. Existing amounts retain their currency."))
             }
         }.navigationTitle(app.tr("Currency"))
             .searchable(text: $query.westernDigits, prompt: app.tr("Search currencies"))
@@ -103,7 +104,7 @@ struct CurrencyPickerView: View {
     }
     private func name(_ code: String) -> String { app.preferences.language.locale.localizedString(forCurrencyCode: code) ?? code }
     private func save(_ code: String) {
-        guard records.isEmpty, Locale.commonISOCurrencyCodes.contains(code) else { return }
+        guard Locale.commonISOCurrencyCodes.contains(code) else { return }
         if let configuration = configurations.first { configuration.currencyCode = code }
         else { context.insert(AppConfiguration(currencyCode: code)) }
         do {
