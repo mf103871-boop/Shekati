@@ -145,12 +145,11 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate {
                 if let signature { content.userInfo["signature"] = signature }
             }
             var calendar = Calendar(identifier: .gregorian)
-            calendar.timeZone = .autoupdatingCurrent
+            let bankingZone = settings.bankingCalendar.flatMap { TimeZone(identifier: $0.timeZoneID) }
+            calendar.timeZone = bankingZone ?? .autoupdatingCurrent
             var components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: item.fireDate)
             components.calendar = calendar
-            // Keep Gregorian civil dates even with a Hijri system calendar; let the device choose its local zone.
-            // Reverify after travel when the app becomes active; closed-app travel behavior needs device testing.
-            components.timeZone = nil
+            components.timeZone = bankingZone
             let trigger: UNNotificationTrigger
             if item.kind == .snooze || (item.kind == .replenishment && item.fireDate.timeIntervalSinceNow < 60) {
                 // Calendar components have whole-second precision; an imminent coverage notice needs a short interval.

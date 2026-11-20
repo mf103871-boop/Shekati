@@ -36,9 +36,9 @@ def capture(entry, original_run, destination, device):
     test_run = original_run.with_name(f"store-{code}.xctestrun")
     test_run.write_bytes(plistlib.dumps(settings))
     result = Path(os.environ["RUNNER_TEMP"]) / f"store-{code}.xcresult"
-    subprocess.run(["xcodebuild", "test-without-building", "-xctestrun", str(test_run),
+    run = subprocess.run(["xcodebuild", "test-without-building", "-xctestrun", str(test_run),
                     "-only-testing:ShekatiUITests/StoreScreenshotUITests/testLocalizedProductScreens",
-                    "-destination", destination, "-parallel-testing-enabled", "NO", "-resultBundlePath", str(result)], check=True)
+                    "-destination", destination, "-parallel-testing-enabled", "NO", "-resultBundlePath", str(result)])
     attachments = result.with_suffix(".attachments")
     subprocess.run(["xcrun", "xcresulttool", "export", "attachments", "--path", str(result), "--output-path", str(attachments)], check=True)
     folder = ROOT / code
@@ -59,10 +59,18 @@ def capture(entry, original_run, destination, device):
                 raise ValueError(f"{name}: unexpected format or device dimensions")
             (folder / (name + ".png")).write_bytes(raw)
             shots[name] = hashlib.sha256(raw).hexdigest()
+    if run.returncode:
+        # Keep partial original screenshots with the test failure for the independent reviewer.
+        with (folder / "test-result.json").open("w") as report:
+            subprocess.run(["xcrun", "xcresulttool", "get", "test-results", "summary", "--path", str(result)], stdout=report, check=True)
+        raise RuntimeError(f"{code}: native UI test failed after capturing {list(shots)}")
     if set(SCREENS) != set(shots) or len(set(shots.values())) != 5:
         raise ValueError(f"{code}: five distinct native screens required; found {list(shots)}")
+    subprocess.run(["xcrun", "swift", "Tools/ScreenAudit/frame_store.swift", str(folder),
+                    str(MANIFEST.parent / "metadata" / (code + ".json"))], check=True)
     proof = {"store": code, "bundle": bundle, "source": os.environ["GITHUB_SHA"], "run": os.environ["GITHUB_RUN_ID"],
-             "device": device, "originalPNGHashes": shots}
+             "device": device, "originalPNGHashes": shots, "storeArtworkHashes": {
+                 name: hashlib.sha256((folder / "store" / (name + ".png")).read_bytes()).hexdigest() for name in shots}}
     (folder / "capture.json").write_text(json.dumps(proof, indent=2))
     shutil.rmtree(result)
     shutil.rmtree(attachments)

@@ -9,6 +9,11 @@ struct BankingCalendar: Equatable, Codable, Sendable {
     var closedWeekdays: Set<Int> = []
     var holidays: Set<String> = []
 
+    var reminderSignature: [String] {
+        [region, timeZoneID, String(shiftsReminders), closedWeekdays.sorted().map(String.init).joined(separator: ","),
+         holidays.sorted().joined(separator: ",")]
+    }
+
     static func defaultWeekends(in region: String) -> Set<Int> {
         var calendar = Calendar(identifier: .gregorian)
         calendar.locale = Locale(identifier: "en_" + region)

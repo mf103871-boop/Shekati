@@ -4,6 +4,7 @@ on:
     branches: ['feature/shekati-global-ledger']
     paths:
       - 'Tools/ScreenAudit/capture_store.py'
+      - 'Tools/ScreenAudit/frame_store.swift'
       - '.github/workflows/store-capture.yml'
       - 'ShekatiUITests/StoreScreenshotUITests.swift'
     tags:
