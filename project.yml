@@ -78,6 +78,10 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: ShekatiUITests
+      - path: Shekati/Resources
+        includes:
+          - "*.lproj/Localizable.strings"
+        buildPhase: resources
       - path: ShekatiTests/Resources/ShekatiPlus.storekit
         buildPhase: resources
     dependencies:

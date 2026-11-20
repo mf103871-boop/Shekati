@@ -51,7 +51,7 @@ final class ShekatiUITests: XCTestCase {
         app.buttons["saveCheque"].tap()
         allowNotificationPromptIfPresented()
         waitForEditorDismissal(in: app)
-        app.tabBars.buttons["tabCheques"].tap()
+        nativeTab(.cheques, in: app).tap()
         let row = app.descendants(matching: .any).matching(NSPredicate(
             format: "identifier BEGINSWITH %@ AND label CONTAINS %@ AND label CONTAINS %@",
             "cheque-row-", "CI cheque", "000182"
@@ -100,7 +100,7 @@ final class ShekatiUITests: XCTestCase {
         allowNotificationPromptIfPresented()
         waitForEditorDismissal(in: app)
         captureScreenshot(app, name: "Arabic simple home with cheques")
-        app.tabBars.buttons["tabCheques"].tap()
+        nativeTab(.cheques, in: app).tap()
         let incoming = chequeRow(in: app, named: "Demo incoming")
         let outgoing = chequeRow(in: app, named: "Demo outgoing")
         XCTAssertTrue(outgoing.waitForExistence(timeout: 5))
@@ -163,7 +163,7 @@ final class ShekatiUITests: XCTestCase {
         app.buttons["saveCheque"].tap()
         allowNotificationPromptIfPresented()
         waitForEditorDismissal(in: app)
-        app.tabBars.buttons["tabCheques"].tap()
+        nativeTab(.cheques, in: app).tap()
         let row = chequeRow(in: app, named: "Large text demo")
         XCTAssertTrue(row.waitForExistence(timeout: 5))
         XCTAssertTrue(row.label.contains("000999"))
@@ -236,17 +236,18 @@ final class ShekatiUITests: XCTestCase {
 
     func testArabicFirstRunAndEnglishLanguageSwitch() {
         let app = launch(arabic: true)
-        XCTAssertEqual(app.tabBars.buttons["tabHome"].label, "الرئيسية")
+        XCTAssertEqual(nativeTab(.home, in: app).label, "الرئيسية")
         captureScreenshot(app, name: "Arabic home")
         openMoreDestination("moreSettingsLink", in: app)
         let language = app.descendants(matching: .any).matching(identifier: "languagePicker").firstMatch
         XCTAssertTrue(language.waitForExistence(timeout: 5))
         language.tap()
         app.buttons["language-en-US"].tap()
-        XCTAssertTrue(app.tabBars.buttons["tabMore"].waitForExistence(timeout: 5))
+        let englishMoreTab = nativeTab(.more, in: app, language: "en-US")
+        XCTAssertTrue(englishMoreTab.waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Appearance and language"].exists || app.staticTexts["APPEARANCE AND LANGUAGE"].exists)
-        XCTAssertEqual(app.tabBars.buttons["tabMore"].label, "More")
-        XCTAssertTrue(app.tabBars.buttons["tabMore"].isSelected)
+        XCTAssertEqual(englishMoreTab.label, "More")
+        XCTAssertTrue(englishMoreTab.isSelected)
         waitForStableEnglishSettingsLayout(in: app)
         captureScreenshot(app, name: "English settings after language switch")
     }
@@ -254,8 +255,8 @@ final class ShekatiUITests: XCTestCase {
     private func waitForStableEnglishSettingsLayout(in app: XCUIApplication) {
         let languageLabel = app.staticTexts["Language"]
         let languagePicker = app.buttons["languagePicker"]
-        let homeTab = app.tabBars.buttons["tabHome"]
-        let moreTab = app.tabBars.buttons["tabMore"]
+        let homeTab = nativeTab(.home, in: app, language: "en-US")
+        let moreTab = nativeTab(.more, in: app, language: "en-US")
         var previousFrame = CGRect.null
         var stableSince: Date?
         let layout = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
