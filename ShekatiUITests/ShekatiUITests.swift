@@ -64,7 +64,9 @@ final class ShekatiUITests: XCTestCase {
         captureScreenshot(app, name: "English compact cheque table")
         row.tap()
         XCTAssertTrue(app.navigationBars["Cheque"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["000182"].exists)
+        let chequeNumber = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@ AND label CONTAINS %@", "Cheque number", "000182")).firstMatch
+        reveal(chequeNumber, in: app)
+        XCTAssertTrue(chequeNumber.isHittable)
         captureScreenshot(app, name: "English cheque details — leading zeros preserved")
         app.buttons["Edit"].tap()
         XCTAssertTrue(app.textFields["bankField"].waitForExistence(timeout: 5),

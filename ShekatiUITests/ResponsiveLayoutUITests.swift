@@ -44,7 +44,7 @@ final class ResponsiveLayoutUITests: XCTestCase {
         currency.tap()
         XCTAssertTrue(app.buttons["addCheque"].waitForExistence(timeout: 8))
         rotate(.portrait, in: app)
-        reveal(app.buttons["addCheque"], in: app)
+        XCTAssertTrue(app.buttons["addCheque"].isHittable)
         app.buttons["addCheque"].tap()
         XCTAssertTrue(app.textFields["amountField"].waitForExistence(timeout: 5))
         selectOutgoing(in: app, arabic: arabic)
