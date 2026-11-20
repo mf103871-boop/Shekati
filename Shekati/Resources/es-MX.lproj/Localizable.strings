@@ -247,11 +247,11 @@
 "Lost" = "Extraviado";
 "Manage accounts and chequebooks" = "Administrar cuentas y chequeras";
 "Manage subscription" = "Gestionar la suscripción";
-"Mark cancelled" = "Marca cancelada";
-"Mark collected" = "Marca recogida";
-"Mark paid" = "Marca pagada";
-"Mark pending" = "Marcar pendiente";
-"Mark returned" = "Mark regresó";
+"Mark cancelled" = "Marcar como cancelado";
+"Mark collected" = "Marcar como cobrado";
+"Mark paid" = "Marcar como pagado";
+"Mark pending" = "Marcar como pendiente";
+"Mark returned" = "Marcar como devuelto";
 "Monthly subscription" = "Suscripción mensual de 1 mes";
 "More" = "Más";
 "More details" = "Más detalles de la tienda";
@@ -333,7 +333,7 @@
 "Payee" = "Beneficiario";
 "Payee (optional)" = "Beneficiario (opcional)";
 "Payer" = "Librador";
-"Payer (optional)" = "Pagar (opcional)";
+"Payer (optional)" = "Librador (opcional)";
 "Payment date" = "Fecha de pago";
 "Pending" = "Pendiente";
 "Period" = "Período";
@@ -355,10 +355,10 @@
 "Recognized text" = "Texto reconocido";
 "Reconcile account" = "Conciliar cuenta";
 "Record bank settlement" = "Registrar liquidación bancaria";
-"Record collection" = "Colección de registros";
+"Record collection" = "Registrar cobro";
 "Record deposit" = "Registrar depósito";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Registra los cheques recibidos y emitidos, consulta sus fechas de vencimiento y guarda las imágenes en un solo lugar.";
-"Record payment" = "Pago de récord";
+"Record payment" = "Registrar pago";
 "Record return" = "Retorno de récord";
 "Recorded balance" = "Saldo registrado";
 "Recorded operations protect the original cheque details." = "Las operaciones registradas protegen los detalles originales del cheque.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Reemplazar cheques existentes";
 "Replaced" = "Sustituido";
 "Replacement cheque number" = "Número de cheque de reemplazo";
-"Replacement due date" = "Fecha de vencimiento del reemplazo";
+"Replacement due date" = "Fecha de vencimiento del cheque de reemplazo";
 "Report date:" = "Fecha de presentación:";
 "Report lost cheque" = "Reportar cheque perdido";
 "Required" = "Necesaria";
@@ -477,7 +477,7 @@
 "Sort by" = "Ordenar por:";
 "Sort cheques" = "Ordenar cheques";
 "Start legal follow-up" = "Iniciar seguimiento legal";
-"Statement balance" = "Saldo del estado financiero";
+"Statement balance" = "Saldo del estado de cuenta";
 "Status" = "Estado de la cuestión";
 "Suggested details" = "Detalles sugeridos";
 "Swipe to see all columns" = "Desliza para ver todas las columnas";
@@ -530,7 +530,7 @@
 "Through" = "A través de";
 "Through date" = "Hasta la fecha";
 "Time zone" = "Zona horaria de";
-"To collect" = "Para recoger";
+"To collect" = "Por cobrar";
 "To pay" = "Para pagar";
 "Today" = "Hoy";
 "Tomorrow" = "Mañana";

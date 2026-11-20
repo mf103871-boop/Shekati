@@ -181,7 +181,7 @@
 "Enable notifications" = "Aktifkan notifikasi";
 "Enable notifications in Settings so your scheduled reminders can appear." = "Aktifkan pemberitahuan di Pengaturan sehingga peringatan terjadwal Anda dapat muncul.";
 "Enable notifications to receive cheque reminders." = "Aktifkan pemberitahuan untuk menerima peringatan cek.";
-"Endorse cheque" = "Endorse check";
+"Endorse cheque" = "Endosemenkan cek";
 "Endorsed" = "Diendosemen";
 "Endorsements, partial settlements and replacements" = "Penandatanganan, penyelesaian sebagian dan penggantian";
 "Enter a positive amount and the date written on the cheque." = "Masukkan jumlah yang positif dan tanggal yang ditulis pada cek.";
@@ -226,7 +226,7 @@
 "In hand" = "Dalam penguasaan";
 "Include possible duplicates" = "Termasuk kemungkinan duplikat";
 "Incoming" = "Diterima";
-"Incoming cheque" = "Check masuk";
+"Incoming cheque" = "Cek masuk";
 "Issue cheque" = "Izinkan cek";
 "Issue date" = "Tanggal terbit";
 "Issue date must not be after the due date or actual settlement date." = "Tanggal terbit tidak boleh setelah tanggal jatuh tempo atau tanggal penyelesaian sebenarnya.";
@@ -248,10 +248,10 @@
 "Manage accounts and chequebooks" = "Manage accounts and checkbooks";
 "Manage subscription" = "Kelola langganan";
 "Mark cancelled" = "Tandai dibatalkan";
-"Mark collected" = "Tandai dikumpulkan";
-"Mark paid" = "Mark dibayar";
-"Mark pending" = "Tandai sebagai menunggu";
-"Mark returned" = "Mark kembali";
+"Mark collected" = "Tandai sudah dicairkan";
+"Mark paid" = "Tandai sudah dibayar";
+"Mark pending" = "Tandai masih tertunda";
+"Mark returned" = "Tandai dikembalikan";
 "Monthly subscription" = "Langganan Bulanan";
 "More" = "Lainnya";
 "More details" = "Lebih detail";
@@ -313,7 +313,7 @@
 "Order" = "Urutan";
 "Original amount" = "Jumlah asli";
 "Outgoing" = "Diterbitkan";
-"Outgoing cheque" = "Check Out";
+"Outgoing cheque" = "Cek keluar";
 "Outgoing cheque ledger" = "Buku cek keluaran";
 "Outgoing cheques you add appear here in date order." = "cek keluaran yang Anda tambahkan muncul di sini dalam urutan tanggal.";
 "Outgoing due within 7 days" = "Cek terbit yang jatuh tempo dalam 7 hari";
@@ -330,9 +330,9 @@
 "Partial bank transfer" = "Transfer bank parsial";
 "Partial cash payment" = "Pembayaran tunai sebagian";
 "Pay to" = "Bayar ke";
-"Payee" = "Pemenang";
-"Payee (optional)" = "Pemenang (opsional)";
-"Payer" = "Membayar";
+"Payee" = "Penerima pembayaran";
+"Payee (optional)" = "Penerima pembayaran (opsional)";
+"Payer" = "Pembayar";
 "Payer (optional)" = "Pembayar (opsional)";
 "Payment date" = "Tanggal Pembayaran";
 "Pending" = "Tertunda";
@@ -353,12 +353,12 @@
 "Recently Deleted" = "Baru-baru ini Dihapus";
 "Recently deleted" = "Baru-baru ini dihapus";
 "Recognized text" = "Teks yang diakui";
-"Reconcile account" = "Akun";
+"Reconcile account" = "Rekonsiliasi rekening";
 "Record bank settlement" = "Catat penyelesaian melalui bank";
-"Record collection" = "Koleksi Rekaman";
+"Record collection" = "Catat penerimaan pembayaran";
 "Record deposit" = "Catat setoran";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Rekam cek masuk dan keluar, lihat tanggal jatuh tempo mereka dan simpan gambar cek Anda bersama-sama.";
-"Record payment" = "Rekor pembayaran";
+"Record payment" = "Catat pembayaran";
 "Record return" = "Kembalian rekaman";
 "Recorded balance" = "Saldo tercatat";
 "Recorded operations protect the original cheque details." = "Operasi yang direkam melindungi detail cek asli.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Ganti cek yang cocok dengan yang ada";
 "Replaced" = "Diganti";
 "Replacement cheque number" = "Nomor cek pengganti";
-"Replacement due date" = "Tanggal jatuh tempo penggantian";
+"Replacement due date" = "Tanggal jatuh tempo cek pengganti";
 "Report date:" = "Tanggal laporan:";
 "Report lost cheque" = "Laporkan cek hilang";
 "Required" = "Diperlukan";
@@ -477,7 +477,7 @@
 "Sort by" = "Isih menurut";
 "Sort cheques" = "Isi cek";
 "Start legal follow-up" = "Mulai pelacakan hukum";
-"Statement balance" = "Saldo laporan";
+"Statement balance" = "Saldo pada rekening koran";
 "Status" = "Status";
 "Suggested details" = "Rincian yang diusulkan";
 "Swipe to see all columns" = "Seret untuk melihat semua kolom";
@@ -530,7 +530,7 @@
 "Through" = "Melalui";
 "Through date" = "Tanggal";
 "Time zone" = "Zona Waktu";
-"To collect" = "Untuk mengumpulkan";
+"To collect" = "Untuk ditagih";
 "To pay" = "Untuk membayar";
 "Today" = "Hari ini";
 "Tomorrow" = "Besok";

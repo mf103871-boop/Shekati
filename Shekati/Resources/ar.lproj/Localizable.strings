@@ -329,7 +329,7 @@
 "Paid cheques appear here with their details and payment dates." = "تظهر هنا الشيكات المصروفة مع تفاصيلها وتاريخ صرفها.";
 "Partial bank transfer" = "دفعة جزئية بحوالة بنكية";
 "Partial cash payment" = "دفعة نقدية جزئية";
-"Pay to" = "دائن الشيك";
+"Pay to" = "يُدفع إلى";
 "Payee" = "المستفيد";
 "Payee (optional)" = "المستفيد (اختياري)";
 "Payer" = "صاحب الشيك";

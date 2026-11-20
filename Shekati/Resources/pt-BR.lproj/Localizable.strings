@@ -101,7 +101,7 @@
 "Cheque report" = "Relatório de cheque";
 "Cheque saved. Enter the next cheque." = "Cheque salvo. Digite o próximo cheque.";
 "Cheque tracker" = "Controle de cheques";
-"Chequebook" = "Livro de cheques";
+"Chequebook" = "Talão de cheques";
 "Cheques" = "Cheques";
 "Cheques imported" = "Cheques importados";
 "Cheques, photos, manual order and currency sync through your Apple account. Reminder defaults, language and lock are specific to this iPhone." = "Cheques, fotos, pedidos manuais e sincronização de moeda através da sua conta Apple. Lembretes padrões, idioma e bloqueio são específicos para este iPhone.";
@@ -248,10 +248,10 @@
 "Manage accounts and chequebooks" = "Gerencie contas e chequebooks";
 "Manage subscription" = "Gerenciar a assinatura";
 "Mark cancelled" = "Marcar como cancelado";
-"Mark collected" = "Marca coletada";
-"Mark paid" = "Marca paga";
+"Mark collected" = "Marcar como recebido";
+"Mark paid" = "Marcar como pago";
 "Mark pending" = "Marcar como pendente";
-"Mark returned" = "Mark retornou.";
+"Mark returned" = "Marcar como devolvido";
 "Monthly subscription" = "Assinatura mensal";
 "More" = "Mais";
 "More details" = "Mais detalhes sobre";
@@ -264,7 +264,7 @@
 "New bank accounts" = "Novas contas bancárias";
 "New cheque books" = "Novos livros de cheque";
 "New cheques" = "Novos cheques";
-"New holder" = "Novo titular da conta";
+"New holder" = "Novo portador do cheque";
 "New operations" = "Novas operações";
 "Next" = "Próximo";
 "Next 3 days" = "Próximos 3 dias";
@@ -331,9 +331,9 @@
 "Partial cash payment" = "Pagamento parcial em dinheiro";
 "Pay to" = "Pagar para";
 "Payee" = "Beneficiário";
-"Payee (optional)" = "Nome do beneficiário (opcional)";
-"Payer" = "Pagar";
-"Payer (optional)" = "Pagar (opcional)";
+"Payee (optional)" = "Beneficiário (opcional)";
+"Payer" = "Pagador";
+"Payer (optional)" = "Pagador (opcional)";
 "Payment date" = "Data de pagamento";
 "Pending" = "Pendente";
 "Period" = "Período";
@@ -355,10 +355,10 @@
 "Recognized text" = "Texto reconhecido";
 "Reconcile account" = "Conciliar conta";
 "Record bank settlement" = "Registrar liquidação bancária";
-"Record collection" = "Coleção de registros";
+"Record collection" = "Registrar recebimento";
 "Record deposit" = "Registrar depósito";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Registre cheques de entrada e saída, veja suas datas de vencimento e mantenha as imagens dos cheques juntas.";
-"Record payment" = "Pagamento de recorde";
+"Record payment" = "Registrar pagamento";
 "Record return" = "Record de retorno";
 "Recorded balance" = "Saldo registrado";
 "Recorded operations protect the original cheque details." = "As operações gravadas protegem os detalhes originais do cheque.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Substituir cheques existentes correspondentes";
 "Replaced" = "Substituído";
 "Replacement cheque number" = "Número de cheque de substituição";
-"Replacement due date" = "Data de vencimento da substituição";
+"Replacement due date" = "Data de vencimento do cheque de substituição";
 "Report date:" = "Data do relatório:";
 "Report lost cheque" = "Relatório de cheque perdido";
 "Required" = "Obrigatório";
@@ -477,7 +477,7 @@
 "Sort by" = "Ordenar por:";
 "Sort cheques" = "Classificar os cheques";
 "Start legal follow-up" = "Iniciar acompanhamento legal";
-"Statement balance" = "Declaração de saldo";
+"Statement balance" = "Saldo do extrato bancário";
 "Status" = "Estado";
 "Suggested details" = "Detalhes sugeridos";
 "Swipe to see all columns" = "Deslize para ver todas as colunas";
@@ -530,7 +530,7 @@
 "Through" = "Através";
 "Through date" = "Até a data";
 "Time zone" = "Fuso horário de";
-"To collect" = "Para coletar";
+"To collect" = "A receber";
 "To pay" = "Para pagar";
 "Today" = "Hoje";
 "Tomorrow" = "Amanhã";

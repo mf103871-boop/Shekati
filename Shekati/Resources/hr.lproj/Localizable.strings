@@ -51,7 +51,7 @@
 "Backup password" = "Pričuvna zaporka";
 "Backup restored" = "Sigurnosna kopija vraćena";
 "Backup saved. Keep the file and password in a safe place." = "Spremljena je sigurnosna kopija. Čuvajte datoteku i zaporku na sigurnom mjestu.";
-"Balance" = "Balans";
+"Balance" = "Stanje računa";
 "Bank" = "Banka";
 "Bank (optional)" = "Banka (neobvezno)";
 "Bank account" = "Bankovni račun";
@@ -181,7 +181,7 @@
 "Enable notifications" = "Omogućivanje obavijesti";
 "Enable notifications in Settings so your scheduled reminders can appear." = "Omogućite obavijesti u postavkama kako bi se mogli pojaviti zakazani podsjetnici.";
 "Enable notifications to receive cheque reminders." = "Omogućite obavijesti za primanje podsjetnika na ček.";
-"Endorse cheque" = "Ček za potvrdu";
+"Endorse cheque" = "Indosiraj ček";
 "Endorsed" = "Indosiran";
 "Endorsements, partial settlements and replacements" = "Potvrde, djelomične namire i zamjene";
 "Enter a positive amount and the date written on the cheque." = "Unesite pozitivan iznos i datum napisan na čeku.";
@@ -247,11 +247,11 @@
 "Lost" = "Izgubljen";
 "Manage accounts and chequebooks" = "Upravljanje računima i čekovnicama";
 "Manage subscription" = "Upravljanje pretplatom";
-"Mark cancelled" = "Označi otkazano";
-"Mark collected" = "Mark je skupljen";
-"Mark paid" = "Mark je platio.";
-"Mark pending" = "Označi kao čekanje";
-"Mark returned" = "Mark se vratio.";
+"Mark cancelled" = "Označi kao poništen";
+"Mark collected" = "Označi kao naplaćen";
+"Mark paid" = "Označi kao plaćen";
+"Mark pending" = "Označi kao ček na čekanju";
+"Mark returned" = "Označi kao vraćen";
 "Monthly subscription" = "Mjesečna pretplata na vijesti";
 "More" = "Više";
 "More details" = "Više detalja";
@@ -264,7 +264,7 @@
 "New bank accounts" = "Novi bankovni računi";
 "New cheque books" = "Nove čekovne knjižice";
 "New cheques" = "Novi čekovi";
-"New holder" = "Novi držač";
+"New holder" = "Novi imatelj čeka";
 "New operations" = "Nove operacije";
 "Next" = "Sljedeće";
 "Next 3 days" = "Sljedeća 3 dana";
@@ -332,8 +332,8 @@
 "Pay to" = "Plaćati";
 "Payee" = "Primatelj";
 "Payee (optional)" = "Primatelj plaćanja (neobavezno)";
-"Payer" = "Plaća";
-"Payer (optional)" = "Plaćati (neobvezno)";
+"Payer" = "Platitelj";
+"Payer (optional)" = "Platitelj (neobavezno)";
 "Payment date" = "Datum plaćanja";
 "Pending" = "U čekanju";
 "Period" = "Razdoblje";
@@ -355,10 +355,10 @@
 "Recognized text" = "Prepoznat tekst";
 "Reconcile account" = "Poravnaj račun";
 "Record bank settlement" = "Evidentiraj bankovnu namiru";
-"Record collection" = "Zbirka zapisa";
+"Record collection" = "Evidentiraj naplatu";
 "Record deposit" = "Evidentiraj polog";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Snimite dolazne i odlazne čekove, pogledajte njihove datume dospijeća i držite slike čekova zajedno.";
-"Record payment" = "Rekordna isplata";
+"Record payment" = "Evidentiraj plaćanje";
 "Record return" = "Rekordni povrat";
 "Recorded balance" = "Evidentirano stanje";
 "Recorded operations protect the original cheque details." = "Zabilježene operacije štite originalne detalje čekova.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Zamjena usklađenih postojećih čekova";
 "Replaced" = "Zamijenjen";
 "Replacement cheque number" = "Broj zamjenskog čeka";
-"Replacement due date" = "Datum isteka zamjene";
+"Replacement due date" = "Datum dospijeća zamjenskog čeka";
 "Report date:" = "Datum izvješća:";
 "Report lost cheque" = "Prijavite izgubljeni ček";
 "Required" = "Obvezno";
@@ -477,7 +477,7 @@
 "Sort by" = "Sortiraj po";
 "Sort cheques" = "Sortiraj čekove";
 "Start legal follow-up" = "Započnite pravni praćenje";
-"Statement balance" = "Izjava o bilanci";
+"Statement balance" = "Stanje prema bankovnom izvodu";
 "Status" = "Status";
 "Suggested details" = "Predloženi detalji";
 "Swipe to see all columns" = "Prijeđite prstom da biste vidjeli sve stupce";
@@ -530,8 +530,8 @@
 "Through" = "Kroz";
 "Through date" = "Datum";
 "Time zone" = "Vremenska zona";
-"To collect" = "Da skupljaju";
-"To pay" = "Da platim.";
+"To collect" = "Za naplatu";
+"To pay" = "Za plaćanje";
 "Today" = "Danas";
 "Tomorrow" = "Sutra.";
 "Total exceeds limit" = "Ukupno premašuje ograničenje";

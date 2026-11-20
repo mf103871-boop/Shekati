@@ -247,11 +247,11 @@
 "Lost" = "Smarrito";
 "Manage accounts and chequebooks" = "Gestire conti e libretti degli assegni";
 "Manage subscription" = "Gestire l’abbonamento";
-"Mark cancelled" = "Marca cancellata";
-"Mark collected" = "Mark raccolto";
-"Mark paid" = "Mark ha pagato";
-"Mark pending" = "Segna in sospeso";
-"Mark returned" = "Mark è tornato";
+"Mark cancelled" = "Segna come annullato";
+"Mark collected" = "Segna come incassato";
+"Mark paid" = "Segna come pagato";
+"Mark pending" = "Segna come in sospeso";
+"Mark returned" = "Segna come restituito";
 "Monthly subscription" = "Abbonamento mensile";
 "More" = "Altro";
 "More details" = "Più dettagli";
@@ -332,8 +332,8 @@
 "Pay to" = "Pagare a";
 "Payee" = "Beneficiario";
 "Payee (optional)" = "Beneficiario (facoltativo)";
-"Payer" = "Paga";
-"Payer (optional)" = "Pagare (opzionale)";
+"Payer" = "Pagatore";
+"Payer (optional)" = "Pagatore (facoltativo)";
 "Payment date" = "Data di pagamento";
 "Pending" = "In sospeso";
 "Period" = "Periodo";
@@ -355,10 +355,10 @@
 "Recognized text" = "Testo riconosciuto";
 "Reconcile account" = "Riconciliare il conto";
 "Record bank settlement" = "Registra il regolamento bancario";
-"Record collection" = "Collezione di dischi";
+"Record collection" = "Registra l’incasso";
 "Record deposit" = "Registra versamento";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Registra gli assegni ricevuti ed emessi, consulta le scadenze e conserva le immagini di ciascun assegno.";
-"Record payment" = "Record di pagamento";
+"Record payment" = "Registra il pagamento";
 "Record return" = "Record di ritorno";
 "Recorded balance" = "Saldo contabile";
 "Recorded operations protect the original cheque details." = "Le operazioni registrate proteggono i dettagli originali dell’assegno.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Sostituire gli assegni corrispondenti esistenti";
 "Replaced" = "Sostituito";
 "Replacement cheque number" = "Numero di assegno sostitutivo";
-"Replacement due date" = "Data di scadenza della sostituzione";
+"Replacement due date" = "Data di scadenza dell’assegno sostitutivo";
 "Report date:" = "Data di pubblicazione:";
 "Report lost cheque" = "Segnala assegno smarrito";
 "Required" = "Obbligatorio";
@@ -477,7 +477,7 @@
 "Sort by" = "Ordina per:";
 "Sort cheques" = "Ordinare gli assegni";
 "Start legal follow-up" = "Avviare il follow-up legale";
-"Statement balance" = "Bilancio di dichiarazione";
+"Statement balance" = "Saldo dell’estratto conto";
 "Status" = "Stato";
 "Suggested details" = "Dettagli suggeriti";
 "Swipe to see all columns" = "Scorri per vedere tutte le colonne";
@@ -530,7 +530,7 @@
 "Through" = "Attraverso";
 "Through date" = "Attraverso la data";
 "Time zone" = "Fuso orario";
-"To collect" = "Per raccogliere";
+"To collect" = "Da incassare";
 "To pay" = "Per pagare";
 "Today" = "Oggi";
 "Tomorrow" = "Domani";

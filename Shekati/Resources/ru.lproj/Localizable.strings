@@ -101,7 +101,7 @@
 "Cheque report" = "Отчет о чеке";
 "Cheque saved. Enter the next cheque." = "Чек сохранен. Введите следующий чек.";
 "Cheque tracker" = "Учёт банковских чеков";
-"Chequebook" = "Чек-бук";
+"Chequebook" = "Чековая книжка";
 "Cheques" = "Чеки";
 "Cheques imported" = "Импортированные чеки";
 "Cheques, photos, manual order and currency sync through your Apple account. Reminder defaults, language and lock are specific to this iPhone." = "Чеки, фотографии, ручной заказ и синхронизация валюты через вашу учетную запись Apple. Напоминания по умолчанию, язык и блокировка специфичны для этого iPhone.";
@@ -181,7 +181,7 @@
 "Enable notifications" = "Включить уведомления";
 "Enable notifications in Settings so your scheduled reminders can appear." = "Включите уведомления в Настройках, чтобы ваши запланированные напоминания могут появляться.";
 "Enable notifications to receive cheque reminders." = "Включите уведомления для получения напоминаний о чеках.";
-"Endorse cheque" = "Индоссамент чек";
+"Endorse cheque" = "Индоссировать чек";
 "Endorsed" = "Индоссирован";
 "Endorsements, partial settlements and replacements" = "Индоссаменты, частичные урегулирования и замены";
 "Enter a positive amount and the date written on the cheque." = "Введите положительную сумму и дату, написанную на чеке.";
@@ -247,11 +247,11 @@
 "Lost" = "Утерян";
 "Manage accounts and chequebooks" = "Управление счетами и чековыми книжками";
 "Manage subscription" = "Управление подпиской";
-"Mark cancelled" = "Маркировка аннулирована";
-"Mark collected" = "Марка собранная";
-"Mark paid" = "Марка выплачивается";
-"Mark pending" = "Марка ожидает";
-"Mark returned" = "Марк возвратился";
+"Mark cancelled" = "Отметить как аннулированный";
+"Mark collected" = "Отметить получение средств";
+"Mark paid" = "Отметить как оплаченный";
+"Mark pending" = "Отметить как ожидающий оплаты";
+"Mark returned" = "Отметить как возвращённый";
 "Monthly subscription" = "Ежемесячная подписка";
 "More" = "Ещё";
 "More details" = "Больше деталей";
@@ -331,9 +331,9 @@
 "Partial cash payment" = "Частичная выплата наличными";
 "Pay to" = "Плата";
 "Payee" = "Получатель";
-"Payee (optional)" = "Получатель (факультативно)";
+"Payee (optional)" = "Получатель платежа (необязательно)";
 "Payer" = "Плательщик";
-"Payer (optional)" = "Плательщик (факультативно)";
+"Payer (optional)" = "Плательщик (необязательно)";
 "Payment date" = "Дата платежа";
 "Pending" = "В стадии рассмотрения";
 "Period" = "Период";
@@ -355,10 +355,10 @@
 "Recognized text" = "Признанный текст";
 "Reconcile account" = "Выверка счета";
 "Record bank settlement" = "Зарегистрировать расчёт через банк";
-"Record collection" = "Сборник записей";
+"Record collection" = "Записать получение средств";
 "Record deposit" = "Зарегистрировать сдачу в банк";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Запись входящих и исходящих чеков, посмотреть их сроки платежа и сохранить ваши изображения чеков вместе.";
-"Record payment" = "Рекордная выплата";
+"Record payment" = "Записать платёж";
 "Record return" = "Рекордная доходность";
 "Recorded balance" = "Учётный остаток";
 "Recorded operations protect the original cheque details." = "Записанные операции защищают оригинальные данные чеков.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Замена существующих чеков";
 "Replaced" = "Заменён";
 "Replacement cheque number" = "Номер замещающего чека";
-"Replacement due date" = "Дата замены";
+"Replacement due date" = "Срок оплаты по новому чеку";
 "Report date:" = "Дата представления доклада:";
 "Report lost cheque" = "Сообщить об утерянном чеке";
 "Required" = "Требуется";
@@ -477,7 +477,7 @@
 "Sort by" = "Сортировать по";
 "Sort cheques" = "Сортировка чеков";
 "Start legal follow-up" = "Начать юридические последующие действия";
-"Statement balance" = "Остаток на счете";
+"Statement balance" = "Остаток по банковской выписке";
 "Status" = "Статус";
 "Suggested details" = "Предлагаемые детали";
 "Swipe to see all columns" = "Перетащить, чтобы увидеть все столбцы";
@@ -530,7 +530,7 @@
 "Through" = "Через";
 "Through date" = "До даты";
 "Time zone" = "Часовой пояс";
-"To collect" = "Собирать";
+"To collect" = "К получению";
 "To pay" = "Подлежит выплате";
 "Today" = "Сегодня";
 "Tomorrow" = "Завтра";

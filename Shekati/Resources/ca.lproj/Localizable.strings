@@ -51,7 +51,7 @@
 "Backup password" = "Contrasenya de còpia de seguretat";
 "Backup restored" = "Còpia de seguretat restaurada";
 "Backup saved. Keep the file and password in a safe place." = "S’ha desat la còpia de seguretat. Mantingueu el fitxer i la contrasenya en un lloc segur.";
-"Balance" = "Balanç";
+"Balance" = "Saldo";
 "Bank" = "Banc";
 "Bank (optional)" = "Banc (opcional)";
 "Bank account" = "Compte bancari";
@@ -247,11 +247,11 @@
 "Lost" = "Perdut";
 "Manage accounts and chequebooks" = "Gestioneu comptes i llibres de xecs";
 "Manage subscription" = "Gestiona la subscripció";
-"Mark cancelled" = "Marca cancel· lada";
-"Mark collected" = "Marca recollida";
-"Mark paid" = "Marca pagada";
-"Mark pending" = "Marca pendent";
-"Mark returned" = "Marca retornada";
+"Mark cancelled" = "Marca el xec com a cancel·lat";
+"Mark collected" = "Marca el xec com a cobrat";
+"Mark paid" = "Marca el xec com a pagat";
+"Mark pending" = "Marca el xec com a pendent";
+"Mark returned" = "Marca el xec com a retornat";
 "Monthly subscription" = "Subscripció mensual";
 "More" = "Més";
 "More details" = "Més detalls";
@@ -309,7 +309,7 @@
 "Open the app before" = "Obre l’aplicació abans";
 "Open the app before this time to renew the queue. Later reminders are not yet covered." = "Obreu l’aplicació abans d’aquesta hora per a renovar la cua. Els recordatoris posteriors encara no estan coberts.";
 "Opening backup" = "S’està obrint la còpia de seguretat";
-"Opening balance" = "Balanç inicial";
+"Opening balance" = "Saldo inicial";
 "Order" = "Ordre";
 "Original amount" = "Import original";
 "Outgoing" = "Emesos";
@@ -332,8 +332,8 @@
 "Pay to" = "Paga a";
 "Payee" = "Beneficiari";
 "Payee (optional)" = "Beneficiari (opcional)";
-"Payer" = "Paga";
-"Payer (optional)" = "Pagar (opcional)";
+"Payer" = "Pagador";
+"Payer (optional)" = "Pagador (opcional)";
 "Payment date" = "Data de pagament";
 "Pending" = "Pendent";
 "Period" = "Període";
@@ -355,10 +355,10 @@
 "Recognized text" = "Text reconegut";
 "Reconcile account" = "Reconcilia el compte";
 "Record bank settlement" = "Registra la liquidació bancària";
-"Record collection" = "Col· lecció de registres";
+"Record collection" = "Registra el cobrament";
 "Record deposit" = "Registra el dipòsit";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Registreu els xecs entrants i sortints, vegeu les seves dates de venciment i mantingueu les imatges dels vostres xecs junts.";
-"Record payment" = "Pagament de rècord";
+"Record payment" = "Registra el pagament";
 "Record return" = "Registra la devolució";
 "Recorded balance" = "Saldo registrat";
 "Recorded operations protect the original cheque details." = "Les operacions gravades protegeixen els detalls originals del xec.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Substitueix els xecs existents coincidents";
 "Replaced" = "Substituït";
 "Replacement cheque number" = "Número de xec de substitució";
-"Replacement due date" = "Data límit de substitució";
+"Replacement due date" = "Data de venciment del xec de substitució";
 "Report date:" = "Data de l’informe:";
 "Report lost cheque" = "Informa de la pèrdua del xec";
 "Required" = "Requerit";
@@ -477,7 +477,7 @@
 "Sort by" = "Ordena per";
 "Sort cheques" = "Ordena els xecs";
 "Start legal follow-up" = "Comença el seguiment legal";
-"Statement balance" = "Balanç de la declaració";
+"Statement balance" = "Saldo de l’extracte bancari";
 "Status" = "Estat";
 "Suggested details" = "Detalls suggerits";
 "Swipe to see all columns" = "Passeu el dit per veure totes les columnes";
@@ -530,7 +530,7 @@
 "Through" = "A través";
 "Through date" = "Data de finalització";
 "Time zone" = "Zona horària";
-"To collect" = "Per recollir";
+"To collect" = "Pendent de cobrament";
 "To pay" = "Per pagar";
 "Today" = "Avui";
 "Tomorrow" = "Demà";

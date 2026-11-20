@@ -51,7 +51,7 @@
 "Backup password" = "Záložní heslo";
 "Backup restored" = "Záloha obnovena";
 "Backup saved. Keep the file and password in a safe place." = "Záloha uložena. Uložte soubor a heslo na bezpečném místě.";
-"Balance" = "Bilance";
+"Balance" = "Zůstatek";
 "Bank" = "Banka";
 "Bank (optional)" = "Bankovní spojení (volitelné)";
 "Bank account" = "Bankovní účet";
@@ -81,7 +81,7 @@
 "Checking iCloud" = "Kontrola iCloudu";
 "Cheque" = "Šek";
 "Cheque actions" = "Šek";
-"Cheque book" = "Šekovní knížka";
+"Cheque book" = "Šeková knížka";
 "Cheque book name" = "Název šekové knížky";
 "Cheque books" = "Šekové knížky";
 "Cheque continuation" = "Pokračování šeku";
@@ -101,7 +101,7 @@
 "Cheque report" = "Šek report";
 "Cheque saved. Enter the next cheque." = "Šek uložen. Zadejte další šek.";
 "Cheque tracker" = "Evidence šeků";
-"Chequebook" = "Šek";
+"Chequebook" = "Šeková knížka";
 "Cheques" = "Šeky";
 "Cheques imported" = "Šeky importované";
 "Cheques, photos, manual order and currency sync through your Apple account. Reminder defaults, language and lock are specific to this iPhone." = "Šeky, fotky, manuální objednávky a synchronizace měn přes účet Apple. Výchozí nastavení připomínek, jazyka a zámku jsou specifické pro tento iPhone.";
@@ -181,7 +181,7 @@
 "Enable notifications" = "Povolit oznámení";
 "Enable notifications in Settings so your scheduled reminders can appear." = "V Nastaveních zapněte oznámení, aby se vám mohly zobrazovat naplánované připomínky.";
 "Enable notifications to receive cheque reminders." = "Povolit oznámení pro příjem šeku připomenutí.";
-"Endorse cheque" = "Endorse check";
+"Endorse cheque" = "Převést šek rubopisem";
 "Endorsed" = "Rubopisovaný";
 "Endorsements, partial settlements and replacements" = "Indorzace, částečná vypořádání a náhrady";
 "Enter a positive amount and the date written on the cheque." = "Zadejte kladnou částku a datum uvedené na šeku.";
@@ -248,10 +248,10 @@
 "Manage accounts and chequebooks" = "Správa účtů a šekových knížek";
 "Manage subscription" = "Správa předplatného";
 "Mark cancelled" = "Označit jako zrušený";
-"Mark collected" = "Mark shromáždil";
+"Mark collected" = "Označit jako inkasovaný";
 "Mark paid" = "Označit jako zaplacený";
-"Mark pending" = "Označit jako nevyřízený";
-"Mark returned" = "Mark se vrátil";
+"Mark pending" = "Označit jako čekající";
+"Mark returned" = "Označit jako vrácený";
 "Monthly subscription" = "Měsíční předplatné";
 "More" = "Další";
 "More details" = "Více detailů »";
@@ -264,7 +264,7 @@
 "New bank accounts" = "Nové bankovní účty";
 "New cheque books" = "Nové šekové knížky";
 "New cheques" = "Nové šeky";
-"New holder" = "Nový držitel licence";
+"New holder" = "Nový držitel šeku";
 "New operations" = "Nové operace";
 "Next" = "Další";
 "Next 3 days" = "Další 3 dny";
@@ -331,9 +331,9 @@
 "Partial cash payment" = "Částečná hotovostní platba";
 "Pay to" = "Platit na";
 "Payee" = "Příjemce";
-"Payee (optional)" = "Příjemce (volitelné)";
+"Payee (optional)" = "Příjemce (nepovinné)";
 "Payer" = "Výstavce";
-"Payer (optional)" = "Platba (volitelné)";
+"Payer (optional)" = "Výstavce (nepovinné)";
 "Payment date" = "Datum platby";
 "Pending" = "Čekající";
 "Period" = "Období";
@@ -355,10 +355,10 @@
 "Recognized text" = "Rozpoznaný text";
 "Reconcile account" = "Odsouhlasit účet";
 "Record bank settlement" = "Zaznamenat bankovní vypořádání";
-"Record collection" = "Sbírka nahrávek";
+"Record collection" = "Zaznamenat inkaso";
 "Record deposit" = "Zaznamenat uložení v bance";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Zaznamenávejte příchozí a odchozí šeky, sledujte jejich splatnost a udržujte své obrázky dohromady.";
-"Record payment" = "Rekordní platba";
+"Record payment" = "Zaznamenat platbu";
 "Record return" = "Rekordní návratnost";
 "Recorded balance" = "Evidovaný zůstatek";
 "Recorded operations protect the original cheque details." = "Zaznamenané operace chrání původní podrobnosti šeku.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Nahrazení odpovídajících existujících šeků";
 "Replaced" = "Nahrazený";
 "Replacement cheque number" = "Číslo náhradního šeku";
-"Replacement due date" = "Datum splatnosti náhrady";
+"Replacement due date" = "Datum splatnosti náhradního šeku";
 "Report date:" = "Datum vydání:";
 "Report lost cheque" = "Nahlásit ztracený šek";
 "Required" = "Povinné";
@@ -477,7 +477,7 @@
 "Sort by" = "Seřadit podle";
 "Sort cheques" = "Třídit šeky";
 "Start legal follow-up" = "Zahájení právního sledování";
-"Statement balance" = "Rozvaha";
+"Statement balance" = "Zůstatek na bankovním výpisu";
 "Status" = "Stav";
 "Suggested details" = "Navrhované detaily";
 "Swipe to see all columns" = "Přejetím zobrazíte všechny sloupce";
@@ -530,7 +530,7 @@
 "Through" = "Do";
 "Through date" = "Přes datum";
 "Time zone" = "Časové pásmo";
-"To collect" = "Chcete-li sbírat";
+"To collect" = "K inkasu";
 "To pay" = "Chcete-li zaplatit";
 "Today" = "Dnes";
 "Tomorrow" = "Zítra";

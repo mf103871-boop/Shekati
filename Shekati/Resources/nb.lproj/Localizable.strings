@@ -51,7 +51,7 @@
 "Backup password" = "Sikkerhetskopipassord";
 "Backup restored" = "Sikkerhetskopi gjenopprettet";
 "Backup saved. Keep the file and password in a safe place." = "Sikkerhetskopiering lagret. Oppbevar filen og passordet på et trygt sted.";
-"Balance" = "Balanse";
+"Balance" = "Saldo";
 "Bank" = "Bank";
 "Bank (optional)" = "Bank (valgfritt)";
 "Bank account" = "Bankkonto";
@@ -181,7 +181,7 @@
 "Enable notifications" = "Slå på varslinger";
 "Enable notifications in Settings so your scheduled reminders can appear." = "Aktiver varslinger i Innstillinger slik at planlagte påminnelser kan vises.";
 "Enable notifications to receive cheque reminders." = "Aktiver varsler for å motta sjekk påminnelser.";
-"Endorse cheque" = "Endorse check";
+"Endorse cheque" = "Endosser sjekken";
 "Endorsed" = "Endossert";
 "Endorsements, partial settlements and replacements" = "Påtegninger, delvise oppgjør og erstatninger";
 "Enter a positive amount and the date written on the cheque." = "Skriv inn et positivt beløp og datoen som er skrevet på sjekken.";
@@ -247,11 +247,11 @@
 "Lost" = "Mistet";
 "Manage accounts and chequebooks" = "Administrere kontoer og sjekkbøker";
 "Manage subscription" = "Administrer abonnement";
-"Mark cancelled" = "Merk avbrutt";
-"Mark collected" = "Merk innsamlet";
-"Mark paid" = "Mark betalt";
-"Mark pending" = "Merk som ventende";
-"Mark returned" = "Merke returnert";
+"Mark cancelled" = "Merk som annullert";
+"Mark collected" = "Merk som innløst";
+"Mark paid" = "Merk som betalt";
+"Mark pending" = "Merk som utestående";
+"Mark returned" = "Merk som returnert";
 "Monthly subscription" = "Månedlig abonnement";
 "More" = "Mer";
 "More details" = "Flere detaljer";
@@ -330,9 +330,9 @@
 "Partial bank transfer" = "Delvis bankoverføring";
 "Partial cash payment" = "Delvis kontantbetaling";
 "Pay to" = "Betal til";
-"Payee" = "Mottaker";
-"Payee (optional)" = "Mottaker (valgfritt)";
-"Payer" = "Betal";
+"Payee" = "Betalingsmottaker";
+"Payee (optional)" = "Betalingsmottaker (valgfritt)";
+"Payer" = "Betaler";
 "Payer (optional)" = "Betaler (valgfritt)";
 "Payment date" = "Betalingsdato";
 "Pending" = "Venter";
@@ -355,10 +355,10 @@
 "Recognized text" = "Gjenkjent tekst";
 "Reconcile account" = "Avstem konto";
 "Record bank settlement" = "Registrer bankoppgjør";
-"Record collection" = "Postsamling";
+"Record collection" = "Registrer innbetaling";
 "Record deposit" = "Registrer innlevering";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Ta opp innkommende og utgående sjekker, se deres forfallsdatoer og hold sjekkbildene sammen.";
-"Record payment" = "Opptak av betaling";
+"Record payment" = "Registrer utbetaling";
 "Record return" = "Postretur";
 "Recorded balance" = "Registrert saldo";
 "Recorded operations protect the original cheque details." = "Innspilte operasjoner beskytter de opprinnelige sjekkdetaljene.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Erstatt matchende eksisterende sjekker";
 "Replaced" = "Erstattet";
 "Replacement cheque number" = "Erstatningssjekknummer";
-"Replacement due date" = "Forfallsdato for erstatning";
+"Replacement due date" = "Forfallsdato for erstatningssjekken";
 "Report date:" = "Rapportdato:";
 "Report lost cheque" = "Rapporter tapt sjekk";
 "Required" = "Påkrevd";
@@ -477,7 +477,7 @@
 "Sort by" = "Sorter etter";
 "Sort cheques" = "Sorter sjekker";
 "Start legal follow-up" = "Start juridisk oppfølging";
-"Statement balance" = "Saldo på oppgave";
+"Statement balance" = "Saldo på kontoutskriften";
 "Status" = "Status";
 "Suggested details" = "Foreslåtte detaljer";
 "Swipe to see all columns" = "Sveip for å se alle kolonner";
@@ -530,7 +530,7 @@
 "Through" = "Gjennom";
 "Through date" = "Gjennom dato";
 "Time zone" = "Tidssone";
-"To collect" = "Å samle inn";
+"To collect" = "Til innbetaling";
 "To pay" = "Å betale";
 "Today" = "I dag@ option today";
 "Tomorrow" = "I morgen@ option tomorrow";

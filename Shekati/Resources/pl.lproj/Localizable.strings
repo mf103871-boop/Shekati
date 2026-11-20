@@ -51,7 +51,7 @@
 "Backup password" = "Backup hasła";
 "Backup restored" = "Backup przywrócony";
 "Backup saved. Keep the file and password in a safe place." = "Kopia zapasowa zapisana. Przechowuj plik i hasło w bezpiecznym miejscu.";
-"Balance" = "Bilans";
+"Balance" = "Saldo";
 "Bank" = "Bank";
 "Bank (optional)" = "Bank (opcjonalnie)";
 "Bank account" = "Rachunek bankowy";
@@ -81,9 +81,9 @@
 "Checking iCloud" = "Sprawdzanie konta iCloud";
 "Cheque" = "Czek";
 "Cheque actions" = "Akcje czekowe";
-"Cheque book" = "Książka czekowa";
+"Cheque book" = "Książeczka czekowa";
 "Cheque book name" = "Nazwa książeczki czekowej";
-"Cheque books" = "Księgi czekowe";
+"Cheque books" = "Książeczki czekowe";
 "Cheque continuation" = "Czek kontynuacyjny";
 "Cheque date" = "Data czeku";
 "Cheque details" = "Szczegóły dotyczące czeku";
@@ -101,7 +101,7 @@
 "Cheque report" = "Raport czekowy";
 "Cheque saved. Enter the next cheque." = "Czek zapisany. Wprowadź następny czek.";
 "Cheque tracker" = "Ewidencja czeków";
-"Chequebook" = "Czek";
+"Chequebook" = "Książeczka czekowa";
 "Cheques" = "Czeki";
 "Cheques imported" = "Importowane czeki";
 "Cheques, photos, manual order and currency sync through your Apple account. Reminder defaults, language and lock are specific to this iPhone." = "Czeki, zdjęcia, ręczne zamawianie i synchronizacja waluty za pośrednictwem konta Apple Domyślne ustawienia przypomnień, języka i blokady są specyficzne dla tego telefonu iPhone.";
@@ -181,7 +181,7 @@
 "Enable notifications" = "Włącz powiadomienia";
 "Enable notifications in Settings so your scheduled reminders can appear." = "Włącz powiadomienia w Ustawieniach, aby mogły pojawiać się zaplanowane przypomnienia.";
 "Enable notifications to receive cheque reminders." = "Włącz powiadomienia, aby otrzymywać przypomnienia czeku.";
-"Endorse cheque" = "Czek zatwierdzony";
+"Endorse cheque" = "Indosuj czek";
 "Endorsed" = "Indosowany";
 "Endorsements, partial settlements and replacements" = "Innocjacje, częściowe rozliczenia i zastąpienia";
 "Enter a positive amount and the date written on the cheque." = "Wprowadź dodatnią kwotę i datę napisaną na czeku.";
@@ -247,11 +247,11 @@
 "Lost" = "Utracony";
 "Manage accounts and chequebooks" = "Zarządzaj kontami i książeczkami czekowymi";
 "Manage subscription" = "Zarządzaj subskrypcją";
-"Mark cancelled" = "Znak anulowany";
-"Mark collected" = "Zbiórka znaków";
+"Mark cancelled" = "Oznacz jako anulowany";
+"Mark collected" = "Oznacz jako zainkasowany";
 "Mark paid" = "Oznacz jako zapłacony";
 "Mark pending" = "Oznacz jako oczekujący";
-"Mark returned" = "Mark powrócił";
+"Mark returned" = "Oznacz jako zwrócony";
 "Monthly subscription" = "Miesięczny abonament";
 "More" = "Więcej";
 "More details" = "Więcej szczegółów »";
@@ -309,7 +309,7 @@
 "Open the app before" = "Otwórz aplikację przed";
 "Open the app before this time to renew the queue. Later reminders are not yet covered." = "Otwórz aplikację przed tą godziną, aby odnowić kolejkę. Późniejsze przypomnienia nie są jeszcze objęte.";
 "Opening backup" = "Otwieranie kopii zapasowej";
-"Opening balance" = "Bilans otwarcia";
+"Opening balance" = "Saldo początkowe";
 "Order" = "Kolejność";
 "Original amount" = "Pierwotna kwota";
 "Outgoing" = "Wystawione";
@@ -330,7 +330,7 @@
 "Partial bank transfer" = "Częściowy przelew bankowy";
 "Partial cash payment" = "Częściowa płatność gotówkowa";
 "Pay to" = "Zapłać na rzecz";
-"Payee" = "Beneficjent";
+"Payee" = "Odbiorca płatności";
 "Payee (optional)" = "Odbiorca płatności (opcjonalnie)";
 "Payer" = "Wystawca";
 "Payer (optional)" = "Płatnik (opcjonalnie)";
@@ -355,10 +355,10 @@
 "Recognized text" = "Rozpoznany tekst";
 "Reconcile account" = "Uzgadnianie konta";
 "Record bank settlement" = "Zarejestruj rozliczenie bankowe";
-"Record collection" = "Kolekcja płyt";
+"Record collection" = "Zarejestruj wpływ środków";
 "Record deposit" = "Zarejestruj złożenie w banku";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Zapisuj przychodzące i wychodzące czeki, zobacz ich terminy płatności i przechowuj razem obrazy czeków.";
-"Record payment" = "Rekordowa płatność";
+"Record payment" = "Zarejestruj płatność";
 "Record return" = "Rekordowy zwrot";
 "Recorded balance" = "Zarejestrowane saldo";
 "Recorded operations protect the original cheque details." = "Zarejestrowane operacje chronią oryginalne dane czeki.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Zastąp dopasowanie istniejących czeków";
 "Replaced" = "Zastąpiony";
 "Replacement cheque number" = "Numer czeku zastępczego";
-"Replacement due date" = "Data obowiązywania wymiany";
+"Replacement due date" = "Termin płatności czeku zastępczego";
 "Report date:" = "Data raportu:";
 "Report lost cheque" = "Zgłoś zgubiony czek";
 "Required" = "Wymagane";
@@ -442,7 +442,7 @@
 "Select account" = "Wybierz konto";
 "Select all" = "Zaznacz wszystkie";
 "Select an account in the cheque currency." = "Wybierz konto w walucie czeku.";
-"Select chequebook" = "Wybierz chequebook";
+"Select chequebook" = "Wybierz książeczkę czekową";
 "Select cheques in one currency" = "Wybierz czeki w jednej walucie";
 "Selected" = "Wybrane";
 "Selected cheques" = "Wybrane czeki";
@@ -477,7 +477,7 @@
 "Sort by" = "Sortuj według";
 "Sort cheques" = "Sortowanie czeków";
 "Start legal follow-up" = "Rozpocznij legal follow-up";
-"Statement balance" = "Bilans";
+"Statement balance" = "Saldo na wyciągu bankowym";
 "Status" = "Status";
 "Suggested details" = "Sugerowane szczegóły";
 "Swipe to see all columns" = "Przesuń palcem, aby zobaczyć wszystkie kolumny";
@@ -530,7 +530,7 @@
 "Through" = "Przez";
 "Through date" = "Przez datę";
 "Time zone" = "Strefa czasowa";
-"To collect" = "Aby zebrać";
+"To collect" = "Do pobrania";
 "To pay" = "Do zapłaty";
 "Today" = "Dzisiaj";
 "Tomorrow" = "Jutro";

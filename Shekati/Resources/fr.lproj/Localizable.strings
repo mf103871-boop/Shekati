@@ -247,11 +247,11 @@
 "Lost" = "Perdu";
 "Manage accounts and chequebooks" = "Gérer les comptes et chèques";
 "Manage subscription" = "Gérer l’abonnement";
-"Mark cancelled" = "Marque annulée";
-"Mark collected" = "Marque collectée";
+"Mark cancelled" = "Marquer comme annulé";
+"Mark collected" = "Marquer comme encaissé";
 "Mark paid" = "Marquer comme payé";
-"Mark pending" = "Marque en attente";
-"Mark returned" = "Mark est retourné";
+"Mark pending" = "Marquer comme en attente";
+"Mark returned" = "Marquer comme rejeté";
 "Monthly subscription" = "Abonnement mensuel";
 "More" = "Plus";
 "More details" = "Plus de détails";
@@ -264,7 +264,7 @@
 "New bank accounts" = "Nouveaux comptes bancaires";
 "New cheque books" = "Nouveaux carnets de chèques";
 "New cheques" = "Nouveaux chèques";
-"New holder" = "Nouveau titulaire";
+"New holder" = "Nouveau porteur du chèque";
 "New operations" = "Nouvelles opérations";
 "Next" = "Suivant";
 "Next 3 days" = "3 jours prochains";
@@ -333,7 +333,7 @@
 "Payee" = "Bénéficiaire";
 "Payee (optional)" = "Bénéficiaire (facultatif)";
 "Payer" = "Tireur";
-"Payer (optional)" = "Payer (optionnel)";
+"Payer (optional)" = "Tireur (facultatif)";
 "Payment date" = "Date de paiement";
 "Pending" = "En attente";
 "Period" = "Période";
@@ -355,10 +355,10 @@
 "Recognized text" = "Texte reconnu";
 "Reconcile account" = "Rapprocher le compte";
 "Record bank settlement" = "Enregistrer le règlement bancaire";
-"Record collection" = "Collection de documents";
+"Record collection" = "Enregistrer l’encaissement";
 "Record deposit" = "Enregistrer le dépôt";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Enregistrez les chèques reçus et émis, consultez leurs échéances et conservez leurs images au même endroit.";
-"Record payment" = "Record de paiement";
+"Record payment" = "Enregistrer le paiement";
 "Record return" = "Record de rendement";
 "Recorded balance" = "Solde comptable";
 "Recorded operations protect the original cheque details." = "Les opérations enregistrées protègent les détails originaux du chèque.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Remplacer les chèques existants";
 "Replaced" = "Remplacé";
 "Replacement cheque number" = "Numéro de chèque de remplacement";
-"Replacement due date" = "Date d’échéance du remplacement";
+"Replacement due date" = "Date d’échéance du chèque de remplacement";
 "Report date:" = "Date du rapport:";
 "Report lost cheque" = "Signaler un chèque perdu";
 "Required" = "Requis";
@@ -442,7 +442,7 @@
 "Select account" = "Sélectionner un compte";
 "Select all" = "Sélectionner tout";
 "Select an account in the cheque currency." = "Sélectionnez un compte dans la devise du chèque.";
-"Select chequebook" = "Sélectionner un chèque-livre";
+"Select chequebook" = "Sélectionner un chéquier";
 "Select cheques in one currency" = "Sélectionner des chèques dans une devise";
 "Selected" = "Sélectionné";
 "Selected cheques" = "Sélection de chèques";
@@ -477,7 +477,7 @@
 "Sort by" = "Trier par";
 "Sort cheques" = "Trier les chèques";
 "Start legal follow-up" = "Démarrer un suivi juridique";
-"Statement balance" = "Solde de l’état";
+"Statement balance" = "Solde du relevé bancaire";
 "Status" = "Statut";
 "Suggested details" = "Détails suggérés";
 "Swipe to see all columns" = "Balayez pour voir toutes les colonnes";
@@ -530,7 +530,7 @@
 "Through" = "À travers";
 "Through date" = "À la date";
 "Time zone" = "Fuseau horaire";
-"To collect" = "Pour collecter";
+"To collect" = "À encaisser";
 "To pay" = "À payer";
 "Today" = "Aujourd’hui";
 "Tomorrow" = "Demain";

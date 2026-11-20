@@ -181,7 +181,7 @@
 "Enable notifications" = "Activează notificările";
 "Enable notifications in Settings so your scheduled reminders can appear." = "Activează notificările în Configurări, astfel încât să poată apărea mementourile programate.";
 "Enable notifications to receive cheque reminders." = "Activați notificările pentru a primi memento-uri de cec.";
-"Endorse cheque" = "Cec de înnotare";
+"Endorse cheque" = "Girează cecul";
 "Endorsed" = "Andosat";
 "Endorsements, partial settlements and replacements" = "Anotații, decontări parțiale și înlocuiri";
 "Enter a positive amount and the date written on the cheque." = "Introduceți o sumă pozitivă și data scrisă pe cec.";
@@ -247,11 +247,11 @@
 "Lost" = "Pierdut";
 "Manage accounts and chequebooks" = "Gestionarea conturilor și a carnetelor de cecuri";
 "Manage subscription" = "Gestionați abonamentul";
-"Mark cancelled" = "Marcaj anulat";
-"Mark collected" = "Marca colectat";
-"Mark paid" = "Mark a plătit";
-"Mark pending" = "Marcați în așteptare";
-"Mark returned" = "Mark s-a întors";
+"Mark cancelled" = "Marchează ca anulat";
+"Mark collected" = "Marchează ca încasat";
+"Mark paid" = "Marchează ca plătit";
+"Mark pending" = "Marchează ca în așteptare";
+"Mark returned" = "Marchează ca returnat";
 "Monthly subscription" = "Abonament lunar 100 lei";
 "More" = "Mai multe";
 "More details" = "Mai multe detalii";
@@ -264,7 +264,7 @@
 "New bank accounts" = "Noi conturi bancare";
 "New cheque books" = "Noi carnete de cecuri";
 "New cheques" = "Cecuri noi";
-"New holder" = "Suport nou pentru telefon";
+"New holder" = "Noul deținător al cecului";
 "New operations" = "Operațiuni noi";
 "Next" = "Următorul";
 "Next 3 days" = "Următoarele 3 zile";
@@ -331,9 +331,9 @@
 "Partial cash payment" = "Plata parțială în numerar";
 "Pay to" = "Plătește la";
 "Payee" = "Beneficiar";
-"Payee (optional)" = "Beneficiarul (opțional)";
-"Payer" = "Plătiți";
-"Payer (optional)" = "Plata (opțional)";
+"Payee (optional)" = "Beneficiar (opțional)";
+"Payer" = "Plătitor";
+"Payer (optional)" = "Plătitor (opțional)";
 "Payment date" = "Data de plată";
 "Pending" = "În așteptare";
 "Period" = "Perioada";
@@ -355,10 +355,10 @@
 "Recognized text" = "Textul recunoscut";
 "Reconcile account" = "Reconcilierea contului";
 "Record bank settlement" = "Înregistrează decontarea bancară";
-"Record collection" = "Colecţia de înregistrări";
+"Record collection" = "Înregistrează încasarea";
 "Record deposit" = "Înregistrează depunerea";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Înregistrați cecurile de intrare și ieșire, vedeți datele lor scadente și păstrați imaginile dvs. de verificare împreună.";
-"Record payment" = "Plata recordului";
+"Record payment" = "Înregistrează plata";
 "Record return" = "Returnare record";
 "Recorded balance" = "Sold înregistrat";
 "Recorded operations protect the original cheque details." = "Operațiunile înregistrate protejează detaliile cecului original.";
@@ -387,7 +387,7 @@
 "Replace matching existing cheques" = "Înlocuiți cecurile existente care se potrivesc";
 "Replaced" = "Înlocuit";
 "Replacement cheque number" = "Numărul cecului de înlocuire";
-"Replacement due date" = "Data scadentă a înlocuirii";
+"Replacement due date" = "Data scadenței cecului înlocuitor";
 "Report date:" = "Data raportului:";
 "Report lost cheque" = "Raportează cecul pierdut";
 "Required" = "Obligatoriu";
@@ -477,7 +477,7 @@
 "Sort by" = "Sortează după Preț";
 "Sort cheques" = "Sortați cecurile";
 "Start legal follow-up" = "Începeți urmărirea legală";
-"Statement balance" = "Soldul declarației de cont";
+"Statement balance" = "Soldul din extrasul de cont";
 "Status" = "Starea";
 "Suggested details" = "Detalii sugerate";
 "Swipe to see all columns" = "Trageți cu degetul pentru a vedea toate coloanele";
@@ -530,7 +530,7 @@
 "Through" = "Prin";
 "Through date" = "Până la data";
 "Time zone" = "Fusul orar";
-"To collect" = "Pentru a colecta";
+"To collect" = "De încasat";
 "To pay" = "Pentru a plăti";
 "Today" = "Astăzi";
 "Tomorrow" = "Mâine.";
