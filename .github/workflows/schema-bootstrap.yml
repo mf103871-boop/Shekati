@@ -166,8 +166,8 @@ jobs:
               raise SystemExit('The signed setup has the wrong app identifier')
           if entitlements.get('com.apple.developer.icloud-container-identifiers') != [os.environ['CLOUD_CONTAINER_ID']]:
               raise SystemExit('Exported app uses a different CloudKit container')
-          if 'CloudKit' not in entitlements.get('com.apple.developer.icloud-services', []):
-              raise SystemExit('Exported app does not request CloudKit')
+          if entitlements.get('com.apple.developer.icloud-services') != ['CloudKit']:
+              raise SystemExit('Exported app must explicitly request only CloudKit')
           if entitlements.get('aps-environment') != 'production':
               raise SystemExit('Exported ad-hoc app uses the wrong push notification environment')
           info = plistlib.loads((app / 'Info.plist').read_bytes())
