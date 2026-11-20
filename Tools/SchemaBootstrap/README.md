@@ -27,7 +27,7 @@ For a signed export, configure these repository or `testflight` environment secr
 | `SCHEMA_SETUP_ADHOC_PROFILE_BASE64` | Base64-encoded ad-hoc `.mobileprovision` for the dedicated setup App ID and owner’s iPhone |
 | `KEYCHAIN_PASSWORD` | Password for the runner's temporary signing keychain |
 
-Select the signed export option and supply the Bundle ID, container, Team ID, and build number. The workflow compiles the setup app, exports an IPA using the **Development** CloudKit environment, checks the signed app's actual entitlements, and saves a private download artifact for three days. Ad-hoc distribution uses production APNs independently of the selected CloudKit environment. This workflow does not submit a build to App Store Connect or change the cloud schema; initialization happens on the phone after the button press. Apple's [CloudKit testing guide](https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/TestingYourApp/TestingYourApp.html) supports selecting Development for ad-hoc builds.
+Select the signed export option and supply the Bundle ID, container, Team ID, and build number. The workflow compiles the setup app, exports an IPA using the **Development** CloudKit environment, checks the signed app's actual entitlements, then encrypts the verified IPA for the owner. The downloadable artifact contains only the CMS envelope and expires after three days. The pinned public recipient certificate is checked into this repository. Its private key stays in the owner’s protected workspace. Ad-hoc distribution uses production APNs independently of the selected CloudKit environment. This workflow does not submit a build to App Store Connect or change the cloud schema; initialization happens on the phone after the button press. Apple's [CloudKit testing guide](https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/TestingYourApp/TestingYourApp.html) supports selecting Development for ad-hoc builds.
 
 For local Mac compilation, the equivalent commands are:
 
@@ -50,15 +50,37 @@ py -m venv .schema-device-tools
 .\.schema-device-tools\Scripts\python.exe -m pymobiledevice3 usbmux list
 ```
 
-Download and unzip the private workflow artifact **ShekatiSchemaBootstrap-side-by-side-iPhone**. On Windows, first check the actual IPA (including any older download) against the standalone identity. This local check reads its packaged metadata. The macOS workflow independently verifies the code signature and the signed Development entitlements.
+Download and unzip **ShekatiSchemaBootstrap-encrypted-iPhone**. The GitHub repository is public. Its artifact contains only `ShekatiSchemaBootstrap.ipa.cms`. The runner verifies the code signature, embedded device profile and Development entitlements, then encrypts the signed IPA with OpenSSL 3 using the checked-in RSA recipient certificate. [GitHub artifact access](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/download-workflow-artifacts) · [OpenSSL CMS options](https://docs.openssl.org/3.5/man1/openssl-cms/)
+
+```sh
+openssl cms -encrypt -binary -aes-256-gcm -outform DER \
+  -recip Tools/SchemaBootstrap/setup-delivery-recipient.pem \
+  -keyopt rsa_padding_mode:oaep -keyopt rsa_oaep_md:sha256 -keyopt rsa_mgf1_md:sha256 \
+  -in ShekatiSchemaBootstrap.ipa -out ShekatiSchemaBootstrap.ipa.cms
+```
+
+On the owner's workstation, work inside an owner-only directory. Set `$openssl3` to the local OpenSSL 3 executable, `$recipient` to the public certificate, and `$ownerKey` to the encrypted private delivery key held locally. Set `$checker` to the checked-out `Tools/SchemaBootstrap/verify_setup_ipa.py` script. The private key passphrase is entered locally. Decrypt to a new temporary file and verify that the authenticated operation succeeds before using its contents.
 
 ```powershell
-py Tools/SchemaBootstrap/verify_setup_ipa.py 'C:\path\ShekatiSchemaBootstrap.ipa'
-if ($LASTEXITCODE -ne 0) { throw 'Select the side-by-side setup IPA.' }
+$staged = Join-Path $PWD ([guid]::NewGuid().ToString() + '.ipa.part')
+try {
+    & $openssl3 cms -decrypt -binary -inform DER -in ShekatiSchemaBootstrap.ipa.cms -recip $recipient -inkey $ownerKey -out $staged
+    if ($LASTEXITCODE -ne 0) { throw 'CMS decryption or authentication failed.' }
+    py $checker $staged
+    if ($LASTEXITCODE -ne 0) { throw 'The decrypted file is not the standalone setup IPA.' }
+    Move-Item -LiteralPath $staged -Destination ShekatiSchemaBootstrap.ipa -ErrorAction Stop
+} finally {
+    if (Test-Path -LiteralPath $staged) { Remove-Item -LiteralPath $staged }
+}
+```
+
+After the verified IPA is available, its owner can install it on the registered phone:
+
+```powershell
 .\.schema-device-tools\Scripts\python.exe -m pymobiledevice3 apps install 'C:\path\ShekatiSchemaBootstrap.ipa'
 ```
 
-For multiple connected devices, select the intended identifier with the command's `--udid` option. Installation support is provided by that third-party project and must be verified on the actual phone and iOS version. The artifact remains private; public IPA hosting is unnecessary.
+For multiple connected devices, select the intended identifier with the command's `--udid` option. Installation support is provided by that third-party project and must be verified on the actual phone and iOS version. The plaintext IPA and its embedded device profile stay in the protected local directory.
 
 ## Initialize, review, and deploy
 
