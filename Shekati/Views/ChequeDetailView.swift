@@ -170,7 +170,7 @@ struct ChequeDetailView: View {
             .environment(\.locale, app.preferences.language.locale)
             .environment(\.layoutDirection, sheetDirection)
         }
-        .sheet(isPresented: $showingReminder) { ChequeReminderPreview(record: record, hidesAmounts: hidesAmounts) }
+        .sheet(isPresented: $showingReminder) { ChequeReminderPreview(record: record, remaining: BankingLedger.position(for: record, events: events).remaining, hidesAmounts: hidesAmounts) }
         .sheet(item: $preview) { item in
             NavigationStack {
                 ScrollView {
@@ -361,13 +361,14 @@ private struct ChequeReminderPreview: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     let record: ChequeRecord
+    let remaining: Int64
     let hidesAmounts: Bool
     @State private var failed = false
     private var message: String {
         var lines = [app.tr("Cheque reminder"), app.tr("Cheque number") + ": " + record.number,
                      app.tr("Due date") + ": " + app.formatDay(record.dueDate)]
         if !hidesAmounts {
-            lines.append(app.tr("Amount") + ": " + DisplayFormatting.amount(minorUnits: record.amountMinorUnits, currencyCode: record.currencyCode, locale: app.preferences.language.locale))
+            lines.append(app.tr("Remaining amount") + ": " + DisplayFormatting.amount(minorUnits: remaining, currencyCode: record.currencyCode, locale: app.preferences.language.locale))
         }
         return lines.joined(separator: "\n")
     }

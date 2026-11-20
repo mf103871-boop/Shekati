@@ -145,6 +145,40 @@ final class EnhancementUITests: XCTestCase {
         capture(app, "Build 6 English explicitly confirmed repeated cheque")
     }
 
+    func testIncomingDepositAndCollectionMoveTheBankBalanceOnceAndRemainInCalendar() {
+        let app = launch()
+        addCheque(app, amount: "125.50", party: "Spring Studio", number: "004182")
+        let balance = app.descendants(matching: .any).matching(NSPredicate(
+            format: "label BEGINSWITH %@", "Recorded balance,"
+        )).firstMatch
+        XCTAssertTrue(balance.waitForExistence(timeout: 5))
+        XCTAssertTrue(balance.label.contains("0.00"))
+        app.tabBars.buttons["Cheques"].tap()
+        let cheque = row(number: "004182", in: app)
+        XCTAssertTrue(cheque.waitForExistence(timeout: 5))
+        cheque.tap()
+        let deposit = app.buttons["operation-deposit"]
+        reveal(deposit, in: app)
+        deposit.tap()
+        let review = app.buttons["reviewOperation"]
+        XCTAssertTrue(review.waitForExistence(timeout: 5))
+        review.tap()
+        let confirm = app.buttons["commitOperation"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 5))
+        confirm.tap()
+        app.tabBars.buttons["Home"].tap()
+        XCTAssertTrue(balance.waitForExistence(timeout: 5))
+        XCTAssertTrue(balance.label.contains("0.00"))
+        app.tabBars.buttons["Cheques"].tap()
+        recordBankSettlement(in: app)
+        app.tabBars.buttons["Home"].tap()
+        let updated = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label CONTAINS %@", "125.50"), object: balance)
+        XCTAssertEqual(XCTWaiter.wait(for: [updated], timeout: 8), .completed)
+        app.tabBars.buttons["Calendar"].tap()
+        XCTAssertTrue(cheque.waitForExistence(timeout: 8))
+        XCTAssertTrue(cheque.label.contains("Settled"))
+    }
+
     func testPrimarySettlementRecordsActualDateAndMovesChequeOutOfOutstandingButKeepsHistory() {
         let app = launch()
         addCheque(app, amount: "130.50", party: "Payment demo", number: "000401", outgoing: true)
