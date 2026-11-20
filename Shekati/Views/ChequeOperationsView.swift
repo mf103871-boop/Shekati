@@ -7,6 +7,7 @@ struct ChequeOperationsView: View {
     let record: ChequeRecord
     let isPlus: Bool
     var hidesAmounts = false
+    var showsFinancialSummary = true
     @Environment(AppState.self) private var app
     @Environment(\.modelContext) private var context
     @Query private var events: [LedgerEventRecord]
@@ -45,14 +46,22 @@ struct ChequeOperationsView: View {
             return $0.id.uuidString < $1.id.uuidString
         }
     }
+    private func begin(_ action: LedgerAction) {
+        if action.isPremium && !isPlus { plus = true }
+        else { sheet = OperationIntent(action: action, parent: position.accepted.last?.id, related: nil) }
+    }
     private func money(_ minor: Int64) -> String {
         hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: minor, currencyCode: record.currencyCode, locale: app.preferences.language.locale)
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text(app.tr(position.state.title)).font(.headline)
-            ResponsiveValueRow(title: app.tr("Amount paid"), value: money(position.paid))
-            ResponsiveValueRow(title: app.tr("Remaining amount"), value: money(position.remaining))
+            if showsFinancialSummary {
+                Text(app.tr(position.state.title)).font(.headline)
+                if position.conflicts.isEmpty {
+                    ResponsiveValueRow(title: app.tr("Amount paid"), value: money(position.paid))
+                    ResponsiveValueRow(title: app.tr("Remaining amount"), value: money(position.remaining))
+                }
+            }
             if !position.holder.isEmpty { ResponsiveValueRow(title: app.tr("Current holder"), value: position.holder) }
             if !position.conflicts.isEmpty {
                 Label(app.tr("Review conflicting entries"), systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
@@ -84,21 +93,36 @@ struct ChequeOperationsView: View {
                 }.disabled(selectedAccount == nil || (record.direction == .outgoing && selectedBook == nil))
                 NavigationLink(app.tr("Bank accounts")) { BankingAccountsView(isPlus: isPlus) }
             } else {
-                ForEach(position.allowed, id: \.self) { action in
-                    Button {
-                        if action.isPremium && !isPlus { plus = true }
-                        else { sheet = OperationIntent(action: action, parent: position.accepted.last?.id, related: nil) }
+                let main = position.allowed.first(where: { !$0.isPremium }) ?? position.allowed.first
+                if let main {
+                    Button { begin(main) } label: {
+                        Label(app.tr(main.title), systemImage: main == .deposit ? "tray.and.arrow.down" : "checkmark.circle")
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .accessibilityIdentifier("operation-" + main.rawValue)
+                }
+                let others = position.allowed.filter { $0 != main }
+                if !others.isEmpty || position.accepted.last != nil {
+                    Menu {
+                        ForEach(others, id: \.self) { action in
+                            Button { begin(action) } label: {
+                                Label(app.tr(action.title), systemImage: action.isPremium && !isPlus ? "lock" : "arrow.forward.circle")
+                            }.accessibilityIdentifier("operation-" + action.rawValue)
+                        }
+                        if let last = position.accepted.last {
+                            Button(app.tr("Correct last action"), role: .destructive) {
+                                sheet = OperationIntent(action: .discardConflict, parent: nil, related: last)
+                            }
+                        }
                     } label: {
-                        Label(app.tr(action.title), systemImage: action.isPremium && !isPlus ? "lock" : "arrow.forward.circle")
-                    }.buttonStyle(.bordered).accessibilityIdentifier("operation-" + action.rawValue)
+                        Label(app.tr("Cheque actions"), systemImage: "ellipsis.circle")
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                    }
+                    .accessibilityIdentifier("moreChequeActions")
                 }
             }
             if let error { Text(app.tr(error)).foregroundStyle(.red) }
-            if position.conflicts.isEmpty, let last = position.accepted.last {
-                Button(app.tr("Correct last action"), role: .destructive) {
-                    sheet = OperationIntent(action: .discardConflict, parent: nil, related: last)
-                }
-            }
             if !history.isEmpty {
                 Divider()
                 Text(app.tr("Activity history")).font(.headline)
@@ -110,6 +134,10 @@ struct ChequeOperationsView: View {
                             .font(.footnote).foregroundStyle(.secondary)
                     }
                 }
+            } else {
+                Divider()
+                Label(app.tr("Date added") + " · " + app.formatDay(LocalDay(date: record.createdAt)), systemImage: "clock")
+                    .font(.footnote).foregroundStyle(.secondary)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

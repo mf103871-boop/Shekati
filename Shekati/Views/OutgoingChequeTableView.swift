@@ -266,7 +266,7 @@ private struct CurrencyOutgoingTable: View {
             let fields: [(String, Int)] = [
                 (NumericInput.latinDigits(row.cheque.number), OutgoingChequeColumn.number),
                 (CurrencyMath.plain(minorUnits: row.cheque.amountMinorUnits, currencyCode: row.cheque.currencyCode), OutgoingChequeColumn.amount),
-                (showsPaid ? "00/00/0000" : row.remainingMinorUnits.map {
+                (showsPaid ? app.formatDay(row.cheque.actualDate ?? row.cheque.dueDate) : row.remainingMinorUnits.map {
                     CurrencyMath.plain(minorUnits: $0, currencyCode: row.cheque.currencyCode)
                 } ?? "—", OutgoingChequeColumn.balance)
             ]
@@ -451,8 +451,8 @@ private struct OutgoingChequeRow: View {
     private var cheque: ChequeSnapshot { row.cheque }
     private var number: String { NumericInput.latinDigits(cheque.number.trimmingCharacters(in: .whitespacesAndNewlines)) }
     private var amount: String { CurrencyMath.plain(minorUnits: cheque.amountMinorUnits, currencyCode: cheque.currencyCode) }
-    private var date: String { OutgoingChequeLedger.dateText(cheque.dueDate) }
-    private var paymentDate: String { cheque.actualDate.map(OutgoingChequeLedger.dateText) ?? "—" }
+    private var date: String { app.formatDay(cheque.dueDate) }
+    private var paymentDate: String { cheque.actualDate.map(app.formatDay) ?? "—" }
     private var balance: String {
         guard showsBalance, let remaining = row.remainingMinorUnits else { return "—" }
         return CurrencyMath.plain(minorUnits: remaining, currencyCode: cheque.currencyCode)

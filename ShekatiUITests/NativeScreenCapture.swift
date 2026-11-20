@@ -2,6 +2,15 @@ import XCTest
 import UIKit
 
 extension XCTestCase {
+    func localizedDueDate(_ date: Date, arabic: Bool = false) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: (arabic ? "ar" : "en") + "@numbers=latn")
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = .current
+        formatter.setLocalizedDateFormatFromTemplate("yMMMd")
+        return formatter.string(from: date)
+    }
+
     func openMoreDestination(_ identifier: String, in app: XCUIApplication, arabic: Bool = false) {
         let more = app.tabBars.buttons[arabic ? "المزيد" : "More"]
         XCTAssertTrue(more.waitForExistence(timeout: 5))

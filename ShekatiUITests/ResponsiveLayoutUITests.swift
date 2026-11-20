@@ -169,8 +169,7 @@ final class ResponsiveLayoutUITests: XCTestCase {
         let plannedDate = app.staticTexts["plannedDueDateSummary"]
         reveal(plannedDate, in: app)
         assertVisibleBounds(plannedDate, in: app)
-        formatter.dateFormat = "dd/MM/yyyy"
-        XCTAssertTrue(plannedDate.label.contains(formatter.string(from: tomorrow)))
+        XCTAssertTrue(plannedDate.label.contains(localizedDueDate(tomorrow, arabic: arabic)))
         capture(app, "14 date-prefilled editor portrait")
         app.buttons[arabic ? "إلغاء" : "Cancel"].tap()
         waitForAbsence(app.buttons["saveCheque"])

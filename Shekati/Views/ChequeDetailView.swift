@@ -47,9 +47,10 @@ struct ChequeDetailView: View {
     }
 
     private var activeDetail: some View {
+        let position = BankingLedger.position(for: record, events: events)
         ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 10) {
                     ViewThatFits(in: .horizontal) {
                         HStack(spacing: 12) {
                             directionLabel.fixedSize(horizontal: true, vertical: false)
@@ -68,10 +69,21 @@ struct ChequeDetailView: View {
                         .font(.largeTitle.bold())
                         .foregroundStyle(record.direction == .incoming ? Theme.accent : Theme.navy)
                     if !record.party.isEmpty { Text(NumericInput.latinDigits(record.party)).font(.title3.weight(.medium)) }
+                    detailLine("Cheque number", record.number)
                     Divider()
+                    if !record.bank.isEmpty { detailLine("Bank", record.bank) }
+                    if position.conflicts.isEmpty {
+                        let remaining = DisplayFormatting.amount(minorUnits: position.remaining, currencyCode: record.currencyCode,
+                                                                locale: app.preferences.language.locale)
+                        ResponsiveValueRow(title: app.tr("Remaining amount"), value: hidesAmounts ? "••••" : remaining)
+                        if position.paid > 0 {
+                            ResponsiveValueRow(title: app.tr("Amount paid"), value: hidesAmounts ? "••••" :
+                                DisplayFormatting.amount(minorUnits: position.paid, currencyCode: record.currencyCode, locale: app.preferences.language.locale))
+                        }
+                    }
                     ResponsiveValueRow(title: app.tr("Due date"), value: app.formatDay(record.dueDate))
                         .foregroundStyle(record.snapshot.isOverdue(on: app.today) ? Theme.red : Theme.navy)
-                    if record.snapshot.isOutstanding {
+                    if record.snapshot.isOverdue(on: app.today) {
                         Text(app.relativeDueDate(record.dueDate))
                             .font(.subheadline).foregroundStyle(record.snapshot.isOverdue(on: app.today) ? Theme.red : .secondary)
                     }
@@ -85,11 +97,18 @@ struct ChequeDetailView: View {
                 }
                 .padding(20).background(Theme.surface, in: RoundedRectangle(cornerRadius: 22))
 
-                ChequeOperationsView(record: record, isPlus: plus.isPlus, hidesAmounts: hidesAmounts)
+                if !hidesAmounts && (record.frontImageData != nil || record.backImageData != nil) {
+                    ScrollView(.horizontal) {
+                        HStack(spacing: 12) {
+                            if let data = record.frontImageData { imageButton(data, title: "Front") }
+                            if let data = record.backImageData { imageButton(data, title: "Back") }
+                        }
+                    }.scrollIndicators(.hidden)
+                }
+                ChequeOperationsView(record: record, isPlus: plus.isPlus, hidesAmounts: hidesAmounts, showsFinancialSummary: false)
+                    .shekatiCard()
                 VStack(alignment: .leading, spacing: 15) {
                     Text(app.tr("Cheque details")).font(.headline)
-                    detailLine("Cheque number", record.number)
-                    detailLine("Bank", record.bank)
                     if !record.branch.isEmpty { detailLine("Branch", record.branch) }
                     detailLine(record.direction == .incoming ? "Payer" : "Payee", record.party)
                     if !record.accountReference.isEmpty { detailLine("Account reference", record.accountReference) }
@@ -130,15 +149,6 @@ struct ChequeDetailView: View {
                     }
                 }
                 .padding(20).background(Theme.surface, in: RoundedRectangle(cornerRadius: 22))
-
-                if !hidesAmounts && (record.frontImageData != nil || record.backImageData != nil) {
-                    VStack(alignment: .leading, spacing: 14) {
-                        Text(app.tr("Cheque images")).font(.headline)
-                        if let data = record.frontImageData { imageButton(data, title: "Front") }
-                        if let data = record.backImageData { imageButton(data, title: "Back") }
-                    }
-                    .padding(20).background(Theme.surface, in: RoundedRectangle(cornerRadius: 22))
-                }
 
                 if record.direction == .incoming && reminderAmount != nil {
                     Button { showingReminder = true } label: {
@@ -305,11 +315,11 @@ struct ChequeDetailView: View {
     @ViewBuilder private func imageButton(_ data: Data, title: String) -> some View {
         if let image = UIImage(data: data) {
             Button { preview = ChequeImagePreview(image: image, title: title) } label: {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(app.tr(title)).font(.subheadline.weight(.medium))
+                VStack(alignment: .leading, spacing: 3) {
                     Image(uiImage: image).resizable().scaledToFit()
-                        .frame(maxWidth: .infinity, maxHeight: 180)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .frame(maxWidth: 160, maxHeight: 66)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    Label(app.tr(title), systemImage: "arrow.up.left.and.arrow.down.right").font(.caption).foregroundStyle(.secondary)
                 }
             }
             .buttonStyle(.plain)

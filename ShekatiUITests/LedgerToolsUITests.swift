@@ -79,7 +79,7 @@ final class LedgerToolsUITests: XCTestCase {
         XCTAssertTrue(app.segmentedControls["chequeDirectionPicker"].buttons["Outgoing"].isSelected)
         let plannedDate = app.staticTexts["plannedDueDateSummary"]
         XCTAssertTrue(plannedDate.exists)
-        XCTAssertTrue(plannedDate.label.contains(dateText(tomorrow, format: "dd/MM/yyyy")),
+        XCTAssertTrue(plannedDate.label.contains(localizedDueDate(tomorrow)),
                       "Choosing an available day must prefill that exact due date")
         XCTAssertFalse(plannedDate.label.unicodeScalars.contains {
             (0x0660...0x0669).contains($0.value) || (0x06F0...0x06F9).contains($0.value)
@@ -108,7 +108,7 @@ final class LedgerToolsUITests: XCTestCase {
         app.buttons["closeFreeDays"].tap()
         let scheduledCheque = row(number: "000903", in: app)
         XCTAssertTrue(scheduledCheque.waitForExistence(timeout: 5))
-        XCTAssertTrue(scheduledCheque.label.contains(dateText(tomorrow, format: "dd/MM/yyyy")))
+        XCTAssertTrue(scheduledCheque.label.contains(localizedDueDate(tomorrow)))
         XCTAssertTrue(secondCheque.exists)
         waitForRowRemoval(firstCheque)
     }

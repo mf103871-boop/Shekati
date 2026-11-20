@@ -17,8 +17,12 @@ final class StoreScreenshotUITests: XCTestCase {
         for _ in 0..<7 where !row.isHittable { app.swipeUp() }
         XCTAssertTrue(row.isHittable)
         row.tap()
-        let partial = app.buttons["operation-partialCash"]
-        for _ in 0..<7 where !partial.isHittable { app.swipeUp() }
+        let otherActions = app.buttons["moreChequeActions"]
+        for _ in 0..<7 where !otherActions.isHittable { app.swipeUp() }
+        XCTAssertTrue(otherActions.isHittable)
+        otherActions.tap()
+        let partial = app.buttons["operation-partialCash"].exists ? app.buttons["operation-partialCash"] : app.buttons["Partial cash payment"]
+        XCTAssertTrue(partial.waitForExistence(timeout: 5))
         XCTAssertTrue(partial.isHittable)
         partial.tap()
         let amount = app.textFields.firstMatch

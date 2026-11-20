@@ -191,11 +191,7 @@ final class EnhancementUITests: XCTestCase {
         XCTAssertFalse(paymentDate.exists)
         recordBankSettlement(in: app)
         XCTAssertTrue(paymentDate.waitForExistence(timeout: 5))
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.calendar = Calendar(identifier: .gregorian)
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        XCTAssertEqual(paymentDate.label, "Payment date, " + dateFormatter.string(from: Date()),
+        XCTAssertEqual(paymentDate.label, "Payment date, " + localizedDueDate(Date()),
                        "The confirmed default actual payment date must be visible, not only a changed status")
         XCTAssertFalse(app.buttons["operation-settle"].exists)
         capture(app, "Build 6 English actual payment date saved")

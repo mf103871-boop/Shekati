@@ -194,6 +194,7 @@ private struct BankingAccountDetail: View {
 
 @MainActor
 struct AccountLiquidityView: View {
+    @Environment(\.colorScheme) private var colorScheme
     let account: BankAccountRecord
     let isPlus: Bool
     var hidesAmounts = false
@@ -230,8 +231,21 @@ struct AccountLiquidityView: View {
                                           today: app.today)
                     } label: {
                         if let deficit = outlook.points.first(where: { $0.balance < 0 }) {
-                            Label(app.tr("Expected shortfall") + " · " + app.formatDay(deficit.day) + " · " + money(deficit.balance),
-                                  systemImage: "exclamationmark.triangle")
+                            HStack(alignment: .center, spacing: 12) {
+                                Image(systemName: "exclamationmark.triangle.fill").accessibilityHidden(true)
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(app.tr("Expected shortfall")).font(.subheadline.weight(.semibold))
+                                    Text(app.formatDay(deficit.day) + " · " + money(deficit.balance))
+                                        .font(.footnote).monospacedDigit()
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.forward").accessibilityHidden(true)
+                            }
+                            .padding(14).frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundStyle(colorScheme == .dark ? Color(red: 1.0, green: 0.82, blue: 0.42) : Color(red: 0.43, green: 0.25, blue: 0.03))
+                            .background(Color.orange.opacity(colorScheme == .dark ? 0.18 : 0.14), in: RoundedRectangle(cornerRadius: 14))
+                            .accessibilityHint(app.tr("Cheques"))
+                            .accessibilityIdentifier("shortfallDetails")
                         } else if let ending = outlook.points.last(where: { !$0.contributors.isEmpty }) ?? outlook.points.last {
                             let value = hidesAmounts || ending.balance <= 0 ? money(ending.balance) : "+" + money(ending.balance)
                             Label(app.tr("Cash forecast") + " · " + app.formatDay(ending.day) + " · " + value,
