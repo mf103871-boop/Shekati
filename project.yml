@@ -78,6 +78,8 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: ShekatiUITests
+      - path: ShekatiTests/Resources/ShekatiPlus.storekit
+        buildPhase: resources
     dependencies:
       - target: Shekati
     settings:
@@ -94,6 +96,7 @@ schemes:
         ShekatiUITests: [test]
     run:
       config: Debug
+      storeKitConfiguration: ShekatiTests/Resources/ShekatiPlus.storekit
     test:
       config: Debug
       gatherCoverageData: true

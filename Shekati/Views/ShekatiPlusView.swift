@@ -30,7 +30,9 @@ struct ShekatiPlusView: View {
                                 Text(product.displayPrice)
                                     .font(.headline).foregroundStyle(.primary)
                             }
-                        }.disabled(plus.isBusy)
+                        }
+                        .disabled(plus.isBusy)
+                        .accessibilityIdentifier(product.id)
                     }
                     if plus.products.isEmpty {
                         Button(app.tr("Reload prices")) { Task { await plus.loadProducts() } }

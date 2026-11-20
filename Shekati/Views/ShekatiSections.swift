@@ -81,7 +81,7 @@ struct ShekatiMoreView: View {
             Section {
                 NavigationLink { ShekatiPlusView() } label: {
                     Label(app.tr("Shekati Plus"), systemImage: "star.circle")
-                }
+                }.accessibilityIdentifier("moreSubscriptionLink")
                 NavigationLink { BankingCalendarSettingsView() } label: {
                     Label(app.tr("Banking calendar"), systemImage: "calendar.badge.clock")
                 }

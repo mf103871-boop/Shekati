@@ -131,8 +131,7 @@ struct SettingsView: View {
             }
             Section(app.tr("About")) {
                 LabeledContent(app.tr("Version"), value: version)
-                Text(app.tr("All features included. One purchase. No subscription."))
-                    .font(.footnote).foregroundStyle(.secondary)
+                NavigationLink(app.tr("Shekati Plus")) { ShekatiPlusView() }
                 NavigationLink(app.tr("Privacy policy")) { PrivacyPolicyView() }
             }
         }
