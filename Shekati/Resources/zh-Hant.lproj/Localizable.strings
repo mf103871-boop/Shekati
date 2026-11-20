@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "蘋果公司無法證實這筆買賣 。";
 "Apply" = "應用";
 "Ascending" = "上升";
-"Assumes incoming cheques are collected on their due dates." = "假設收到的支票在到期日期被領取。";
+"Assumes incoming cheques are collected on their due dates." = "假設應收支票的款項在各自到期日入帳。";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "身份驗證失敗。請使用生物識別或 iPhone 密碼重試。";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "身份驗證由 iOS 處理。 Shekati 不會存取或儲存您的生物特徵信息或裝置密碼。";
 "Back" = "背面";
@@ -359,7 +359,7 @@
 "Record deposit" = "登記存入銀行";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "記錄收到及開出的支票，查看到期日，並將支票影像集中保存。";
 "Record payment" = "登記付款";
-"Record return" = "創紀錄的回報率";
+"Record return" = "登記退票";
 "Recorded balance" = "帳面餘額";
 "Recorded operations protect the original cheque details." = "記錄的操作保護原始支票細節";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "另一台裝置的記錄使用不同的貨幣。 在添加新支票之前解決這些記錄。 總和被隱藏以避免混合貨幣。";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "在啟用應用程式鎖定之前，在 iPhone 設置中設置裝置密碼。";
 "Set an iPhone passcode to unlock Shekati." = "設定iPhone密碼解鎖Shekati。";
 "Settings" = "設定";
+"Settle without changing a bank balance" = "登記結清，不變更任何銀行帳戶餘額";
 "Settled" = "已結清";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "支票需要實際日期。";
 "Shekati" = "Shekati";
@@ -488,8 +489,8 @@
 "Tap a day to add an outgoing cheque with this due date." = "點擊某一天來添加具有此到期日的出帳支票。";
 "Terms of use" = "使用條款";
 "The 30-day restore period has ended." = "30 天的恢復期已經結束。";
-"The actual payment or collection date cannot be before the issue date." = "實際付款或收取日期不能在發行日之前。";
-"The actual payment or collection date cannot be in the future." = "實際付款或收取日期不能在未來 。";
+"The actual payment or collection date cannot be before the issue date." = "實際付款或收款日期不得早於支票簽發日期。";
+"The actual payment or collection date cannot be in the future." = "實際付款或收款日期不得晚於今天。";
 "The balance changed. Review the new difference before confirming." = "余額變動了，請在確認前查看新差異。";
 "The bank balance changes when collection is confirmed." = "確認收款後才會更新銀行帳戶餘額。";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "只有在您選擇掃描時才會使用相機。 文本識別是在此 iPhone 上進行的。 不會將支票照片發送到外部認證服務。";

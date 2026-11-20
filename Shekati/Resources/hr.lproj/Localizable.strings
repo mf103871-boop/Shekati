@@ -122,7 +122,7 @@
 "Clear search and filters" = "Brisanje pretraživanja i filtara";
 "Clear selection" = "Očisti odabir";
 "Collected" = "Naplaćen";
-"Collection date" = "Datum preuzimanja";
+"Collection date" = "Datum naplate";
 "Confirm" = "Potvrdi";
 "Confirm action" = "Potvrdi akciju";
 "Confirm holder collected" = "Potvrdi da je imatelj naplatio ček";
@@ -359,7 +359,7 @@
 "Record deposit" = "Evidentiraj polog";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Snimite dolazne i odlazne čekove, pogledajte njihove datume dospijeća i držite slike čekova zajedno.";
 "Record payment" = "Evidentiraj plaćanje";
-"Record return" = "Rekordni povrat";
+"Record return" = "Evidentiraj povrat neplaćenog čeka";
 "Recorded balance" = "Evidentirano stanje";
 "Recorded operations protect the original cheque details." = "Zabilježene operacije štite originalne detalje čekova.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Zapisi s drugog uređaja koriste drugu valutu. Odlučite ove zapise prije dodavanja novih čekova. Ukupni iznosi su skriveni kako bi se izbjeglo miješanje valuta.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Postavite šifru uređaja u iPhone postavkama prije omogućavanja zaključavanja aplikacije.";
 "Set an iPhone passcode to unlock Shekati." = "Postavite iPhone zaporku za otključavanje Shekati.";
 "Settings" = "Postavke";
+"Settle without changing a bank balance" = "Evidentiraj podmirenje bez promjene stanja bilo kojeg bankovnog računa";
 "Settled" = "Podmiren";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Za isplaćene čekove potreban je stvarni datum. Datumi moraju koristiti YYYY-MM-DD.";
 "Shekati" = "Shekati";
@@ -490,14 +491,14 @@
 "The 30-day restore period has ended." = "Završilo je 30-dnevno razdoblje vraćanja.";
 "The actual payment or collection date cannot be before the issue date." = "Stvarni datum plaćanja ili naplate ne može biti prije datuma izdavanja.";
 "The actual payment or collection date cannot be in the future." = "Stvarni datum plaćanja ili naplate ne može biti u budućnosti.";
-"The balance changed. Review the new difference before confirming." = "Bilanca se promijenila. Pregledajte novu razliku prije potvrde.";
+"The balance changed. Review the new difference before confirming." = "Stanje računa se promijenilo. Pregledajte novu razliku prije potvrde.";
 "The bank balance changes when collection is confirmed." = "Bankovno stanje mijenja se kada je naplata potvrđena.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Kamera se koristi samo kada odaberete skeniranje. Prepoznavanje teksta odvija se na ovom iPhone uređaju, a fotografije čekova ne šalju se vanjskom servisu za prepoznavanje.";
 "The cheque could not be deleted. Please try again." = "Ček nije mogao biti izbrisan. Molim vas pokušajte ponovno.";
 "The cheque could not be restored. Please try again." = "Ček nije mogao biti vraćen. Molim vas pokušajte ponovno.";
 "The cheque could not be saved. Your draft is still here; please try again." = "Ček nije mogao biti spremljen. Vaša skica je još uvijek ovdje; pokušajte ponovno.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "Ček se 30 dana nalazi u odjeljku Nedavno izbrisano, a podsjetnici na njega prestaju; možete obnoviti njegove podatke i fotografije.";
-"The cheque stays in follow-up until the new holder confirms collection." = "Ček ostaje u praćenju dok novi vlasnik ne potvrdi preuzimanje.";
+"The cheque stays in follow-up until the new holder confirms collection." = "Ček ostaje u praćenju dok novi imatelj ne potvrdi naplatu.";
 "The end date must be on or after the start date." = "Krajnji datum mora biti na ili nakon početnog datuma.";
 "The file contains invalid cheque information." = "Datoteka sadrži nevažeći ček informacije.";
 "The file could not be read or saved. Please try again." = "Datoteka se nije mogla pročitati ili spremiti. Molim pokušajte ponovno.";

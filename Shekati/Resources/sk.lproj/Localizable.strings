@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Spoločnosť Apple nemohla tento nákup overiť.";
 "Apply" = "Použiť";
 "Ascending" = "Vzostupne";
-"Assumes incoming cheques are collected on their due dates." = "Predpokladá sa, že prichádzajúce šeky sú vyzdvihnuté v ich dátumoch splatnosti.";
+"Assumes incoming cheques are collected on their due dates." = "Predpokladá sa, že peniaze z prijatých šekov budú pripísané v deň ich splatnosti.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Overenie zlyhalo. Skúste to znova pomocou biometrických údajov alebo kódu iPhonu.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Aplikácia Shekati nemá prístup k vašim biometrickým informáciám ani heslu zariadenia a neukladá ich.";
 "Back" = "Zadná strana";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "Vymazať vyhľadávanie a filtre";
 "Clear selection" = "Vymazať výber";
 "Collected" = "Inkasovaný";
-"Collection date" = "Dátum vyzdvihnutia";
+"Collection date" = "Dátum inkasa";
 "Confirm" = "Potvrdiť";
 "Confirm action" = "Potvrdiť akciu";
 "Confirm holder collected" = "Potvrdiť, že držiteľ dostal za šek zaplatené";
@@ -359,7 +359,7 @@
 "Record deposit" = "Zaznamenať uloženie v banke";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Záznam prichádzajúce a odchádzajúce šeky, vidieť ich termíny splatnosti a udržať svoje obrázky šeku spolu.";
 "Record payment" = "Zaznamenať platbu";
-"Record return" = "Rekordný výnos";
+"Record return" = "Zaznamenať vrátenie nepreplateného šeku";
 "Recorded balance" = "Evidovaný zostatok";
 "Recorded operations protect the original cheque details." = "Zaznamenané operácie chránia pôvodné podrobnosti šeku.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Záznamy z iného zariadenia používajú inú menu. Tieto záznamy vyriešte pred pridaním nových šekov. Celkové súčty sú skryté, aby sa zabránilo zmiešaniu mien.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Pred zapnutím zámku aplikácií nastavte v Nastaveniach iPhonu prístupový kód zariadenia.";
 "Set an iPhone passcode to unlock Shekati." = "Nastavte iPhone prístupový kód pre odomknutie Shekati.";
 "Settings" = "Nastavenia";
+"Settle without changing a bank balance" = "Zaznamenať vyrovnanie bez zmeny zostatku na ktoromkoľvek bankovom účte";
 "Settled" = "Vyrovnaný";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Vyrovnané šeky potrebujú skutočný dátum. Dátumy musia používať YYYY-MM-DD.";
 "Shekati" = "Shekati";
@@ -489,15 +490,15 @@
 "Terms of use" = "Podmienky používania";
 "The 30-day restore period has ended." = "30-dňové obdobie obnovenia sa skončilo.";
 "The actual payment or collection date cannot be before the issue date." = "Skutočný dátum platby alebo inkasa nemôže byť pred dátumom vydania.";
-"The actual payment or collection date cannot be in the future." = "Skutočný dátum platby alebo vyzdvihnutia nemôže byť v budúcnosti.";
+"The actual payment or collection date cannot be in the future." = "Skutočný dátum platby alebo inkasa nemôže byť v budúcnosti.";
 "The balance changed. Review the new difference before confirming." = "Zostatok sa zmenil. Pred potvrdením skontrolujte nový rozdiel.";
-"The bank balance changes when collection is confirmed." = "Zostatok na účte sa zmení po potvrdení vyzdvihnutia.";
+"The bank balance changes when collection is confirmed." = "Zostatok na bankovom účte sa zmení po potvrdení inkasa šeku.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Kamera sa používa len vtedy, keď sa rozhodnete skenovať. Rozpoznávanie textu prebieha na tomto iPhone a žiadna fotografia šeku sa neodosiela do externej služby rozpoznávania.";
 "The cheque could not be deleted. Please try again." = "Šek sa nepodarilo vymazať. Skúste to znova.";
 "The cheque could not be restored. Please try again." = "Šek sa nepodarilo obnoviť. Skúste to znova.";
 "The cheque could not be saved. Your draft is still here; please try again." = "Šek sa nepodarilo uložiť. Váš návrh je stále tu, skúste to znova.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "Šek sa na 30 dní presunie do priečinka Nedávno vymazané, pripomienky sa prestanú zobrazovať a môžete obnoviť jeho podrobnosti a fotky.";
-"The cheque stays in follow-up until the new holder confirms collection." = "Šek zostáva v sledovaní, kým nový majiteľ nepotvrdí prevzatie.";
+"The cheque stays in follow-up until the new holder confirms collection." = "Šek sa naďalej sleduje, kým nový držiteľ nepotvrdí jeho inkaso.";
 "The end date must be on or after the start date." = "Koncový dátum musí byť rovnaký ako počiatočný dátum alebo po ňom.";
 "The file contains invalid cheque information." = "Súbor obsahuje neplatné informácie o šeku.";
 "The file could not be read or saved. Please try again." = "Súbor sa nepodarilo prečítať alebo uložiť. Skúste to znova.";

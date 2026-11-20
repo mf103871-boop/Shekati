@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Apple tidak dapat mengesahkan pembelian ini.";
 "Apply" = "Laksana";
 "Ascending" = "Meningkat";
-"Assumes incoming cheques are collected on their due dates." = "Asumsi cek masuk dikumpul pada tarikh tamat tempoh mereka.";
+"Assumes incoming cheques are collected on their due dates." = "Anggaran ini mengandaikan bayaran bagi setiap cek masuk diterima pada tarikh matangnya.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Pengesahan gagal. Cuba lagi menggunakan biometrik atau kod laluan iPhone anda.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Pengesahan diuruskan oleh iOS. Shekati tidak mengakses atau menyimpan maklumat biometrik anda atau kod laluan peranti.";
 "Back" = "Bahagian belakang";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "Kosongkan carian dan penapis";
 "Clear selection" = "Kosongkan pemilihan";
 "Collected" = "Dikutip";
-"Collection date" = "Tarikh Pengumpulan";
+"Collection date" = "Tarikh penerimaan bayaran";
 "Confirm" = "Sahkan";
 "Confirm action" = "Sahkan tindakan";
 "Confirm holder collected" = "Sahkan pemegang cek telah menerima bayaran";
@@ -359,7 +359,7 @@
 "Record deposit" = "Rekod deposit";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Rekod cek masuk dan keluar, lihat tarikh tamat tempoh mereka dan simpan imej cek anda bersama.";
 "Record payment" = "Rekodkan pembayaran";
-"Record return" = "Kembalikan Rekod";
+"Record return" = "Rekodkan cek yang dipulangkan tanpa bayaran";
 "Recorded balance" = "Baki direkodkan";
 "Recorded operations protect the original cheque details." = "Operasi yang direkodkan melindungi perincian cek asal.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Rekod dari peranti lain menggunakan mata wang yang berbeza. Selesai rekod ini sebelum menambah cek baru. Jumlah tersembunyi untuk mengelakkan campurkan mata wang.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Tetapkan kod laluan peranti dalam Tetapan iPhone sebelum mengaktifkan kunci aplikasi.";
 "Set an iPhone passcode to unlock Shekati." = "Tetapkan kod laluan iPhone untuk membuka Shekati.";
 "Settings" = "Tetapan";
+"Settle without changing a bank balance" = "Rekodkan penyelesaian cek tanpa mengubah baki mana-mana akaun bank";
 "Settled" = "Diselesaikan";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Cek yang telah diselesaikan memerlukan tarikh pembayaran atau kutipan sebenar. Masukkan tarikh dalam format YYYY-MM-DD.";
 "Shekati" = "Shekati";
@@ -488,8 +489,8 @@
 "Tap a day to add an outgoing cheque with this due date." = "Tekan hari untuk menambah cek keluar dengan tarikh tamat ini.";
 "Terms of use" = "Syarat penggunaan";
 "The 30-day restore period has ended." = "Period pemulihan 30 hari telah tamat.";
-"The actual payment or collection date cannot be before the issue date." = "Tarikh pembayaran atau pengumpulan sebenar tidak boleh sebelum tarikh pengeluaran.";
-"The actual payment or collection date cannot be in the future." = "Tarikh pembayaran atau pengumpulan sebenar tidak boleh berada di masa hadapan.";
+"The actual payment or collection date cannot be before the issue date." = "Tarikh sebenar pembayaran atau penerimaan wang tidak boleh mendahului tarikh cek dikeluarkan.";
+"The actual payment or collection date cannot be in the future." = "Tarikh sebenar pembayaran atau penerimaan wang tidak boleh berada pada masa hadapan.";
 "The balance changed. Review the new difference before confirming." = "Saldo berubah. Lihat perbezaan baru sebelum mengesahkan.";
 "The bank balance changes when collection is confirmed." = "Baki akaun bank berubah apabila kutipan bayaran cek disahkan.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Kamera hanya digunakan bila anda memilih imbas. Pengenalan teks berlaku pada iPhone ini. Tiada foto cek dihantar ke perkhidmatan pengecaman luaran.";

@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Apple nu a putut verifica această achiziție.";
 "Apply" = "Aplicare";
 "Ascending" = "Crescător";
-"Assumes incoming cheques are collected on their due dates." = "Presupune că cecurile de intrare sunt colectate la datele lor scadente.";
+"Assumes incoming cheques are collected on their due dates." = "Estimarea presupune că sumele din cecurile de încasat vor fi încasate la scadență.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Încearcă din nou să folosești biometria sau codul de acces al dispozitivului iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Autentificare este gestionată de iOS. Shekati nu accesează sau stochează informațiile dvs. biometrice sau codul de acces al dispozitivului.";
 "Back" = "Verso";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "Goliți căutarea și filtrele";
 "Clear selection" = "Ștergeți selecția";
 "Collected" = "Încasat";
-"Collection date" = "Data de colectare";
+"Collection date" = "Data încasării";
 "Confirm" = "Confirmare";
 "Confirm action" = "Confirmați acțiunea";
 "Confirm holder collected" = "Confirmă că deținătorul a încasat cecul";
@@ -359,7 +359,7 @@
 "Record deposit" = "Înregistrează depunerea";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Înregistrați cecurile de intrare și ieșire, vedeți datele lor scadente și păstrați imaginile dvs. de verificare împreună.";
 "Record payment" = "Înregistrează plata";
-"Record return" = "Returnare record";
+"Record return" = "Înregistrează refuzul la plată al cecului";
 "Recorded balance" = "Sold înregistrat";
 "Recorded operations protect the original cheque details." = "Operațiunile înregistrate protejează detaliile cecului original.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Înregistrările de pe un alt dispozitiv utilizează o monedă diferită. Rezolvați aceste înregistrări înainte de a adăuga noi cecuri. Totalurile sunt ascunse pentru a evita amestecarea monedelor.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Setați un cod de acces pentru dispozitiv în Configurări iPhone înainte de a activa blocarea aplicațiilor.";
 "Set an iPhone passcode to unlock Shekati." = "Setați un cod de acces iPhone pentru a debloca Shekati.";
 "Settings" = "Configurări";
+"Settle without changing a bank balance" = "Înregistrează decontarea fără a modifica soldul vreunui cont bancar";
 "Settled" = "Decontat";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Cecurile decontate au nevoie de o dată reală. Datele trebuie să utilizeze YYYY-MM-DD.";
 "Shekati" = "Shekati";
@@ -488,16 +489,16 @@
 "Tap a day to add an outgoing cheque with this due date." = "Atingeți o zi pentru a adăuga un cec de ieșire cu această dată scadentă.";
 "Terms of use" = "Termeni de utilizare";
 "The 30-day restore period has ended." = "Perioada de restaurare de 30 de zile s-a încheiat.";
-"The actual payment or collection date cannot be before the issue date." = "Data efectivă de plată sau colectare nu poate fi anterioară datei emiterii.";
-"The actual payment or collection date cannot be in the future." = "Data efectivă de plată sau colectare nu poate fi în viitor.";
+"The actual payment or collection date cannot be before the issue date." = "Data efectivă a plății sau a încasării nu poate fi anterioară datei emiterii cecului.";
+"The actual payment or collection date cannot be in the future." = "Data efectivă a plății sau a încasării nu poate fi în viitor.";
 "The balance changed. Review the new difference before confirming." = "Soldul s-a schimbat. Revizuiți noua diferență înainte de a confirma.";
-"The bank balance changes when collection is confirmed." = "Soldul bancar se modifică atunci când colectarea este confirmată.";
+"The bank balance changes when collection is confirmed." = "Soldul bancar se modifică atunci când se confirmă încasarea cecului.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Camera este utilizată numai atunci când alegi să scanezi. Recunoașterea textului are loc pe acest iPhone, iar fotografia cecului nu este trimisă unui serviciu extern de recunoaștere.";
 "The cheque could not be deleted. Please try again." = "Cecul nu a putut fi şters. Vă rugăm să încercaţi din nou.";
 "The cheque could not be restored. Please try again." = "Cecul nu a putut fi restaurat. Vă rugăm să încercaţi din nou.";
 "The cheque could not be saved. Your draft is still here; please try again." = "Cecul nu a putut fi salvat. Cifra dvs. este încă aici; vă rugăm să încercați din nou.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "Cecul se mută în secțiunea Șterse recent timp de 30 de zile, iar mementourile sale se opresc; poți să restaurezi detaliile și fotografiile cecului.";
-"The cheque stays in follow-up until the new holder confirms collection." = "Cecul rămâne în urmărire până când noul titular confirmă ridicarea.";
+"The cheque stays in follow-up until the new holder confirms collection." = "Cecul rămâne în monitorizare până când noul deținător confirmă încasarea.";
 "The end date must be on or after the start date." = "Data de sfârșit trebuie să fie la sau după data de început.";
 "The file contains invalid cheque information." = "Fișierul conține informații nevalide despre cec.";
 "The file could not be read or saved. Please try again." = "Fișierul nu a putut fi citit sau salvat. Vă rugăm să încercați din nou.";

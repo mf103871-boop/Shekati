@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Appleはこの購入を確認できなかった。";
 "Apply" = "適用";
 "Ascending" = "上昇順";
-"Assumes incoming cheques are collected on their due dates." = "入金小切手が到着日に受け取られたと仮定します。";
+"Assumes incoming cheques are collected on their due dates." = "受取小切手の代金がそれぞれの期日に入金されるものとして予測します。";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "認証に失敗しました。生体検査または iPhone パスワードを使って再度試してください。";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "認証は iOS が行います。Shekati はあなたの生体情報やデバイスパスワードにアクセスし、または保存しません。";
 "Back" = "裏面";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "検索とフィルタをクリア";
 "Clear selection" = "選択をクリア";
 "Collected" = "取立済み";
-"Collection date" = "収集日";
+"Collection date" = "入金日";
 "Confirm" = "確認";
 "Confirm action" = "アクションを確認";
 "Confirm holder collected" = "所持人が代金を受け取ったことを確認";
@@ -167,7 +167,7 @@
 "Direction" = "方向";
 "Discard" = "捨てる";
 "Discard changes?" = "変更を無視しますか？";
-"Dismiss conflicting entry" = "衝突するエントリを削除";
+"Dismiss conflicting entry" = "競合する記録を除外";
 "Done" = "完了";
 "Download CSV template" = "CSV テンプレートをダウンロード";
 "Draft" = "下書き";
@@ -359,7 +359,7 @@
 "Record deposit" = "取立依頼を記録";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "受け取った小切手と振り出した小切手を記録し、支払期日と小切手の画像をまとめて管理できます。";
 "Record payment" = "支払いを記録";
-"Record return" = "レコードリターン";
+"Record return" = "不渡りとして記録";
 "Recorded balance" = "帳簿残高";
 "Recorded operations protect the original cheque details." = "記録された操作は元のチェックの詳細を保護する。";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "他のデバイスからのレコードは異なる通貨を使用しています。新しいチェックを追加する前にこれらのレコードを解決してください。合計は通貨混在を防ぐために隠します。";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "アプリロックを有効にする前に iPhone 設定でデバイスパスコードを設定します。";
 "Set an iPhone passcode to unlock Shekati." = "iPhoneのパスワードを設定して Shekati をロック解除します。";
 "Settings" = "設定";
+"Settle without changing a bank balance" = "どの銀行口座の残高も変更せずに決済を記録";
 "Settled" = "精算済み";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "決済した小切手には実際の日付が必要です。日付は YYYY-MM-DD でなければなりません。";
 "Shekati" = "Shekati";
@@ -488,16 +489,16 @@
 "Tap a day to add an outgoing cheque with this due date." = "この期限の出荷小切手を追加するには、日付をタップしてください。";
 "Terms of use" = "利用規約";
 "The 30-day restore period has ended." = "30日間の復元期間が終了しました。";
-"The actual payment or collection date cannot be before the issue date." = "実際の支払い日や受取日は発行日より前にはならない。";
-"The actual payment or collection date cannot be in the future." = "実際の支払いまたは集金日は未来ではない。";
-"The balance changed. Review the new difference before confirming." = "バランスが変更されました。確認する前に新しい差を確認してください。";
-"The bank balance changes when collection is confirmed." = "受取確認時に銀行残高が変わる。";
+"The actual payment or collection date cannot be before the issue date." = "実際の支払日または入金日は、小切手の振出日より前に設定できません。";
+"The actual payment or collection date cannot be in the future." = "実際の支払日または入金日に、未来の日付は設定できません。";
+"The balance changed. Review the new difference before confirming." = "口座残高が変わりました。確定する前に新しい差額を確認してください。";
+"The bank balance changes when collection is confirmed." = "小切手の入金を確認すると、銀行口座の残高が変わります。";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "スキャンを選択したときのみカメラが使用されます。テキスト認識はこの iPhone で行われます。外部認識サービスにチェック写真は送られません。";
 "The cheque could not be deleted. Please try again." = "小切手を削除できませんでした。もう一度試してください。";
 "The cheque could not be restored. Please try again." = "小切手を復元できませんでした。もう一度試してください。";
 "The cheque could not be saved. Your draft is still here; please try again." = "小切手を保存できませんでした。草稿はまだここにあります。もう一度試してください。";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "小切手は 30 日間 最近削除されたものに移動します。リマインダーは停止されます。詳細と写真を復元できます。";
-"The cheque stays in follow-up until the new holder confirms collection." = "小切手は新しい持ち主が受け取りを確認するまでフォローアップされる。";
+"The cheque stays in follow-up until the new holder confirms collection." = "新しい所持人が小切手の入金を確認するまで、追跡を続けます。";
 "The end date must be on or after the start date." = "終了日は開始日の同じ日または後でなければなりません。";
 "The file contains invalid cheque information." = "ファイルには無効な小切手情報が含まれています。";
 "The file could not be read or saved. Please try again." = "ファイルを読み込まずに保存できませんでした。もう一度試してください。";

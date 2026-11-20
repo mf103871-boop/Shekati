@@ -72,6 +72,17 @@ struct ChequeOperationsView: View {
                         Text(app.tr(op.kind.title) + " · " + money(op.amount) + " · " + app.formatDay(op.day))
                     }
                 }
+            } else if BankingLedger.canSettleHistorically(record, accounts: accounts, events: events, isPlus: isPlus) {
+                Button {
+                    sheet = OperationIntent(action: .historicalSettlement, parent: nil, related: nil,
+                                            historicalAmount: position.remaining, historicalCurrency: record.currencyCode)
+                } label: {
+                    Label(app.tr(LedgerAction.historicalSettlement.title), systemImage: "checkmark.circle")
+                        .foregroundStyle(Theme.onAccent)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                }.buttonStyle(.borderedProminent).accessibilityIdentifier("operation-historicalSettlement")
+                NavigationLink(app.tr("Bank accounts")) { BankingAccountsView(isPlus: isPlus) }
             } else if record.bankAccountID == nil && position.isOpen {
                 Text(app.tr("Select a bank account in the cheque currency.")).font(.subheadline)
                 Picker(app.tr("Bank account"), selection: $selectedAccount) {
@@ -154,6 +165,8 @@ private struct OperationIntent: Identifiable {
     let action: LedgerAction
     let parent: UUID?
     let related: LedgerOperation?
+    var historicalAmount: Int64?
+    var historicalCurrency: String?
 }
 
 @MainActor
@@ -176,20 +189,22 @@ private struct OperationForm: View {
     @State private var error: String?
     private var partial: Bool { [.partialBank, .partialCash].contains(intent.action) }
     private var effectiveAmount: Int64? {
-        partial ? CurrencyMath.parseMinorUnits(amount, currencyCode: record.currencyCode) :
+        if intent.action == .historicalSettlement { return intent.historicalAmount }
+        return partial ? CurrencyMath.parseMinorUnits(amount, currencyCode: record.currencyCode) :
             ([.settle, .acknowledgeEndorsement, .replace].contains(intent.action) ? remaining : 0)
     }
     private func display(_ value: Int64) -> String {
-        hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: value, currencyCode: record.currencyCode, locale: app.preferences.language.locale)
+        hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: value, currencyCode: intent.historicalCurrency ?? record.currencyCode, locale: app.preferences.language.locale)
     }
     private var remainderAfterPayment: Int64? {
         guard partial, let value = effectiveAmount, value > 0, value <= remaining else { return nil }
         return remaining - value
     }
     private var summary: String {
-        let amountText = hidesAmounts ? "••••" : DisplayFormatting.amount(minorUnits: effectiveAmount ?? 0, currencyCode: record.currencyCode, locale: app.preferences.language.locale)
+        let amountText = display(effectiveAmount ?? 0)
+        let accountName = intent.action == .historicalSettlement ? "" : accounts.first(where: { $0.id == record.bankAccountID })?.name ?? ""
         let parts = [app.tr(intent.action.title), record.number, app.formatDay(LocalDay(date: date)), (effectiveAmount ?? 0) == 0 ? "" : amountText,
-                     accounts.first(where: { $0.id == record.bankAccountID })?.name ?? "", party, number,
+                     accountName, party, number,
                      intent.action == .replace ? app.formatDay(LocalDay(date: due)) : "",
                      remainderAfterPayment.map { app.tr("Remaining after payment") + " · " + display($0) } ?? ""]
         return parts.filter { !$0.isEmpty }.joined(separator: " · ")
@@ -201,6 +216,9 @@ private struct OperationForm: View {
                 if let related = intent.related {
                     LabeledContent(app.tr("Action to reverse"), value: app.tr(related.kind.title) + " · " + app.formatDay(related.day))
                     Text(app.tr("The reversal is recorded in the activity history.")).font(.footnote)
+                } else if intent.action == .historicalSettlement, let issued = record.issueDate, issued <= .today {
+                    DatePicker(app.tr("Date"), selection: $date, in: Calendar.current.startOfDay(for: issued.date())...Date(), displayedComponents: .date)
+                        .accessibilityIdentifier("operationDate")
                 } else {
                     DatePicker(app.tr("Date"), selection: $date, in: ...Date(), displayedComponents: .date)
                         .accessibilityIdentifier("operationDate")
@@ -217,13 +235,16 @@ private struct OperationForm: View {
                         LabeledContent(app.tr("Remaining after payment"), value: display(after))
                     }
                 }
-                if let account = accounts.first(where: { $0.id == record.bankAccountID }) {
+                if intent.action == .historicalSettlement, let historicalAmount = intent.historicalAmount {
+                    LabeledContent(app.tr("Amount"), value: display(historicalAmount))
+                    Text(app.tr(LedgerAction.historicalSettlement.title)).font(.footnote)
+                } else if let account = accounts.first(where: { $0.id == record.bankAccountID }) {
                     LabeledContent(app.tr("Bank account"), value: account.name)
                 }
                 if intent.action == .endorse {
                     TextField(app.tr("New holder"), text: $party)
                     Text(app.tr("The cheque stays in follow-up until the new holder confirms collection.")).font(.footnote)
-                } else if intent.action == .discardConflict || intent.action == .markReturned || intent.action == .cancel {
+                } else if [.discardConflict, .markReturned, .cancel, .historicalSettlement].contains(intent.action) {
                     TextField(app.tr("Reason"), text: $party)
                 }
                 if intent.action == .replace {
@@ -238,7 +259,7 @@ private struct OperationForm: View {
                 Button(app.tr("Review action")) { confirmation = true }
                     .accessibilityIdentifier("reviewOperation")
                     .disabled(effectiveAmount == nil || (partial && remainderAfterPayment == nil) ||
-                              ([.endorse, .discardConflict, .markReturned, .cancel].contains(intent.action) && party.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) ||
+                              ([.endorse, .discardConflict, .markReturned, .cancel, .historicalSettlement].contains(intent.action) && party.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) ||
                               (intent.action == .replace && number.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty))
             }
             .navigationTitle(app.tr(intent.action.title)).navigationBarTitleDisplayMode(.inline)
@@ -253,6 +274,10 @@ private struct OperationForm: View {
         do {
             if let rejected = intent.related {
                 try BankingLedger.dismissConflict(rejected, reason: party, record: record, context: context)
+            } else if intent.action == .historicalSettlement {
+                guard let amount = intent.historicalAmount, let currency = intent.historicalCurrency else { throw BankingError.invalid }
+                try BankingLedger.settleHistorically(record, operationID: intent.id, amount: amount, currency: currency,
+                                                     day: LocalDay(date: date), reason: party, isPlus: isPlus, context: context)
             } else {
                 try BankingLedger.perform(intent.action, for: record, amount: effectiveAmount ?? 0, day: LocalDay(date: date),
                                           party: party, replacementNumber: number, replacementDue: LocalDay(date: due),

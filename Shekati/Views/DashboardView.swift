@@ -46,33 +46,6 @@ struct DashboardView: View {
                         }.padding(14).background(Theme.surface, in: RoundedRectangle(cornerRadius: 14))
                     }.accessibilityLabel(app.tr("Bank account") + ", " + account.name)
                     AccountLiquidityView(account: account, isPlus: plus.isPlus, hidesAmounts: hidesAmounts)
-                    if plus.isPlus, !hidesAmounts,
-                       let outlook = try? BankingLedger.outlook(account: account, records: records, events: events,
-                                                                today: app.today, horizon: 30) {
-                        let divisor = pow(10.0, Double(CurrencyMath.fractionDigits(for: account.currencyCode)))
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(app.tr("Shekati Plus")).font(.caption.weight(.semibold))
-                                .foregroundStyle(Theme.accent)
-                            Text(app.tr("Cash forecast") + " · " + app.tr("30 days")).font(.headline)
-                            Chart {
-                                RuleMark(y: .value(account.currencyCode, 0))
-                                    .lineStyle(StrokeStyle(dash: [3, 3])).foregroundStyle(.secondary)
-                                ForEach(outlook.points) { point in
-                                    LineMark(x: .value(app.tr("Date"), point.day.date()),
-                                             y: .value(account.currencyCode, Double(point.balance) / divisor))
-                                        .interpolationMethod(.stepEnd).foregroundStyle(Theme.accent)
-                                }
-                            }
-                            .chartYAxisLabel(account.currencyCode)
-                            .chartXAxis {
-                                AxisMarks(values: [app.today.date(), app.today.adding(days: 15).date(), app.today.adding(days: 30).date()]) {
-                                    AxisValueLabel(format: .dateTime.month(.abbreviated).day())
-                                }
-                            }
-                            .frame(height: 115)
-                            .accessibilityLabel(app.tr("Cash forecast") + " · " + account.currencyCode)
-                        }.shekatiCard()
-                    }
                 } else {
                     VStack(alignment: .leading, spacing: 12) {
                         Label(app.tr("Add your first bank account"), systemImage: "building.columns").font(.headline)
@@ -85,6 +58,7 @@ struct DashboardView: View {
                 }
                 HStack {
                     Text(app.tr("Next cheques")).font(.headline)
+                        .accessibilityIdentifier("dashboardUpcomingTitle")
                     Spacer()
                     NavigationLink(app.tr("See all")) { ChequeListView() }
                 }
@@ -97,10 +71,38 @@ struct DashboardView: View {
                 if upcoming.isEmpty {
                     Text(app.tr("No outstanding cheques")).foregroundStyle(.secondary)
                 }
-                if let account, records.contains(where: { $0.isActive && $0.bankAccountID == nil }) {
-                    NavigationLink { UnlinkedChequeView(currency: account.currencyCode) } label: {
+                if let account, plus.isPlus, !hidesAmounts,
+                   let outlook = try? BankingLedger.outlook(account: account, records: records, events: events,
+                                                            today: app.today, horizon: 30) {
+                    let divisor = pow(10.0, Double(CurrencyMath.fractionDigits(for: account.currencyCode)))
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(app.tr("Shekati Plus")).font(.caption.weight(.semibold))
+                            .foregroundStyle(Theme.accent)
+                        Text(app.tr("Cash forecast") + " · " + app.tr("30 days")).font(.headline)
+                            .accessibilityIdentifier("dashboardForecastTitle")
+                        Chart {
+                            RuleMark(y: .value(account.currencyCode, 0))
+                                .lineStyle(StrokeStyle(dash: [3, 3])).foregroundStyle(.secondary)
+                            ForEach(outlook.points) { point in
+                                LineMark(x: .value(app.tr("Date"), point.day.date()),
+                                         y: .value(account.currencyCode, Double(point.balance) / divisor))
+                                    .interpolationMethod(.stepEnd).foregroundStyle(Theme.accent)
+                            }
+                        }
+                        .chartYAxisLabel(account.currencyCode)
+                        .chartXAxis {
+                            AxisMarks(values: [app.today.date(), app.today.adding(days: 15).date(), app.today.adding(days: 30).date()]) {
+                                AxisValueLabel(format: .dateTime.month(.abbreviated).day())
+                            }
+                        }
+                        .frame(height: 115)
+                        .accessibilityLabel(app.tr("Cash forecast") + " · " + account.currencyCode)
+                    }.shekatiCard()
+                }
+                if account != nil, records.contains(where: { $0.isActive && $0.bankAccountID == nil }) {
+                    NavigationLink { UnlinkedChequeView() } label: {
                         Label(app.tr("Review cheques without an account"), systemImage: "link.badge.plus")
-                    }
+                    }.accessibilityIdentifier("reviewUnlinkedCheques")
                 }
                 if let error = app.persistenceMessage { Text(error).foregroundStyle(Theme.red) }
                 if app.notifications.isDenied {
@@ -127,11 +129,11 @@ struct DashboardView: View {
 @MainActor
 private struct UnlinkedChequeView: View {
     @Environment(AppState.self) private var app
-    @Query private var records: [ChequeRecord]
-    let currency: String
+    @Query(sort: \ChequeRecord.dueDateISO) private var records: [ChequeRecord]
     var body: some View {
-        List(records.filter { $0.deletedAt == nil && $0.bankAccountID == nil && $0.currencyCode == currency }) { record in
+        List(records.filter { $0.isActive && $0.bankAccountID == nil }) { record in
             NavigationLink { ChequeDetailView(record: record) } label: { ChequeRowView(record: record) }
+                .accessibilityIdentifier("cheque-row-" + record.id.uuidString)
         }.navigationTitle(app.tr("Review cheques without an account"))
     }
 }

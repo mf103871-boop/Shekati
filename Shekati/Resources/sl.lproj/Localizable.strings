@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Apple ni mogel preveriti tega nakupa.";
 "Apply" = "Uporabi";
 "Ascending" = "Naraščajoče";
-"Assumes incoming cheques are collected on their due dates." = "Predpostavlja, da so dohodni čeki pobrani na datume zapadlosti.";
+"Assumes incoming cheques are collected on their due dates." = "Napoved predpostavlja, da bodo sredstva iz prejetih čekov prejeta na dan zapadlosti.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Poskusi znova z biometričnimi podatki ali geslom za iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Shekati ne dostopa ali shranjuje vaše biometrične podatke ali geslo naprave, zato je preverjanje pristnosti enostavno in hitro.";
 "Back" = "Hrbtna stran";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "Počisti iskanje in filtre";
 "Clear selection" = "Počisti izbor";
 "Collected" = "Unovčen";
-"Collection date" = "Datum prevzema";
+"Collection date" = "Datum prejema plačila";
 "Confirm" = "Potrdi";
 "Confirm action" = "Potrdi dejanje";
 "Confirm holder collected" = "Potrdi, da je imetnik prejel plačilo";
@@ -359,7 +359,7 @@
 "Record deposit" = "Zabeleži polog";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Snemanje dohodnih in odhodnih čekov, si oglejte njihove datume zapadlosti in ohraniti svoje slike ček skupaj.";
 "Record payment" = "Zabeleži plačilo";
-"Record return" = "Rekordna donosnost";
+"Record return" = "Zabeleži vrnitev neunovčenega čeka";
 "Recorded balance" = "Evidentirano stanje";
 "Recorded operations protect the original cheque details." = "Posnete operacije ščitijo izvirne podrobnosti čekov.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Zapisi iz druge naprave uporabljajo drugačno valuto. Razreši te zapise, preden dodaš nove čeke. Skupaj so skriti, da se izognete mešanju valut.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Preden omogočite zaklepanje aplikacij, v nastavitvah telefona iPhone nastavite geslo za dostop do naprave.";
 "Set an iPhone passcode to unlock Shekati." = "Nastavite geslo iPhone za odklepanje Shekati.";
 "Settings" = "Nastavitve";
+"Settle without changing a bank balance" = "Zabeleži poravnavo brez spremembe stanja na katerem koli bančnem računu";
 "Settled" = "Poravnan";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Poravnani čeki potrebujejo dejanski datum. Datumi morajo uporabljati YYYY-MM-DD.";
 "Shekati" = "Shekati";
@@ -488,16 +489,16 @@
 "Tap a day to add an outgoing cheque with this due date." = "Tapnite dan, da dodate odhodni ček s tem datumom zapadlosti.";
 "Terms of use" = "Pogoji uporabe";
 "The 30-day restore period has ended." = "30-dnevno obdobje obnovitve se je končalo.";
-"The actual payment or collection date cannot be before the issue date." = "Dejanski datum plačila ali prevzema ne more biti pred datumom izdaje.";
-"The actual payment or collection date cannot be in the future." = "Dejanski datum plačila ali prevzema ne more biti v prihodnosti.";
+"The actual payment or collection date cannot be before the issue date." = "Dejanski datum plačila ali prejema sredstev ne more biti pred datumom izdaje čeka.";
+"The actual payment or collection date cannot be in the future." = "Dejanski datum plačila ali prejema sredstev ne more biti v prihodnosti.";
 "The balance changed. Review the new difference before confirming." = "Stanje se je spremenilo. Pred potrditvijo preverite novo razliko.";
-"The bank balance changes when collection is confirmed." = "Stanje na bančnem računu se spremeni, ko je potrjeno izplačilo.";
+"The bank balance changes when collection is confirmed." = "Stanje na bančnem računu se spremeni po potrditvi prejema sredstev iz čeka.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Kamera se uporablja le, ko izberete skeniranje. Prepoznavanje besedila poteka v tem telefonu iPhone, fotografija čekov pa ni poslana zunanji storitvi za prepoznavanje.";
 "The cheque could not be deleted. Please try again." = "Čeka ni bilo mogoče izbrisati. Poskusite znova.";
 "The cheque could not be restored. Please try again." = "Čeka ni bilo mogoče obnoviti. Poskusite znova.";
 "The cheque could not be saved. Your draft is still here; please try again." = "Čeka ni bilo mogoče shraniti. Vaš osnutek je še vedno tukaj, poskusite znova.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "Ček se za 30 dni premakne v razdelek »Recently Deleted« (Nedavno izbrisano), opomniki pa prenehajo, lahko pa obnovite njegove podatke in fotografije.";
-"The cheque stays in follow-up until the new holder confirms collection." = "Ček ostane v sledenju, dokler novi imetnik ne potrdi prevzema.";
+"The cheque stays in follow-up until the new holder confirms collection." = "Ček ostane v spremljanju, dokler novi imetnik ne potrdi prejema plačila.";
 "The end date must be on or after the start date." = "Končni datum mora biti na začetni datum ali po njem.";
 "The file contains invalid cheque information." = "Datoteka vsebuje neveljavne informacije o čeku.";
 "The file could not be read or saved. Please try again." = "Datoteke ni bilo mogoče prebrati ali shraniti. Poskusite znova.";

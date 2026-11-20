@@ -8,15 +8,26 @@ struct ChequeReportRows {
     let originals: [ChequeSnapshot]
     let outstanding: [ChequeSnapshot]
     let disputedCurrencies: Set<String>
+    let historicalReasons: [UUID: String]
 
     init(ids: [UUID], records: [ChequeRecord], events: [LedgerEventRecord]) {
         let audit = ChequeAudit(records: records, events: events)
         let byID = Dictionary(records.filter(\.isActive).map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         let included = ids.compactMap { byID[$0] }
         let disputed = Set(included.filter { audit.disputed.contains($0.id) }.map(\.currencyCode))
+        historicalReasons = included.reduce(into: [:]) { reasons, record in
+            guard !audit.disputed.contains(record.id),
+                  let event = audit.positions[record.id]?.accepted.last, event.kind == .historicalSettlement else { return }
+            reasons[record.id] = event.party
+        }
         originals = included.map { record in
             var snapshot = record.snapshot
-            if let state = audit.positions[record.id]?.legacyStatus { snapshot.status = state }
+            if let position = audit.positions[record.id] {
+                snapshot.status = position.legacyStatus
+                if record.ledgerBaselineStatusRaw != nil {
+                    snapshot.actualDate = position.state == .settled ? (position.accepted.last?.day ?? record.actualDate) : nil
+                }
+            }
             return snapshot
         }
         outstanding = included.filter { !disputed.contains($0.currencyCode) }
@@ -58,7 +69,7 @@ struct ChequeReportSheet: View {
                         exportPDF(rows.outstanding, basis: .remaining)
                     }.disabled(!rows.canExportRemaining).accessibilityIdentifier("remainingPDF")
                     Button(app.tr("Save CSV of shown cheques")) {
-                        document = ChequeTransferDocument(data: ChequeCSV.export(rows.originals))
+                        document = ChequeTransferDocument(data: ChequeCSV.export(rows.originals, historicalReasons: rows.historicalReasons))
                         exportingCSV = true
                     }.disabled(rows.originals.isEmpty)
                 }

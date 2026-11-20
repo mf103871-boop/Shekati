@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Firma Apple nie mogła zweryfikować tego zakupu.";
 "Apply" = "Zastosuj";
 "Ascending" = "Rosnąco";
-"Assumes incoming cheques are collected on their due dates." = "Zakłada, że przychodzące czeki są pobierane w ich terminach płatności.";
+"Assumes incoming cheques are collected on their due dates." = "Prognoza zakłada wpływ środków z otrzymanych czeków w terminach ich płatności.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Spróbuj ponownie, używając danych biometrycznych lub kodu telefonu iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Uwierzytelnianie jest obsługiwane przez iOS. Shekati nie ma dostępu ani nie przechowuje informacji biometrycznych lub kodu urządzenia.";
 "Back" = "Rewers";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "Wyczyść wyszukiwanie i filtry";
 "Clear selection" = "Wyczyść zaznaczenie";
 "Collected" = "Zainkasowany";
-"Collection date" = "Data zebrania";
+"Collection date" = "Data otrzymania płatności";
 "Confirm" = "Potwierdź";
 "Confirm action" = "Potwierdź akcję";
 "Confirm holder collected" = "Potwierdź, że posiadacz otrzymał zapłatę";
@@ -359,7 +359,7 @@
 "Record deposit" = "Zarejestruj złożenie w banku";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Zapisuj przychodzące i wychodzące czeki, zobacz ich terminy płatności i przechowuj razem obrazy czeków.";
 "Record payment" = "Zarejestruj płatność";
-"Record return" = "Rekordowy zwrot";
+"Record return" = "Zarejestruj zwrot niezapłaconego czeku";
 "Recorded balance" = "Zarejestrowane saldo";
 "Recorded operations protect the original cheque details." = "Zarejestrowane operacje chronią oryginalne dane czeki.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Rekordy z innego urządzenia używają innej waluty. Rozwiąż te rekordy przed dodaniem nowych czeków. Suma jest ukryta, aby uniknąć mieszania walut.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Ustaw kod urządzenia w Ustawieniach iPhone’a przed włączeniem blokady aplikacji.";
 "Set an iPhone passcode to unlock Shekati." = "Ustaw kod iPhone, aby odblokować Shekati.";
 "Settings" = "Ustawienia";
+"Settle without changing a bank balance" = "Zarejestruj rozliczenie bez zmiany salda żadnego rachunku bankowego";
 "Settled" = "Rozliczony";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Rozliczone czeki wymagają faktycznej daty. Daty muszą być w formacie YYYY-MM-DD.";
 "Shekati" = "Shekati";
@@ -488,16 +489,16 @@
 "Tap a day to add an outgoing cheque with this due date." = "Stuknij dzień, aby dodać czek wychodzący z datą płatności.";
 "Terms of use" = "Warunki użytkowania";
 "The 30-day restore period has ended." = "30-dniowy okres przywracania się zakończył.";
-"The actual payment or collection date cannot be before the issue date." = "Rzeczywista data płatności lub odbioru nie może być wcześniejsza niż data wystawienia.";
-"The actual payment or collection date cannot be in the future." = "Rzeczywista data płatności lub odbioru nie może być w przyszłości.";
+"The actual payment or collection date cannot be before the issue date." = "Rzeczywista data zapłaty lub otrzymania środków nie może być wcześniejsza niż data wystawienia czeku.";
+"The actual payment or collection date cannot be in the future." = "Rzeczywista data zapłaty lub otrzymania środków nie może przypadać w przyszłości.";
 "The balance changed. Review the new difference before confirming." = "Saldo zmieniło się. Przejrzyj nową różnicę przed potwierdzeniem.";
-"The bank balance changes when collection is confirmed." = "Saldo bankowe zmienia się po potwierdzeniu odbioru.";
+"The bank balance changes when collection is confirmed." = "Saldo rachunku bankowego zmienia się po potwierdzeniu wpływu środków z czeku.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Aparat jest używany tylko wtedy, gdy zdecydujesz się na skanowanie. Rozpoznawanie tekstu odbywa się na tym telefonie iPhone. Żadne zdjęcie czeku nie jest wysyłane do zewnętrznej usługi rozpoznawania.";
 "The cheque could not be deleted. Please try again." = "Czek nie mógł zostać usunięty. Spróbuj ponownie.";
 "The cheque could not be restored. Please try again." = "Nie można było przywrócić czeku. Spróbuj ponownie.";
 "The cheque could not be saved. Your draft is still here; please try again." = "Nie można było zapisać czeku. Twój projekt jest nadal tutaj, spróbuj ponownie.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "Czek zostanie przeniesiony do folderu Ostatnio usunięte na 30 dni, a przypomnienia o nim zostaną wyłączone.";
-"The cheque stays in follow-up until the new holder confirms collection." = "Czek pozostaje w trakcie śledzenia do momentu potwierdzenia odbioru przez nowego posiadacza.";
+"The cheque stays in follow-up until the new holder confirms collection." = "Czek pozostaje w monitorowaniu, dopóki nowy posiadacz nie potwierdzi otrzymania środków.";
 "The end date must be on or after the start date." = "Data zakończenia musi być w dniu lub po dacie rozpoczęcia.";
 "The file contains invalid cheque information." = "Plik zawiera nieprawidłowe informacje o czeku.";
 "The file could not be read or saved. Please try again." = "Plik nie mógł zostać odczytany lub zapisany. Spróbuj ponownie.";

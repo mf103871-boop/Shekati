@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Η Apple δεν μπόρεσε να επαληθεύσει αυτήν την αγορά.";
 "Apply" = "Εφαρμογή";
 "Ascending" = "Αύξουσα σειρά";
-"Assumes incoming cheques are collected on their due dates." = "Υποθέτει ότι οι εισερχόμενες επιταγές συλλέγονται στις ημερομηνίες λήξης τους.";
+"Assumes incoming cheques are collected on their due dates." = "Η πρόβλεψη θεωρεί ότι τα ποσά των εισπρακτέων επιταγών εισπράττονται στις ημερομηνίες λήξης τους.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Δοκιμάστε ξανά χρησιμοποιώντας βιομετρικά στοιχεία ή τον κωδικό πρόσβασης του Αποκτήστε πρόσβαση στο λογαριασμό σας.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Ο έλεγχος ταυτότητας γίνεται από το Το δεν έχει πρόσβαση ή αποθηκεύει τις βιομετρικές πληροφορίες σας ή τον κωδικό πρόσβασης της συσκευής.";
 "Back" = "Πίσω όψη";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "Καθαρισμός αναζήτησης και φίλτρων";
 "Clear selection" = "Καθαρισμός επιλογής";
 "Collected" = "Εισπράχθηκε";
-"Collection date" = "Ημερομηνία συλλογής";
+"Collection date" = "Ημερομηνία είσπραξης";
 "Confirm" = "Επιβεβαίωση";
 "Confirm action" = "Επιβεβαίωση ενέργειας";
 "Confirm holder collected" = "Επιβεβαίωση είσπραξης από τον κομιστή";
@@ -359,7 +359,7 @@
 "Record deposit" = "Καταγραφή κατάθεσης";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Καταγράψτε τις εισερχόμενες και εξερχόμενες επιταγές, δείτε τις ημερομηνίες λήξης τους και κρατήστε μαζί τις εικόνες των επιταγών σας.";
 "Record payment" = "Καταγραφή πληρωμής";
-"Record return" = "Επιστροφή ρεκόρ";
+"Record return" = "Καταγραφή επιστροφής απλήρωτης επιταγής";
 "Recorded balance" = "Καταγεγραμμένο υπόλοιπο";
 "Recorded operations protect the original cheque details." = "Οι καταγεγραμμένες λειτουργίες προστατεύουν τα αρχικά στοιχεία επιταγών.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Οι εγγραφές από άλλη συσκευή χρησιμοποιούν διαφορετικό νόμισμα.Επιλύστε αυτές τις εγγραφές πριν προσθέσετε νέες επιταγές.Τα σύνολα είναι κρυμμένα για να αποφύγετε την ανάμειξη νομισμάτων.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Ορίστε έναν κωδικό πρόσβασης συσκευής στις Ρυθμίσεις του πριν ενεργοποιήσετε το κλείδωμα εφαρμογών.";
 "Set an iPhone passcode to unlock Shekati." = "Ορίστε έναν κωδικό πρόσβασης για να ξεκλειδώσετε το Σεκάτι.";
 "Settings" = "Ρυθμίσεις";
+"Settle without changing a bank balance" = "Καταγραφή εξόφλησης χωρίς αλλαγή του υπολοίπου κανενός τραπεζικού λογαριασμού";
 "Settled" = "Εξοφλήθηκε";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Οι διακανονισμένες επιταγές χρειάζονται μια πραγματική ημερομηνία. Οι ημερομηνίες πρέπει να χρησιμοποιούν ΕΕΕΕ-ΜΜ-ΗΗ.";
 "Shekati" = "Shekati";
@@ -497,7 +498,7 @@
 "The cheque could not be restored. Please try again." = "Η επιταγή δεν μπόρεσε να αποκατασταθεί. Παρακαλούμε δοκιμάστε ξανά.";
 "The cheque could not be saved. Your draft is still here; please try again." = "Η επιταγή δεν μπόρεσε να αποθηκευτεί. Το σχέδιο σας είναι ακόμα εδώ, παρακαλώ προσπαθήστε ξανά.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "Η επιταγή μετακινείται στην ενότητα «Πρόσφατα διαγραμμένα» για 30 ημέρες.Οι υπενθυμίσεις της σταματούν και μπορείτε να επαναφέρετε τα στοιχεία και τις φωτογραφίες της.";
-"The cheque stays in follow-up until the new holder confirms collection." = "Η επιταγή παραμένει σε παρακολούθηση μέχρι ο νέος κάτοχος να επιβεβαιώσει την παραλαβή.";
+"The cheque stays in follow-up until the new holder confirms collection." = "Η επιταγή παραμένει υπό παρακολούθηση μέχρι ο νέος κομιστής να επιβεβαιώσει την είσπραξή της.";
 "The end date must be on or after the start date." = "Η ημερομηνία λήξης πρέπει να είναι η ίδια ή μεταγενέστερη από την ημερομηνία έναρξης.";
 "The file contains invalid cheque information." = "Το αρχείο περιέχει μη έγκυρες πληροφορίες επιταγής.";
 "The file could not be read or saved. Please try again." = "Δεν ήταν δυνατή η ανάγνωση ή αποθήκευση του αρχείου. Παρακαλούμε δοκιμάστε ξανά.";

@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "אפל לא יכלה לאמת את הרכישה הזו.";
 "Apply" = "יישום";
 "Ascending" = "עולה";
-"Assumes incoming cheques are collected on their due dates." = "מניח שצ’קים  entrants הם אוספים בתאריך החייבים שלהם.";
+"Assumes incoming cheques are collected on their due dates." = "התחזית מניחה שהכסף מהצ׳קים הנכנסים יתקבל במועדי הפירעון שלהם.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "אישור כשל. נסה שוב עם ביומטריה או עם הסיסמה של האייפון שלך.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "אימות זהות מתבצע על ידי iOS. Shekati לא נגיש או מאחסן את המידע הביומטרי שלך או קוד הסיסמה של המכשיר.";
 "Back" = "הצד האחורי";
@@ -167,7 +167,7 @@
 "Direction" = "כיוון";
 "Discard" = "זרוק";
 "Discard changes?" = "זרוק שינויים?";
-"Dismiss conflicting entry" = "חסום את הרשומה הניגודית";
+"Dismiss conflicting entry" = "החרגת הרשומה הסותרת";
 "Done" = "סיימתי.";
 "Download CSV template" = "הורדת תבנית CSV";
 "Draft" = "טיוטה";
@@ -359,7 +359,7 @@
 "Record deposit" = "רישום הפקדה";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "אפשר לרשום צ׳קים שהתקבלו וצ׳קים שנמסרו, לבדוק את מועדי הפירעון ולשמור את תמונות הצ׳קים במקום אחד.";
 "Record payment" = "רישום התשלום";
-"Record return" = "חזרה לרשומה";
+"Record return" = "רישום צ׳ק שחזר ללא פירעון";
 "Recorded balance" = "יתרה רשומה";
 "Recorded operations protect the original cheque details." = "הפעולות המוקלטות מגן על פרטים צ’ק המקורי.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "רשומות ממכשיר אחר משתמשות במטבע שונה. פתר את הרשומות האלו לפני שהוספת צ’קים חדשים. סך הכלים נחסמים כדי למנוע ערבוב של מטבעות.";
@@ -410,7 +410,7 @@
 "Review difference" = "סקירה של ההבדל";
 "Review image details" = "סקירה של פרטים בתמונה";
 "Review scanned details" = "סקירה של הפרטים הסורקים";
-"Review the conflicting entries before continuing." = "ראו את הקישורים הסותרים לפני שתמשיכו.";
+"Review the conflicting entries before continuing." = "יש לבדוק את הרשומות הסותרות לפני שממשיכים.";
 "Review the counts and replacement choice. These changes will also sync to iCloud." = "ראו את מספר הפעמים ואפשרות ההחלפה. שינויים אלה גם ישתחררו ל- iCloud.";
 "Review the due date for the next cheque." = "תבדוק את תאריך הפירעון של הצ’ק הבא.";
 "Reviewing CSV" = "ביקורת CSV";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "הגדרת קוד משתמש במכשיר בהגדרות האייפון לפני הפעלת נעילה של אפליקציה.";
 "Set an iPhone passcode to unlock Shekati." = "הגדרת קוד אייפון כדי לפתוח את שקטי.";
 "Settings" = "הגדרות";
+"Settle without changing a bank balance" = "תיעוד פירעון הצ׳ק בלי לשנות את היתרה באף חשבון בנק";
 "Settled" = "הוסדרה";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "צ’קים מוכנים צריכים תאריך אמיתי.";
 "Shekati" = "Shekati";
@@ -488,9 +489,9 @@
 "Tap a day to add an outgoing cheque with this due date." = "לחץ על יום כדי להוסיף צ’ק יוצא עם תאריך הפירעון הזה.";
 "Terms of use" = "תנאי השימוש";
 "The 30-day restore period has ended." = "תקופת השחזור של 30 יום הסתיימה.";
-"The actual payment or collection date cannot be before the issue date." = "תאריך התשלום או האיסוף האמיתי לא יכול להיות לפני תאריך ההוצאה.";
-"The actual payment or collection date cannot be in the future." = "תאריך התשלום או האיסוף האמיתי לא יכול להיות בעתיד.";
-"The balance changed. Review the new difference before confirming." = "האיזון השתנה, בדוק את ההבדל לפני שאתה מאשר.";
+"The actual payment or collection date cannot be before the issue date." = "מועד התשלום או קבלת הכסף בפועל אינו יכול לחול לפני מועד הוצאת הצ׳ק.";
+"The actual payment or collection date cannot be in the future." = "מועד התשלום או קבלת הכסף בפועל אינו יכול לחול בעתיד.";
+"The balance changed. Review the new difference before confirming." = "יתרת החשבון השתנתה. יש לבדוק את ההפרש החדש לפני האישור.";
 "The bank balance changes when collection is confirmed." = "יתרת החשבון מתעדכנת לאחר אישור פירעון הצ׳ק.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "המצלמה משמשת רק כאשר אתה בוחר לסרוק. זיהוי טקסט מתרחש על האייפון הזה. לא נשלח תמונה של צ’ק לשירות זיהוי חיצוני.";
 "The cheque could not be deleted. Please try again." = "לא ניתן למחוק את הצ’ק. בבקשה נסה שוב.";

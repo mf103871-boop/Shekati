@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "ਐਪਲ ਇਹ ਖਰੀਦ ਦੀ ਜਾਂਚ ਨਹੀਂ ਕਰ ਸਕਦਾ ਹੈ।";
 "Apply" = "ਲਾਗੂ";
 "Ascending" = "ਵਧਾਓ";
-"Assumes incoming cheques are collected on their due dates." = "ਇਹ ਮੰਨਿਆ ਜਾਂਦਾ ਹੈ ਕਿ ਆ ਰਹੇ ਚੈੱਕ ਉਨ੍ਹਾਂ ਦੀ ਮਿਆਦ ਮਿਤੀ ਉੱਤੇ ਇਕੱਠੇ ਕੀਤੇ ਜਾਣ ।";
+"Assumes incoming cheques are collected on their due dates." = "ਇਸ ਅਨੁਮਾਨ ਵਿੱਚ ਮੰਨਿਆ ਗਿਆ ਹੈ ਕਿ ਮਿਲੇ ਚੈੱਕਾਂ ਦੀ ਰਕਮ ਉਨ੍ਹਾਂ ਦੀਆਂ ਨਿਯਤ ਮਿਤੀਆਂ ਨੂੰ ਮਿਲੇਗੀ।";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "ਪਰਮਾਣਕਿਤਾ ਫੇਲ੍ਹ ਹੈ। ਬਾਇਓਮੈਟਰਿਕ ਜਾਂ ਤੁਹਾਡੇ iPhone ਪਾਸਵਰਡ ਨਾਲ ਮੁੜ ਕੋਸ਼ਿਸ ਕਰੋ।";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "ਪਰਮਾਣਕਿਤਾ iOS ਵਲੋਂ ਕੀਤੀ ਜਾਂਦੀ ਹੈ। Shekati ਤੁਹਾਡੀ ਬਾਇਓਮੈਟਰਿਕ ਜਾਣਕਾਰੀ ਜਾਂ ਜੰਤਰ ਪਾਸਵਰਡ ਵਰਤਦਾ ਜਾਂ ਸੰਭਾਲਦਾ ਨਹੀਂ ਹੈ।";
 "Back" = "ਪਿਛਲਾ ਪਾਸਾ";
@@ -359,7 +359,7 @@
 "Record deposit" = "ਚੈੱਕ ਜਮ੍ਹਾਂ ਕਰਾਉਣ ਦੀ ਐਂਟਰੀ ਕਰੋ";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "ਆਉਣ ਵਾਲੇ ਅਤੇ ਜਾਣ ਵਾਲੇ ਚੈਕ ਰਿਕਾਰਡ ਕਰੋ, ਉਨ੍ਹਾਂ ਦੀ ਮਿਆਦ ਮਿਤੀ ਵੇਖੋ ਅਤੇ ਆਪਣੇ ਚੈੱਕ ਚਿੱਤਰ ਇੱਕਠੇ ਰੱਖੋ।";
 "Record payment" = "ਭੁਗਤਾਨ ਦਰਜ ਕਰੋ";
-"Record return" = "ਰਿਕਾਰਡ ਵਾਪਸ";
+"Record return" = "ਚੈੱਕ ਬਿਨਾਂ ਭੁਗਤਾਨ ਵਾਪਸ ਆਉਣ ਦੀ ਐਂਟਰੀ ਕਰੋ";
 "Recorded balance" = "ਦਰਜ ਬਕਾਇਆ";
 "Recorded operations protect the original cheque details." = "ਰਿਕਾਰਡ ਓਪਰੇਸ਼ਨ ਅਸਲੀ ਚੈੱਕ ਵੇਰਵੇ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਦੇ ਹਨ ।";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "ਹੋਰ ਜੰਤਰ ਤੋਂ ਰਿਕਾਰਡ ਵੱਖਰੇ ਮੁਦਰਾ ਵਰਤਦੇ ਹਨ । ਨਵੇਂ ਚੈੱਕ ਸ਼ਾਮਲ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਇਹ ਰਿਕਾਰਡ ਹੱਲ਼ ਕਰੋ । ਕੁੱਲ ਮੁਦਰਾ ਮਿਲਾਉਣ ਤੋਂ ਬਚਣ ਲਈ ਓਹਲੇ ਹੈ ।";
@@ -397,7 +397,7 @@
 "Restore backup" = "ਬੈਕਅੱਪ ਮੁੜ- ਪ੍ਰਾਪਤ";
 "Restore deleted cheques within 30 days. After that, only permanent deletion is available." = "30 ਦਿਨਾਂ ਵਿੱਚ ਹਟਾਏ ਚੈੱਕ ਮੁੜ- ਪ੍ਰਾਪਤ ਕਰੋ । ਇਸ ਤੋਂ ਬਾਅਦ, ਸਿਰਫ ਸਥਾਈ ਹਟਾਉਣ ਹੀ ਉਪਲੱਬਧ ਹੈ ।";
 "Restore preview" = "ਝਲਕ ਮੁੜ- ਪ੍ਰਾਪਤ";
-"Restore purchases" = "ਖਰੀਦੀਆਂ ਚੀਜ਼ਾਂ ਮੁੜ- ਪ੍ਰਾਪਤ";
+"Restore purchases" = "ਖਰੀਦਾਂ ਬਹਾਲ ਕਰੋ";
 "Restore reminder preferences" = "ਯਾਦ ਪੱਤਰ ਪਸੰਦ ਮੁੜ- ਪ੍ਰਾਪਤ";
 "Restore reviewed backup" = "ਰੀਵਿਜ਼ਨ ਬੈਕਅੱਪ ਮੁੜ- ਪ੍ਰਾਪਤ";
 "Restore this backup?" = "ਕੀ ਇਹ ਬੈਕਅੱਪ ਮੁੜ- ਪ੍ਰਾਪਤ ਕਰਨਾ ਹੈ?";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "ਐਪਲੀਕੇਸ਼ਨ ਲਾਕ ਯੋਗ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ iPhone ਸੈਟਿੰਗ ਵਿੱਚ ਜੰਤਰ ਪਾਸਕੋਡ ਦਿਓ।";
 "Set an iPhone passcode to unlock Shekati." = "ਸ਼ੇਕਾਟੀ ਨੂੰ ਲਾਕ ਕਰਨ ਲਈ ਇੱਕ iPhone ਪਾਸਵਰਡ ਦਿਓ।";
 "Settings" = "ਸੈਟਿੰਗਾਂ";
+"Settle without changing a bank balance" = "ਕਿਸੇ ਵੀ ਬੈਂਕ ਖਾਤੇ ਦਾ ਬਕਾਇਆ ਬਦਲੇ ਬਿਨਾਂ ਚੈੱਕ ਦਾ ਨਿਪਟਾਰਾ ਦਰਜ ਕਰੋ";
 "Settled" = "ਨਿਪਟਾਇਆ";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "ਜਿਨ੍ਹਾਂ ਚੈੱਕਾਂ ਦਾ ਹਿਸਾਬ ਨਿਬੜ ਗਿਆ ਹੈ ਉਨ੍ਹਾਂ ਲਈ ਅਸਲ ਭੁਗਤਾਨ ਜਾਂ ਵਸੂਲੀ ਦੀ ਮਿਤੀ ਦਿਓ। ਮਿਤੀ ਦਾ ਰੂਪ YYYY-MM-DD ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।";
 "Shekati" = "Shekati";
@@ -488,8 +489,8 @@
 "Tap a day to add an outgoing cheque with this due date." = "ਇੱਕ ਦਿਨ ਨੂੰ ਇਸ ਮਿਆਦ ਮਿਤੀ ਨਾਲ ਬਾਹਰ ਜਾਣ ਵਾਲੇ ਚੈੱਕ ਸ਼ਾਮਲ ਕਰਨ ਲਈ ਦਬਾਓ ।";
 "Terms of use" = "ਵਰਤੋਂ ਦੀਆਂ ਸ਼ਰਤਾਂ";
 "The 30-day restore period has ended." = "30 ਦਿਨਾਂ ਦਾ ਮੁੜ- ਸਟੋਰ ਕਰਨ ਦਾ ਸਮਾਂ ਖਤਮ ਹੋ ਗਿਆ ਹੈ ।";
-"The actual payment or collection date cannot be before the issue date." = "ਅਸਲੀ ਭੁਗਤਾਨ ਜਾਂ ਇਕੱਠਾ ਕਰਨ ਦੀ ਮਿਤੀ ਜਾਰੀ ਕਰਨ ਦੀ ਮਿਤੀ ਤੋਂ ਪਹਿਲਾਂ ਨਹੀਂ ਹੋ ਸਕਦੀ ਹੈ ।";
-"The actual payment or collection date cannot be in the future." = "ਅਸਲੀ ਭੁਗਤਾਨ ਜਾਂ ਇਕੱਠ ਮਿਤੀ ਭਵਿੱਖ ਵਿੱਚ ਨਹੀਂ ਹੋ ਸਕਦੀ ਹੈ ।";
+"The actual payment or collection date cannot be before the issue date." = "ਰਕਮ ਦੇਣ ਜਾਂ ਪ੍ਰਾਪਤ ਕਰਨ ਦੀ ਅਸਲ ਮਿਤੀ ਚੈੱਕ ਜਾਰੀ ਕਰਨ ਦੀ ਮਿਤੀ ਤੋਂ ਪਹਿਲਾਂ ਨਹੀਂ ਹੋ ਸਕਦੀ।";
+"The actual payment or collection date cannot be in the future." = "ਰਕਮ ਦੇਣ ਜਾਂ ਪ੍ਰਾਪਤ ਕਰਨ ਦੀ ਅਸਲ ਮਿਤੀ ਭਵਿੱਖ ਦੀ ਨਹੀਂ ਹੋ ਸਕਦੀ।";
 "The balance changed. Review the new difference before confirming." = "ਖਾਤੇ ਦਾ ਬਕਾਇਆ ਬਦਲ ਗਿਆ ਹੈ। ਪੁਸ਼ਟੀ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਨਵੇਂ ਫ਼ਰਕ ਦੀ ਜਾਂਚ ਕਰੋ।";
 "The bank balance changes when collection is confirmed." = "ਚੈੱਕ ਦੀ ਰਕਮ ਵਸੂਲ ਹੋਣ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨ 'ਤੇ ਬੈਂਕ ਖਾਤੇ ਦਾ ਬਕਾਇਆ ਬਦਲਦਾ ਹੈ।";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "ਕੈਮਰਾ ਤਾਂ ਹੀ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ, ਜਦੋਂ ਤੁਸੀਂ ਸਕੈਨ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ। ਟੈਕਸਟ ਪਛਾਣ ਇਸ iPhone ਉੱਤੇ ਹੁੰਦੀ ਹੈ। ਕੋਈ ਵੀ ਚੈੱਕ ਫੋਟੋ ਬਾਹਰੀ ਪਛਾਣ ਸਰਵਿਸ ਨੂੰ ਨਹੀਂ ਭੇਜੀ ਜਾਂਦੀ ਹੈ।";

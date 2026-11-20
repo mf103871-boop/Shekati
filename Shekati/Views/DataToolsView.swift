@@ -242,6 +242,7 @@ private struct CSVTransferView: View {
     @EnvironmentObject private var plus: ShekatiPlusStore
     @Environment(\.modelContext) private var context
     @Query private var records: [ChequeRecord]
+    @Query private var journal: [LedgerEventRecord]
     @State private var importing = false
     @State private var exporting = false
     @State private var document = ChequeTransferDocument(data: Data())
@@ -268,7 +269,8 @@ private struct CSVTransferView: View {
             Section(app.tr("Export")) {
                 Button(app.tr("Export saved cheques to CSV")) {
                     guard !hidesAmounts else { return }
-                    document = ChequeTransferDocument(data: ChequeCSV.export(active))
+                    let rows = ChequeReportRows(ids: active.map(\.id), records: records, events: journal)
+                    document = ChequeTransferDocument(data: ChequeCSV.export(rows.originals, historicalReasons: rows.historicalReasons))
                     filename = "Shekati-\(LocalDay.today.iso).csv"; exporting = true
                 }.disabled(active.isEmpty)
                 Text(app.tr("Exported files contain readable cheque details. Share only with people you choose."))

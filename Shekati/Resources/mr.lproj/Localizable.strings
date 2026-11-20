@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Apple ला या खरेदीची पडताळणी करता आली नाही.";
 "Apply" = "लागू करा";
 "Ascending" = "चढता क्रम";
-"Assumes incoming cheques are collected on their due dates." = "याचे कारण म्हणजे, चेकच्या व्यवहारात चेकची किंमत ठरविली जाते.";
+"Assumes incoming cheques are collected on their due dates." = "मिळालेल्या धनादेशांची रक्कम त्यांच्या देय तारखांना मिळेल असे गृहीत धरले आहे.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "अधिप्रमाणन अपयशी. बायोमेट्रिक किंवा iPhone पासवर्ड वापरुन पुन्हा प्रयत्न करा.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "अधिप्रमाणन iOS द्वारे हाताळले जाते. Shekati तुमच्या बायोमेट्रिक माहिती किंवा साधन पासवर्डचा वापर करीत नाही किंवा साठवत नाही.";
 "Back" = "मागील बाजू";
@@ -359,7 +359,7 @@
 "Record deposit" = "धनादेश जमा केल्याची नोंद करा";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "याचे कारण म्हणजे, तेथे आलेल्या आणि निघालेल्या सर्व चेकची नोंद ठेवा, त्यांची मुदत तारीख बघा व तुमचे चेकचे चित्र एकत्र ठेवा.";
 "Record payment" = "देयकाची नोंद करा";
-"Record return" = "रेकॉर्ड परत";
+"Record return" = "धनादेश न वटता परत आल्याची नोंद करा";
 "Recorded balance" = "नोंदवलेली शिल्लक";
 "Recorded operations protect the original cheque details." = "याचे मुख्य कार्य हे चेकची माहिती वाचणे व नोंद करणे आहे.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "इतर साधन पासून नोंदणी भिन्न चलन वापरते. नविन चेक जोडण्यापूर्वी या नोंदणी सोडवा. एकूण लपविले आहे, चलन मिसळणे टाळण्यासाठी.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "आयफोनच्या सेटिंग्जमध्ये अनुप्रयोग लॉक कार्यान्वीत करण्यापूर्वी उपकरण पासवर्ड निश्चित करा.";
 "Set an iPhone passcode to unlock Shekati." = "आयफोनच्या पासवर्डने शेकाटीचा लॉक उघडता येतो.";
 "Settings" = "सेटिंग्ज";
+"Settle without changing a bank balance" = "कोणत्याही बँक खात्यातील शिल्लक न बदलता धनादेशाचा निपटारा नोंदवा";
 "Settled" = "निकाली काढला";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "चेकला वास्तविक दिनांक आवश्यक आहे. दिनांक YYYY-MM-DD वापरले पाहिजेत.";
 "Shekati" = "Shekati";

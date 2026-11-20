@@ -9,17 +9,17 @@
   "subscriptionLocalizations": {
     "monthly": {
       "name": "Shekati Plus · Maandelijks",
-      "description": "Onbeperkt cheques"
+      "description": "Onbeperkt aantal actieve cheques"
     },
     "annual": {
       "name": "Shekati Plus · Jaarlijks",
-      "description": "Onbeperkt cheques"
+      "description": "Onbeperkt aantal actieve cheques"
     }
   },
   "screenshotHeadings": [
     "Uw bankrekening",
     "Chequeregister",
-    "Gescande details bekijken · Shekati Plus",
+    "Controleer de scangegevens · Shekati Plus",
     "Details van de cheque",
     "Vervaldata"
   ]

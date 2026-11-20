@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Az Apple nem tudta igazolni a vásárlást.";
 "Apply" = "Alkalmaz";
 "Ascending" = "Növekvő sorrendben";
-"Assumes incoming cheques are collected on their due dates." = "Feltételezi, hogy a bejövő csekkeket a lejárati időpontban gyűjtik össze.";
+"Assumes incoming cheques are collected on their due dates." = "Az előrejelzés feltételezi, hogy a beérkező csekkek összege az esedékesség napján befolyik.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Próbálkozzon újra biometrikus azonosítással vagy az iPhone jelkódjával.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "A Shekati nem fér hozzá, és nem tárolja a biometrikus adatokat vagy az eszköz jelszavát.";
 "Back" = "Hátlap";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "Keresés és szűrők törlése";
 "Clear selection" = "A kijelölés törlése";
 "Collected" = "Beszedve";
-"Collection date" = "Gyűjtés dátuma";
+"Collection date" = "A fizetés beérkezésének dátuma";
 "Confirm" = "Megerősítés";
 "Confirm action" = "A művelet megerősítése";
 "Confirm holder collected" = "A csekk jogosultjának kifizetett összeg megerősítése";
@@ -359,7 +359,7 @@
 "Record deposit" = "Banki benyújtás rögzítése";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Rögzítse a bejövő és kimenő csekkeket, nézze meg a lejárati dátumokat, és tartsa együtt az ellenőrző képeket.";
 "Record payment" = "Kifizetés rögzítése";
-"Record return" = "Rekord megtérülés";
+"Record return" = "A kifizetetlen csekk visszaküldésének rögzítése";
 "Recorded balance" = "Nyilvántartott egyenleg";
 "Recorded operations protect the original cheque details." = "A rögzített műveletek védik az eredeti csekk adatait.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "A másik eszközről származó rekordok más pénznemet használnak, ezeket a rekordokat új csekkek hozzáadása előtt oldja meg. Az összegek rejtve vannak, hogy elkerüljék a pénznemek keverését.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Állítson be eszközjelszót az iPhone Beállítások menüpontjában, mielőtt engedélyezné az alkalmazászárat.";
 "Set an iPhone passcode to unlock Shekati." = "Állítson be egy iPhone jelszót a Shekati feloldásához.";
 "Settings" = "Beállítások";
+"Settle without changing a bank balance" = "Kiegyenlítés rögzítése a bankszámlák egyenlegének módosítása nélkül";
 "Settled" = "Rendezve";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "A kiegyenlített csekkekhez tényleges dátum szükséges. A dátumok az YYYY-MM-DD formátumot használják.";
 "Shekati" = "Shekati";
@@ -497,7 +498,7 @@
 "The cheque could not be restored. Please try again." = "A csekk nem állítható vissza. Kérjük, próbálja újra.";
 "The cheque could not be saved. Your draft is still here; please try again." = "A csekket nem sikerült elmenteni. A vázlat még mindig itt van, kérjük próbálja újra.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "A csekk 30 napig a Nemrég törölt mappába kerül, és nem kap emlékeztetőket; visszaállíthatja az adatokat és a fényképeket.";
-"The cheque stays in follow-up until the new holder confirms collection." = "A csekk addig marad nyomon követve, amíg az új tulajdonos meg nem erősíti az átvételt.";
+"The cheque stays in follow-up until the new holder confirms collection." = "A csekk követése addig tart, amíg az új birtokos meg nem erősíti az összeg beérkezését.";
 "The end date must be on or after the start date." = "A befejezési dátumnak a kezdési dátumon vagy azt követően kell lennie.";
 "The file contains invalid cheque information." = "A fájl érvénytelen csekkinformációkat tartalmaz.";
 "The file could not be read or saved. Please try again." = "A fájl nem olvasható vagy nem menthető. Kérjük, próbálja újra.";

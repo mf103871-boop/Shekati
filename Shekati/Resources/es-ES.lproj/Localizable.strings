@@ -122,7 +122,7 @@
 "Clear search and filters" = "Borrar búsqueda y filtros";
 "Clear selection" = "Borrar la selección";
 "Collected" = "Cobrado";
-"Collection date" = "Fecha de recogida";
+"Collection date" = "Fecha de cobro";
 "Confirm" = "Confirmar";
 "Confirm action" = "Confirmar acción";
 "Confirm holder collected" = "Confirmar que el tenedor ha cobrado el cheque";
@@ -359,7 +359,7 @@
 "Record deposit" = "Registrar depósito";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Registra los cheques recibidos y emitidos, consulta sus fechas de vencimiento y guarda las imágenes en un solo lugar.";
 "Record payment" = "Registrar pago";
-"Record return" = "Retorno de récord";
+"Record return" = "Registrar la devolución del cheque impagado";
 "Recorded balance" = "Saldo registrado";
 "Recorded operations protect the original cheque details." = "Las operaciones registradas protegen los detalles originales del cheque.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Los registros de otro dispositivo utilizan una moneda diferente, resuelva estos registros antes de agregar nuevos cheques. Los totales están ocultos para evitar mezclar monedas.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Establece un código de acceso en Ajustes del iPhone antes de habilitar el bloqueo de aplicaciones.";
 "Set an iPhone passcode to unlock Shekati." = "Establece un código de acceso para desbloquear Shekati.";
 "Settings" = "Ajustes";
+"Settle without changing a bank balance" = "Registrar la liquidación sin cambiar el saldo de ninguna cuenta bancaria";
 "Settled" = "Liquidado";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Los cheques liquidados necesitan una fecha real. Las fechas deben usar AAAA-MM-DD.";
 "Shekati" = "Shekati";
@@ -497,7 +498,7 @@
 "The cheque could not be restored. Please try again." = "El cheque no pudo ser restaurado. Por favor, inténtelo de nuevo.";
 "The cheque could not be saved. Your draft is still here; please try again." = "El cheque no se pudo guardar. Su borrador sigue aquí; por favor, inténtelo de nuevo.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "El cheque se moverá a Eliminado recientemente durante 30 días y no recibirá recordatorios; podrás restaurar sus detalles y fotos.";
-"The cheque stays in follow-up until the new holder confirms collection." = "El cheque permanece en seguimiento hasta que el nuevo titular confirma la recogida.";
+"The cheque stays in follow-up until the new holder confirms collection." = "El cheque sigue en seguimiento hasta que el nuevo titular confirme su cobro.";
 "The end date must be on or after the start date." = "La fecha de finalización debe coincidir con la fecha de inicio o ser posterior a ella.";
 "The file contains invalid cheque information." = "El archivo contiene información de cheque no válida.";
 "The file could not be read or saved. Please try again." = "El archivo no se pudo leer o guardar. Por favor, inténtelo de nuevo.";

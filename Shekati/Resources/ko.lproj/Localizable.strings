@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Apple은 이 구매를 확인할 수 없습니다.";
 "Apply" = "적용";
 "Ascending" = "올라가는 순서";
-"Assumes incoming cheques are collected on their due dates." = "수신 수표가 만기일에 청구된다고 가정합니다.";
+"Assumes incoming cheques are collected on their due dates." = "받을 수표의 대금이 각 만기일에 입금된다고 가정합니다.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "인증에 실패했습니다. 생체인식 또는 iPhone 암호를 사용하여 다시 시도해 보십시오.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "인증은 iOS에서 처리됩니다. Shekati는 생체인식 정보 또는 장치 암호에 액세스하거나 저장하지 않습니다.";
 "Back" = "뒷면";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "검색 및 필터 지우기";
 "Clear selection" = "선택 영역 지우기";
 "Collected" = "추심 완료";
-"Collection date" = "수집 날짜";
+"Collection date" = "수금일";
 "Confirm" = "확인";
 "Confirm action" = "동작 확인";
 "Confirm holder collected" = "소지인의 수표 대금 수령 확인";
@@ -359,7 +359,7 @@
 "Record deposit" = "추심 의뢰 기록";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "받은 수표와 발행한 수표를 기록하고 지급기일과 수표 이미지를 한곳에서 관리하세요.";
 "Record payment" = "지급 내역 기록";
-"Record return" = "레코드 반환";
+"Record return" = "수표 지급 거절 기록";
 "Recorded balance" = "장부 잔액";
 "Recorded operations protect the original cheque details." = "기록된 작업은 원래 수표 세부 사항을 보호합니다.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "다른 장치의 기록은 다른 통화를 사용합니다. 새로운 수표를 추가하기 전에 이러한 기록을 해결하십시오. 총계는 통화 혼합을 방지하기 위해 숨겨집니다.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "앱 잠금을 사용하기 전에 iPhone 설정에서 장치 암호를 설정합니다.";
 "Set an iPhone passcode to unlock Shekati." = "Shekati를 잠금 해제하기 위해 아이폰 암호를 설정합니다.";
 "Settings" = "설정";
+"Settle without changing a bank balance" = "은행 계좌 잔액을 변경하지 않고 수표 정산 기록";
 "Settled" = "정산됨";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "날짜는 YYYY-MM-DD를 사용해야 합니다.";
 "Shekati" = "Shekati";
@@ -488,16 +489,16 @@
 "Tap a day to add an outgoing cheque with this due date." = "이 만기일을 가진 발송 수표를 추가하려면 날짜를 탭합니다.";
 "Terms of use" = "이용 약관";
 "The 30-day restore period has ended." = "30일 복원 기간이 종료되었습니다.";
-"The actual payment or collection date cannot be before the issue date." = "실제 결제 또는 수령일은 발급일 이전이어야 합니다.";
-"The actual payment or collection date cannot be in the future." = "실제 결제 또는 수령 날짜는 미래에 있을 수 없습니다.";
+"The actual payment or collection date cannot be before the issue date." = "실제 지급일 또는 입금일은 수표 발행일보다 빠를 수 없습니다.";
+"The actual payment or collection date cannot be in the future." = "실제 지급일 또는 입금일은 오늘보다 늦을 수 없습니다.";
 "The balance changed. Review the new difference before confirming." = "잔액이 변경되었습니다. 확인하기 전에 새로운 차이를 확인하십시오.";
-"The bank balance changes when collection is confirmed." = "은행 잔액이 수령 확인시 변경됩니다.";
+"The bank balance changes when collection is confirmed." = "수표 대금 입금을 확인하면 은행 계좌 잔액이 변경됩니다.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "스캔을 선택할 때만 카메라가 사용됩니다. 이 iPhone에서 텍스트 인식이 수행됩니다. 수표 사진은 외부 인식 서비스로 전송되지 않습니다.";
 "The cheque could not be deleted. Please try again." = "수표를 삭제할 수 없습니다. 다시 시도하십시오.";
 "The cheque could not be restored. Please try again." = "수표를 복원할 수 없습니다. 다시 시도해 주십시오.";
 "The cheque could not be saved. Your draft is still here; please try again." = "수표를 저장할 수 없습니다. 초안이 여기에 있습니다. 다시 시도하십시오.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "수표는 30일 동안 최근 삭제된 것으로 이동됩니다. 미리 알림이 중지되며 세부 정보와 사진을 복원할 수 있습니다.";
-"The cheque stays in follow-up until the new holder confirms collection." = "수표는 새로운 소유자가 수령을 확인할 때까지 추적 상태로 유지됩니다.";
+"The cheque stays in follow-up until the new holder confirms collection." = "새 소지인이 수표 대금 입금을 확인할 때까지 계속 추적합니다.";
 "The end date must be on or after the start date." = "종료일은 시작일 또는 그 이후에 있어야 합니다.";
 "The file contains invalid cheque information." = "파일에 잘못된 수표 정보가 포함되어 있습니다.";
 "The file could not be read or saved. Please try again." = "파일을 읽거나 저장할 수 없습니다. 다시 시도하십시오.";

@@ -122,7 +122,7 @@
 "Clear search and filters" = "Effacer la recherche et les filtres";
 "Clear selection" = "Effacer la sélection";
 "Collected" = "Encaissé";
-"Collection date" = "Date de collecte";
+"Collection date" = "Date d’encaissement";
 "Confirm" = "Confirmer";
 "Confirm action" = "Confirmer l’action";
 "Confirm holder collected" = "Confirmer l’encaissement par le porteur";
@@ -359,7 +359,7 @@
 "Record deposit" = "Enregistrer le dépôt";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Enregistrez les chèques reçus et émis, consultez leurs échéances et conservez leurs images au même endroit.";
 "Record payment" = "Enregistrer le paiement";
-"Record return" = "Record de rendement";
+"Record return" = "Enregistrer le rejet du chèque";
 "Recorded balance" = "Solde comptable";
 "Recorded operations protect the original cheque details." = "Les opérations enregistrées protègent les détails originaux du chèque.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Les enregistrements d’un autre appareil utilisent une devise différente. Résolvez ces enregistrements avant d’ajouter de nouveaux chèques. Les totaux sont masqués pour éviter le mélange des devises.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Définissez un code d’accès dans les paramètres de l’iPhone avant d’activer le verrouillage des applications.";
 "Set an iPhone passcode to unlock Shekati." = "Définissez un code d’accès iPhone pour déverrouiller Shekati.";
 "Settings" = "Réglages";
+"Settle without changing a bank balance" = "Enregistrer le règlement sans modifier le solde d’aucun compte bancaire";
 "Settled" = "Soldé";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Les chèques réglés doivent avoir une date réelle. Les dates doivent utiliser AAAA-MM-JJ.";
 "Shekati" = "Shekati";
@@ -491,7 +492,7 @@
 "The actual payment or collection date cannot be before the issue date." = "La date de paiement ou d’encaissement ne peut pas être antérieure à la date d’émission.";
 "The actual payment or collection date cannot be in the future." = "La date de paiement ou d’encaissement ne peut pas être dans le futur.";
 "The balance changed. Review the new difference before confirming." = "Le solde a changé. Vérifiez la nouvelle différence avant de confirmer.";
-"The bank balance changes when collection is confirmed." = "Le solde bancaire change lorsque la collecte est confirmée.";
+"The bank balance changes when collection is confirmed." = "Le solde bancaire change lorsque l’encaissement du chèque est confirmé.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "L’appareil photo n’est utilisé que lorsque vous choisissez de numériser. La reconnaissance du texte se fait sur cet iPhone, aucune photo de chèque n’est envoyée à un service externe de reconnaissance.";
 "The cheque could not be deleted. Please try again." = "Le chèque n’a pas pu être supprimé. Veuillez réessayer.";
 "The cheque could not be restored. Please try again." = "Le chèque n’a pas pu être restauré. Veuillez réessayer.";

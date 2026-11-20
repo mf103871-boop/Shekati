@@ -42,6 +42,17 @@ enum StoreScreenshotFixtures {
         #endif
     }
     #if DEBUG && targetEnvironment(simulator)
+    static func seedLegacySettlement(in container: ModelContainer) throws {
+        let context = container.mainContext
+        context.insert(AppConfiguration(currencyCode: "USD"))
+        try BankingLedger.addAccount(name: "Only USD", currency: "USD", opening: 84_501, isPlus: false, context: context)
+        let id = UUID(uuidString: "00000000-0000-4000-8000-000000004182")!
+        let record = ChequeSnapshot(id: id, direction: .outgoing, amountMinorUnits: 125_001, currencyCode: "JOD",
+                                    dueDate: .today, issueDate: .today.adding(days: -5), number: "004182", party: "Legacy supplier")
+        let v1 = ChequeBackupPayload(currencyCode: "JOD", records: [ChequeBackupEntry(snapshot: record, remindersEnabled: false)])
+        try ChequeTransferService.restore(v1, into: context)
+    }
+
     private static func sampleCheque(due: LocalDay) -> Data? {
         let size = CGSize(width: 1040, height: 500)
         let format = UIGraphicsImageRendererFormat()

@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "แอปเปิลไม่สามารถยืนยันการซื้อนี้ได้";
 "Apply" = "ใช้";
 "Ascending" = "เพิ่ม";
-"Assumes incoming cheques are collected on their due dates." = "สมมติว่าเช็คที่เข้าไป จะถูกเก็บในวันกำหนด";
+"Assumes incoming cheques are collected on their due dates." = "ประมาณการโดยถือว่าจะได้รับเงินตามเช็ครับแต่ละฉบับในวันครบกำหนด";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "การตรวจสอบสิทธิ์ล้มเหลว ลองใช้บิตเมตริกหรือรหัสผ่านของ iPhone ของคุณอีกครั้ง";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "การตรวจสอบสิทธิ์จะถูกจัดการโดย iOS Shekati จะไม่เข้าถึงหรือเก็บข้อมูลชีวภาพของคุณ หรือรหัสผ่านของอุปกรณ์";
 "Back" = "ด้านหลัง";
@@ -167,7 +167,7 @@
 "Direction" = "ประเภทเช็ค";
 "Discard" = "ทิ้ง";
 "Discard changes?" = "ทิ้งการเปลี่ยนแปลง?";
-"Dismiss conflicting entry" = "ลบรายการที่ขัดแย้งกัน";
+"Dismiss conflicting entry" = "ไม่นำรายการที่ขัดแย้งกันมาคำนวณ";
 "Done" = "เสร็จแล้ว";
 "Download CSV template" = "ดาวน์โหลดแม่แบบ CSV";
 "Draft" = "ฉบับร่าง";
@@ -359,7 +359,7 @@
 "Record deposit" = "บันทึกการนำฝากเช็ค";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "ทำบันทึกเช็คที่เข้าและออก ดูวันที่หมดอายุของมัน และเก็บรูปเช็คไว้ด้วยกัน";
 "Record payment" = "บันทึกการจ่ายเงิน";
-"Record return" = "กลับไปยังบันทึก";
+"Record return" = "บันทึกเช็คที่ธนาคารปฏิเสธการจ่ายเงิน";
 "Recorded balance" = "ยอดคงเหลือที่บันทึก";
 "Recorded operations protect the original cheque details." = "การปฏิบัติการที่บันทึกไว้ ปกป้องรายละเอียดเช็คเดิม";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "บันทึกจากอุปกรณ์อื่น ใช้เงินตราที่แตกต่างกัน โปรดแก้ไขบันทึกเหล่านี้ก่อนที่จะเพิ่มเช็คใหม่ จำนวนรวมจะถูกซ่อนเพื่อป้องกันการผสมเงินตรา";
@@ -397,7 +397,7 @@
 "Restore backup" = "เรียกคืนการสำรองข้อมูล";
 "Restore deleted cheques within 30 days. After that, only permanent deletion is available." = "เรียกคืนเช็คที่ถูกลบในระยะเวลา 30 วัน หลังจากนั้น จะสามารถทำการลบได้ตลอดไป";
 "Restore preview" = "ปรับปรุงตัวอย่าง";
-"Restore purchases" = "เรียกคืนสิ่งที่ซื้อมา";
+"Restore purchases" = "กู้คืนรายการซื้อ";
 "Restore reminder preferences" = "ปรับปรุงค่าการเตือนความจำ";
 "Restore reviewed backup" = "เรียกคืนการสำรองข้อมูลที่ตรวจสอบแล้ว";
 "Restore this backup?" = "ต้องการเรียกคืนข้อมูลสำรองนี้หรือไม่?";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "ตั้งรหัสผ่านอุปกรณ์ในตัวเลือก iPhone ก่อนที่จะเปิดใช้งานการล็อคแอพพลิเคชัน";
 "Set an iPhone passcode to unlock Shekati." = "ตั้งรหัสผ่านไอโฟน เพื่อเปิดล็อคเชคาตี้";
 "Settings" = "การตั้งค่า";
+"Settle without changing a bank balance" = "บันทึกการชำระเช็คโดยไม่เปลี่ยนยอดคงเหลือในบัญชีธนาคารใด ๆ";
 "Settled" = "ชำระเสร็จสิ้น";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "เช็คที่ชำระหรือเรียกเก็บเงินแล้วต้องระบุวันที่ทำรายการจริง โดยใช้รูปแบบ YYYY-MM-DD";
 "Shekati" = "Shekati";

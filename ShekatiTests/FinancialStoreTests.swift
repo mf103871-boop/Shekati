@@ -140,4 +140,157 @@ final class FinancialStoreTests: XCTestCase {
         XCTAssertEqual(try ChequeTransferService.restore(extra, into: context), 2)
         XCTAssertEqual(try context.fetchCount(FetchDescriptor<ChequeRecord>()), 11)
     }
+
+    func testLegacyJODSettlementPreservesUSDAccountFreeQuotaAuditAndExport() throws {
+        let source = try store()
+        let context = source.mainContext
+        try BankingLedger.addAccount(name: "Only USD", currency: "USD", opening: 84_501, isPlus: false, context: context)
+        let day = LocalDay.today.adding(days: -1)
+        let original = ChequeSnapshot(direction: .outgoing, amountMinorUnits: 125_001, currencyCode: "JOD",
+                                      dueDate: day, issueDate: day.adding(days: -5), number: "004182", notes: "Original note")
+        let v1 = ChequeBackupPayload(currencyCode: "JOD", records: [ChequeBackupEntry(snapshot: original)])
+        try ChequeTransferService.restore(v1, into: context)
+        let cheque = try XCTUnwrap(context.fetch(FetchDescriptor<ChequeRecord>()).first)
+        let account = try XCTUnwrap(context.fetch(FetchDescriptor<BankAccountRecord>()).first)
+        let book = try XCTUnwrap(context.fetch(FetchDescriptor<ChequeBookRecord>()).first)
+        func entry() -> ChequeBackupEntry {
+            ChequeBackupEntry(snapshot: ChequeSnapshot(direction: .incoming, amountMinorUnits: 1, currencyCode: "USD", dueDate: day))
+        }
+        try ChequeTransferService.importCSV(ChequeBackupPayload(currencyCode: "USD", records: (0..<9).map { _ in entry() }), into: context, isPlus: false)
+        let extra = ChequeBackupPayload(currencyCode: "USD", records: [entry()])
+        XCTAssertThrowsError(try ChequeTransferService.importCSV(extra, into: context, isPlus: false))
+        XCTAssertThrowsError(try BankingLedger.addAccount(name: "JOD", currency: "JOD", opening: 0, isPlus: false, context: context))
+        XCTAssertThrowsError(try BankingLedger.link(record: cheque, account: account, book: book, context: context))
+        let id = UUID()
+        let reason = "Owner verified receipt 24"
+        func settle(_ op: UUID? = nil, on date: LocalDay? = nil, note: String? = nil, amount: Int64 = 125_001) throws {
+            try BankingLedger.settleHistorically(cheque, operationID: op ?? id, amount: amount, currency: "JOD", day: date ?? day,
+                                                 reason: note ?? reason, isPlus: false, context: context)
+        }
+        XCTAssertFalse(BankingLedger.canSettleHistorically(cheque, accounts: [], events: [], isPlus: false))
+        XCTAssertFalse(BankingLedger.canSettleHistorically(cheque, accounts: [account], events: [], isPlus: true))
+        XCTAssertFalse(BankingLedger.canSettleHistorically(cheque, accounts: [BankAccountRecord(name: "JOD", currencyCode: "JOD", openingMinor: 0)], events: [], isPlus: false))
+        XCTAssertThrowsError(try settle(on: .today.adding(days: 1)))
+        XCTAssertThrowsError(try settle(on: day.adding(days: -6)))
+        XCTAssertThrowsError(try settle(note: " "))
+        XCTAssertThrowsError(try settle(amount: 125))
+        try settle()
+        try settle()
+        XCTAssertThrowsError(try settle(note: "Different reason"))
+        XCTAssertThrowsError(try settle(UUID()))
+        XCTAssertNil(cheque.bankAccountID)
+        XCTAssertEqual(cheque.actualDate, day)
+        XCTAssertEqual(cheque.status, .settled)
+        XCTAssertEqual(cheque.notes, original.notes)
+        let journal = try context.fetch(FetchDescriptor<LedgerEventRecord>())
+        let current = BankingLedger.position(for: cheque, events: journal)
+        XCTAssertEqual(journal.count, 1)
+        XCTAssertEqual(current.accepted.first?.party, reason)
+        XCTAssertEqual(current.accepted.first?.currency, "JOD")
+        XCTAssertEqual(current.paid, 125_001)
+        XCTAssertEqual(current.remaining, 0)
+        XCTAssertTrue(current.bankMovements.isEmpty)
+        XCTAssertTrue(BankingLedger.reminderInputs(records: [cheque], events: journal).isEmpty)
+        let usd = try BankingLedger.outlook(account: account, records: [cheque], events: journal, today: .today)
+        XCTAssertEqual(usd.recorded, 84_501)
+        XCTAssertEqual(usd.available7, 84_501)
+        XCTAssertEqual(try context.fetchCount(FetchDescriptor<BankAccountRecord>()), 1)
+        XCTAssertEqual(try ChequeTransferService.importCSV(extra, into: context, isPlus: false), 1)
+        XCTAssertThrowsError(try ChequeTransferService.importCSV(ChequeBackupPayload(currencyCode: "USD", records: [entry()]), into: context, isPlus: false))
+
+        let rows = ChequeReportRows(ids: [cheque.id], records: [cheque], events: journal)
+        let csv = ChequeCSV.export(rows.originals, historicalReasons: rows.historicalReasons)
+        let text = try XCTUnwrap(String(data: csv, encoding: .utf8))
+        for field in ["historical_settlement_reason", reason, "125.001", "JOD", "004182", day.iso, "settled", original.notes] {
+            XCTAssertTrue(text.contains(field), field)
+        }
+        let archive = try BankingArchive(accounts: [account], books: [book], events: journal)
+        let complete = ChequeBackupPayload(version: 2, currencyCode: "USD", records: [ChequeBackupEntry(record: cheque)], banking: archive)
+        let password = "Public-fixture-password"
+        let exported = try EncryptedBackup.encrypt(complete, password: password)
+        let destination = try store()
+        let restored = destination.mainContext
+        try ChequeTransferService.restore(EncryptedBackup.decrypt(exported, password: password), into: restored)
+        try ChequeTransferService.restore(v1, into: restored, replaceExisting: true)
+        let recovered = try XCTUnwrap(restored.fetch(FetchDescriptor<ChequeRecord>()).first)
+        let events = try restored.fetch(FetchDescriptor<LedgerEventRecord>())
+        XCTAssertEqual(BankingLedger.position(for: recovered, events: events).accepted, current.accepted)
+        XCTAssertEqual(recovered.actualDate, day)
+        XCTAssertEqual(recovered.status, .settled)
+        let attestation = try XCTUnwrap(current.accepted.first)
+        try BankingLedger.dismissConflict(attestation, reason: "Receipt belongs to another paper", record: recovered, context: restored)
+        let corrected = try restored.fetch(FetchDescriptor<LedgerEventRecord>())
+        XCTAssertEqual(recovered.status, .pending)
+        XCTAssertNil(recovered.actualDate)
+        XCTAssertEqual(corrected.count, 2)
+        XCTAssertThrowsError(try BankingLedger.settleHistorically(recovered, operationID: id, amount: 125_001, currency: "JOD", day: day, reason: reason, isPlus: false, context: restored))
+        let corrections = try BankingArchive(accounts: [account], books: [book], events: corrected)
+        try corrections.validate(records: [ChequeBackupEntry(record: recovered)])
+    }
+
+    func testConcurrentBankCollectionAndHistoricalAttestationRequireReviewInEitherMergeOrder() throws {
+        let original = ChequeSnapshot(direction: .incoming, status: .returned, amountMinorUnits: 123_456, currencyCode: "JOD", dueDate: .today)
+        let historical = try store(), bank = try store()
+        let v1 = ChequeBackupPayload(currencyCode: "JOD", records: [ChequeBackupEntry(snapshot: original)])
+        for container in [historical, bank] { try ChequeTransferService.restore(v1, into: container.mainContext) }
+        try BankingLedger.addAccount(name: "USD", currency: "USD", opening: 789, isPlus: false, context: historical.mainContext)
+        let historicalCheque = try XCTUnwrap(historical.mainContext.fetch(FetchDescriptor<ChequeRecord>()).first)
+        let bankCheque = try XCTUnwrap(bank.mainContext.fetch(FetchDescriptor<ChequeRecord>()).first)
+        try BankingLedger.settleHistorically(historicalCheque, operationID: UUID(), amount: original.amountMinorUnits, currency: "JOD",
+                                             day: .today.adding(days: -1), reason: "Previously resolved", isPlus: false, context: historical.mainContext)
+        try BankingLedger.addAccount(name: "JOD", currency: "JOD", opening: 1_000_000, isPlus: false, context: bank.mainContext)
+        let account = try XCTUnwrap(bank.mainContext.fetch(FetchDescriptor<BankAccountRecord>()).first)
+        try BankingLedger.link(record: bankCheque, account: account, book: nil, context: bank.mainContext)
+        try BankingLedger.perform(.settle, for: bankCheque, day: .today, expectedParent: nil, isPlus: false, context: bank.mainContext)
+        func payload(_ context: ModelContext) throws -> ChequeBackupPayload {
+            let accounts = try context.fetch(FetchDescriptor<BankAccountRecord>())
+            let books = try context.fetch(FetchDescriptor<ChequeBookRecord>())
+            let events = try context.fetch(FetchDescriptor<LedgerEventRecord>())
+            let archive = try BankingArchive(accounts: accounts, books: books, events: events)
+            return ChequeBackupPayload(version: 2, currencyCode: "USD", records: try context.fetch(FetchDescriptor<ChequeRecord>()).map(ChequeBackupEntry.init(record:)), banking: archive)
+        }
+        let a = try payload(historical.mainContext), b = try payload(bank.mainContext)
+        for (first, second, dismissHistorical) in [(a, b, true), (b, a, false)] {
+            let merged = try store(), context = merged.mainContext
+            try ChequeTransferService.restore(first, into: context)
+            try ChequeTransferService.restore(second, into: context)
+            let cheque = try XCTUnwrap(context.fetch(FetchDescriptor<ChequeRecord>()).first)
+            let accounts = try context.fetch(FetchDescriptor<BankAccountRecord>())
+            let usd = try XCTUnwrap(accounts.first(where: { $0.currencyCode == "USD" }))
+            let jod = try XCTUnwrap(accounts.first(where: { $0.currencyCode == "JOD" }))
+            XCTAssertEqual(cheque.bankAccountID, jod.id)
+            var events = try context.fetch(FetchDescriptor<LedgerEventRecord>())
+            let conflicted = BankingLedger.position(for: cheque, events: events)
+            XCTAssertEqual(conflicted.conflicts.count, 2)
+            XCTAssertTrue(conflicted.bankMovements.isEmpty)
+            XCTAssertThrowsError(try BankingLedger.outlook(account: jod, records: [cheque], events: events, today: .today))
+            XCTAssertEqual(try BankingLedger.outlook(account: usd, records: [cheque], events: events, today: .today).recorded, 789)
+            let rejected = try XCTUnwrap(conflicted.conflicts.first(where: { $0.kind == (dismissHistorical ? .historicalSettlement : .settle) }))
+            try BankingLedger.dismissConflict(rejected, reason: "Verified statement", record: cheque, context: context)
+            events = try context.fetch(FetchDescriptor<LedgerEventRecord>())
+            XCTAssertEqual(BankingLedger.position(for: cheque, events: events).conflicts.count, 0)
+            XCTAssertEqual(cheque.status, .settled)
+            XCTAssertEqual(cheque.actualDate, dismissHistorical ? .today : .today.adding(days: -1))
+            XCTAssertEqual(try BankingLedger.outlook(account: jod, records: [cheque], events: events, today: .today).recorded,
+                           dismissHistorical ? 1_123_456 : 1_000_000)
+            let resolved = try payload(context)
+            let reopened = try store()
+            try ChequeTransferService.restore(resolved, into: reopened.mainContext)
+            XCTAssertEqual(try reopened.mainContext.fetchCount(FetchDescriptor<LedgerEventRecord>()), 3)
+        }
+    }
+
+    func testReportRetainsSettlementDateForAnAlreadyClosedLegacyBaseline() throws {
+        let day = LocalDay.today.adding(days: -80)
+        let settled = ChequeSnapshot(direction: .incoming, status: .settled, amountMinorUnits: 100, currencyCode: "USD",
+                                     dueDate: day, actualDate: day, number: "009")
+        let cheque = ChequeRecord(snapshot: settled)
+        cheque.ledgerBaselineStatusRaw = PaperState.settled.rawValue
+        let rows = ChequeReportRows(ids: [cheque.id], records: [cheque], events: [])
+        let csv = ChequeCSV.export(rows.originals, historicalReasons: rows.historicalReasons)
+        XCTAssertTrue(rows.historicalReasons.isEmpty)
+        let review = try ChequeCSV.preview(csv, currencyCode: "USD", existing: [])
+        XCTAssertTrue(review.issues.isEmpty)
+        XCTAssertEqual(review.rows.first?.snapshot.actualDate, day)
+    }
 }

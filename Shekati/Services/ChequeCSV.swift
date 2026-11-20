@@ -30,17 +30,22 @@ enum ChequeCSV {
     static let header = ["direction", "status", "amount", "currency", "due_date", "number", "bank", "branch",
                          "party", "account_reference", "issue_date", "actual_date", "notes", "_format"]
 
-    static func export(_ cheques: [ChequeSnapshot]) -> Data {
-        var lines = [header.map(quote).joined(separator: ",")]
+    static func export(_ cheques: [ChequeSnapshot], historicalReasons: [UUID: String] = [:]) -> Data {
+        let includesReasons = cheques.contains { historicalReasons[$0.id] != nil }
+        let columns = includesReasons ? header + ["historical_settlement_reason"] : header
+        var lines = [columns.map(quote).joined(separator: ",")]
         for cheque in cheques {
             // Mark our escaping explicitly so a round trip removes exactly one prefix.
             // Numbers and references are text, never Excel formulas or numeric cells.
             let text = [cheque.number, cheque.bank, cheque.branch, cheque.party, cheque.accountReference, cheque.notes]
                 .map { "'" + $0 }
-            let values = [cheque.direction.rawValue, cheque.status.rawValue,
+            var values = [cheque.direction.rawValue, cheque.status.rawValue,
                           CurrencyMath.editable(minorUnits: cheque.amountMinorUnits, currencyCode: cheque.currencyCode),
                           cheque.currencyCode, cheque.dueDate.iso, text[0], text[1], text[2], text[3], text[4],
                           cheque.issueDate?.iso ?? "", cheque.actualDate?.iso ?? "", text[5], "shekati-v1"]
+            if includesReasons {
+                values.append(historicalReasons[cheque.id].map { "'" + $0 } ?? "")
+            }
             lines.append(values.map(quote).joined(separator: ","))
         }
         return Data(("\u{FEFF}" + lines.joined(separator: "\r\n") + "\r\n").utf8)

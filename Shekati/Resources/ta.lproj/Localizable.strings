@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "ஆப்பிள் இந்த வாங்குதலை உறுதி செய்ய முடியவில்லை.";
 "Apply" = "பயன்படுத்து";
 "Ascending" = "உயர்வு";
-"Assumes incoming cheques are collected on their due dates." = "வருகின்ற சோதனைகள் தங்கள் காலாவதியான தேதிகளில் சேகரிக்கப்படுகின்றன என்று கருதுகிறது.";
+"Assumes incoming cheques are collected on their due dates." = "பெற வேண்டிய காசோலைகளின் தொகை அவற்றுக்குரிய செலுத்த வேண்டிய தேதிகளில் கிடைக்கும் என்று கருதப்படுகிறது.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "உரிமம் பெற முடியவில்லை. உயிர்மெய்யியல் அல்லது உங்கள் ஐபோன் கடவுச்சொல்லை பயன்படுத்தி மீண்டும் முயற்சிக்கவும்.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "உரிமம் iOS மூலம் கையாளப்படுகிறது. ஷேக்கட்டி உங்கள் பயோமீட்டர் தகவல் அல்லது சாதன கடவுச்சொல்லை அணுகவோ சேமிக்கவோ செய்யாது.";
 "Back" = "பின்பக்கம்";
@@ -359,7 +359,7 @@
 "Record deposit" = "காசோலையை வங்கியில் கொடுத்ததைப் பதிவு செய்க";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "வருகின்ற மற்றும் வெளியேறும் சோதனைகளை பதிவு செய், அவற்றின் காலாவதி தேதிகளை பார்க்கவும் உங்கள் சோதனை பிம்பங்களை ஒன்றாக வைத்திருக்கவும்.";
 "Record payment" = "பணம் செலுத்தியதைப் பதிவு செய்யவும்";
-"Record return" = "பதிவு திரும்புதல்";
+"Record return" = "பணம் செலுத்தப்படாமல் காசோலை திரும்பியதைப் பதிவு செய்யவும்";
 "Recorded balance" = "பதிவுசெய்த இருப்பு";
 "Recorded operations protect the original cheque details." = "பதிவு செய்யப்பட்ட செயல்பாடுகள் உண்மையான செக் விவரங்களை பாதுகாக்கின்றன.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "மற்றொரு சாதனத்தில் இருந்து பதிவுகள் வேறு பணத்தை பயன்படுத்துகின்றன. புதிய செக்களை சேர்ப்பதற்கு முன் இந்த பதிவுகளை தீர்க்கவும். மொத்தங்கள் மோசடி பணத்தை தடுக்க மறைக்கப்படுகின்றன.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "பயன்பாடு பூட்டுவதற்கு முன் ஐபோன் அமைப்புகளில் ஒரு சாதன கடவுச்சொல்லை அமைக்கவும்.";
 "Set an iPhone passcode to unlock Shekati." = "ஷேக்கட்டியை மூட ஒரு ஐபோன் கடவுச்சொல்லை அமைக்கவும்.";
 "Settings" = "அமைப்புகள்";
+"Settle without changing a bank balance" = "எந்த வங்கிக் கணக்கின் இருப்பையும் மாற்றாமல் காசோலைத் தீர்வைப் பதிவு செய்யவும்";
 "Settled" = "தீர்வு செய்யப்பட்டது";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "கணக்கு முடிக்கப்பட்ட காசோலைகளுக்கு உண்மையான செலுத்தல் அல்லது வசூல் தேதி தேவை. தேதியை YYYY-MM-DD வடிவில் உள்ளிடவும்.";
 "Shekati" = "Shekati";
@@ -488,8 +489,8 @@
 "Tap a day to add an outgoing cheque with this due date." = "இந்த தேதியில் ஒரு வெளிவரும் செக் சேர்க்க ஒரு நாளை அழுத்து.";
 "Terms of use" = "பயன்பாட்டு விதிமுறைகள்";
 "The 30-day restore period has ended." = "30 நாட்கள் மீட்டமைப்பு காலம் முடிந்தது.";
-"The actual payment or collection date cannot be before the issue date." = "உண்மையான செலுத்தல் அல்லது சேகரிப்பு தேதி வெளியீட்டு தேதிக்கு முன் வர முடியாது.";
-"The actual payment or collection date cannot be in the future." = "உண்மையான செலுத்தல் அல்லது சேகரிப்பு தேதி எதிர்காலத்தில் இருக்க முடியாது.";
+"The actual payment or collection date cannot be before the issue date." = "பணம் செலுத்திய அல்லது பெற்ற உண்மையான தேதி காசோலை வழங்கப்பட்ட தேதிக்கு முன்னதாக இருக்க முடியாது.";
+"The actual payment or collection date cannot be in the future." = "பணம் செலுத்திய அல்லது பெற்ற உண்மையான தேதி எதிர்காலத் தேதியாக இருக்க முடியாது.";
 "The balance changed. Review the new difference before confirming." = "கணக்கு இருப்பு மாறிவிட்டது. உறுதிசெய்யும் முன் புதிய வேறுபாட்டைச் சரிபார்க்கவும்.";
 "The bank balance changes when collection is confirmed." = "காசோலைத் தொகை வசூலானதை உறுதிசெய்யும்போது வங்கிக் கணக்கு இருப்பு மாறும்.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "நீங்கள் வருட தேர்வு செய்தால் மட்டுமே கேமரா பயன்படுத்தப்படும். இந்த iPhone-ல் உரை அங்கீகாரம் நடக்கிறது. எந்த செக் புகைப்படமும் வெளிப்புற அங்கீகார சேவைக்கு அனுப்பப்படுவதில்லை.";

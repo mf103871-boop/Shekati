@@ -122,7 +122,7 @@
 "Clear search and filters" = "Effacer la recherche et les filtres";
 "Clear selection" = "Effacer la sélection";
 "Collected" = "Encaissé";
-"Collection date" = "Date de collecte";
+"Collection date" = "Date d’encaissement";
 "Confirm" = "Confirmer";
 "Confirm action" = "Confirmer l’action";
 "Confirm holder collected" = "Confirmer l’encaissement par le porteur";
@@ -359,7 +359,7 @@
 "Record deposit" = "Enregistrer le dépôt";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Enregistrez les chèques reçus et émis, consultez leurs échéances et conservez leurs images au même endroit.";
 "Record payment" = "Enregistrer le paiement";
-"Record return" = "Retour de l’enregistrement";
+"Record return" = "Enregistrer le rejet du chèque";
 "Recorded balance" = "Solde comptable";
 "Recorded operations protect the original cheque details." = "Les opérations enregistrées protègent les détails originaux du chèque.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Les enregistrements d’un autre appareil utilisent une devise différente. Résolvez ces enregistrements avant d’ajouter de nouveaux chèques. Les totaux sont masqués pour éviter le mélange des devises.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Définir un code d’accès dans les paramètres de l’iPhone avant d’activer le verrouillage des applications.";
 "Set an iPhone passcode to unlock Shekati." = "Définissez un mot de passe iPhone pour déverrouiller Shekati.";
 "Settings" = "Réglages";
+"Settle without changing a bank balance" = "Enregistrer le règlement sans modifier le solde d’aucun compte bancaire";
 "Settled" = "Soldé";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Les chèques réglés doivent avoir une date réelle. Les dates doivent utiliser AAAA-MM-JJ.";
 "Shekati" = "Shekati";

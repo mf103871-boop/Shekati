@@ -122,7 +122,7 @@
 "Clear search and filters" = "Aramayı ve filtreleri temizle";
 "Clear selection" = "Seçimi sil";
 "Collected" = "Tahsil edildi";
-"Collection date" = "Toplama tarihi";
+"Collection date" = "Tahsilat tarihi";
 "Confirm" = "Doğrula";
 "Confirm action" = "Etkinliği doğrula";
 "Confirm holder collected" = "Çek hamilinin ödemeyi aldığını onayla";
@@ -359,7 +359,7 @@
 "Record deposit" = "Bankaya yatırmayı kaydet";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Gelen ve giden çekleri kaydet, ödenme tarihlerini görün ve çek resimlerini bir arada tut.";
 "Record payment" = "Ödemeyi kaydet";
-"Record return" = "Kayıt geri dönüşü";
+"Record return" = "Ödenmeden iade edilen çeki kaydet";
 "Recorded balance" = "Kayıtlı bakiye";
 "Recorded operations protect the original cheque details." = "Kayıtlı işlemler orijinal çek detaylarını koruyor.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Başka bir cihazdan gelen kayıtlar farklı para birimini kullanıyor. Yeni çekler eklemekten önce bu kayıtları çözün. Toplamlar para birimlerinin karıştırılmasını önlemek için gizlenmiştir.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Uygulama kilidini etkinleştirmeden önce iPhone Seçenekleri’nde bir cihaz şifresi belirleyin.";
 "Set an iPhone passcode to unlock Shekati." = "Shekati’nin kilidini açmak için iPhone şifresi koy.";
 "Settings" = "Ayarlar";
+"Settle without changing a bank balance" = "Hiçbir banka hesabının bakiyesini değiştirmeden çekin kapatıldığını kaydet";
 "Settled" = "Kapatıldı";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Ödenmiş çeklerin gerçek bir tarihe ihtiyacı vardır. Tarihler YYYY-MM-DD kullanmalı.";
 "Shekati" = "Shekati";
@@ -490,8 +491,8 @@
 "The 30-day restore period has ended." = "30 günlük geri yükleme süreci sona erdi.";
 "The actual payment or collection date cannot be before the issue date." = "Gerçek ödeme veya tahsil tarihi, çıkarma tarihinden önce olamaz.";
 "The actual payment or collection date cannot be in the future." = "Gerçek ödeme veya tahsil tarihi gelecekte olamaz.";
-"The balance changed. Review the new difference before confirming." = "Dengesi değişti. Yeni farkı onaylamadan önce kontrol edin.";
-"The bank balance changes when collection is confirmed." = "Banka hesabında paranın toplandığına dair bir bilgi yok.";
+"The balance changed. Review the new difference before confirming." = "Hesap bakiyesi değişti. Onaylamadan önce yeni farkı gözden geçirin.";
+"The bank balance changes when collection is confirmed." = "Çek bedelinin tahsil edildiği onaylandığında banka bakiyesi değişir.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Kamera sadece taramayı seçtiğinizde kullanılır. Metin tanıma bu iPhone’da yapılır. Çeki fotoğrafı dış tanıma hizmetine gönderilmez.";
 "The cheque could not be deleted. Please try again." = "Çeki silme işlemi başarısız oldu. Lütfen tekrar deneyin.";
 "The cheque could not be restored. Please try again." = "Çeki geri yüklenemedi. Lütfen tekrar deneyin.";

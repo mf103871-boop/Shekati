@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Apple không thể xác nhận việc mua này.";
 "Apply" = "Áp dụng";
 "Ascending" = "Tăng";
-"Assumes incoming cheques are collected on their due dates." = "Giả sử các tờ séc được thu vào ngày phải trả.";
+"Assumes incoming cheques are collected on their due dates." = "Dự báo giả định tiền từ các séc phải thu sẽ về đúng ngày đến hạn của từng séc.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Lỗi xác thực. Hãy thử lại bằng cách sử dụng sinh trắc học hoặc mật khẩu iPhone của bạn.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Việc xác thực được xử lý bởi iOS. Shekati không truy cập hay lưu trữ thông tin sinh học hoặc mật khẩu thiết bị của bạn.";
 "Back" = "Mặt sau";
@@ -359,7 +359,7 @@
 "Record deposit" = "Ghi nhận nộp séc để nhờ thu";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Ghi chép các séc nhập và xuất, xem ngày hết hạn của chúng và giữ hình ảnh séc của bạn cùng nhau.";
 "Record payment" = "Ghi nhận thanh toán";
-"Record return" = "Đĩa quay lại";
+"Record return" = "Ghi nhận séc bị trả lại do không được thanh toán";
 "Recorded balance" = "Số dư ghi sổ";
 "Recorded operations protect the original cheque details." = "Các hoạt động ghi lại bảo vệ các chi tiết séc ban đầu.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Các ghi chép từ thiết bị khác sử dụng tiền tệ khác. Hãy giải quyết các ghi chép này trước khi thêm thẻ mới. Tổng số được ẩn để tránh trộn lẫn tiền tệ.";
@@ -397,7 +397,7 @@
 "Restore backup" = "Phục hồi bản sao lưu";
 "Restore deleted cheques within 30 days. After that, only permanent deletion is available." = "Phục hồi các tờ séc bị xóa trong 30 ngày. Sau đó, chỉ có thể xóa vĩnh viễn.";
 "Restore preview" = "Phục hồi xem thử";
-"Restore purchases" = "Phục hồi mua sắm";
+"Restore purchases" = "Khôi phục giao dịch mua";
 "Restore reminder preferences" = "Lưu ý";
 "Restore reviewed backup" = "Phục hồi bản sao lưu đã xem xét";
 "Restore this backup?" = "Phục hồi bản sao lưu này?";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Đặt mật khẩu thiết bị trong iPhone Settings trước khi bật khóa ứng dụng.";
 "Set an iPhone passcode to unlock Shekati." = "Đặt mật khẩu iPhone để mở khóa Shekati.";
 "Settings" = "Cài đặt";
+"Settle without changing a bank balance" = "Ghi nhận tất toán séc mà không thay đổi số dư của bất kỳ tài khoản ngân hàng nào";
 "Settled" = "Đã tất toán";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Séc đã tất toán cần có ngày thực trả hoặc thực thu. Nhập ngày theo định dạng YYYY-MM-DD.";
 "Shekati" = "Shekati";

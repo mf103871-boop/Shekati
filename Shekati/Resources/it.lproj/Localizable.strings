@@ -122,7 +122,7 @@
 "Clear search and filters" = "Cancella ricerca e filtri";
 "Clear selection" = "Cancella la selezione";
 "Collected" = "Incassato";
-"Collection date" = "Data di raccolta";
+"Collection date" = "Data di incasso";
 "Confirm" = "Conferma";
 "Confirm action" = "Conferma l’azione";
 "Confirm holder collected" = "Conferma l’incasso da parte del portatore";
@@ -167,7 +167,7 @@
 "Direction" = "Direzione";
 "Discard" = "Scarta";
 "Discard changes?" = "Eliminare le modifiche?";
-"Dismiss conflicting entry" = "Elimina voce in conflitto";
+"Dismiss conflicting entry" = "Escludi la voce in conflitto";
 "Done" = "Fatto";
 "Download CSV template" = "Scarica CSV template";
 "Draft" = "Bozza";
@@ -359,7 +359,7 @@
 "Record deposit" = "Registra versamento";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Registra gli assegni ricevuti ed emessi, consulta le scadenze e conserva le immagini di ciascun assegno.";
 "Record payment" = "Registra il pagamento";
-"Record return" = "Record di ritorno";
+"Record return" = "Registra l’assegno insoluto";
 "Recorded balance" = "Saldo contabile";
 "Recorded operations protect the original cheque details." = "Le operazioni registrate proteggono i dettagli originali dell’assegno.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "I record di un altro dispositivo utilizzano una valuta diversa, quindi risolvi questi record prima di aggiungere nuovi assegni. I totali sono nascosti per evitare il mescolamento delle valute.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Imposta un codice di accesso del dispositivo nelle Impostazioni iPhone prima di attivare il blocco delle app.";
 "Set an iPhone passcode to unlock Shekati." = "Impostare un passcode iPhone per sbloccare Shekati.";
 "Settings" = "Impostazioni";
+"Settle without changing a bank balance" = "Registra l’avvenuto pagamento dell’assegno senza modificare il saldo di alcun conto bancario";
 "Settled" = "Regolato";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Gli assegni liquidati devono avere una data effettiva. Le date devono utilizzare YYYY-MM-DD.";
 "Shekati" = "Shekati";
@@ -491,7 +492,7 @@
 "The actual payment or collection date cannot be before the issue date." = "La data di pagamento o incasso effettiva non può essere anteriore alla data di emissione.";
 "The actual payment or collection date cannot be in the future." = "La data effettiva di pagamento o incasso non può essere futura.";
 "The balance changed. Review the new difference before confirming." = "Il saldo è cambiato. Controlla la nuova differenza prima di confermare.";
-"The bank balance changes when collection is confirmed." = "Il saldo bancario cambia quando il ritiro è confermato.";
+"The bank balance changes when collection is confirmed." = "Il saldo bancario cambia quando viene confermato l’incasso dell’assegno.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "La fotocamera viene utilizzata solo quando si sceglie di eseguire la scansione. Il riconoscimento del testo avviene su questo iPhone e nessuna foto dell’assegno viene inviata a un servizio esterno di riconoscimento.";
 "The cheque could not be deleted. Please try again." = "L’assegno non è stato cancellato. Si prega di riprovare.";
 "The cheque could not be restored. Please try again." = "L’assegno non è stato ripristinato. Si prega di riprovare.";

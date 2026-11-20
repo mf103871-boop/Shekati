@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Set a device passcode in iPhone Settings before enabling app lock.";
 "Set an iPhone passcode to unlock Shekati." = "Set an iPhone passcode to unlock Shekati.";
 "Settings" = "Settings";
+"Settle without changing a bank balance" = "Record settlement without changing any bank balance";
 "Settled" = "Settled";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Settled cheques need an actual date. Dates must use YYYY-MM-DD.";
 "Shekati" = "Shekati";

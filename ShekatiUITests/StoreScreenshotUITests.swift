@@ -3,6 +3,36 @@ import UIKit
 
 /// Optical recognition runs on the same Vision path used after scanning a cheque on a phone.
 final class StoreScreenshotUITests: XCTestCase {
+    func testUpcomingChequesAppearInDueOrderBetweenShortfallAndForecast() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--store-screens", "-ShekatiStoreLocale", "en-US",
+                               "-shekati.hideAmounts", "NO"]
+        app.launch()
+
+        let shortfall = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "shortfallDetails")).firstMatch
+        let forecast = app.staticTexts["dashboardForecastTitle"]
+        // The saved cheques are due today, then in five, six and seven days, across both directions.
+        let numbers = ["004182", "007309", "007310", "004185"]
+        func cheque(_ number: String) -> XCUIElement {
+            app.buttons["cheque-row-00000000-0000-4000-8000-000000" + number]
+        }
+        let landmarks = [shortfall, app.staticTexts["dashboardUpcomingTitle"]] + numbers.map(cheque) + [forecast]
+        var previousBottom = CGFloat.zero
+        for element in landmarks {
+            XCTAssertTrue(element.waitForExistence(timeout: 10), "Missing dashboard element: \(element)")
+            let frame = element.frame
+            XCTAssertFalse(frame.isEmpty)
+            XCTAssertTrue(frame.minY.isFinite && frame.maxY.isFinite)
+            XCTAssertGreaterThanOrEqual(frame.minY, previousBottom, "Dashboard element out of order: \(element.label)")
+            previousBottom = frame.maxY
+        }
+        XCTAssertTrue(shortfall.label.contains("650.000"))
+        XCTAssertFalse(cheque("007311").exists, "The fifth, later cheque belongs in the full register.")
+        for _ in 0..<5 where !forecast.isHittable { app.swipeUp() }
+        XCTAssertTrue(forecast.isHittable, "The forecast must be reachable below the upcoming cheques.")
+    }
+
     func testPartialCashSettlementUpdatesHomeAndOutgoingRegister() {
         continueAfterFailure = false
         let app = XCUIApplication()

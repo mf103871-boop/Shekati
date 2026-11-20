@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Apple konnte diesen Kauf nicht verifizieren.";
 "Apply" = "Anwenden";
 "Ascending" = "Aufsteigend";
-"Assumes incoming cheques are collected on their due dates." = "Nimmt an, dass eingehende Schecks am Fälligkeitsdatum abgehoben werden.";
+"Assumes incoming cheques are collected on their due dates." = "Die Prognose setzt voraus, dass die Beträge eingehender Schecks am jeweiligen Fälligkeitstag gutgeschrieben werden.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Versuchen Sie es erneut mit Biometrie oder dem Code Ihres iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Die Authentifizierung wird von iOS durchgeführt. Shekati greift nicht auf Ihre biometrischen Informationen oder Gerätepasscode zu und speichert diese auch nicht.";
 "Back" = "Rückseite";
@@ -359,7 +359,7 @@
 "Record deposit" = "Einreichung erfassen";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Erfasse erhaltene und ausgestellte Schecks, behalte ihre Fälligkeit im Blick und speichere die zugehörigen Bilder.";
 "Record payment" = "Zahlungsausgang erfassen";
-"Record return" = "Rekordgewinn";
+"Record return" = "Rückgabe des nicht eingelösten Schecks erfassen";
 "Recorded balance" = "Erfasster Kontostand";
 "Recorded operations protect the original cheque details." = "Aufgezeichnete Vorgänge schützen die Original-Scheckdetails.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Datensätze von einem anderen Gerät verwenden eine andere Währung. Lösen Sie diese Datensätze auf, bevor Sie neue Schecks hinzufügen. Summen sind ausgeblendet, um zu vermeiden, dass Währungen vermischt werden.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Legen Sie in den iPhone-Einstellungen einen Gerätepasscode fest, bevor Sie die App-Sperre aktivieren.";
 "Set an iPhone passcode to unlock Shekati." = "Legen Sie einen iPhone-Passcode fest, um Shekati zu entsperren.";
 "Settings" = "Einstellungen";
+"Settle without changing a bank balance" = "Abrechnung erfassen, ohne den Saldo eines Bankkontos zu ändern";
 "Settled" = "Beglichen";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Bei ausgeglichenen Schecks muss ein Datum angegeben werden. Die Daten müssen JJJJ-MM-TT verwenden.";
 "Shekati" = "Shekati";

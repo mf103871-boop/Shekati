@@ -68,9 +68,29 @@ struct BankingArchive: Codable, Equatable, Sendable {
             if let raw = entry.ledgerBaselineStatusRaw, PaperState(rawValue: raw) == nil { throw ChequeTransferError.invalidRecords }
             if let id = entry.replacesChequeID, cheques[id] == nil { throw ChequeTransferError.invalidRecords }
         }
+        let journalByID = Dictionary(uniqueKeysWithValues: events.map { ($0.id, $0) })
         for op in events {
+            guard op.party.utf8.count <= 100_000 else { throw ChequeTransferError.invalidRecords }
+            if op.accountID == nil {
+                guard let chequeID = op.chequeID, let entry = cheques[chequeID]?.first, entry.replacesChequeID == nil,
+                      entry.snapshot.currencyCode == op.currency, op.parentID == nil,
+                      !op.party.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw ChequeTransferError.invalidRecords }
+                switch op.kind {
+                case .historicalSettlement:
+                    guard let raw = entry.ledgerBaselineStatusRaw, let baseline = PaperState(rawValue: raw),
+                          [PaperState.initial(.pending, direction: entry.snapshot.direction), .returned].contains(baseline),
+                          op.relatedID == nil, op.amount == entry.snapshot.amountMinorUnits,
+                          entry.snapshot.issueDate.map({ op.day >= $0 }) ?? true else { throw ChequeTransferError.invalidRecords }
+                case .discardConflict:
+                    guard let related = op.relatedID, let target = journalByID[related], target.kind == .historicalSettlement,
+                          target.chequeID == chequeID, target.accountID == nil,
+                          op.amount == 0 else { throw ChequeTransferError.invalidRecords }
+                default: throw ChequeTransferError.invalidRecords
+                }
+                continue
+            }
             guard let accountID = op.accountID, accountIndex[accountID]?.first?.currency == op.currency,
-                  op.party.utf8.count <= 100_000 else { throw ChequeTransferError.invalidRecords }
+                  op.kind != .historicalSettlement else { throw ChequeTransferError.invalidRecords }
             if let chequeID = op.chequeID {
                 guard let entry = cheques[chequeID]?.first, entry.bankAccountID == accountID,
                       entry.snapshot.currencyCode == op.currency, op.kind != .reconcile else { throw ChequeTransferError.invalidRecords }

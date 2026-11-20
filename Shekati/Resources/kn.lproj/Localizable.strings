@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "ಆ್ಯಪಲ್ ಈ ಖರೀದಿಯನ್ನು ದೃಢೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ.";
 "Apply" = "ಅನ್ವಯಿಸು";
 "Ascending" = "ಏರುತ್ತಿರುವ ಕ್ರಮದಲ್ಲಿ";
-"Assumes incoming cheques are collected on their due dates." = "ಬರುತ್ತಿರುವ ಚೆಕ್‍ಗಳು ಅವುಗಳ ಪಾವತಿ ದಿನಾಂಕದಲ್ಲಿ ಸಂಗ್ರಹಗೊಂಡಿವೆ ಎಂದು ಭಾವಿಸುತ್ತದೆ.";
+"Assumes incoming cheques are collected on their due dates." = "ಸ್ವೀಕರಿಸಿದ ಚೆಕ್‌ಗಳ ಮೊತ್ತವು ಅವುಗಳ ಗಡುವಿನ ದಿನಾಂಕದಂದು ದೊರೆಯುತ್ತದೆ ಎಂದು ಅಂದಾಜಿಸಲಾಗಿದೆ.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "ದೃಢೀಕರಣ ವಿಫಲಗೊಂಡಿದೆ. ನಿಮ್ಮ iPhone ಗೂಢಲಿಪೀಕರಣವನ್ನು ಬಳಸಿಕೊಂಡು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "ದೃಢೀಕರಣವನ್ನು iOS ನಿರ್ವಹಿಸುತ್ತದೆ. ಶೇಕಟಿಯು ನಿಮ್ಮ ಬಯೋಮೆಟ್ರಿಕ್ ಮಾಹಿತಿ ಅಥವಾ ಸಾಧನದ ಗುಪ್ತಪದವನ್ನು ಪ್ರವೇಶಿಸುವುದಿಲ್ಲ ಅಥವ ಸಂಗ್ರಹಿಸುತ್ತಿಲ್ಲ.";
 "Back" = "ಹಿಂಭಾಗ";
@@ -359,7 +359,7 @@
 "Record deposit" = "ಚೆಕ್ ಜಮೆ ದಾಖಲಿಸಿ";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "ಬರುತ್ತಿರುವ ಮತ್ತು ಹೊರಹೋಗುವ ಚೆಕ್‍ಗಳನ್ನು ದಾಖಲಿಸಿ, ಅವುಗಳ ಪಾವತಿ ದಿನಾಂಕವನ್ನು ನೋಡು ಹಾಗು ನಿಮ್ಮ ಚೆಕ್‍ನ ಚಿತ್ರಗಳನ್ನು ಒಟ್ಟಿಗೆ ಇರಿಸಿ. Name";
 "Record payment" = "ಪಾವತಿಯನ್ನು ದಾಖಲಿಸಿ";
-"Record return" = "ದಾಖಲೆ ಮರಳಿಬರುವಿಕೆ";
+"Record return" = "ಪಾವತಿಯಾಗದೆ ಚೆಕ್ ಹಿಂದಿರುಗಿದುದನ್ನು ದಾಖಲಿಸಿ";
 "Recorded balance" = "ದಾಖಲಾದ ಶಿಲ್ಕು";
 "Recorded operations protect the original cheque details." = "ದಾಖಲಾದ ಕಾರ್ಯಾಚರಣೆಗಳು ಮೂಲ ಚೆಕ್ ವಿವರಗಳನ್ನು ರಕ್ಷಿಸುತ್ತವೆ.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "ಬೇರೊಂದು ಸಾಧನದಿಂದ ದಾಖಲೆಗಳು ಬೇರೆ ಕರೆನ್ಸಿಯನ್ನು ಬಳಸುತ್ತವೆ. ಹೊಸ ಚೆಕ್ ಅನ್ನು ಸೇರಿಸುವ ಮೊದಲು ಈ ದಾಖಲೆಗಳನ್ನು ಪರಿಹರಿಸಬೇಕು. ಕರೆನ್ಸಿಗಳನ್ನು ಮಿಶ್ರಣ ಮಾಡುವುದನ್ನು ತಪ್ಪಿಸಲು ಒಟ್ಟು ಸಂಖ್ಯೆಗಳನ್ನು ಅಡಗಿಸಲಾಗಿದೆ.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "ಅನ್ವಯ ಲಾಕ್ ಅನ್ನು ಶಕ್ತಗೊಳಿಸುವ ಮೊದಲು ಐಫೋನ್ ಸಂಯೋಜನೆಗಳಲ್ಲಿರುವ ಸಾಧನದ ಗುಪ್ತಪದವನ್ನು ನಿಗದಿಪಡಿಸಿ.";
 "Set an iPhone passcode to unlock Shekati." = "ಶೇಕಟಿಯನ್ನು ಲಾಕ್ ಮಾಡುವುದನ್ನು ಮುಚ್ಚಲು ಐಫೋನ್ ಗುಪ್ತಪದವನ್ನು ನಿಗದಿಗೊಳಿಸಿ.";
 "Settings" = "ಸೆಟ್ಟಿಂಗ್‌ಗಳು";
+"Settle without changing a bank balance" = "ಯಾವುದೇ ಬ್ಯಾಂಕ್ ಖಾತೆಯ ಶಿಲ್ಕನ್ನು ಬದಲಿಸದೆ ಚೆಕ್ ಇತ್ಯರ್ಥವನ್ನು ದಾಖಲಿಸಿ";
 "Settled" = "ಇತ್ಯರ್ಥವಾಗಿದೆ";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "ಇತ್ಯರ್ಥವಾದ ಚೆಕ್‌ಗಳಿಗೆ ಹಣ ಪಾವತಿಸಿದ ಅಥವಾ ವಸೂಲಾದ ನಿಜವಾದ ದಿನಾಂಕ ಬೇಕು. ದಿನಾಂಕವನ್ನು YYYY-MM-DD ರೂಪದಲ್ಲಿ ನಮೂದಿಸಿ.";
 "Shekati" = "Shekati";
@@ -488,8 +489,8 @@
 "Tap a day to add an outgoing cheque with this due date." = "ಈ ಅವಧಿಯ ದಿನಾಂಕದೊಂದಿಗೆ ಹೊರಹೋಗುವ ಚೆಕ್ ಅನ್ನು ಸೇರಿಸಲು ಒಂದು ದಿನವನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ.";
 "Terms of use" = "ಬಳಕೆಯ ನಿಯಮಗಳು";
 "The 30-day restore period has ended." = "೩೦ ದಿನಗಳ ಮರುಸ್ಥಾಪನಾ ಅವಧಿಯು ಮುಗಿದಿದೆ.";
-"The actual payment or collection date cannot be before the issue date." = "ನಿಜವಾದ ಪಾವತಿ ಅಥವಾ ಸಂಗ್ರಹ ದಿನಾಂಕವು ಹೊರಡಿಸುವ ದಿನಾಂಕದ ಮೊದಲು ಇರಬಾರದು.";
-"The actual payment or collection date cannot be in the future." = "ವಾಸ್ತವವಾಗಿ ಪಾವತಿ ಅಥವಾ ಸಂಗ್ರಹ ದಿನಾಂಕವು ಭವಿಷ್ಯದಲ್ಲಿರಬಾರದು.";
+"The actual payment or collection date cannot be before the issue date." = "ಹಣ ಪಾವತಿಸಿದ ಅಥವಾ ಸ್ವೀಕರಿಸಿದ ನಿಜವಾದ ದಿನಾಂಕವು ಚೆಕ್ ನೀಡಿದ ದಿನಾಂಕಕ್ಕಿಂತ ಮೊದಲು ಇರಬಾರದು.";
+"The actual payment or collection date cannot be in the future." = "ಹಣ ಪಾವತಿಸಿದ ಅಥವಾ ಸ್ವೀಕರಿಸಿದ ನಿಜವಾದ ದಿನಾಂಕವು ಭವಿಷ್ಯದಲ್ಲಿ ಇರಬಾರದು.";
 "The balance changed. Review the new difference before confirming." = "ಖಾತೆಯ ಶಿಲ್ಕು ಬದಲಾಗಿದೆ. ದೃಢಪಡಿಸುವ ಮೊದಲು ಹೊಸ ವ್ಯತ್ಯಾಸವನ್ನು ಪರಿಶೀಲಿಸಿ.";
 "The bank balance changes when collection is confirmed." = "ಚೆಕ್‌ನ ಹಣ ವಸೂಲಾದುದನ್ನು ದೃಢಪಡಿಸಿದಾಗ ಬ್ಯಾಂಕ್ ಖಾತೆಯ ಶಿಲ್ಕು ಬದಲಾಗುತ್ತದೆ.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "ನೀವು ಸ್ಕ್ಯಾನ್ ಮಾಡಲು ಆಯ್ಕೆ ಮಾಡಿದಾಗ ಮಾತ್ರ ಕ್ಯಾಮರಾವನ್ನು ಬಳಸಲಾಗುತ್ತದೆ. ಪಠ್ಯ ಗುರುತಿಸುವಿಕೆ ಈ iPhone ನಲ್ಲಿ ನಡೆಯುತ್ತದೆ. ಯಾವುದೇ ಚೆಕ್ ಫೋಟೋವನ್ನು ಹೊರಗಿನ ಗುರುತು ಸೇವೆಗೆ ಕಳುಹಿಸಲಾಗುವುದಿಲ್ಲ.";

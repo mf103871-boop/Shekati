@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "عيّن رمزًا للجهاز من إعدادات الآيفون قبل تفعيل قفل التطبيق.";
 "Set an iPhone passcode to unlock Shekati." = "فعّل رمز دخول للآيفون حتى تتمكن من فتح شيكاتي.";
 "Settings" = "الإعدادات";
+"Settle without changing a bank balance" = "تسجيل التسوية دون تغيير أي رصيد بنكي";
 "Settled" = "مسدد";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "تحتاج الشيكات المسدّدة إلى تاريخ فعلي. استخدم صيغة YYYY-MM-DD للتواريخ.";
 "Shekati" = "شيكاتي";

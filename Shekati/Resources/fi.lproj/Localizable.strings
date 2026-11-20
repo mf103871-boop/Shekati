@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Apple ei voinut vahvistaa tätä ostoa.";
 "Apply" = "Käytä";
 "Ascending" = "Nouseva";
-"Assumes incoming cheques are collected on their due dates." = "Oletetaan, että tulevat shekit kerätään niiden eräpäivinä.";
+"Assumes incoming cheques are collected on their due dates." = "Oletuksena on, että saaduista sekeistä maksetaan rahat eräpäivinä.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Todennus epäonnistui. Yritä uudelleen biometriikan tai iPhonen pääsykoodin avulla.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Todennus hoidetaan iOS:n kautta, eikä Shekati käytä tai tallenna biometrisiä tietojasi tai laitteen salasanaa.";
 "Back" = "Kääntöpuoli";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "Tyhjennä haku ja suodattimet";
 "Clear selection" = "Tyhjennä valinta";
 "Collected" = "Lunastettu";
-"Collection date" = "Noutopäivä";
+"Collection date" = "Maksun vastaanottopäivä";
 "Confirm" = "Vahvista";
 "Confirm action" = "Vahvista toiminto";
 "Confirm holder collected" = "Vahvista, että haltija on lunastanut sekin";
@@ -359,7 +359,7 @@
 "Record deposit" = "Kirjaa talletus";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Tallenna saapuvat ja lähtevät sekit, katso niiden eräpäivät ja pidä sekin kuvia yhdessä.";
 "Record payment" = "Kirjaa suoritettu maksu";
-"Record return" = "Ennätystuotto";
+"Record return" = "Kirjaa maksamattoman sekin palautus";
 "Recorded balance" = "Kirjattu saldo";
 "Recorded operations protect the original cheque details." = "Tallennetut toiminnot suojaavat alkuperäisen shekin tiedot.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Toisen laitteen tietueissa käytetään eri valuuttaa, joten ratkaise nämä tietueet ennen uusien sekkien lisäämistä. Summat on piilotettu, jotta vältetään valuuttojen sekoittuminen.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Aseta laitteen pääsykoodi iPhonen asetuksissa ennen kuin otat sovelluslukituksen käyttöön.";
 "Set an iPhone passcode to unlock Shekati." = "Aseta iPhonen salasana Shekati-sovelluksen avaamiseen.";
 "Settings" = "Asetukset";
+"Settle without changing a bank balance" = "Kirjaa suoritus muuttamatta minkään pankkitilin saldoa";
 "Settled" = "Selvitetty";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Maksetut shekit tarvitsevat todellisen päivämäärän. Päivämäärien on oltava VVVV-KK-PP.";
 "Shekati" = "Shekati";
@@ -488,16 +489,16 @@
 "Tap a day to add an outgoing cheque with this due date." = "Napauta päivää, jolloin voit lisätä lähtevän sekin, jossa on tämä eräpäivä.";
 "Terms of use" = "Käyttöehdot";
 "The 30-day restore period has ended." = "30 päivän palautusjakso on päättynyt.";
-"The actual payment or collection date cannot be before the issue date." = "Todellinen maksu- tai noutopäivä ei voi olla ennen liikkeeseenlaskun päivää.";
-"The actual payment or collection date cannot be in the future." = "Todellinen maksu- tai noutopäivä ei voi olla tulevaisuudessa.";
+"The actual payment or collection date cannot be before the issue date." = "Maksun tai varojen vastaanoton päivämäärä ei voi edeltää sekin asettamispäivää.";
+"The actual payment or collection date cannot be in the future." = "Maksun tai varojen vastaanoton päivämäärä ei voi olla tulevaisuudessa.";
 "The balance changed. Review the new difference before confirming." = "Saldo on muuttunut. Tarkista uusi ero ennen vahvistamista.";
-"The bank balance changes when collection is confirmed." = "Pankkisaldo muuttuu, kun nouto vahvistetaan.";
+"The bank balance changes when collection is confirmed." = "Pankkitilin saldo muuttuu, kun maksun saaminen vahvistetaan.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Kameraa käytetään vain, kun valitset skannauksen. Tekstintunnistus tapahtuu tässä iPhonessa, eikä sekkikuvaa lähetetä ulkoiseen tunnistuspalveluun, vaan se on tallennettu kameraan.";
 "The cheque could not be deleted. Please try again." = "Sekkiä ei voitu poistaa. Yritä uudelleen.";
 "The cheque could not be restored. Please try again." = "Sekkiä ei voitu palauttaa. Yritä uudelleen.";
 "The cheque could not be saved. Your draft is still here; please try again." = "Sekkiä ei voitu tallentaa. Luotos on edelleen täällä, yritä uudelleen.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "Sekki siirtyy Äskettäin poistetut -kansioon 30 päiväksi, ja sen muistutukset lakkaavat. Voit palauttaa sen tiedot ja kuvat.";
-"The cheque stays in follow-up until the new holder confirms collection." = "Sekki pysyy seurannassa, kunnes uusi haltija vahvistaa noudon.";
+"The cheque stays in follow-up until the new holder confirms collection." = "Sekin seuranta jatkuu, kunnes uusi haltija vahvistaa saaneensa maksun.";
 "The end date must be on or after the start date." = "Päättymispäivän on oltava samana päivänä tai sen jälkeen kuin aloituspäivä.";
 "The file contains invalid cheque information." = "Tiedosto sisältää virheellisiä sekkitietoja.";
 "The file could not be read or saved. Please try again." = "Tiedostoa ei voitu lukea tai tallentaa. Yritä uudelleen.";

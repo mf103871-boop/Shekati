@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Apple 无法验证此购买。";
 "Apply" = "申请";
 "Ascending" = "上升";
-"Assumes incoming cheques are collected on their due dates." = "假设收到的支票在到期日期被收取。";
+"Assumes incoming cheques are collected on their due dates." = "假设应收支票的款项在各自到期日到账。";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "验证失败。 请使用生物识别或 iPhone 密码重试。";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "身份验证由 iOS 处理,Shekati 不会访问或存储您的生物识别信息或设备密码。";
 "Back" = "背面";
@@ -167,7 +167,7 @@
 "Direction" = "支票收付方向";
 "Discard" = "弃置";
 "Discard changes?" = "丢弃更改?";
-"Dismiss conflicting entry" = "删除冲突条目";
+"Dismiss conflicting entry" = "排除冲突记录";
 "Done" = "完成";
 "Download CSV template" = "下载CSV模板";
 "Draft" = "草稿";
@@ -359,7 +359,7 @@
 "Record deposit" = "登记存入银行";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "记录收到和开出的支票，查看到期日，集中保存支票图片。";
 "Record payment" = "登记付款";
-"Record return" = "记录回报";
+"Record return" = "登记退票";
 "Recorded balance" = "账面余额";
 "Recorded operations protect the original cheque details." = "记录的操作保护原始支票详细信息。";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "来自其他设备的记录使用不同的货币。 在添加新支票之前解析这些记录。 总计隐藏以避免混合货币。";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "在启用应用程序锁定之前,请在 iPhone 设置中设置设备密码。";
 "Set an iPhone passcode to unlock Shekati." = "设置一个iPhone密码来解锁Shekati.";
 "Settings" = "设置";
+"Settle without changing a bank balance" = "登记结清，不更改任何银行账户余额";
 "Settled" = "已结清";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "支票需要实际日期,日期必须使用YYYY-MM-DD。";
 "Shekati" = "Shekati";
@@ -488,7 +489,7 @@
 "Tap a day to add an outgoing cheque with this due date." = "轻按某一天,以添加具有此到期日的出票支票。";
 "Terms of use" = "使用条款";
 "The 30-day restore period has ended." = "30 天恢复期已结束。";
-"The actual payment or collection date cannot be before the issue date." = "实际付款或收取日期不能在发行日之前。";
+"The actual payment or collection date cannot be before the issue date." = "实际付款或收款日期不能早于支票签发日期。";
 "The actual payment or collection date cannot be in the future." = "实际付款或收款日期不能在未来。";
 "The balance changed. Review the new difference before confirming." = "余额变化,请在确认前查看新差异。";
 "The bank balance changes when collection is confirmed." = "确认收款后，银行账户余额才会更新。";

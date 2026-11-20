@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Apple اس خریداری کی تصدیق نہیں کر سکا۔";
 "Apply" = "لاگو کریں";
 "Ascending" = "اگلا";
-"Assumes incoming cheques are collected on their due dates." = "فرض کرتا ہے کہ آنے والے چک انکے مقررہ تاریخوں پر جمع کیے جاتے ہیں.";
+"Assumes incoming cheques are collected on their due dates." = "اس تخمینے میں فرض کیا گیا ہے کہ وصولی کے لیے موجود چیکوں کی رقم ان کی مقررہ تاریخوں پر مل جائے گی۔";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "توثیق ناکام۔بائیومیٹرکس یا آپ کے آی فون پاس ورڈ کا استعمال کرکے دوبارہ کوشش کریں۔";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "توثیق iOS کے ذریعے ہینڈل کی جاتی ہے. Shekati آپ کی بایومیٹرک معلومات یا ڈیوائس پاس ورڈ کو رسائی نہیں دیتا یا محفوظ نہیں کرتا.";
 "Back" = "پچھلا رخ";
@@ -359,7 +359,7 @@
 "Record deposit" = "چیک جمع کرانے کا اندراج کریں";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "آنے والے اور جانے والے چکوں کو ریکارڈ کریں، ان کے ختم ہونے کی تاریخیں دیکھیں اور اپنے چک تصویروں کو ایک ساتھ رکھیں.";
 "Record payment" = "ادائیگی درج کریں";
-"Record return" = "ريکڈ واپسي";
+"Record return" = "بغیر ادائیگی چیک واپس آنے کا اندراج کریں";
 "Recorded balance" = "درج شدہ بیلنس";
 "Recorded operations protect the original cheque details." = "ریکارڈ آپریشن اصل چک تفصیلات کو محفوظ.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "دوسرے آلے سے ریکارڈ مختلف روپئے استعمال کريں هيں نئے چک شامل کر نے سے پہلے ان ريکورڈ کو حل کريں کل رقموں کو ملا کر کے خفيه کريں";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "ایپلیکیشن لاک فعال کرنے سے پہلے آی فون ترتیبات میں ایک آلہ پاس کوڈ مقرر کریں.";
 "Set an iPhone passcode to unlock Shekati." = "شيکاتي کو تا لاک سے کھولنے کے ليے اي فون پاس ورڈ قائم کريں";
 "Settings" = "ترتیبات";
+"Settle without changing a bank balance" = "کسی بھی بینک اکاؤنٹ کا بیلنس بدلے بغیر چیک کا تصفیہ درج کریں";
 "Settled" = "تصفیہ شدہ";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "جن چیکوں کا حساب نمٹ چکا ہے ان کے لیے ادائیگی یا وصولی کی اصل تاریخ درکار ہے۔ تاریخ YYYY-MM-DD کی صورت میں درج کریں۔";
 "Shekati" = "Shekati";
@@ -490,7 +491,7 @@
 "The 30-day restore period has ended." = "30 دن کی بحالی کا دور ختم ہو گیا ہے.";
 "The actual payment or collection date cannot be before the issue date." = "رقم ادا کرنے یا چیک کی رقم وصول کرنے کی اصل تاریخ، چیک جاری کرنے کی تاریخ سے پہلے نہیں ہو سکتی۔";
 "The actual payment or collection date cannot be in the future." = "رقم ادا کرنے یا چیک کی رقم وصول کرنے کی اصل تاریخ مستقبل کی نہیں ہو سکتی۔";
-"The balance changed. Review the new difference before confirming." = "بلنڈ بدل گیا ہے. تصدیق کرنے سے پہلے نئے فرق کو دیکھیں.";
+"The balance changed. Review the new difference before confirming." = "اکاؤنٹ کا بیلنس بدل گیا ہے۔ تصدیق کرنے سے پہلے نیا فرق دیکھیں۔";
 "The bank balance changes when collection is confirmed." = "چیک کی رقم وصول ہونے کی تصدیق پر بینک اکاؤنٹ کا بیلنس بدلتا ہے۔";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "کيمرا صرف اس وقت استعمال کيا جاتا هے جب آپ سکين کر نے کا انتخاب کريں. متن شناخت اس آئي فون پر ہوتا هے";
 "The cheque could not be deleted. Please try again." = "چک حذف نہیں کیا جاسکتا. لطفاً دوبارہ کوشش کریں.";

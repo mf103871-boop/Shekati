@@ -236,7 +236,9 @@ enum ChequeTransferService {
         let existing = try context.fetch(FetchDescriptor<ChequeRecord>())
         try payload.banking?.validate(records: payload.records)
         let byID = Dictionary(existing.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
-        let journalledIDs = Set(try context.fetch(FetchDescriptor<LedgerEventRecord>()).compactMap(\.chequeID))
+        let existingJournal = try context.fetch(FetchDescriptor<LedgerEventRecord>())
+        let journalledIDs = Set(existingJournal.compactMap(\.chequeID))
+        let historicallyClosed = Set(existingJournal.filter { $0.operation?.kind == .historicalSettlement }.compactMap(\.chequeID))
         var changed = 0
         do {
             for var entry in payload.records.map(\.normalized) {
@@ -245,7 +247,8 @@ enum ChequeTransferService {
                     if journalledIDs.contains(record.id) { entry.deletedAt = record.deletedAt }
                     if record.ledgerBaselineStatusRaw != nil || record.bankAccountID != nil {
                         // Never erase a newer journal with an older backup, including when replacing metadata.
-                        guard entry.bankAccountID == nil || record.bankAccountID == entry.bankAccountID,
+                        let receivesConcurrentLink = record.bankAccountID == nil && entry.bankAccountID != nil && historicallyClosed.contains(record.id)
+                        guard entry.bankAccountID == nil || record.bankAccountID == entry.bankAccountID || receivesConcurrentLink,
                               entry.ledgerBaselineStatusRaw == nil || record.ledgerBaselineStatusRaw == nil || record.ledgerBaselineStatusRaw == entry.ledgerBaselineStatusRaw,
                               entry.replacesChequeID == nil || record.replacesChequeID == entry.replacesChequeID,
                               record.amountMinorUnits == entry.snapshot.amountMinorUnits,
@@ -255,6 +258,10 @@ enum ChequeTransferService {
                         entry.chequeBookID = record.chequeBookID ?? entry.chequeBookID
                         entry.ledgerBaselineStatusRaw = record.ledgerBaselineStatusRaw ?? entry.ledgerBaselineStatusRaw
                         entry.replacesChequeID = record.replacesChequeID ?? entry.replacesChequeID
+                        if receivesConcurrentLink {
+                            record.bankAccountID = entry.bankAccountID
+                            record.chequeBookID = entry.chequeBookID
+                        }
                         if record.ledgerBaselineStatusRaw == nil { record.ledgerBaselineStatusRaw = entry.ledgerBaselineStatusRaw }
                     } else if !replaceExisting && (entry.ledgerBaselineStatusRaw != nil || entry.bankAccountID != nil) {
                         guard record.amountMinorUnits == entry.snapshot.amountMinorUnits,

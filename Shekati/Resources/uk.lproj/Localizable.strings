@@ -122,7 +122,7 @@
 "Clear search and filters" = "Спорожнити пошук і фільтри";
 "Clear selection" = "Спорожнити вибране";
 "Collected" = "Кошти отримано";
-"Collection date" = "Дата збирання";
+"Collection date" = "Дата отримання коштів";
 "Confirm" = "Підтвердити";
 "Confirm action" = "Підтвердити дію";
 "Confirm holder collected" = "Підтвердити отримання коштів держателем чека";
@@ -359,7 +359,7 @@
 "Record deposit" = "Зареєструвати здачу до банку";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Запис вхідних і вихідних чеків, перегляд їх термінів погашення та зберігання зображень ваших чеків разом.";
 "Record payment" = "Записати платіж";
-"Record return" = "Зворотний запис";
+"Record return" = "Зареєструвати повернення неоплаченого чека";
 "Recorded balance" = "Обліковий залишок";
 "Recorded operations protect the original cheque details." = "Запис операцій захищає оригінальні дані чеку.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Записи з іншого пристрою використовують іншу валюту. Розв’язайте ці записи перед додаванням нових чеків. Сума буде схована, щоб уникнути змішування валют.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Встановіть пароль пристрою у Параметри iPhone перед тим, як ввімкнути блокування програм.";
 "Set an iPhone passcode to unlock Shekati." = "Встановити пароль iPhone для розблокування Shekati.";
 "Settings" = "Параметри";
+"Settle without changing a bank balance" = "Зафіксувати розрахунок за чеком без зміни залишків на банківських рахунках";
 "Settled" = "Розраховано";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Для розрахунку чеків потрібна дата. Дата має бути у вигляді РРРР- ММ- ДД.";
 "Shekati" = "Shekati";
@@ -488,16 +489,16 @@
 "Tap a day to add an outgoing cheque with this due date." = "Натисніть день, щоб додати вихідний чек з цією датою погашення.";
 "Terms of use" = "Умови використання";
 "The 30-day restore period has ended." = "30- днівний період відновлення закінчився.";
-"The actual payment or collection date cannot be before the issue date." = "Дата фактичної оплати або внесення коштів не може бути раніше дати випуску.";
-"The actual payment or collection date cannot be in the future." = "Дата фактичної оплати або внесення коштів не може бути майбутньою.";
-"The balance changed. Review the new difference before confirming." = "Змінилося значення балансу. Перегляньте нові зміни перед підтвердженням.";
-"The bank balance changes when collection is confirmed." = "Звіт про баланс банку змінюється після підтвердження платежу.";
+"The actual payment or collection date cannot be before the issue date." = "Фактична дата сплати або отримання коштів не може передувати даті виписки чека.";
+"The actual payment or collection date cannot be in the future." = "Фактична дата сплати або отримання коштів не може бути в майбутньому.";
+"The balance changed. Review the new difference before confirming." = "Залишок на рахунку змінився. Перед підтвердженням перевірте нову різницю.";
+"The bank balance changes when collection is confirmed." = "Залишок на банківському рахунку зміниться після підтвердження отримання коштів за чеком.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Фотоапарат використовується лише у випадку, якщо ви скануєте фотографію. Розпізнавання тексту відбувається на цьому iPhone. Зображення чеків не надсилається до зовнішньої служби розпізнавання.";
 "The cheque could not be deleted. Please try again." = "Не вдалося вилучити чек. Будь ласка, спробуйте знову.";
 "The cheque could not be restored. Please try again." = "Не вдалося відновити чек. Будь ласка, спробуйте знову.";
 "The cheque could not be saved. Your draft is still here; please try again." = "Не вдалося зберегти чек. Ваш чернетку все ще тут, будь ласка, спробуйте знову.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "Чек буде перенесено до теки Нещодавно вилучено на 30 днів. Нагадування про чек припиняться; ви зможете відновити його дані і фотографії.";
-"The cheque stays in follow-up until the new holder confirms collection." = "Чек залишається в процесі перевірки до тих пір, поки новий власник не підтвердить його отримання.";
+"The cheque stays in follow-up until the new holder confirms collection." = "Чек залишається під наглядом, доки новий держатель не підтвердить отримання коштів за ним.";
 "The end date must be on or after the start date." = "Дата закінчення повинна бути не пізніше дати початку.";
 "The file contains invalid cheque information." = "У файлі міститься неправильна інформація щодо чеку.";
 "The file could not be read or saved. Please try again." = "Не вдалося прочитати або зберегти файл. Будь ласка, спробуйте ще раз.";

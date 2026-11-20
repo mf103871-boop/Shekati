@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "A Apple não conseguiu verificar esta compra.";
 "Apply" = "Aplicar";
 "Ascending" = "Ascendente";
-"Assumes incoming cheques are collected on their due dates." = "Assume que os cheques recebidos são coletados em suas datas de vencimento.";
+"Assumes incoming cheques are collected on their due dates." = "A previsão pressupõe que o valor de cada cheque a receber será recebido na respetiva data de vencimento.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Tente novamente usando a biometria ou o código de acesso do iPhone.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "A autenticação é feita pelo iOS, e o Shekati não acessa nem armazena suas informações biométricas ou senha do dispositivo.";
 "Back" = "Verso";
@@ -122,7 +122,7 @@
 "Clear search and filters" = "Limpar pesquisa e filtros";
 "Clear selection" = "Limpar a seleção";
 "Collected" = "Cobrado";
-"Collection date" = "Data de recolha";
+"Collection date" = "Data de recebimento";
 "Confirm" = "Confirmar";
 "Confirm action" = "Confirmar a ação";
 "Confirm holder collected" = "Confirmar que o portador recebeu o valor do cheque";
@@ -359,7 +359,7 @@
 "Record deposit" = "Registar depósito";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Registre cheques de entrada e saída, veja suas datas de vencimento e mantenha as imagens dos cheques juntas.";
 "Record payment" = "Registar pagamento";
-"Record return" = "Record de retorno";
+"Record return" = "Registar devolução do cheque";
 "Recorded balance" = "Saldo registado";
 "Recorded operations protect the original cheque details." = "As operações gravadas protegem os detalhes originais do cheque.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Os registros de outro dispositivo usam uma moeda diferente. Resolva esses registros antes de adicionar novos cheques. Totais são ocultos para evitar a mistura de moedas.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Defina um código de acesso do dispositivo nas configurações do iPhone antes de ativar o bloqueio de aplicativos.";
 "Set an iPhone passcode to unlock Shekati." = "Defina uma senha do iPhone para desbloquear Shekati.";
 "Settings" = "Definições";
+"Settle without changing a bank balance" = "Registar a liquidação sem alterar o saldo de nenhuma conta bancária";
 "Settled" = "Liquidado";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Cheques liquidados precisam de uma data real. As datas devem usar YYYY-MM-DD.";
 "Shekati" = "Shekati";

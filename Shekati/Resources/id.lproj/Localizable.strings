@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "Apple tidak dapat memverifikasi pembelian ini.";
 "Apply" = "Terapkan";
 "Ascending" = "Meningkat";
-"Assumes incoming cheques are collected on their due dates." = "Asumsikan cek masuk dikumpulkan pada tanggal jatuh tempo mereka.";
+"Assumes incoming cheques are collected on their due dates." = "Perkiraan ini mengasumsikan dana dari cek masuk diterima pada tanggal jatuh tempo masing-masing.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "Otentikasi gagal. Coba lagi menggunakan biometrik atau kode sandi iPhone Anda.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "Otentikasi ditangani oleh iOS. Shekati tidak mengakses atau menyimpan informasi biometrik Anda atau kode sandi perangkat.";
 "Back" = "Sisi belakang";
@@ -359,7 +359,7 @@
 "Record deposit" = "Catat setoran";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Rekam cek masuk dan keluar, lihat tanggal jatuh tempo mereka dan simpan gambar cek Anda bersama-sama.";
 "Record payment" = "Catat pembayaran";
-"Record return" = "Kembalian rekaman";
+"Record return" = "Catat penolakan pembayaran cek";
 "Recorded balance" = "Saldo tercatat";
 "Recorded operations protect the original cheque details." = "Operasi yang direkam melindungi detail cek asli.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Catatan dari perangkat lain menggunakan mata uang yang berbeda. Selesaikan catatan ini sebelum menambahkan cek baru. Total tersembunyi untuk menghindari campuran mata uang.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Tetapkan kode sandi perangkat di Pengaturan iPhone sebelum mengaktifkan kunci aplikasi.";
 "Set an iPhone passcode to unlock Shekati." = "Tetapkan kode akses iPhone untuk membuka Shekati.";
 "Settings" = "Pengaturan";
+"Settle without changing a bank balance" = "Catat pelunasan tanpa mengubah saldo rekening bank mana pun";
 "Settled" = "Diselesaikan";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Cek yang telah diselesaikan memerlukan tanggal pembayaran atau penagihan yang sebenarnya. Masukkan tanggal dalam format YYYY-MM-DD.";
 "Shekati" = "Shekati";
@@ -488,8 +489,8 @@
 "Tap a day to add an outgoing cheque with this due date." = "Tap hari untuk menambahkan cek keluaran dengan tanggal jatuh tempo ini.";
 "Terms of use" = "Ketentuan penggunaan";
 "The 30-day restore period has ended." = "Periode pemulihan 30 hari telah berakhir.";
-"The actual payment or collection date cannot be before the issue date." = "Tanggal pembayaran atau pengumpulan yang sebenarnya tidak dapat sebelum tanggal penerbitan.";
-"The actual payment or collection date cannot be in the future." = "Tanggal pembayaran atau pengumpulan yang sebenarnya tidak dapat berada di masa depan.";
+"The actual payment or collection date cannot be before the issue date." = "Tanggal pembayaran atau penerimaan dana yang sebenarnya tidak boleh sebelum tanggal penerbitan cek.";
+"The actual payment or collection date cannot be in the future." = "Tanggal pembayaran atau penerimaan dana yang sebenarnya tidak boleh di masa depan.";
 "The balance changed. Review the new difference before confirming." = "Saldo berubah. Lihat perbedaan baru sebelum mengkonfirmasi.";
 "The bank balance changes when collection is confirmed." = "Saldo rekening bank berubah saat penagihan cek dikonfirmasi berhasil.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "Kamera hanya digunakan ketika Anda memilih untuk memindai. Pengenalan teks terjadi pada iPhone ini. Tidak ada foto cek yang dikirim ke layanan pengenalan eksternal.";

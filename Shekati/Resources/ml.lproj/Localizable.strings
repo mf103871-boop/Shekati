@@ -43,7 +43,7 @@
 "Apple could not verify this purchase." = "ഈ വാങ്ങൽ ആപ്പിളിന് ഉറപ്പാക്കുവാൻ കഴിഞ്ഞില്ല.";
 "Apply" = "പ്രയോഗിക്കുക";
 "Ascending" = "വര്‍ദ്ധിച്ചുവരുന്ന";
-"Assumes incoming cheques are collected on their due dates." = "വരാനിരിക്കുന്ന ചെക്കുകള്‍ അവരുടെ കാലാവധി തീയതികളില്‍ ശേഖരിക്കപ്പെടുമെന്ന് കരുതുന്നു.";
+"Assumes incoming cheques are collected on their due dates." = "ലഭിച്ച ചെക്കുകളുടെ തുക അവയുടെ നിശ്ചിത തീയതികളിൽ ലഭിക്കുമെന്ന് കണക്കാക്കുന്നു.";
 "Authentication failed. Try again using biometrics or your iPhone passcode." = "തിരിച്ചറിയല്‍ പരാജയപ്പെട്ടു. ബയോമെട്രിക്സ് അല്ലെങ്കില്‍ നിങ്ങളുടെ ഐഫോണ്‍ പാസ്വേര്‍ഡ് ഉപയോഗിച്ച് വീണ്ടും ശ്രമിക്കുക.";
 "Authentication is handled by iOS. Shekati does not access or store your biometric information or device passcode." = "ആധികാരികത ഉറപ്പാക്കല്‍ ഐഒഎസ് കൈകാര്യം ചെയ്യുന്നു. നിങ്ങളുടെ ബയോമെട്രിക് വിവരങ്ങള്‍ അല്ലെങ്കില്‍ ഡിവൈസ് പാസ്വേര്‍ഡ് ഷെക്കാറ്റി ലഭ്യമാക്കുകയോ സൂക്ഷിക്കുകയോ ചെയ്യില്ല.";
 "Back" = "പിൻവശം";
@@ -359,7 +359,7 @@
 "Record deposit" = "ചെക്ക് ബാങ്കിൽ നൽകിയതായി രേഖപ്പെടുത്തുക";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "വരുന്നതും പോകുന്നതുമായ ചെക്കുകള്‍ രേഖപ്പെടുത്തുക, അവരുടെ കാലാവധി തീയതികള്‍ കാണുക, നിങ്ങളുടെ ചെക്ക് ചിത്രങ്ങള്‍ ഒരുമിച്ചു സൂക്ഷിക്കുക.";
 "Record payment" = "പണം നൽകിയതു രേഖപ്പെടുത്തുക";
-"Record return" = "റെക്കോര്‍ഡ് തിരിച്ചു്";
+"Record return" = "പണം ലഭിക്കാതെ ചെക്ക് മടങ്ങിയത് രേഖപ്പെടുത്തുക";
 "Recorded balance" = "രേഖപ്പെടുത്തിയ ബാലൻസ്";
 "Recorded operations protect the original cheque details." = "രേഖപ്പെടുത്തിയ പ്രവർത്തനങ്ങൾ, ചെക്ക് വിവരങ്ങളുടെ ആദ്യത്തെ സംരക്ഷണം.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "മറ്റൊരു ഉപകരണത്തില്‍ നിന്നും വരുന്ന രേഖകള്‍ വ്യത്യസ്തമായ കറന്‍സി ഉപയോഗിക്കുന്നു. പുതിയ ചെക്കുകള്‍ ചേര്‍ക്കുന്നതിനു മുമ്പ് ഈ രേഖകള്‍ പരിഹരിക്കേണ്ടതുണ്ട്. കറന്‍സികള്‍ തമ്മില്‍ കൂട്ടിക്കലര്‍ത്തുന്നത് ഒഴിവാക്കാന്‍ ടോക്കണുകള്‍ മറയ്ക്കപ്പെടുന്നു.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "പ്രയോഗം പൂട്ടുന്നതിനു് മുമ്പു് ഐഫോണ്‍ സജ്ജീകരണങ്ങളില്‍ ഡിവൈസ് പാസ്കോഡ് സജ്ജമാക്കുക.";
 "Set an iPhone passcode to unlock Shekati." = "ഷെക്കാറ്റി തുറക്കാൻ ഒരു ഐഫോൺ പാസ്കോഡ് സജ്ജമാക്കുക.";
 "Settings" = "ക്രമീകരണങ്ങൾ";
+"Settle without changing a bank balance" = "ഒരു ബാങ്ക് അക്കൗണ്ടിലെയും ബാലൻസ് മാറ്റാതെ ചെക്കിന്റെ തീർപ്പാക്കൽ രേഖപ്പെടുത്തുക";
 "Settled" = "തീർപ്പാക്കി";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "സെറ്റ്‌ലഡ് ചെക്കുകള്‍ക്കു് യഥാര്‍ത്ഥ തീയതി ആവശ്യമാണ്. തീയതികള്‍ YYYY-MM-DD ആയിരിക്കണം.";
 "Shekati" = "Shekati";

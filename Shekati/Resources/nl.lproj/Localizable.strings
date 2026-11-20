@@ -122,7 +122,7 @@
 "Clear search and filters" = "Zoekfunctie en filters wissen";
 "Clear selection" = "Selectie wissen";
 "Collected" = "Geïnd";
-"Collection date" = "Ophaaldatum";
+"Collection date" = "Datum van ontvangst van de betaling";
 "Confirm" = "Bevestigen";
 "Confirm action" = "Bevestig actie";
 "Confirm holder collected" = "Bevestigen dat de houder de cheque heeft geïnd";
@@ -359,7 +359,7 @@
 "Record deposit" = "Storting registreren";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Registreer inkomende en uitgaande cheques, zie hun vervaldatums en houd uw chequebeelden bij elkaar.";
 "Record payment" = "Betaling vastleggen";
-"Record return" = "Record rendement";
+"Record return" = "Teruggave van een onbetaalde cheque vastleggen";
 "Recorded balance" = "Geregistreerd saldo";
 "Recorded operations protect the original cheque details." = "Opgenomen bewerkingen beschermen de originele chequegegevens.";
 "Records from another device use a different currency. Resolve these records before adding new cheques. Totals are hidden to avoid mixing currencies." = "Records van een ander apparaat gebruiken een andere valuta. Los deze records op voordat u nieuwe cheques toevoegt. Totalen zijn verborgen om te voorkomen dat valuta’s worden gemengd.";
@@ -450,6 +450,7 @@
 "Set a device passcode in iPhone Settings before enabling app lock." = "Stel een toegangscode in voor het apparaat in iPhone-instellingen voordat u app-vergrendeling inschakelt.";
 "Set an iPhone passcode to unlock Shekati." = "Stel een iPhone-wachtwoordcode in om Shekati te ontgrendelen.";
 "Settings" = "Instellingen";
+"Settle without changing a bank balance" = "Afwikkeling vastleggen zonder een banksaldo te wijzigen";
 "Settled" = "Vereffend";
 "Settled cheques need an actual date. Dates must use YYYY-MM-DD." = "Voor verrekende cheques moet een werkelijke datum worden opgegeven. Datums moeten YYYY-MM-DD gebruiken.";
 "Shekati" = "Shekati";
@@ -497,7 +498,7 @@
 "The cheque could not be restored. Please try again." = "De cheque kon niet worden hersteld. Probeer het opnieuw.";
 "The cheque could not be saved. Your draft is still here; please try again." = "De cheque kon niet worden opgeslagen. Uw concept is nog steeds hier, probeer het opnieuw.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "De cheque wordt gedurende 30 dagen verplaatst naar Recentelijk verwijderd, waarna herinneringen worden gestopt en u de gegevens en foto’s kunt herstellen.";
-"The cheque stays in follow-up until the new holder confirms collection." = "De cheque blijft in opvolging totdat de nieuwe houder de afhaal bevestigt.";
+"The cheque stays in follow-up until the new holder confirms collection." = "De cheque blijft in opvolging totdat de nieuwe houder de ontvangst van het geld bevestigt.";
 "The end date must be on or after the start date." = "De einddatum moet op of na de begindatum vallen.";
 "The file contains invalid cheque information." = "Het bestand bevat ongeldige chequegegevens.";
 "The file could not be read or saved. Please try again." = "Het bestand kon niet worden gelezen of opgeslagen. Probeer het opnieuw.";

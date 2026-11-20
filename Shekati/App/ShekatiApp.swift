@@ -34,6 +34,9 @@ struct ShekatiApp: App {
                     do { try StoreScreenshotFixtures.seedIfRequested(in: built, language: appState.preferences.language) }
                     catch { assertionFailure("Screenshot fixtures failed: \(error)") }
                     appState.today = StoreScreenshotFixtures.referenceDay
+                } else if CommandLine.arguments.contains("--legacy-settlement-test") {
+                    do { try StoreScreenshotFixtures.seedLegacySettlement(in: built) }
+                    catch { assertionFailure("Legacy settlement fixture failed: \(error)") }
                 }
                 #endif
                 appState.configureNotificationContext(container: built)

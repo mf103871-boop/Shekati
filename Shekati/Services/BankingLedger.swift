@@ -78,8 +78,50 @@ enum BankingLedger {
     static func link(record: ChequeRecord, account: BankAccountRecord, book: ChequeBookRecord?, context: ModelContext) throws {
         guard record.isActive, record.bankAccountID == nil, account.currencyCode == record.currencyCode,
               record.direction != .outgoing || book?.accountID == account.id else { throw BankingError.invalid }
+        let events = try context.fetch(FetchDescriptor<LedgerEventRecord>()).filter { $0.chequeID == record.id }
+        let current = position(for: record, events: events)
+        guard current.isOpen, current.conflicts.isEmpty, events.allSatisfy({ $0.operation != nil }) else { throw BankingError.unavailable }
         record.bankAccountID = account.id
         record.chequeBookID = book?.id
+        try save(context)
+    }
+
+    static func canSettleHistorically(_ record: ChequeRecord, accounts: [BankAccountRecord],
+                                      events: [LedgerEventRecord], isPlus: Bool) -> Bool {
+        guard !isPlus, record.isActive, record.bankAccountID == nil, record.chequeBookID == nil,
+              record.replacesChequeID == nil, record.issueDate.map({ $0 <= .today }) ?? true, !accounts.isEmpty,
+              !accounts.contains(where: { $0.currencyCode == record.currencyCode }) else { return false }
+        let journal = events.filter { $0.chequeID == record.id }
+        guard journal.allSatisfy({ $0.operation != nil }),
+              record.ledgerBaselineStatusRaw == nil || journal.contains(where: { $0.operation?.kind == .historicalSettlement }) else { return false }
+        let current = position(for: record, events: journal)
+        return [.inHand, .issued, .returned].contains(current.state) && current.remaining > 0 &&
+            current.conflicts.isEmpty && current.accepted.isEmpty
+    }
+
+    static func settleHistorically(_ record: ChequeRecord, operationID: UUID, amount: Int64,
+                                   currency: String, day: LocalDay, reason: String, isPlus: Bool, context: ModelContext) throws {
+        let note = reason.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !note.isEmpty, note.utf8.count <= 100_000, amount > 0, amount == record.amountMinorUnits,
+              currency == record.currencyCode, record.isActive, day <= .today,
+              record.issueDate.map({ day >= $0 }) ?? true else { throw BankingError.invalid }
+        let op = LedgerOperation(id: operationID, chequeID: record.id, accountID: nil, kind: .historicalSettlement,
+                                 day: day, amount: amount, party: note, currency: currency)
+        let events = try context.fetch(FetchDescriptor<LedgerEventRecord>())
+        let current = position(for: record, events: events)
+        let repeated = events.filter { $0.id == operationID }
+        if !repeated.isEmpty {
+            guard repeated.allSatisfy({ $0.operation == op }), current.conflicts.isEmpty, current.accepted.contains(op) else {
+                throw BankingError.conflict
+            }
+            return
+        }
+        let accounts = try context.fetch(FetchDescriptor<BankAccountRecord>())
+        guard canSettleHistorically(record, accounts: accounts, events: events, isPlus: isPlus) else { throw BankingError.unavailable }
+        let event = LedgerEventRecord(op)
+        record.ledgerBaselineStatusRaw = current.state.rawValue
+        context.insert(event)
+        reflect(position(for: record, events: events + [event]), record: record)
         try save(context)
     }
 
@@ -141,7 +183,7 @@ enum BankingLedger {
         if op.kind == .replace, let child = op.relatedID {
             guard !all.contains(where: { $0.chequeID == child }) else { throw BankingError.unavailable }
         }
-        let correction = LedgerOperation(chequeID: record.id, accountID: record.bankAccountID, kind: .discardConflict,
+        let correction = LedgerOperation(chequeID: record.id, accountID: op.accountID, kind: .discardConflict,
                                          day: .today, party: reason, relatedID: op.id, currency: record.currencyCode)
         let event = LedgerEventRecord(correction)
         context.insert(event)

@@ -28,13 +28,14 @@ public enum PaperState: String, Codable, Sendable, CaseIterable {
 }
 
 public enum LedgerAction: String, Codable, CaseIterable, Sendable {
-    case issue, deposit, settle, partialBank, partialCash, endorse, acknowledgeEndorsement
+    case issue, deposit, settle, partialBank, partialCash, endorse, acknowledgeEndorsement, historicalSettlement
     case markReturned, markLost, legal, cancel, replace, reconcile, discardConflict
     public var title: String {
         switch self {
         case .issue: return "Issue cheque"
         case .deposit: return "Record deposit"
         case .settle: return "Record bank settlement"
+        case .historicalSettlement: return "Settle without changing a bank balance"
         case .partialBank: return "Partial bank transfer"
         case .partialCash: return "Partial cash payment"
         case .endorse: return "Endorse cheque"
@@ -161,6 +162,17 @@ public struct ChequePosition: Sendable {
     }
 
     private mutating func apply(_ op: LedgerOperation) -> Bool {
+        // An owner may attest to an old unlinked cheque's full settlement. Its
+        // first journal entry carries the evidence and never produces a bank movement.
+        if op.kind == .historicalSettlement {
+            guard accepted.isEmpty, [.inHand, .issued, .returned].contains(state),
+                  op.accountID == nil, op.chequeID != nil, op.relatedID == nil,
+                  op.amount > 0, op.amount == remaining,
+                  !op.party.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return false }
+            paid += op.amount
+            state = .settled
+            return true
+        }
         guard allowed.contains(op.kind), accepted.last.map({ op.day >= $0.day }) ?? true else { return false }
         switch op.kind {
         case .settle, .partialBank, .partialCash, .acknowledgeEndorsement:
