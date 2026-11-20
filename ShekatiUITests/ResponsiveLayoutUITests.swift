@@ -120,7 +120,9 @@ final class ResponsiveLayoutUITests: XCTestCase {
         reveal(row, in: app, allowHorizontalScroll: !largeText)
         XCTAssertTrue(row.label.contains(chequeNumber))
         XCTAssertTrue(row.label.contains(amount))
-        XCTAssertTrue(row.label.contains(payee))
+        // The saved row announces the payee first, followed by comma-separated cheque details.
+        XCTAssertEqual(row.label.components(separatedBy: ", ").first, payee,
+                       "Saving the cheque must preserve the entire payee name exactly")
         if largeText { assertVisibleBounds(row, in: app, requireFullHeight: false) }
         capture(app, "07 long cheque ledger portrait")
         let select = app.buttons["selectChequesButton"]
@@ -282,11 +284,50 @@ final class ResponsiveLayoutUITests: XCTestCase {
         let readiness = XCTWaiter.wait(for: [ready], timeout: 15)
         if readiness != .completed { inputDiagnostics(field, in: app, stage: "Target did not settle above keyboard") }
         XCTAssertEqual(readiness, .completed, "The focused field must become fully visible and stable before typing")
+        if field.identifier == "partyField" {
+            typeLongPayee(text, into: field, in: app)
+            return
+        }
         field.typeText(text)
         let accepted = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", expected), object: field)
         let received = XCTWaiter.wait(for: [accepted], timeout: 5)
         if received != .completed { inputDiagnostics(field, in: app, stage: "Exact input was not received") }
         XCTAssertEqual(received, .completed, "The intended field must receive exactly the supplied fixture text")
+    }
+
+    private func typeLongPayee(_ name: String, into field: XCUIElement, in app: XCUIApplication) {
+        // The hosted Arabic Dynamic Type run acknowledged the 70-key synthesis before UIKit
+        // delivered most of it. Its event log had a 31-second pause between the first two keys.
+        // Pace this fixture on the value actually received, without resending or correcting text.
+        let placeholder = field.placeholderValue
+        let clock = ProcessInfo.processInfo
+        let deadline = clock.systemUptime + 90
+        var acknowledged = ""
+        var pending = name[...]
+        while !pending.isEmpty {
+            let part = String(pending.prefix(8))
+            let expected = acknowledged + part
+            field.typeText(part)
+            var observed = acknowledged
+            var mismatch = false
+            let delivered = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                let raw = field.value as? String ?? ""
+                let current = raw == placeholder ? "" : raw
+                mismatch = !expected.hasPrefix(current) || !current.hasPrefix(observed)
+                observed = current
+                return mismatch || current == expected
+            }, object: nil)
+            let timeout = min(40, max(0, deadline - clock.systemUptime))
+            let result = XCTWaiter.wait(for: [delivered], timeout: timeout)
+            guard result == .completed && !mismatch && observed == expected else {
+                inputDiagnostics(field, in: app, stage: "Long payee did not arrive intact")
+                XCTFail("Expected payee prefix '\(expected)', read '\(observed)'. Input stalled, changed, or lost a character.")
+                return
+            }
+            acknowledged = expected
+            pending = pending.dropFirst(part.count)
+        }
+        XCTAssertEqual(acknowledged, name)
     }
 
     private func inputDiagnostics(_ field: XCUIElement, in app: XCUIApplication, stage: String) {
