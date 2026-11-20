@@ -51,13 +51,13 @@ final class ResponsiveLayoutUITests: XCTestCase {
         let amountField = app.textFields["amountField"]
         reveal(amountField, in: app)
         amountField.tap()
-        type(amount, into: amountField, expected: amount, in: app)
+        type(amount, into: "amountField", expected: amount, in: app)
         for (identifier, text) in [("partyField", payee), ("chequeNumberField", chequeNumber)] {
             let next = app.buttons[arabic ? "التالي" : "Next"].firstMatch
             XCTAssertTrue(next.waitForExistence(timeout: 5) && next.isHittable)
             next.tap()
             // The real Next control must focus the target. Retapping would mask a broken handoff.
-            type(text, into: app.textFields[identifier], expected: text, in: app)
+            type(text, into: identifier, expected: text, in: app)
         }
         dismissKeyboard(in: app, arabic: arabic)
         // The editor centres each focused row. At accessibility sizes the earlier amount
@@ -243,31 +243,44 @@ final class ResponsiveLayoutUITests: XCTestCase {
         rotateIPhone(to: orientation, in: app)
     }
 
-    private func type(_ text: String, into field: XCUIElement, expected: String, in app: XCUIApplication) {
+    private func type(_ text: String, into identifier: String, expected: String, in app: XCUIApplication) {
+        let field = app.textFields[identifier]
         var previousFrame = CGRect.null
         var previousKeyboardFrame = CGRect.null
         var stableSince: Date?
         let ready = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-            let keyboard = app.keyboards.firstMatch
-            guard field.exists && field.isEnabled && keyboard.exists else {
+            guard let root = try? app.snapshot() else {
                 stableSince = nil
                 return false
             }
-            let window = app.windows.firstMatch.frame
-            let frame = field.frame
-            let keyboardFrame = keyboard.frame
-            let navigationBottom = app.navigationBars.allElementsBoundByIndex.map(\.frame)
-                .filter { $0.height > 0 && $0.intersects(window) }.map(\.maxY).max() ?? window.minY
-            let predictions = app.otherElements["Typing Predictions"].firstMatch
-            let accessoryTop = predictions.exists && predictions.frame.height > 0 ?
-                min(keyboardFrame.minY, predictions.frame.minY) : keyboardFrame.minY - 48
-            let toolbarTop = app.toolbars.allElementsBoundByIndex.map(\.frame)
-                .filter { $0.height > 0 && $0.intersects(window) && $0.minY > navigationBottom }
-                .map(\.minY).min() ?? keyboardFrame.minY
+            // Read one instant of the interface. Fetching each frame independently mixes
+            // generations of the keyboard hierarchy and can exhaust a poll before it ends.
+            var elements: [any XCUIElementSnapshot] = [root]
+            var index = 0
+            while index < elements.count {
+                let children = elements[index].children
+                elements.append(contentsOf: children)
+                index += 1
+            }
+            guard let window = elements.first(where: { $0.elementType == .window && !$0.frame.isEmpty })?.frame,
+                  let target = elements.first(where: { $0.elementType == .textField && $0.identifier == identifier }),
+                  target.isEnabled,
+                  let keyboardFrame = elements.first(where: { $0.elementType == .keyboard && $0.frame.intersects(window) })?.frame else {
+                stableSince = nil
+                return false
+            }
+            let frame = target.frame
+            let visible = elements.filter { $0.frame.height > 0 && $0.frame.intersects(window) }
+            let navigationBottom = visible.filter { $0.elementType == .navigationBar }
+                .map { $0.frame.maxY }.max() ?? window.minY
+            let predictions = visible.first { $0.elementType == .other && $0.label == "Typing Predictions" }
+            let accessoryTop = predictions.map { min(keyboardFrame.minY, $0.frame.minY) } ?? keyboardFrame.minY - 48
+            let toolbarTop = visible.filter { $0.elementType == .toolbar && $0.frame.minY > navigationBottom }
+                .map { $0.frame.minY }.min() ?? keyboardFrame.minY
             let visibleBottom = min(accessoryTop, toolbarTop)
             guard frame.width > 0 && frame.height > 0 && keyboardFrame.height > 0 &&
                 frame.minX >= window.minX - 1 && frame.maxX <= window.maxX + 1 &&
-                frame.minY >= navigationBottom && frame.maxY <= visibleBottom && field.isHittable else {
+                frame.minY >= navigationBottom && frame.maxY <= visibleBottom else {
                 stableSince = nil
                 return false
             }
@@ -284,7 +297,8 @@ final class ResponsiveLayoutUITests: XCTestCase {
         let readiness = XCTWaiter.wait(for: [ready], timeout: 15)
         if readiness != .completed { inputDiagnostics(field, in: app, stage: "Target did not settle above keyboard") }
         XCTAssertEqual(readiness, .completed, "The focused field must become fully visible and stable before typing")
-        if field.identifier == "partyField" || field.identifier == "chequeNumberField" {
+        XCTAssertTrue(field.isHittable, "The fully visible target must accept interaction after the keyboard settles")
+        if identifier == "partyField" || identifier == "chequeNumberField" {
             typeLongFixture(text, into: field, in: app)
             return
         }
