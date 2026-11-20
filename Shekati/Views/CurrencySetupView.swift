@@ -123,15 +123,12 @@ struct CurrencyPickerView: View {
         if let name = initialAccountName {
             do {
                 if try context.fetchCount(FetchDescriptor<BankAccountRecord>()) == 0 {
-                    let text = NumericInput.latinDigits(openingBalance).trimmingCharacters(in: .whitespacesAndNewlines)
-                    let sign = text.hasPrefix("-") ? Int64(-1) : Int64(1)
-                    let digits = sign == -1 ? String(text.dropFirst()) : text
-                    guard let minor = CurrencyMath.parseMinorUnits(digits, currencyCode: code), minor >= 0,
+                    guard let minor = BankingLedger.signedAmount(openingBalance, currency: code),
                           !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
                         errorMessage = app.tr("Check the account name and opening balance.")
                         return
                     }
-                    let account = BankAccountRecord(name: name, currencyCode: code, openingMinor: minor * sign)
+                    let account = BankAccountRecord(name: name, currencyCode: code, openingMinor: minor)
                     context.insert(account)
                     context.insert(ChequeBookRecord(accountID: account.id, name: name))
                 }
