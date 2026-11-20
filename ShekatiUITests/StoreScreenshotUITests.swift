@@ -79,7 +79,10 @@ final class StoreScreenshotUITests: XCTestCase {
         XCTAssertTrue(scan.isHittable)
         scan.tap()
         let use = app.buttons["useOCRFields"]
-        XCTAssertTrue(use.waitForExistence(timeout: 35))
+        guard use.waitForExistence(timeout: 90) else {
+            XCTFail("Vision did not open the review of the test cheque. " + app.debugDescription)
+            return
+        }
         XCTAssertTrue(use.isEnabled, "The synthetic cheque must produce selectable fields through Vision.")
         capture("03-review")
 

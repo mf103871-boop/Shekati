@@ -26,38 +26,52 @@ enum OCRRecognitionError: LocalizedError {
 
 enum ChequeOCRService {
     /// Vision runs on the device. A suggestion is never a saved or validated financial record.
-    static func recognize(image: UIImage, currencyCode: String, direction: ChequeDirection? = nil) async throws -> OCRSuggestion {
+    static func recognize(image: UIImage, currencyCode: String, direction: ChequeDirection? = nil,
+                          languageCode: String = Locale.preferredLanguages.first ?? "en") async throws -> OCRSuggestion {
         guard let cgImage = image.cgImage else { throw OCRRecognitionError.invalidImage }
         let orientation = image.imageOrientation.cgOrientation
         return try await Task.detached(priority: .userInitiated) {
-            let request = VNRecognizeTextRequest()
-            request.recognitionLevel = .accurate
-            request.usesLanguageCorrection = false
-            request.automaticallyDetectsLanguage = true
-            let supported = try request.supportedRecognitionLanguages()
-            let arabic = supported.filter { $0.lowercased().hasPrefix("ar") }
-            let preferred = UserDefaults.standard.string(forKey: "language") ?? Locale.preferredLanguages.first ?? "en"
-            let requested = Locale(identifier: preferred).language.languageCode?.identifier ?? "en"
-            let priority = [requested, "en", "ar"]
-            var selected: [String] = []
-            for code in priority {
-                if let candidate = supported.first(where: { $0.lowercased().hasPrefix(code.lowercased()) }), !selected.contains(candidate) {
-                    selected.append(candidate)
-                }
+            let result: (text: String, supportsArabic: Bool)
+            do {
+                result = try read(cgImage, orientation: orientation, level: .accurate, language: languageCode)
+            } catch {
+                result = try read(cgImage, orientation: orientation, level: .fast, language: languageCode)
             }
-            if !selected.isEmpty { request.recognitionLanguages = selected }
-            let handler = VNImageRequestHandler(cgImage: cgImage, orientation: orientation, options: [:])
-            try handler.perform([request])
-            let observations = (request.results ?? []).sorted { lhs, rhs in
-                if abs(lhs.boundingBox.midY - rhs.boundingBox.midY) > 0.02 {
-                    return lhs.boundingBox.midY > rhs.boundingBox.midY
-                }
-                return lhs.boundingBox.minX < rhs.boundingBox.minX
-            }
-            let text = observations.compactMap { $0.topCandidates(1).first?.string }.joined(separator: "\n")
-            guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw OCRRecognitionError.noText }
-            return ChequeOCRParser.parse(text: text, currencyCode: currencyCode, direction: direction, unsupportedArabic: arabic.isEmpty)
+            return ChequeOCRParser.parse(text: result.text, currencyCode: currencyCode, direction: direction,
+                                         unsupportedArabic: !result.supportsArabic)
         }.value
+    }
+
+    private static func read(_ image: CGImage, orientation: CGImagePropertyOrientation,
+                             level: VNRequestTextRecognitionLevel, language: String) throws -> (text: String, supportsArabic: Bool) {
+        let request = VNRecognizeTextRequest()
+        request.recognitionLevel = level
+        request.usesLanguageCorrection = false
+        #if targetEnvironment(simulator)
+        // A hosted simulator may not expose a Metal or Neural Engine device to Vision.
+        request.usesCPUOnly = true
+        #endif
+        let supported = try request.supportedRecognitionLanguages()
+        let primary = Locale(identifier: language).language.languageCode?.identifier ?? "en"
+        var selected: [String] = []
+        for code in [primary, "en", "ar"] {
+            if let language = supported.first(where: { $0.lowercased().hasPrefix(code.lowercased()) }), !selected.contains(language) {
+                selected.append(language)
+            }
+        }
+        if !selected.isEmpty { request.recognitionLanguages = selected }
+        request.automaticallyDetectsLanguage = level == .accurate && selected.count > 1
+        let handler = VNImageRequestHandler(cgImage: image, orientation: orientation, options: [:])
+        try handler.perform([request])
+        let observations = (request.results ?? []).sorted { lhs, rhs in
+            if abs(lhs.boundingBox.midY - rhs.boundingBox.midY) > 0.02 {
+                return lhs.boundingBox.midY > rhs.boundingBox.midY
+            }
+            return lhs.boundingBox.minX < rhs.boundingBox.minX
+        }
+        let text = observations.compactMap { $0.topCandidates(1).first?.string }.joined(separator: "\n")
+        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw OCRRecognitionError.noText }
+        return (text, supported.contains { $0.lowercased().hasPrefix("ar") })
     }
 }
 

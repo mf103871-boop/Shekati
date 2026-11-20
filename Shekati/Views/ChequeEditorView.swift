@@ -55,7 +55,11 @@ struct ChequeEditorView: View {
     @State private var showingScanner = false
     @State private var scanSide: AttachmentSide = .front
     @State private var showingCameraHelp = false
-    @State private var ocrSuggestion: OCRSuggestion?
+    private struct RecognizedCheque: Identifiable {
+        let id = UUID()
+        let suggestion: OCRSuggestion
+    }
+    @State private var ocrReview: RecognizedCheque?
     @State private var isReadingImage = false
     @State private var isSaving = false
     @State private var errorMessage: String?
@@ -196,7 +200,7 @@ struct ChequeEditorView: View {
             } else { editor }
         }
         .onChange(of: hidesAmounts) { _, hidden in
-            if hidden { ocrSuggestion = nil; showingScanner = false }
+            if hidden { ocrReview = nil; showingScanner = false }
         }
     }
 
@@ -243,6 +247,7 @@ struct ChequeEditorView: View {
                                 if isReadingImage { ProgressView() }
                             }
                         }
+                        .buttonStyle(.borderless)
                         .accessibilityIdentifier("readChequeImage")
                         .disabled(busy)
                     }
@@ -420,19 +425,15 @@ struct ChequeEditorView: View {
             }, onCancel: { showingScanner = false })
             .ignoresSafeArea()
         }
-        .sheet(isPresented: Binding(
-            get: { ocrSuggestion != nil }, set: { if !$0 { ocrSuggestion = nil } }
-        )) {
-            if let suggestion = ocrSuggestion {
-                NavigationStack {
-                    OCRReviewSheet(suggestion: suggestion, sourceImage: frontImageData) { selected in
-                        applyOCR(suggestion, selected: selected)
-                        ocrSuggestion = nil
-                    }
+        .sheet(item: $ocrReview) { review in
+            NavigationStack {
+                OCRReviewSheet(suggestion: review.suggestion, sourceImage: frontImageData) { selected in
+                    applyOCR(review.suggestion, selected: selected)
+                    ocrReview = nil
                 }
-                .environment(\.locale, app.preferences.language.locale)
-                .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
             }
+            .environment(\.locale, app.preferences.language.locale)
+            .environment(\.layoutDirection, app.preferences.language.isRTL ? .rightToLeft : .leftToRight)
         }
         .sheet(item: $duplicatePreview) { existing in
             NavigationStack {
@@ -714,8 +715,9 @@ struct ChequeEditorView: View {
         isReadingImage = true
         defer { isReadingImage = false }
         do {
-            let suggestion = try await ChequeOCRService.recognize(image: image, currencyCode: currency, direction: direction)
-            if !hidesAmounts { ocrSuggestion = suggestion }
+            let suggestion = try await ChequeOCRService.recognize(image: image, currencyCode: currency, direction: direction,
+                                                                  languageCode: app.preferences.language.rawValue)
+            if !hidesAmounts { ocrReview = RecognizedCheque(suggestion: suggestion) }
         } catch {
             errorMessage = app.tr("The image could not be read. You can enter all details manually.")
         }
