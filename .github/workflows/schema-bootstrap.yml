@@ -7,13 +7,13 @@ on:
         type: boolean
         default: false
       bundle_id:
-        description: Account-owned Bundle ID (required for signed export)
+        description: Dedicated Bundle ID of the Shekati Sync Setup app
         type: string
-        required: false
+        default: com.mf103871.shekati.schema-setup
       cloud_container_id:
-        description: Account-owned CloudKit container (required for signed export)
+        description: Shared Shekati CloudKit container
         type: string
-        required: false
+        default: iCloud.com.mf103871.shekati
       development_team:
         description: Apple Developer Team ID (required for signed export)
         type: string
@@ -28,10 +28,7 @@ concurrency:
   group: schema-bootstrap
   cancel-in-progress: false
 jobs:
-  validate:
-    uses: ./.github/workflows/ci.yml
   prepare:
-    needs: validate
     runs-on: macos-26
     timeout-minutes: 45
     environment: testflight
@@ -42,10 +39,14 @@ jobs:
       APP_BUILD_NUMBER: ${{ inputs.build_number }}
       CERTIFICATE_BASE64: ${{ secrets.DISTRIBUTION_CERTIFICATE_BASE64 }}
       CERTIFICATE_PASSWORD: ${{ secrets.DISTRIBUTION_CERTIFICATE_PASSWORD }}
-      PROFILE_BASE64: ${{ secrets.ADHOC_PROVISIONING_PROFILE_BASE64 }}
+      PROFILE_BASE64: ${{ secrets.SCHEMA_SETUP_ADHOC_PROFILE_BASE64 }}
       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify the SwiftData schema against the previous release
+        run: python3 Tools/SchemaBootstrap/verify_ledger_schema.py
       - name: Generate separate setup project
         run: |
           xcodebuild -version
@@ -65,10 +66,10 @@ jobs:
           missing = [name for name in required if not os.environ.get(name)]
           if missing:
               raise SystemExit('Missing signed-export setup values: ' + ', '.join(missing))
-          if not re.fullmatch(r'[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+', os.environ['APP_BUNDLE_ID']) or os.environ['APP_BUNDLE_ID'] == 'com.shekati.app':
-              raise SystemExit('Use a valid, account-owned Bundle ID')
-          if not re.fullmatch(r'iCloud\.[A-Za-z0-9.-]+', os.environ['CLOUD_CONTAINER_ID']):
-              raise SystemExit('Invalid CloudKit container identifier')
+          if os.environ['APP_BUNDLE_ID'] != 'com.mf103871.shekati.schema-setup':
+              raise SystemExit('The standalone setup must use its dedicated app identifier')
+          if os.environ['CLOUD_CONTAINER_ID'] != 'iCloud.com.mf103871.shekati':
+              raise SystemExit('The standalone setup must use the existing Shekati CloudKit container')
           if not re.fullmatch(r'[A-Z0-9]{10}', os.environ['APPLE_TEAM_ID']):
               raise SystemExit('Invalid Team ID')
           if not re.fullmatch(r'[1-9][0-9]*', os.environ['APP_BUILD_NUMBER']):
@@ -98,8 +99,8 @@ jobs:
           entitlements = profile['Entitlements']
           if profile.get('TeamIdentifier', [None])[0] != team or not entitlements.get('application-identifier', '').endswith('.' + bundle):
               raise SystemExit('Profile does not match the Team ID and Bundle ID')
-          if not profile.get('ProvisionedDevices') or entitlements.get('get-task-allow') or profile.get('ProvisionsAllDevices'):
-              raise SystemExit('Use an ad-hoc distribution profile containing the intended registered iPhone')
+          if len(profile.get('ProvisionedDevices') or []) != 1 or entitlements.get('get-task-allow') or profile.get('ProvisionsAllDevices'):
+              raise SystemExit('Use an ad-hoc distribution profile containing the owner’s registered iPhone')
           expiration = profile.get('ExpirationDate')
           if not expiration or expiration.replace(tzinfo=datetime.timezone.utc) <= datetime.datetime.now(datetime.timezone.utc):
               raise SystemExit('Provisioning profile has expired')
@@ -140,6 +141,7 @@ jobs:
       - name: Verify exported app uses the development CloudKit environment
         if: ${{ inputs.signing }}
         run: |
+          python3 Tools/SchemaBootstrap/verify_setup_ipa.py "$RUNNER_TEMP/Schema-export/ShekatiSchemaBootstrap.ipa"
           python3 - <<'PY'
           import os, pathlib, plistlib, subprocess, zipfile
           root = pathlib.Path(os.environ['RUNNER_TEMP'])
@@ -153,7 +155,9 @@ jobs:
           entitlements = plistlib.loads(subprocess.check_output(['codesign', '-d', '--entitlements', ':-', str(app)], stderr=subprocess.DEVNULL))
           if entitlements.get('com.apple.developer.icloud-container-environment') != 'Development':
               raise SystemExit('Refusing to deliver a schema initializer signed for Production')
-          if os.environ['CLOUD_CONTAINER_ID'] not in entitlements.get('com.apple.developer.icloud-container-identifiers', []):
+          if entitlements.get('application-identifier') != os.environ['APPLE_TEAM_ID'] + '.' + os.environ['APP_BUNDLE_ID']:
+              raise SystemExit('The signed setup has the wrong app identifier')
+          if entitlements.get('com.apple.developer.icloud-container-identifiers') != [os.environ['CLOUD_CONTAINER_ID']]:
               raise SystemExit('Exported app uses a different CloudKit container')
           if 'CloudKit' not in entitlements.get('com.apple.developer.icloud-services', []):
               raise SystemExit('Exported app does not request CloudKit')
@@ -169,7 +173,7 @@ jobs:
         if: ${{ inputs.signing }}
         uses: actions/upload-artifact@v4
         with:
-          name: ShekatiSchemaBootstrap-registered-iPhone
+          name: ShekatiSchemaBootstrap-side-by-side-iPhone
           path: ${{ runner.temp }}/Schema-export/ShekatiSchemaBootstrap.ipa
           if-no-files-found: error
           retention-days: 3

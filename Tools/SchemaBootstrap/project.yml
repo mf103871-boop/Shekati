@@ -39,7 +39,7 @@ targets:
     settings:
       base:
         TARGETED_DEVICE_FAMILY: "1"
-        PRODUCT_BUNDLE_IDENTIFIER: com.mf103871.shekati
+        PRODUCT_BUNDLE_IDENTIFIER: com.mf103871.shekati.schema-setup
         PRODUCT_NAME: ShekatiSchemaBootstrap
         INFOPLIST_FILE: Resources/Info.plist
         GENERATE_INFOPLIST_FILE: NO

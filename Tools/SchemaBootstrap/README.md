@@ -7,12 +7,12 @@ The **Start setup** button calls Apple's SwiftData-to-Core-Data model conversion
 ## Inputs needed once
 
 - A registered iPhone running iOS 17 or later, with iCloud signed in and iCloud Drive enabled. Registration uses the phone's UDID.
-- The account-owned Bundle ID, CloudKit container identifier, and Team ID. Enable CloudKit and push notifications for the App ID and attach the container.
-- An Apple Distribution signing certificate with its private key and password, plus an **ad-hoc distribution provisioning profile** that includes that App ID, container, and intended iPhone.
+- A dedicated explicit setup App ID, `com.mf103871.shekati.schema-setup`, in the Shekati developer team. Enable Push Notifications and iCloud with CloudKit support. Assign **the existing** `iCloud.com.mf103871.shekati` container to the setup ID. Apple supports sharing a container between apps. [Assign an existing container](https://developer.apple.com/help/account/identifiers/enable-app-capabilities/)
+- An Apple Distribution signing certificate with its private key and password, plus an **ad-hoc distribution provisioning profile** for that setup ID, the existing distribution certificate, and just the owner’s registered iPhone. [Create an ad hoc profile](https://developer.apple.com/help/account/provisioning-profiles/create-an-ad-hoc-provisioning-profile/)
 
 Connect the phone to the Windows computer with USB, unlock it, and tap **Trust** when prompted. The device tool below can read its identifier locally, so there is no need to copy identifiers into repository files. Developer Mode may be required to run the exported IPA; enable it on the phone under Settings → Privacy & Security and complete the on-device restart/confirmation. See [Apple's registered-device distribution guidance](https://developer.apple.com/documentation/xcode/distributing-your-app-to-registered-devices).
 
-If you give this setup build the regular app's Bundle ID, installation replaces the installed Shekati binary. Perform initial setup before entering real cheques. The setup tool does not open the regular app's local database.
+The independent app appears as **Shekati Sync Setup** with its own installation and temporary local store. Save the setup-specific profile in the existing signing environment. The release app keeps its current App ID and distribution profile.
 
 ## Compile and export through GitHub Actions
 
@@ -24,7 +24,7 @@ For a signed export, configure these repository or `testflight` environment secr
 | --- | --- |
 | `DISTRIBUTION_CERTIFICATE_BASE64` | Base64-encoded `.p12` containing the certificate and private key |
 | `DISTRIBUTION_CERTIFICATE_PASSWORD` | Password for that `.p12` |
-| `ADHOC_PROVISIONING_PROFILE_BASE64` | Base64-encoded ad-hoc `.mobileprovision` for the registered phone |
+| `SCHEMA_SETUP_ADHOC_PROFILE_BASE64` | Base64-encoded ad-hoc `.mobileprovision` for the dedicated setup App ID and owner’s iPhone |
 | `KEYCHAIN_PASSWORD` | Password for the runner's temporary signing keychain |
 
 Select the signed export option and supply the Bundle ID, container, Team ID, and build number. The workflow compiles the setup app, exports an IPA using the **Development** CloudKit environment, checks the signed app's actual entitlements, and saves a private download artifact for three days. Ad-hoc distribution uses production APNs independently of the selected CloudKit environment. This workflow does not submit a build to App Store Connect or change the cloud schema; initialization happens on the phone after the button press. Apple's [CloudKit testing guide](https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/TestingYourApp/TestingYourApp.html) supports selecting Development for ad-hoc builds.
@@ -50,9 +50,11 @@ py -m venv .schema-device-tools
 .\.schema-device-tools\Scripts\python.exe -m pymobiledevice3 usbmux list
 ```
 
-Download and unzip the private workflow artifact. With exactly one intended iPhone connected and trusted:
+Download and unzip the private workflow artifact **ShekatiSchemaBootstrap-side-by-side-iPhone**. On Windows, first check the actual IPA (including any older download) against the standalone identity. This local check reads its packaged metadata. The macOS workflow independently verifies the code signature and the signed Development entitlements.
 
 ```powershell
+py Tools/SchemaBootstrap/verify_setup_ipa.py 'C:\path\ShekatiSchemaBootstrap.ipa'
+if ($LASTEXITCODE -ne 0) { throw 'Select the side-by-side setup IPA.' }
 .\.schema-device-tools\Scripts\python.exe -m pymobiledevice3 apps install 'C:\path\ShekatiSchemaBootstrap.ipa'
 ```
 
