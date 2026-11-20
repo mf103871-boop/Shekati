@@ -69,7 +69,7 @@
 "Cancel cheque" = "수표 취소";
 "Cancelled" = "취소됨";
 "Cash flow forecasts and advanced reports" = "현금흐름 예측 및 고급 보고서";
-"Cash forecast" = "현금 예측";
+"Cash forecast" = "현금 흐름 예측";
 "Change status" = "상태 변경";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Apple 계정에서 취소할 때까지 자동으로 연장됩니다.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "각 제안을 수표와 비교해 확인하세요. 저장을 탭할 때까지는 아무것도 저장되지 않습니다.";
@@ -141,7 +141,7 @@
 "Currency" = "통화";
 "Currency cannot change while any saved cheque exists, including history." = "기록을 포함하여 저장된 수표가 존재하는 동안 통화는 변경할 수 없습니다.";
 "Current account" = "현금 계좌";
-"Current holder" = "현재 홀더";
+"Current holder" = "현재 소지인";
 "Daily summary" = "일일 요약";
 "Daily summary is enabled; no individual reminder days are selected." = "일일 요약이 활성화되어 있으며 개별 알림 일은 선택되지 않습니다.";
 "Dark" = "어두운";
@@ -188,13 +188,15 @@
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "통화의 소수점 자리를 사용하여 0보다 큰 유효한 금액을 입력합니다.";
 "Enter a whole number of days from 1 to 365." = "1일에서 365일까지의 일수를 입력합니다.";
 "Enter the opening balance to see your available balance and upcoming commitments." = "사용 가능한 잔액과 다가오는 약속을 보려면 개시 잔액을 입력하십시오.";
-"Estimated available in 7 days" = "7일 이내에 예상 가능";
+"Estimated available in 7 days" = "7일 후 예상 가용 잔액";
+"Estimated available within 7 days" = "7일 후 예상 가용 잔액";
 "Every cheque, at a glance." = "모든 수표를 한눈에 보세요.";
 "Everything in its time." = "모든 게 시간에 따라 변화한다";
 "Excel and CSV" = "Excel 및 CSV";
 "Existing cheques with changes" = "변경 사항이 있는 기존 수표";
-"Expected incoming in 7 days" = "7일 이내에 예상 수령";
-"Expected shortfall" = "예상 적자";
+"Expected incoming in 7 days" = "7일 이내 예상 입금액";
+"Expected incoming within 7 days" = "7일 이내 예상 입금액";
+"Expected shortfall" = "예상 부족액";
 "Export" = "내보내기";
 "Export forecast PDF" = "예측 PDF 내보내기";
 "Export saved cheques to CSV" = "저장된 수표를 CSV로 내보내기";
@@ -314,7 +316,7 @@
 "Outgoing cheque" = "보내는 수표";
 "Outgoing cheque ledger" = "보내는 수표 대장";
 "Outgoing cheques you add appear here in date order." = "추가한 발신 수표는 날짜순으로 여기에 나타납니다.";
-"Outgoing due within 7 days" = "7일 이내에 결제해야 하는 출금";
+"Outgoing due within 7 days" = "7일 이내 만기인 발행 수표";
 "Outstanding" = "뛰어난";
 "Outstanding cheques" = "미결제 수표";
 "Outstanding only" = "잔여";
@@ -352,9 +354,9 @@
 "Recently deleted" = "최근 삭제됨";
 "Recognized text" = "인식된 텍스트";
 "Reconcile account" = "계정 조정";
-"Record bank settlement" = "기록 은행 결제";
+"Record bank settlement" = "은행 결제 기록";
 "Record collection" = "레코드 수집";
-"Record deposit" = "기록 보관";
+"Record deposit" = "은행 입금 기록";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "수신 및 발송 수표를 기록하고, 만기일을 확인하고 수표 이미지를 함께 유지하십시오.";
 "Record payment" = "기록 지불";
 "Record return" = "레코드 반환";
@@ -366,7 +368,7 @@
 "Refresh your cheque reminders" = "수표 알림 새로 고침";
 "Reload prices" = "가격 재로드";
 "Remaining" = "남은 시간";
-"Remaining after payment" = "지불 후 남은";
+"Remaining after payment" = "지급 후 잔액";
 "Remaining amount" = "남은 금액";
 "Remind me in 1 hour" = "1시간 후에 알림";
 "Reminder options" = "알림 옵션";

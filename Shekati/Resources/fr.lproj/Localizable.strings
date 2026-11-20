@@ -69,7 +69,7 @@
 "Cancel cheque" = "Annuler le chèque";
 "Cancelled" = "Annulé";
 "Cash flow forecasts and advanced reports" = "Prévisions de trésorerie et rapports avancés";
-"Cash forecast" = "Prévisions de trésorerie";
+"Cash forecast" = "Prévision de trésorerie";
 "Change status" = "Changer de statut";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Renouvellement automatique jusqu’à résiliation dans votre compte Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Vérifiez chaque suggestion par rapport à votre chèque. Rien n’est enregistré tant que vous n’avez pas appuyé sur Enregistrer.";
@@ -84,7 +84,7 @@
 "Cheque book" = "Carnet de chèques";
 "Cheque book name" = "Nom du carnet de chèques";
 "Cheque books" = "Carnets de chèques";
-"Cheque continuation" = "Cheque continuation";
+"Cheque continuation" = "Suite du chèque";
 "Cheque date" = "Date du chèque";
 "Cheque details" = "Détails du chèque";
 "Cheque details and photos are stored on this iPhone. When iCloud is available, they sync to your private Apple account." = "Les détails de votre chèque et vos photos sont stockés sur cet iPhone, puis synchronisés avec votre compte Apple privé lorsque iCloud est disponible.";
@@ -151,7 +151,7 @@
 "Days before" = "Les jours avant";
 "Days before (1–365)" = "Jours avant (1–365)";
 "Days with no unpaid outgoing cheques due, across all banks. Choose a period of up to 366 days." = "Jours sans chèques sortants non payés à échéance, toutes banques confondues. Choisissez une période allant jusqu’à 366 jours.";
-"Defaults apply to cheques without custom reminders. Daily summaries include today and the next 3 days. Scheduled alerts work offline; a large queue needs periodic renewal." = "Les résumés quotidiens incluent aujourd’hui et les trois prochains jours. Les alertes planifiées fonctionnent hors ligne; une file d’attente importante nécessite un renouvellement périodique.";
+"Defaults apply to cheques without custom reminders. Daily summaries include today and the next 3 days. Scheduled alerts work offline; a large queue needs periodic renewal." = "Les réglages par défaut s’appliquent aux chèques sans rappel personnalisé. Le récapitulatif quotidien couvre aujourd’hui et les 3 prochains jours. Les rappels programmés fonctionnent hors ligne. Ouvrez régulièrement l’app pour renouveler une longue liste de rappels.";
 "Delete" = "Supprimer";
 "Delete cheque" = "Supprimer le chèque";
 "Delete permanently" = "Supprimer définitivement";
@@ -188,12 +188,14 @@
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Entrez un montant valide supérieur à zéro, en utilisant les décimales de la devise.";
 "Enter a whole number of days from 1 to 365." = "Entrez un nombre entier de jours compris entre 1 et 365.";
 "Enter the opening balance to see your available balance and upcoming commitments." = "Entrez le solde d’ouverture pour voir votre solde disponible et vos engagements à venir.";
-"Estimated available in 7 days" = "Disponible dans 7 jours";
+"Estimated available in 7 days" = "Solde disponible estimé à 7 jours";
+"Estimated available within 7 days" = "Solde disponible estimé à 7 jours";
 "Every cheque, at a glance." = "Chaque chèque, en un coup d’œil.";
 "Everything in its time." = "Tout dans son temps.";
 "Excel and CSV" = "Excel et CSV";
 "Existing cheques with changes" = "Chèques existants avec modifications";
-"Expected incoming in 7 days" = "Livraison prévue dans 7 jours";
+"Expected incoming in 7 days" = "Encaissements prévus sous 7 jours";
+"Expected incoming within 7 days" = "Encaissements prévus sous 7 jours";
 "Expected shortfall" = "Déficit prévu";
 "Export" = "Exportation";
 "Export forecast PDF" = "Prévisions d’exportation PDF";
@@ -314,7 +316,7 @@
 "Outgoing cheque" = "Chèque sortant";
 "Outgoing cheque ledger" = "Grand livre des chèques sortants";
 "Outgoing cheques you add appear here in date order." = "Les chèques sortants que vous ajoutez apparaissent ici dans l’ordre de la date.";
-"Outgoing due within 7 days" = "Sortie due dans les 7 jours";
+"Outgoing due within 7 days" = "Chèques émis à échéance sous 7 jours";
 "Outstanding" = "En souffrance";
 "Outstanding cheques" = "Chèques en cours";
 "Outstanding only" = "En cours seulement";
@@ -352,7 +354,7 @@
 "Recently deleted" = "Récemment supprimé";
 "Recognized text" = "Texte reconnu";
 "Reconcile account" = "Rapprocher le compte";
-"Record bank settlement" = "Règlement bancaire enregistré";
+"Record bank settlement" = "Enregistrer le règlement bancaire";
 "Record collection" = "Collection de documents";
 "Record deposit" = "Enregistrer le dépôt";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Enregistrez les chèques entrants et sortants, voyez leurs dates d’échéance et conservez vos images de chèque ensemble.";
@@ -366,7 +368,7 @@
 "Refresh your cheque reminders" = "Actualisez vos rappels de chèques";
 "Reload prices" = "Prix de recharge";
 "Remaining" = "Restants";
-"Remaining after payment" = "Restant après paiement";
+"Remaining after payment" = "Solde restant après paiement";
 "Remaining amount" = "Montant restant";
 "Remind me in 1 hour" = "Rappelez-moi dans 1 heure";
 "Reminder options" = "Options de rappel";

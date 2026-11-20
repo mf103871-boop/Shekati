@@ -69,7 +69,7 @@
 "Cancel cheque" = "إلغاء الشيك";
 "Cancelled" = "ملغى";
 "Cash flow forecasts and advanced reports" = "توقعات السيولة والتقارير المتقدمة";
-"Cash forecast" = "توقع السيولة";
+"Cash forecast" = "توقّع السيولة";
 "Change status" = "تغيير الحالة";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "تُخصم الرسوم عند الشراء، ويتجدد الاشتراك تلقائيًا حتى تلغيه من حساب Apple.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "راجع كل اقتراح مع الشيك. لا يُحفظ شيء حتى تضغط حفظ.";
@@ -189,11 +189,13 @@
 "Enter a whole number of days from 1 to 365." = "أدخل عدد أيام صحيحًا من 1 إلى 365.";
 "Enter the opening balance to see your available balance and upcoming commitments." = "أدخل الرصيد الافتتاحي لعرض المتاح والالتزامات القادمة.";
 "Estimated available in 7 days" = "المتاح التقديري خلال 7 أيام";
+"Estimated available within 7 days" = "المتاح التقديري خلال 7 أيام";
 "Every cheque, at a glance." = "كل شيك، بنظرة واحدة.";
 "Everything in its time." = "كل المواعيد بين إيديك.";
 "Excel and CSV" = "Excel وCSV";
 "Existing cheques with changes" = "شيكات موجودة بمعلومات مختلفة";
 "Expected incoming in 7 days" = "الوارد المتوقع خلال 7 أيام";
+"Expected incoming within 7 days" = "الوارد المتوقع خلال 7 أيام";
 "Expected shortfall" = "العجز المتوقع";
 "Export" = "تصدير";
 "Export forecast PDF" = "تصدير توقع السيولة بصيغة PDF";

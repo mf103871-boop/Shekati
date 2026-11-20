@@ -69,7 +69,7 @@
 "Cancel cheque" = "Ακύρωση επιταγής";
 "Cancelled" = "Ακυρώθηκε";
 "Cash flow forecasts and advanced reports" = "Προβλέψεις ταμειακής ροής και προηγμένες αναφορές";
-"Cash forecast" = "Πρόγνωση ταμειακών διαθεσίμων";
+"Cash forecast" = "Πρόβλεψη ταμειακών ροών";
 "Change status" = "Αλλαγή της κατάστασης";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Η συνδρομή ανανεώνεται αυτόματα μέχρι να ακυρωθεί από τον λογαριασμό σας.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Ελέγξτε κάθε πρόταση με την επιταγή σας. Τίποτα δεν αποθηκεύεται μέχρι να πατήσετε Αποθήκευση.";
@@ -141,7 +141,7 @@
 "Currency" = "Νόμισμα";
 "Currency cannot change while any saved cheque exists, including history." = "Το νόμισμα δεν μπορεί να αλλάξει όσο υπάρχει αποθηκευμένη επιταγή, συμπεριλαμβανομένου του ιστορικού.";
 "Current account" = "Τρεχούμενο λογαριασμός";
-"Current holder" = "Τρέχων κάτοχος";
+"Current holder" = "Τρέχων κομιστής";
 "Daily summary" = "Ημερήσια περίληψη";
 "Daily summary is enabled; no individual reminder days are selected." = "Η ημερήσια σύνοψη είναι ενεργοποιημένη. Δεν επιλέγονται μεμονωμένες ημέρες υπενθύμισης.";
 "Dark" = "Σκούρο";
@@ -188,12 +188,14 @@
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Εισαγάγετε ένα έγκυρο ποσό μεγαλύτερο από το μηδέν, χρησιμοποιώντας τα δεκαδικά ψηφία του νομίσματος.";
 "Enter a whole number of days from 1 to 365." = "Πληκτρολογήστε έναν ακέραιο αριθμό ημερών από 1 έως 365.";
 "Enter the opening balance to see your available balance and upcoming commitments." = "Εισαγάγετε το αρχικό υπόλοιπο για να δείτε το διαθέσιμο υπόλοιπό σας και τις επερχόμενες δεσμεύσεις.";
-"Estimated available in 7 days" = "Εκτιμώμενη διαθεσιμότητα σε 7 ημέρες";
+"Estimated available in 7 days" = "Εκτιμώμενο διαθέσιμο σε 7 ημέρες";
+"Estimated available within 7 days" = "Εκτιμώμενο διαθέσιμο σε 7 ημέρες";
 "Every cheque, at a glance." = "Κάθε επιταγή, με μια ματιά.";
 "Everything in its time." = "Όλα στην ώρα τους.";
 "Excel and CSV" = "Εξέλιξη και αλλαγή";
 "Existing cheques with changes" = "Υπάρχουσες επιταγές με αλλαγές";
-"Expected incoming in 7 days" = "Αναμενόμενη άφιξη σε 7 ημέρες";
+"Expected incoming in 7 days" = "Αναμενόμενες εισπράξεις σε 7 ημέρες";
+"Expected incoming within 7 days" = "Αναμενόμενες εισπράξεις σε 7 ημέρες";
 "Expected shortfall" = "Αναμενόμενο έλλειμμα";
 "Export" = "Εξαγωγή";
 "Export forecast PDF" = "Πρόγνωση εξαγωγών";
@@ -314,7 +316,7 @@
 "Outgoing cheque" = "Εξερχόμενη επιταγή";
 "Outgoing cheque ledger" = "Εξερχόμενο βιβλίο επιταγών";
 "Outgoing cheques you add appear here in date order." = "Οι εξερχόμενες επιταγές που προσθέτετε εμφανίζονται εδώ με σειρά ημερομηνίας.";
-"Outgoing due within 7 days" = "Εξερχόμενη οφειλής εντός 7 ημερών";
+"Outgoing due within 7 days" = "Εκδοθείσες επιταγές που λήγουν εντός 7 ημερών";
 "Outstanding" = "Εκκρεμές";
 "Outstanding cheques" = "Εκκρεμείς επιταγές";
 "Outstanding only" = "Μόνο οι εξαιρετικοί";
@@ -352,9 +354,9 @@
 "Recently deleted" = "Πρόσφατα διαγραμμένα άρθρα";
 "Recognized text" = "Αναγνωρισμένο κείμενο";
 "Reconcile account" = "Συμφιλίωση λογαριασμού";
-"Record bank settlement" = "Τραπεζικός διακανονισμός αρχείων";
+"Record bank settlement" = "Καταγραφή τραπεζικού διακανονισμού";
 "Record collection" = "Συλλογή αρχείων";
-"Record deposit" = "Κατάθεση ρεκόρ";
+"Record deposit" = "Καταγραφή κατάθεσης";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Καταγράψτε τις εισερχόμενες και εξερχόμενες επιταγές, δείτε τις ημερομηνίες λήξης τους και κρατήστε μαζί τις εικόνες των επιταγών σας.";
 "Record payment" = "Πληρωμή ρεκόρ";
 "Record return" = "Επιστροφή ρεκόρ";
@@ -366,7 +368,7 @@
 "Refresh your cheque reminders" = "Ανανεώστε τις υπενθυμίσεις επιταγών σας";
 "Reload prices" = "Τιμές επαναφόρτωσης";
 "Remaining" = "Υπόλοιπο";
-"Remaining after payment" = "Υπολείπεται μετά από την πληρωμή";
+"Remaining after payment" = "Υπόλοιπο μετά την πληρωμή";
 "Remaining amount" = "Υπόλοιπο ποσό";
 "Remind me in 1 hour" = "Υπενθύμιση σε 1 ώρα";
 "Reminder options" = "Επιλογές υπενθύμισης";

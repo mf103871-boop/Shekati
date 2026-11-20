@@ -1,0 +1,312 @@
+{
+  "purpose": "Candidates for native linguistic review. Identical terms may be valid loanwords. Numbers may be written out. This file does not confer linguistic approval.",
+  "locales": {
+    "ar": {
+      "identicalToEnglish": [],
+      "numericOrSpelledOutForm": [
+        "1 day before",
+        "Defaults apply to cheques without custom reminders. Daily summaries include today and the next 3 days. Scheduled alerts work offline; a large queue needs periodic renewal.",
+        "In 2 days",
+        "Next 3 days",
+        "Next 7 days",
+        "Overdue by 1 day",
+        "Overdue by 2 days",
+        "Remind me in 1 hour"
+      ],
+      "suspiciousLengthOrRepetition": []
+    },
+    "ca": {
+      "identicalToEnglish": [
+        "Notes"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "cs": {
+      "identicalToEnglish": [
+        "OK"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "da": {
+      "identicalToEnglish": [
+        "Bank",
+        "OK",
+        "Status",
+        "System",
+        "Version"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "de": {
+      "identicalToEnglish": [
+        "Bank",
+        "Name",
+        "OK",
+        "Status",
+        "System",
+        "Version"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "es-ES": {
+      "identicalToEnglish": [
+        "Cheque",
+        "Cheques:",
+        "OK",
+        "cheques"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "es-MX": {
+      "identicalToEnglish": [
+        "Cheque",
+        "Cheques:",
+        "OK",
+        "cheques"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "fi": {
+      "identicalToEnglish": [
+        "OK"
+      ],
+      "numericOrSpelledOutForm": [
+        "Defaults apply to cheques without custom reminders. Daily summaries include today and the next 3 days. Scheduled alerts work offline; a large queue needs periodic renewal."
+      ],
+      "suspiciousLengthOrRepetition": []
+    },
+    "fr": {
+      "identicalToEnglish": [
+        "Contacts",
+        "Date",
+        "Notes",
+        "Notifications",
+        "OK",
+        "Photos",
+        "Version"
+      ],
+      "numericOrSpelledOutForm": [
+        "Overdue by 1 day"
+      ],
+      "suspiciousLengthOrRepetition": []
+    },
+    "fr-CA": {
+      "identicalToEnglish": [
+        "Contacts",
+        "Date",
+        "Notes",
+        "Notifications",
+        "Page",
+        "Photos",
+        "Version"
+      ],
+      "numericOrSpelledOutForm": [
+        "In 2 days",
+        "Remind me in 1 hour"
+      ],
+      "suspiciousLengthOrRepetition": []
+    },
+    "he": {
+      "identicalToEnglish": [],
+      "numericOrSpelledOutForm": [
+        "1 day before",
+        "3 days before",
+        "Defaults apply to cheques without custom reminders. Daily summaries include today and the next 3 days. Scheduled alerts work offline; a large queue needs periodic renewal.",
+        "In 2 days",
+        "Next 3 days",
+        "Next 7 days",
+        "Overdue by 1 day",
+        "Remind me in 1 hour"
+      ],
+      "suspiciousLengthOrRepetition": []
+    },
+    "hr": {
+      "identicalToEnglish": [
+        "OK",
+        "Status"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "hu": {
+      "identicalToEnglish": [
+        "Bank",
+        "OK"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "id": {
+      "identicalToEnglish": [
+        "Bank",
+        "OK",
+        "Status"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "it": {
+      "identicalToEnglish": [
+        "Backup",
+        "OK",
+        "Privacy"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "ml": {
+      "identicalToEnglish": [],
+      "numericOrSpelledOutForm": [
+        "In 2 days",
+        "Overdue by 2 days",
+        "Remind me in 1 hour"
+      ],
+      "suspiciousLengthOrRepetition": []
+    },
+    "ms": {
+      "identicalToEnglish": [
+        "Bank",
+        "Import",
+        "OK",
+        "Status"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "nb": {
+      "identicalToEnglish": [
+        "Bank",
+        "OK",
+        "Status",
+        "System"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "nl": {
+      "identicalToEnglish": [
+        "Bank",
+        "Cheque",
+        "Cheques:",
+        "Filters",
+        "OK",
+        "Privacy",
+        "Status",
+        "cheques"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "pl": {
+      "identicalToEnglish": [
+        "Bank",
+        "OK",
+        "Status",
+        "System"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "pt-BR": {
+      "identicalToEnglish": [
+        "Cheques:",
+        "OK"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "pt-PT": {
+      "identicalToEnglish": [
+        "Cheques:",
+        "OK"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "ro": {
+      "identicalToEnglish": [
+        "Export",
+        "Import",
+        "calendar"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "sk": {
+      "identicalToEnglish": [
+        "OK"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "sl": {
+      "identicalToEnglish": [
+        "OK"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "sv": {
+      "identicalToEnglish": [
+        "Bank",
+        "OK",
+        "Period",
+        "Status",
+        "System",
+        "Version"
+      ],
+      "numericOrSpelledOutForm": [],
+      "suspiciousLengthOrRepetition": []
+    },
+    "te": {
+      "identicalToEnglish": [],
+      "numericOrSpelledOutForm": [
+        "In 2 days",
+        "Overdue by 2 days"
+      ],
+      "suspiciousLengthOrRepetition": []
+    },
+    "th": {
+      "identicalToEnglish": [],
+      "numericOrSpelledOutForm": [
+        "Remind me in 1 hour"
+      ],
+      "suspiciousLengthOrRepetition": []
+    },
+    "tr": {
+      "identicalToEnglish": [],
+      "numericOrSpelledOutForm": [
+        "In 2 days",
+        "Remind me in 1 hour"
+      ],
+      "suspiciousLengthOrRepetition": []
+    },
+    "uk": {
+      "identicalToEnglish": [],
+      "numericOrSpelledOutForm": [
+        "Defaults apply to cheques without custom reminders. Daily summaries include today and the next 3 days. Scheduled alerts work offline; a large queue needs periodic renewal.",
+        "Remind me in 1 hour"
+      ],
+      "suspiciousLengthOrRepetition": []
+    },
+    "zh-Hant": {
+      "identicalToEnglish": [],
+      "numericOrSpelledOutForm": [
+        "1 day before",
+        "Defaults apply to cheques without custom reminders. Daily summaries include today and the next 3 days. Scheduled alerts work offline; a large queue needs periodic renewal.",
+        "In 2 days",
+        "Next 3 days",
+        "Next 7 days",
+        "Overdue by 1 day",
+        "Within 7 days"
+      ],
+      "suspiciousLengthOrRepetition": []
+    }
+  }
+}

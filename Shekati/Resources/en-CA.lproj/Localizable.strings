@@ -69,7 +69,7 @@
 "Cancel cheque" = "Cancel cheque";
 "Cancelled" = "Cancelled";
 "Cash flow forecasts and advanced reports" = "Cash flow forecasts and advanced reports";
-"Cash forecast" = "Cash forecast";
+"Cash forecast" = "Cash flow forecast";
 "Change status" = "Change status";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Charged at purchase. Renews automatically until cancelled in your Apple Account.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Check each suggestion against your cheque. Nothing is saved until you tap Save.";
@@ -189,11 +189,13 @@
 "Enter a whole number of days from 1 to 365." = "Enter a whole number of days from 1 to 365.";
 "Enter the opening balance to see your available balance and upcoming commitments." = "Enter the opening balance to see your available balance and upcoming commitments.";
 "Estimated available in 7 days" = "Estimated available in 7 days";
+"Estimated available within 7 days" = "Estimated available in 7 days";
 "Every cheque, at a glance." = "Every cheque, at a glance.";
 "Everything in its time." = "Everything in its time.";
 "Excel and CSV" = "Excel and CSV";
 "Existing cheques with changes" = "Existing cheques with changes";
 "Expected incoming in 7 days" = "Expected incoming in 7 days";
+"Expected incoming within 7 days" = "Expected incoming in 7 days";
 "Expected shortfall" = "Expected shortfall";
 "Export" = "Export";
 "Export forecast PDF" = "Export forecast PDF";

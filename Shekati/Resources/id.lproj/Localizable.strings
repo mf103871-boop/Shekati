@@ -10,7 +10,7 @@
 "Account name" = "Nama akun";
 "Account reference" = "Referensi akun";
 "Account reference (optional)" = "Referensi akun (opsional)";
-"Action to reverse" = "Action to reverse";
+"Action to reverse" = "Transaksi yang akan dibalik";
 "Activity history" = "Sejarah Aktivitas";
 "Add" = "Tambah";
 "Add a cheque to keep its dates and reminders here." = "Tambahkan cek untuk menyimpan tanggal dan peringatan di sini.";
@@ -69,7 +69,7 @@
 "Cancel cheque" = "Batalkan cek";
 "Cancelled" = "Dibatalkan";
 "Cash flow forecasts and advanced reports" = "Ramalan aliran tunai dan laporan maju";
-"Cash forecast" = "Ramalan tunai";
+"Cash forecast" = "Perkiraan arus kas";
 "Change status" = "Ubah status";
 "Charged at purchase. Renews automatically until cancelled in your Apple Account." = "Dibayar saat pembelian. Perbarui secara otomatis sampai dibatalkan di Akun Apple Anda.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "Periksa setiap saran dengan cek Anda. Tidak ada yang disimpan sampai Anda menekan Simpan.";
@@ -141,7 +141,7 @@
 "Currency" = "Mata Uang";
 "Currency cannot change while any saved cheque exists, including history." = "Mata uang tidak dapat berubah selama cek yang disimpan ada, termasuk sejarah.";
 "Current account" = "Akun saat ini";
-"Current holder" = "Pemegang saat ini";
+"Current holder" = "Pemegang cek saat ini";
 "Daily summary" = "Ringkasan harian";
 "Daily summary is enabled; no individual reminder days are selected." = "Ringkasan harian diaktifkan; tidak ada hari pengingat individu yang dipilih.";
 "Dark" = "Gelap";
@@ -188,13 +188,15 @@
 "Enter a valid amount greater than zero, using the currency’s decimal places." = "Masukkan jumlah yang valid lebih besar dari nol, menggunakan tempat desimal mata uang.";
 "Enter a whole number of days from 1 to 365." = "Masukkan jumlah hari penuh dari 1 sampai 365.";
 "Enter the opening balance to see your available balance and upcoming commitments." = "Masukkan saldo awal untuk melihat saldo yang tersedia dan komitmen yang akan datang.";
-"Estimated available in 7 days" = "Perkiraan tersedia dalam 7 hari";
+"Estimated available in 7 days" = "Perkiraan saldo tersedia dalam 7 hari";
+"Estimated available within 7 days" = "Perkiraan saldo tersedia dalam 7 hari";
 "Every cheque, at a glance." = "Setiap cek, dengan sekejap mata.";
 "Everything in its time." = "Semuanya pada waktunya.";
 "Excel and CSV" = "Excel dan CSV";
 "Existing cheques with changes" = "Check yang ada dengan perubahan";
-"Expected incoming in 7 days" = "Diperkirakan masuk dalam 7 hari";
-"Expected shortfall" = "Kekurangan yang diharapkan";
+"Expected incoming in 7 days" = "Perkiraan penerimaan dalam 7 hari";
+"Expected incoming within 7 days" = "Perkiraan penerimaan dalam 7 hari";
+"Expected shortfall" = "Perkiraan kekurangan dana";
 "Export" = "Eksport";
 "Export forecast PDF" = "Eksport prediksi PDF";
 "Export saved cheques to CSV" = "Eksport cek yang disimpan ke CSV";
@@ -314,7 +316,7 @@
 "Outgoing cheque" = "Check Out";
 "Outgoing cheque ledger" = "Buku cek keluaran";
 "Outgoing cheques you add appear here in date order." = "cek keluaran yang Anda tambahkan muncul di sini dalam urutan tanggal.";
-"Outgoing due within 7 days" = "Keluaran akan dihitung dalam 7 hari";
+"Outgoing due within 7 days" = "Cek terbit yang jatuh tempo dalam 7 hari";
 "Outstanding" = "Luar Biasa";
 "Outstanding cheques" = "Ceko yang belum dibayar";
 "Outstanding only" = "Hanya yang luar biasa";
@@ -352,9 +354,9 @@
 "Recently deleted" = "Baru-baru ini dihapus";
 "Recognized text" = "Teks yang diakui";
 "Reconcile account" = "Akun";
-"Record bank settlement" = "Rekaman penyelesaian bank";
+"Record bank settlement" = "Catat penyelesaian melalui bank";
 "Record collection" = "Koleksi Rekaman";
-"Record deposit" = "Rekor deposit";
+"Record deposit" = "Catat setoran";
 "Record incoming and outgoing cheques, see their due dates and keep your cheque images together." = "Rekam cek masuk dan keluar, lihat tanggal jatuh tempo mereka dan simpan gambar cek Anda bersama-sama.";
 "Record payment" = "Rekor pembayaran";
 "Record return" = "Kembalian rekaman";
