@@ -59,13 +59,23 @@ final class StoreScreenshotUITests: XCTestCase {
         func capture(_ screen: String) {
             attachNativeScreenshot(in: app, name: "Store-\(locale)-\(screen)")
         }
+        let homeBalance = element("outgoingDueAmount")
+        func waitForDestination(_ identifier: String) {
+            let marker = element(identifier)
+            XCTAssertTrue(marker.waitForExistence(timeout: 12), "Missing destination landmark \(identifier)")
+            let homeLeft = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: homeBalance)
+            XCTAssertEqual(XCTWaiter.wait(for: [homeLeft], timeout: 12), .completed,
+                           "The home content must leave the screen before capturing \(identifier)")
+            XCTAssertTrue(marker.isHittable, "The destination landmark \(identifier) must be visible")
+        }
         XCTAssertTrue(app.buttons["addCheque"].waitForExistence(timeout: 15))
-        XCTAssertTrue(element("outgoingDueAmount").waitForExistence(timeout: 10))
+        XCTAssertTrue(homeBalance.waitForExistence(timeout: 10))
         capture("01-home")
 
         let ledger = nativeTab(.cheques, in: app)
         XCTAssertTrue(ledger.waitForExistence(timeout: 5))
         ledger.tap()
+        waitForDestination("shownChequeCount")
         let row = element("cheque-row-00000000-0000-4000-8000-000000004182")
         XCTAssertTrue(row.waitForExistence(timeout: 8))
         XCTAssertTrue(row.label.contains("004182"))
@@ -96,6 +106,7 @@ final class StoreScreenshotUITests: XCTestCase {
         let calendar = nativeTab(.calendar, in: app)
         XCTAssertTrue(calendar.waitForExistence(timeout: 10))
         calendar.tap()
+        waitForDestination("calendarNextMonth")
         XCTAssertTrue(row.waitForExistence(timeout: 8), "The selected date must contain the seeded incoming cheque.")
         capture("05-calendar")
     }

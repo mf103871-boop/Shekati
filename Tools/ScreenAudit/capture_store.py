@@ -1,6 +1,7 @@
 """Collect unchanged XCTest PNGs from the localized product flows on one native iPhone."""
 import argparse
 import hashlib
+from itertools import combinations
 import json
 import os
 from pathlib import Path
@@ -9,10 +10,34 @@ import re
 import shutil
 import struct
 import subprocess
+from PIL import Image, ImageChops
 
 ROOT = Path("build/store")
 MANIFEST = Path("release/worldwide/locales.json")
 SCREENS = ["01-home", "02-ledger", "03-review", "04-detail", "05-calendar"]
+
+
+def verify_distinct_bodies(folder):
+    bodies = {}
+    for name in SCREENS:
+        with Image.open(folder / (name + ".png")) as image:
+            width, height = image.size
+            body = image.crop((0, round(height * 0.14), width, round(height * 0.86)))
+            bodies[name] = body.convert("RGB").resize((128, 192), Image.Resampling.BOX)
+
+    differences = {}
+    for first, second in combinations(SCREENS, 2):
+        red, green, blue = ImageChops.difference(bodies[first], bodies[second]).split()
+        peak = ImageChops.lighter(ImageChops.lighter(red, green), blue)
+        histogram = peak.histogram()
+        # Count visible content changes, ignoring tiny rendering differences. The crop
+        # excludes the status/navigation chrome and the selected tab at the bottom.
+        changed = sum(histogram[13:]) / sum(histogram)
+        if changed < 0.02:
+            raise ValueError(f"{folder.name}: {first} and {second} show nearly identical screen bodies "
+                             f"({changed:.2%} visibly changed)")
+        differences[first + "/" + second] = round(changed, 5)
+    return differences
 
 
 def inject_locale(settings, locale):
@@ -66,12 +91,13 @@ def capture(entry, original_run, destination, device, app_info):
         raise RuntimeError(f"{code}: native UI test failed after capturing {list(shots)}")
     if set(SCREENS) != set(shots) or len(set(shots.values())) != 5:
         raise ValueError(f"{code}: five distinct native screens required; found {list(shots)}")
+    body_differences = verify_distinct_bodies(folder)
     subprocess.run(["xcrun", "swift", "Tools/ScreenAudit/frame_store.swift", str(folder),
                     str(MANIFEST.parent / "metadata" / (code + ".json"))], check=True)
     proof = {"store": code, "bundle": bundle, "source": os.environ["GITHUB_SHA"], "run": os.environ["GITHUB_RUN_ID"],
              "version": app_info["CFBundleShortVersionString"], "build": app_info["CFBundleVersion"],
              "captureEnvironment": "Debug iPhone simulator with fictional records",
-             "device": device, "originalPNGHashes": shots, "storeArtworkHashes": {
+             "device": device, "originalPNGHashes": shots, "visibleBodyDifferences": body_differences, "storeArtworkHashes": {
                  name: hashlib.sha256((folder / "store" / (name + ".png")).read_bytes()).hexdigest() for name in shots}}
     (folder / "capture.json").write_text(json.dumps(proof, indent=2))
     shutil.rmtree(result)
