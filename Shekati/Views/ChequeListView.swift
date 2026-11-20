@@ -440,13 +440,11 @@ private struct ChequeListToolbar: ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) { optionsMenu }
         ToolbarItem(placement: .topBarTrailing) {
             Button { showingEditor = true } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "plus").accessibilityHidden(true)
-                    Text(app.tr("Add"))
-                }
+                Label(app.tr("Add cheque"), systemImage: "plus").labelStyle(.iconOnly)
             }
-                .accessibilityLabel(app.tr("Add cheque"))
-                .disabled(app.currencyCode.isEmpty)
+            .accessibilityLabel(app.tr("Add cheque"))
+            .help(app.tr("Add cheque"))
+            .disabled(app.currencyCode.isEmpty)
         }
     }
 
@@ -494,9 +492,12 @@ private struct ChequeListToolbar: ToolbarContent {
                 .accessibilityHint(app.tr("Drag cheques to change their order."))
             }
         } label: {
-            Text(app.tr("Filters and sort"))
+            Label(app.tr("Filters and sort"),
+                  systemImage: hasFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                .labelStyle(.iconOnly)
         }
         .accessibilityLabel(app.tr("Filters and sort"))
+        .help(app.tr("Filters and sort"))
     }
 
     private func sortTitle(_ sort: ChequeSort) -> String {

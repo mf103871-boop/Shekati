@@ -133,6 +133,9 @@ struct NumericTextField: UIViewRepresentable {
             guard let swiftRange = Range(range, in: current) else { return false }
             let proposal = current.replacingCharacters(in: swiftRange, with: replacement)
             guard let accepted = parent.normalize(proposal, current) else { return false }
+            // For unchanged input UIKit owns insertion, selection and the ongoing keyboard
+            // transaction. editingChanged publishes the resulting value to the form.
+            if accepted == proposal { return true }
             textField.text = accepted
             parent.text = accepted
             // Arabic digit conversion preserves UTF-16 length. A normalizer may also add a
