@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "现金流预测和高级报告";
 "Cash forecast" = "现金流预测";
 "Change status" = "更改状态";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "会员资格自动续订,直至在 Apple 帐户中取消。";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "购买时扣款。订阅将自动续订，直到你在 Apple 账户中取消。";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "请根据支票对每个建议进行检查。 在您轻按\"保存\"之前,任何内容都不会被保存。";
 "Check iCloud status" = "检查 iCloud 状态";
 "Check the account name and opening balance." = "检查账户名称和开户余额。";
@@ -122,10 +122,10 @@
 "Clear search and filters" = "清除搜索和过滤器";
 "Clear selection" = "清除选择";
 "Collected" = "已收款";
-"Collection date" = "收集日期";
+"Collection date" = "收款日期";
 "Confirm" = "确认";
 "Confirm action" = "确认行动";
-"Confirm holder collected" = "确认持有人收集";
+"Confirm holder collected" = "确认持票人已收到款项";
 "Confirm password" = "确认密码";
 "Confirm reconciliation" = "确认调节";
 "Confirm this due date" = "确认此到期日";
@@ -491,13 +491,13 @@
 "The actual payment or collection date cannot be before the issue date." = "实际付款或收取日期不能在发行日之前。";
 "The actual payment or collection date cannot be in the future." = "实际付款或收款日期不能在未来。";
 "The balance changed. Review the new difference before confirming." = "余额变化,请在确认前查看新差异。";
-"The bank balance changes when collection is confirmed." = "收款确认后,银行余额会发生变化。";
+"The bank balance changes when collection is confirmed." = "确认收款后，银行账户余额才会更新。";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "只有在您选择扫描时才会使用相机。 文本识别是在此 iPhone 上进行的,不会将支票照片发送到外部识别服务。";
 "The cheque could not be deleted. Please try again." = "支票无法删除,请重试。";
 "The cheque could not be restored. Please try again." = "支票无法恢复,请重试。";
 "The cheque could not be saved. Your draft is still here; please try again." = "支票无法保存,您的草案仍然存在,请重试。";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "支票将移到\"最近删除\"中,并持续 30 天。 它的提醒停止;您可以恢复其详细信息和照片。";
-"The cheque stays in follow-up until the new holder confirms collection." = "支票保持在跟踪,直到新的持有人确认领取。";
+"The cheque stays in follow-up until the new holder confirms collection." = "支票将继续跟踪，直至新持票人确认收款。";
 "The end date must be on or after the start date." = "结束日期必须是开始日期的同一天或之后。";
 "The file contains invalid cheque information." = "文件包含无效支票信息。";
 "The file could not be read or saved. Please try again." = "无法找到该页面,请重试。";

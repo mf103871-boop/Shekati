@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "תחזיות זרימת מזומנים ודוחות מתקדמים";
 "Cash forecast" = "תחזית תזרים מזומנים";
 "Change status" = "שינוי מצב";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "נקבע בעת הרכישה. מחדש אוטומטית עד לביטול בחשבון Apple שלך.";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "החיוב מתבצע בעת הרכישה. המנוי מתחדש אוטומטית עד לביטולו בחשבון Apple שלך.";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "תבדוק כל הצעה מול החשבון שלך. שום דבר לא נשמר עד שתלחץ על \"שמור\".";
 "Check iCloud status" = "בדוק את המצב של iCloud";
 "Check the account name and opening balance." = "בדוק את שם החשבון ואת שווי הפתיחה.";
@@ -122,10 +122,10 @@
 "Clear search and filters" = "ניקו את החיפוש והפילטרים";
 "Clear selection" = "מסנן את הבחירה";
 "Collected" = "נגבתה";
-"Collection date" = "תאריך איסוף";
+"Collection date" = "תאריך הגבייה";
 "Confirm" = "אישר";
 "Confirm action" = "אישר פעולה";
-"Confirm holder collected" = "אישור נושא נאסף";
+"Confirm holder collected" = "אישור שהמחזיק קיבל את התשלום";
 "Confirm password" = "אישור סיסמה";
 "Confirm reconciliation" = "אישר את ההתאמה";
 "Confirm this due date" = "אישר את תאריך הפירעון הזה";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "רענן תזכורות";
 "Refresh upcoming reminders" = "רענן תזכורות עתידיות@ info: whatsthis";
 "Refresh your cheque reminders" = "רענן את התזכורות שלך";
-"Reload prices" = "מחיר";
+"Reload prices" = "טעינה מחדש של המחירים";
 "Remaining" = "נותרו";
 "Remaining after payment" = "יתרה לאחר תשלום";
 "Remaining amount" = "יתרה לתשלום";
@@ -491,13 +491,13 @@
 "The actual payment or collection date cannot be before the issue date." = "תאריך התשלום או האיסוף האמיתי לא יכול להיות לפני תאריך ההוצאה.";
 "The actual payment or collection date cannot be in the future." = "תאריך התשלום או האיסוף האמיתי לא יכול להיות בעתיד.";
 "The balance changed. Review the new difference before confirming." = "האיזון השתנה, בדוק את ההבדל לפני שאתה מאשר.";
-"The bank balance changes when collection is confirmed." = "שווי הבנק משתנה כשהאיסוף מאושר.";
+"The bank balance changes when collection is confirmed." = "יתרת החשבון מתעדכנת לאחר אישור פירעון הצ׳ק.";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "המצלמה משמשת רק כאשר אתה בוחר לסרוק. זיהוי טקסט מתרחש על האייפון הזה. לא נשלח תמונה של צ’ק לשירות זיהוי חיצוני.";
 "The cheque could not be deleted. Please try again." = "לא ניתן למחוק את הצ’ק. בבקשה נסה שוב.";
 "The cheque could not be restored. Please try again." = "לא ניתן היה לשחזר את הצ’ק. בבקשה נסה שוב.";
 "The cheque could not be saved. Your draft is still here; please try again." = "לא ניתן לשמור את הצ’ק. הטופס שלך עדיין כאן, בבקשה נסה שוב.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "הצ’ק עובר ל\"נמחק לאחרונה\" למשך 30 יום. התזכורות שלו נעצרות, אתה יכול לשחזר את הפרטים והתמונות שלו.";
-"The cheque stays in follow-up until the new holder confirms collection." = "הצ’ק נשאר במעקב עד שהבעלים החדש מאשר את האיסוף.";
+"The cheque stays in follow-up until the new holder confirms collection." = "הצ׳ק נשאר במעקב עד שהמחזיק החדש יאשר שהתשלום התקבל.";
 "The end date must be on or after the start date." = "תאריך הסיום צריך להיות בתאריך ההתחלה או אחריו.";
 "The file contains invalid cheque information." = "הקובץ מכיל מידע לא תקין על צ’ק.";
 "The file could not be read or saved. Please try again." = "לא ניתן לקרוא או לשמור את הקובץ. בבקשה נסה שוב.";

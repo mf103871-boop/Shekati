@@ -71,7 +71,7 @@
 "Cash flow forecasts and advanced reports" = "現金流預測和高級報告";
 "Cash forecast" = "現金流預測";
 "Change status" = "更改狀態";
-"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "會員資格自動續約,直到在 Apple 帳戶中取消為止。";
+"Charged at purchase. Renews automatically until cancelled in your Apple Account." = "購買時扣款。訂閱將自動續訂，直到你在 Apple 帳號中取消。";
 "Check each suggestion against your cheque. Nothing is saved until you tap Save." = "將每個建議與支票對照。 在您點擊保存之前，任何東西都不會被保存。";
 "Check iCloud status" = "查看 iCloud 狀態";
 "Check the account name and opening balance." = "檢查帳戶名稱和開戶結餘";
@@ -122,10 +122,10 @@
 "Clear search and filters" = "清除搜尋和過濾器";
 "Clear selection" = "清除選擇";
 "Collected" = "已收款";
-"Collection date" = "收集日期";
+"Collection date" = "收款日期";
 "Confirm" = "確認";
 "Confirm action" = "確認動作";
-"Confirm holder collected" = "確認持有人收集";
+"Confirm holder collected" = "確認持票人已收到款項";
 "Confirm password" = "確認密碼";
 "Confirm reconciliation" = "確認和解";
 "Confirm this due date" = "確認到期日";
@@ -366,7 +366,7 @@
 "Refresh reminders" = "刷新提醒事項";
 "Refresh upcoming reminders" = "刷新即將到來的提醒";
 "Refresh your cheque reminders" = "刷新支票提醒";
-"Reload prices" = "重新加載價格";
+"Reload prices" = "重新載入價格";
 "Remaining" = "剩下的";
 "Remaining after payment" = "付款後剩餘金額";
 "Remaining amount" = "剩餘金額";
@@ -491,13 +491,13 @@
 "The actual payment or collection date cannot be before the issue date." = "實際付款或收取日期不能在發行日之前。";
 "The actual payment or collection date cannot be in the future." = "實際付款或收取日期不能在未來 。";
 "The balance changed. Review the new difference before confirming." = "余額變動了，請在確認前查看新差異。";
-"The bank balance changes when collection is confirmed." = "銀行結餘在收款確認後會改變 。";
+"The bank balance changes when collection is confirmed." = "確認收款後才會更新銀行帳戶餘額。";
 "The camera is used only when you choose to scan. Text recognition happens on this iPhone. No cheque photo is sent to an external recognition service." = "只有在您選擇掃描時才會使用相機。 文本識別是在此 iPhone 上進行的。 不會將支票照片發送到外部認證服務。";
 "The cheque could not be deleted. Please try again." = "支票無法刪除，請重試。";
 "The cheque could not be restored. Please try again." = "支票無法恢復，請重試。";
 "The cheque could not be saved. Your draft is still here; please try again." = "支票無法保存。 您的草稿仍然存在，請重試。";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "支票将移到\"最近删除\"中,持续 30 天。 它的提醒停止;您可以恢复它的详细信息和照片。";
-"The cheque stays in follow-up until the new holder confirms collection." = "支票會一直留在跟蹤中 直到新持有人確認領取";
+"The cheque stays in follow-up until the new holder confirms collection." = "持續追蹤此支票，直到新持票人確認收款。";
 "The end date must be on or after the start date." = "結束日期必須是開始日期的同一天或之後。";
 "The file contains invalid cheque information." = "文件包含無效的支票資訊。";
 "The file could not be read or saved. Please try again." = "文件无法读取或保存,请重试。";
