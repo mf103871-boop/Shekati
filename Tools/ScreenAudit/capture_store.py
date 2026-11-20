@@ -15,6 +15,17 @@ from PIL import Image, ImageChops
 ROOT = Path("build/store")
 MANIFEST = Path("release/worldwide/locales.json")
 SCREENS = ["01-home", "02-ledger", "03-review", "04-detail", "05-calendar"]
+STORE_PIXELS = (1206, 2622)
+
+
+def store_artwork_hash(path):
+    with Image.open(path) as image:
+        if image.format != "PNG" or image.size != STORE_PIXELS or image.mode != "RGB":
+            raise ValueError(f"{path.name}: expected an opaque RGB PNG at {STORE_PIXELS}")
+        if image.info.get("srgb") not in (0, 1, 2, 3) or "transparency" in image.info:
+            raise ValueError(f"{path.name}: expected sRGB without transparency")
+        image.verify()
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def verify_distinct_bodies(folder):
@@ -51,7 +62,7 @@ def inject_locale(settings, locale):
     return 0
 
 
-def capture(entry, original_run, destination, device, app_info):
+def capture(entry, original_run, destination, device, app_info, shipping_source):
     code = entry["store"]
     bundle = entry["bundle"]
     settings = plistlib.loads(original_run.read_bytes())
@@ -97,8 +108,9 @@ def capture(entry, original_run, destination, device, app_info):
     proof = {"store": code, "bundle": bundle, "source": os.environ["GITHUB_SHA"], "run": os.environ["GITHUB_RUN_ID"],
              "version": app_info["CFBundleShortVersionString"], "build": app_info["CFBundleVersion"],
              "captureEnvironment": "Debug iPhone simulator with fictional records",
-             "device": device, "originalPNGHashes": shots, "visibleBodyDifferences": body_differences, "storeArtworkHashes": {
-                 name: hashlib.sha256((folder / "store" / (name + ".png")).read_bytes()).hexdigest() for name in shots}}
+             "device": device, "shippingSourceObjects": shipping_source,
+             "originalPNGHashes": shots, "visibleBodyDifferences": body_differences, "storeArtworkHashes": {
+                 name: store_artwork_hash(folder / "store" / (name + ".png")) for name in SCREENS}}
     (folder / "capture.json").write_text(json.dumps(proof, indent=2))
     shutil.rmtree(result)
     shutil.rmtree(attachments)
@@ -111,6 +123,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     rows = {entry["store"]: entry for entry in json.loads(MANIFEST.read_text())["locales"]}
     device = json.loads(Path("build/capture-device.json").read_text())
+    if device["sizeClass"] != "medium" or tuple(device["nativePortraitPixels"]) != STORE_PIXELS:
+        raise SystemExit(f"App Store capture requires a native medium Dynamic Island iPhone at {STORE_PIXELS}.")
+    shipping_source = {path: subprocess.check_output(["git", "rev-parse", f"HEAD:{path}"], text=True).strip()
+                       for path in ("Shekati", "Packages", "project.yml")}
     products = Path("DerivedData/Build/Products")
     xctestrun, = products.glob("*.xctestrun")
     info_path, = products.glob("*-iphonesimulator/Shekati.app/Info.plist")
@@ -118,7 +134,7 @@ if __name__ == "__main__":
     failures = []
     for locale in args.locales.split(","):
         try:
-            capture(rows[locale], xctestrun, args.destination, device, app_info)
+            capture(rows[locale], xctestrun, args.destination, device, app_info, shipping_source)
         except (OSError, RuntimeError, ValueError, subprocess.CalledProcessError) as error:
             failures.append(f"{locale}: {error}")
             print(failures[-1], flush=True)

@@ -3,7 +3,7 @@
   "applicationLocale": "zh-Hant",
   "name": "Shekati",
   "subtitle": "支票管理",
-  "keywords": "支票,銀行帳戶,日曆,提醒",
+  "keywords": "支票管理,銀行帳戶,到期日曆,付款提醒",
   "description": "記錄收到及開出的支票，將每張支票的影像與到期日一併保存。你可以透過行事曆查看即將到期的支票，並設定提醒。\n\n免費版可管理一個銀行帳戶及最多十張未結清的支票，提供手動輸入、行事曆及提醒功能。\n\n使用 Shekati Plus 可管理多個銀行帳戶，未結清的支票張數不限。你可以掃描支票並核對辨識結果，記錄背書轉讓、部分清償及換票情形，也能查看現金流量預測。\n\n可選擇按月或按年訂閱。購買前會顯示你所在地區的價格。訂閱會自動續訂，直到你在 Apple 帳號中取消為止。\n\n訂閱到期後，你仍可查看已登錄的支票、將其標記為已結清，並匯出紀錄。\n\n使用條款\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\n隱私政策\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
