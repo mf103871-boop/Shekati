@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "小切手を撮影し、読み取った内容を確認できます。";
+"NSFaceIDUsageDescription" = "Face IDで小切手の記録をロック解除します。";

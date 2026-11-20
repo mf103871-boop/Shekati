@@ -1,0 +1,26 @@
+{
+  "locale": "no",
+  "applicationLocale": "nb",
+  "name": "Shekati",
+  "subtitle": "Sjekkoversikt",
+  "keywords": "sjekker,Bankkontoer,kalender,påminnelser",
+  "description": "Ta opp innkommende og utgående sjekker, se deres forfallsdatoer og hold sjekkbildene sammen.\n\nGratis planen inkluderer en bankkonto, ti aktive sjekker, manuell oppføring, en kalender og påminnelser.\n\nShekati Plus legger til flere kontoer, ubegrensede aktive sjekker, sjekk skanning, påtegninger, delvise oppgjør, erstatninger og kontantstrømsprognoser.\n\nVelg mellom månedlig eller årlig abonnement. Abonnementene fornyes automatisk til de avsluttes i Apple-kontoen din, og du kan velge å betale én gang eller flere ganger.\n\nDu kan lese, lukke og eksportere eksisterende sjekker etter at et abonnement slutter.",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Månedlig",
+      "description": "Ubegrenset antall sjekker"
+    },
+    "annual": {
+      "name": "Shekati Plus · Årlig",
+      "description": "Ubegrenset antall sjekker"
+    }
+  },
+  "screenshotHeadings": [
+    "Din konto og passord",
+    "Sjekkregister",
+    "Se gjennom skannede detaljer · Shekati Plus",
+    "Sjekk detaljer",
+    "Forfallsdatoer"
+  ]
+}

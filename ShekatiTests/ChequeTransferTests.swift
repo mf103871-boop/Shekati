@@ -113,7 +113,7 @@ final class ChequeTransferTests: XCTestCase {
         XCTAssertEqual(try context.fetch(FetchDescriptor<ChequeRecord>()).count, 1)
     }
 
-    func testInvalidPayloadAndCurrencyMismatchCannotPartiallyChangeStore() throws {
+    func testInvalidPayloadIsAtomicAndIndependentCurrenciesCanBeRestored() throws {
         let context = try makeContext()
         let existing = makeRecord(); context.insert(existing); try context.save()
         var invalid = ChequeBackupEntry(record: makeRecord())
@@ -123,9 +123,10 @@ final class ChequeTransferTests: XCTestCase {
             ChequeBackupPayload(currencyCode: "JOD", records: [valid, invalid]), into: context))
         var foreign = valid
         foreign.snapshot.currencyCode = "USD"
-        XCTAssertThrowsError(try ChequeTransferService.restore(
-            ChequeBackupPayload(currencyCode: "USD", records: [foreign]), into: context))
         XCTAssertEqual(try context.fetch(FetchDescriptor<ChequeRecord>()).count, 1)
+        XCTAssertEqual(try ChequeTransferService.restore(
+            ChequeBackupPayload(currencyCode: "USD", records: [foreign]), into: context), 1)
+        XCTAssertEqual(try context.fetch(FetchDescriptor<ChequeRecord>()).count, 2)
         XCTAssertEqual(existing.currencyCode, "JOD")
         let duplicatedID = ChequeBackupPayload(currencyCode: "JOD", records: [valid, valid])
         XCTAssertThrowsError(try duplicatedID.validate())

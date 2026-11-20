@@ -1,0 +1,26 @@
+{
+  "locale": "hu",
+  "applicationLocale": "hu",
+  "name": "Shekati",
+  "subtitle": "Csekknyilvántartás",
+  "keywords": "csekkek,Bankszámlák nyitása,naptár,Emlékeztetők",
+  "description": "Rögzítse a bejövő és kimenő csekkeket, nézze meg a lejárati dátumokat, és tartsa együtt az ellenőrző képeket.\n\nAz ingyenes csomag tartalmaz egy bankszámlát, tíz aktív csekk, kézi bevitel, naptár és emlékeztetők.\n\nA Shekati Plus több számlát, korlátlan aktív csekkeket, csekkszkennelést, jóváhagyásokat, részleges elszámolásokat, helyettesítéseket és pénzforgalmi előrejelzéseket ad hozzá.\n\nVálasszon havi vagy éves előfizetést. A helyi ár a vásárlás előtt látható, és az előfizetések automatikusan megújulnak, amíg le nem mondja őket Apple-fiókjában.\n\nAz előfizetés lejárta után olvashatja, bezárhatja és exportálhatja a meglévő csekkeket.",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Havi",
+      "description": "Korlátlan számú csekk"
+    },
+    "annual": {
+      "name": "Shekati Plus · Éves",
+      "description": "Korlátlan számú csekk"
+    }
+  },
+  "screenshotHeadings": [
+    "Az Ön fiókja",
+    "Csekk regiszter",
+    "A beolvasott adatok áttekintése · Shekati Plus",
+    "Csekk adatai",
+    "Határidő"
+  ]
+}

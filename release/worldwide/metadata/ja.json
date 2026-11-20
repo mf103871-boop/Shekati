@@ -1,0 +1,26 @@
+{
+  "locale": "ja",
+  "applicationLocale": "ja",
+  "name": "Shekati",
+  "subtitle": "小切手管理",
+  "keywords": "小切手,銀行口座,カレンダー,思い出す",
+  "description": "入出金小切手を記録し、到期日を見て、小切手の画像を一緒に保存します。\n\n無料プランは1つの銀行口座、10枚の活動小切手、手動入力、カレンダーとリマインダを含む。\n\nＳｈｅｋａｔｉ　Ｐｌｕｓは，さらなる口座数，無制限の活動小切手，小切手スキャン，印鑑，部分決済，代替および現金流予測を追加した。\n\n月額または年間の購読を選択します。購入前に現地の価格が表示されます。Apple アカウントでキャンセルするまで自動的に更新されます。\n\n購読期間が終了した後に既存の小切手を読み込み、閉じ、エクスポートできます。",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · 月額",
+      "description": "小切手の件数無制限"
+    },
+    "annual": {
+      "name": "Shekati Plus · 年額",
+      "description": "小切手の件数無制限"
+    }
+  },
+  "screenshotHeadings": [
+    "あなたのアカウント",
+    "小切手",
+    "スキャンした詳細を見る · Shekati Plus",
+    "小切手の詳細",
+    "期限"
+  ]
+}

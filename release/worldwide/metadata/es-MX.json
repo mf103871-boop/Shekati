@@ -1,0 +1,26 @@
+{
+  "locale": "es-MX",
+  "applicationLocale": "es-MX",
+  "name": "Shekati",
+  "subtitle": "Gestión de cheques",
+  "keywords": "Cheques,Cuentas bancarias,Calendario,Recordatorios",
+  "description": "Registra los cheques recibidos y emitidos, consulta sus fechas de vencimiento y guarda las imágenes en un solo lugar.\n\nEl plan gratuito incluye una cuenta bancaria, diez cheques activos, registro manual, calendario y recordatorios.\n\nCon Shekati Plus puedes añadir más cuentas y gestionar cheques activos ilimitados. También incluye escaneo de cheques, endosos, pagos parciales, sustituciones y previsiones de tesorería.\n\nElige una suscripción mensual o anual. Verás el precio local antes de comprar. La suscripción se renueva automáticamente hasta que la canceles en tu cuenta de Apple.\n\nCuando finalice la suscripción, podrás seguir consultando, cerrando y exportando los cheques existentes.",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Mensual",
+      "description": "Cheques ilimitados"
+    },
+    "annual": {
+      "name": "Shekati Plus · Anual",
+      "description": "Cheques ilimitados"
+    }
+  },
+  "screenshotHeadings": [
+    "Tu cuenta bancaria",
+    "Registro de cheques",
+    "Revisar los detalles escaneados · Shekati Plus",
+    "Detalles del cheque",
+    "Fechas de vencimiento"
+  ]
+}

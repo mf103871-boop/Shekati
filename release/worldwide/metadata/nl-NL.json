@@ -1,0 +1,26 @@
+{
+  "locale": "nl-NL",
+  "applicationLocale": "nl",
+  "name": "Shekati",
+  "subtitle": "Chequebeheer",
+  "keywords": "cheques,Bankrekeningen en bankrekeningnummers,kalender,herinneringen",
+  "description": "Registreer inkomende en uitgaande cheques, zie hun vervaldatums en houd uw chequebeelden bij elkaar.\n\nHet gratis plan omvat een bankrekening, tien actieve cheques, handmatige invoer, een kalender en herinneringen.\n\nShekati Plus voegt meer rekeningen, onbeperkt actieve cheques, cheque scannen, endorsements, gedeeltelijke afwikkelingen, vervangingen en cash flow prognoses.\n\nKies een maandelijks of jaarlijks abonnement. De lokale prijs wordt voor aankoop weergegeven en abonnementen worden automatisch verlengd totdat ze in je Apple Account worden geannuleerd.\n\nNadat een abonnement is afgelopen, kunt u bestaande cheques lezen, sluiten en exporteren.",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Maandelijks",
+      "description": "Onbeperkt cheques"
+    },
+    "annual": {
+      "name": "Shekati Plus · Jaarlijks",
+      "description": "Onbeperkt cheques"
+    }
+  },
+  "screenshotHeadings": [
+    "Uw account aanmaken",
+    "Cheque register -",
+    "Gescande details bekijken · Shekati Plus",
+    "Details van de cheque",
+    "Vervaldatums"
+  ]
+}

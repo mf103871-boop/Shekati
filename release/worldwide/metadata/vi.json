@@ -1,0 +1,26 @@
+{
+  "locale": "vi",
+  "applicationLocale": "vi",
+  "name": "Shekati",
+  "subtitle": "Quản lý séc",
+  "keywords": "Kiểm tra,Tài khoản ngân hàng,lịch,Nhắc nhở",
+  "description": "Ghi chép các séc nhập và xuất, xem ngày hết hạn của chúng và giữ hình ảnh séc của bạn cùng nhau.\n\nKế hoạch miễn phí bao gồm một tài khoản ngân hàng, mười séc hoạt động, nhập thủ công, lịch và nhắc nhở.\n\nShekati Plus thêm nhiều tài khoản, thẻ tích cực không giới hạn, quét thẻ, chứng nhận, thanh toán một phần, thay thế và dự đoán dòng tiền.\n\nChọn đăng ký hàng tháng hay hàng năm. Giá địa phương của bạn sẽ được hiển thị trước khi mua. Các đăng ký tự động cập nhật cho đến khi bị hủy trong Tài khoản Apple của bạn.\n\nBạn có thể đọc, đóng và xuất các séc hiện có sau khi đăng ký kết thúc.",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Hàng tháng",
+      "description": "Số lượng séc không giới hạn"
+    },
+    "annual": {
+      "name": "Shekati Plus · Hàng năm",
+      "description": "Số lượng séc không giới hạn"
+    }
+  },
+  "screenshotHeadings": [
+    "Tài khoản của bạn",
+    "Kiểm tra",
+    "Xem lại chi tiết quét · Shekati Plus",
+    "Chi tiết thẻ",
+    "Ngày hết hạn"
+  ]
+}

@@ -21,8 +21,27 @@ struct ChequeOperationsView: View {
     private var position: ChequePosition { BankingLedger.position(for: record, events: events) }
     private var matchingAccounts: [BankAccountRecord] { accounts.filter { $0.currencyCode == record.currencyCode } }
     private var history: [LedgerOperation] {
-        events.filter { $0.chequeID == record.id }.compactMap(\.operation).sorted {
+        let operations = events.filter { $0.chequeID == record.id }.compactMap(\.operation)
+        let index = Dictionary(operations.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        var ranks: [UUID: Int] = [:]
+        for event in index.values {
+            var cursor: LedgerOperation? = event
+            var path: [UUID] = []
+            var seen = Set<UUID>()
+            while let item = cursor, ranks[item.id] == nil, seen.insert(item.id).inserted {
+                path.append(item.id)
+                let previous = item.kind == .discardConflict ? item.relatedID : item.parentID
+                cursor = previous.flatMap { index[$0] }
+            }
+            var depth = cursor.flatMap { ranks[$0.id] } ?? 0
+            for id in path.reversed() {
+                depth += 1
+                ranks[id] = depth
+            }
+        }
+        return index.values.sorted {
             if $0.day != $1.day { return $0.day > $1.day }
+            if ranks[$0.id] != ranks[$1.id] { return ranks[$0.id, default: 0] > ranks[$1.id, default: 0] }
             return $0.id.uuidString < $1.id.uuidString
         }
     }

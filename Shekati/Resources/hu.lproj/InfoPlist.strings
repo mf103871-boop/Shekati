@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "Fényképezze le a csekket a felismert adatok ellenőrzéséhez.";
+"NSFaceIDUsageDescription" = "A csekknyilvántartás feloldásához használja a Face ID-t.";

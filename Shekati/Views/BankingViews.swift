@@ -45,6 +45,7 @@ private struct AccountCreationView: View {
     @State private var name = ""
     @State private var currency = ""
     @State private var opening = "0"
+    @AppStorage("shekati.hideAmounts") private var hidesAmounts = false
     @State private var error: String?
     let isPlus: Bool
     var body: some View {
@@ -54,7 +55,11 @@ private struct AccountCreationView: View {
                 Picker(app.tr("Currency"), selection: $currency) {
                     ForEach(Locale.commonISOCurrencyCodes.sorted(), id: \.self) { Text($0).tag($0) }
                 }
-                TextField(app.tr("Opening balance"), text: $opening).keyboardType(.numbersAndPunctuation)
+                if hidesAmounts {
+                    SecureField(app.tr("Opening balance"), text: $opening).keyboardType(.numbersAndPunctuation)
+                } else {
+                    TextField(app.tr("Opening balance"), text: $opening).keyboardType(.numbersAndPunctuation)
+                }
                 if let error { Text(app.tr(error)).foregroundStyle(.red) }
                 Button(app.tr("Save")) {
                     do {

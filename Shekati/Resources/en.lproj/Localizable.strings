@@ -258,6 +258,7 @@
 "Name" = "Name";
 "Name / number / bank / status" = "Name / number / bank / status";
 "Name and number" = "Name and number";
+"Needs review" = "Needs review";
 "New bank accounts" = "New bank accounts";
 "New cheque books" = "New cheque books";
 "New cheques" = "New cheques";
@@ -365,6 +366,7 @@
 "Refresh your cheque reminders" = "Refresh your cheque reminders";
 "Reload prices" = "Reload prices";
 "Remaining" = "Remaining";
+"Remaining after payment" = "Remaining after payment";
 "Remaining amount" = "Remaining amount";
 "Remind me in 1 hour" = "Remind me in 1 hour";
 "Reminder options" = "Reminder options";
@@ -493,6 +495,7 @@
 "The cheque could not be restored. Please try again." = "The cheque could not be restored. Please try again.";
 "The cheque could not be saved. Your draft is still here; please try again." = "The cheque could not be saved. Your draft is still here; please try again.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos.";
+"The cheque stays in follow-up until the new holder confirms collection." = "The cheque stays in follow-up until the new holder confirms collection.";
 "The end date must be on or after the start date." = "The end date must be on or after the start date.";
 "The file contains invalid cheque information." = "The file contains invalid cheque information.";
 "The file could not be read or saved. Please try again." = "The file could not be read or saved. Please try again.";

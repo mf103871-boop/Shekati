@@ -1,0 +1,26 @@
+{
+  "locale": "de-DE",
+  "applicationLocale": "de",
+  "name": "Shekati",
+  "subtitle": "Scheckverwaltung",
+  "keywords": "Schecks,Bankkonten,Kalender,Erinnerungen",
+  "description": "Erfassen Sie eingehende und ausgehende Schecks, sehen Sie ihre Fälligkeitsdaten und halten Sie Ihre Scheckbilder zusammen.\n\nDer kostenlose Plan beinhaltet ein Bankkonto, zehn aktive Schecks, manuelle Eingabe, einen Kalender und Erinnerungen.\n\nShekati Plus fügt mehr Konten, unbegrenzte aktive Schecks, Scheckscanning, Einschreiben, Teilabrechnungen, Ersatz und Cashflow-Prognosen hinzu.\n\nWähle zwischen einem monatlichen oder jährlichen Abo. Der Preis für deine Region wird vor dem Kauf angezeigt. Abonnements verlängern sich automatisch, bis sie in deinem Apple Account gekündigt werden.\n\nSie können bestehende Schecks nach Ablauf eines Abonnements lesen, schließen und exportieren.",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Monatlich",
+      "description": "Unbegrenzte Schecks"
+    },
+    "annual": {
+      "name": "Shekati Plus · Jährlich",
+      "description": "Unbegrenzte Schecks"
+    }
+  },
+  "screenshotHeadings": [
+    "Ihr Konto erstellen",
+    "Scheckscheck",
+    "Überprüfen gescannter Details · Shekati Plus",
+    "Scheckdetails",
+    "Fälligkeitsdaten"
+  ]
+}

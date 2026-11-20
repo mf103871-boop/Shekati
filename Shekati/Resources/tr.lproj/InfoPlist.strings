@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "Algılanan bilgileri kontrol etmek için çekin fotoğrafını çekin.";
+"NSFaceIDUsageDescription" = "Çek kayıtlarınızın kilidini açmak için Face ID kullanın.";

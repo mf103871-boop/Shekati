@@ -1,0 +1,26 @@
+{
+  "locale": "sl-SI",
+  "applicationLocale": "sl",
+  "name": "Shekati",
+  "subtitle": "Evidenca čekov",
+  "keywords": "čeki,bančni računi,koledar,opomniki",
+  "description": "Snemanje dohodnih in odhodnih čekov, si oglejte njihove datume zapadlosti in ohraniti svoje slike ček skupaj.\n\nBrezplačni paket vključuje en bančni račun, deset aktivnih čekov, ročni vnos, koledar in opomnike.\n\nShekati Plus dodaja več računov, neomejeno aktivne čeke, skeniranje čekov, potrdila, delne poravnave, zamenjave in napovedi denarnega toka.\n\nIzberi mesečno ali letno naročnino. Cena v tvoji državi je prikazana pred nakupom, naročnine pa se samodejno podaljšajo, dokler jih ne prekličete v računu Apple Account.\n\nObstoječe čeke lahko po koncu naročnine berete, zapirate in izvozite.",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Mesečno",
+      "description": "Neomejeno število čekov"
+    },
+    "annual": {
+      "name": "Shekati Plus · Letno",
+      "description": "Neomejeno število čekov"
+    }
+  },
+  "screenshotHeadings": [
+    "Vaš račun |",
+    "Register čekov",
+    "Pregled skeniranih podrobnosti · Shekati Plus",
+    "Podrobnosti o čeku",
+    "Roki"
+  ]
+}

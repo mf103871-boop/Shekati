@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "拍摄支票以核对识别出的资料。";
+"NSFaceIDUsageDescription" = "使用面容 ID 解锁支票记录。";

@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Shekati";
+"NSCameraUsageDescription" = "Chụp ảnh séc để kiểm tra các thông tin đã nhận dạng.";
+"NSFaceIDUsageDescription" = "Dùng Face ID để mở khóa hồ sơ séc của bạn.";

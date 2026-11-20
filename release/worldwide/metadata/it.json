@@ -1,0 +1,26 @@
+{
+  "locale": "it",
+  "applicationLocale": "it",
+  "name": "Shekati",
+  "subtitle": "Gestione assegni",
+  "keywords": "Assegni,Conti bancari aperti,Calendario,promemoria",
+  "description": "Registra gli assegni in entrata e in uscita, vedi le date di scadenza e tieni insieme le immagini dei tuoi assegni.\n\nIl piano gratuito include un conto bancario, dieci assegni attivi, inserimento manuale, un calendario e promemoria.\n\nShekati Plus aggiunge più conti, assegni attivi illimitati, scansione di assegni, adesioni, regolamenti parziali, sostituzioni e previsioni dei flussi di cassa.\n\nScegli un abbonamento mensile o annuale. Il prezzo locale viene visualizzato prima dell’acquisto e gli abbonamenti si rinnovano automaticamente fino alla cancellazione tramite il tuo account Apple.\n\nÈ possibile leggere, chiudere ed esportare gli assegni esistenti dopo la fine di un abbonamento.",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Mensile",
+      "description": "Assegni illimitati"
+    },
+    "annual": {
+      "name": "Shekati Plus · Annuale",
+      "description": "Assegni illimitati"
+    }
+  },
+  "screenshotHeadings": [
+    "Il tuo account",
+    "Registro degli assegni",
+    "Rivedere i dettagli scansionati · Shekati Plus",
+    "Dettagli dell’assegno",
+    "Date di scadenza"
+  ]
+}

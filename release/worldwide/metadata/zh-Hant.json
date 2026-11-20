@@ -1,0 +1,26 @@
+{
+  "locale": "zh-Hant",
+  "applicationLocale": "zh-Hant",
+  "name": "Shekati",
+  "subtitle": "支票管理",
+  "keywords": "支票,銀行帳戶,日曆,提醒",
+  "description": "记录收到的和发出的支票,看到他们的到期日期,并保持你的支票图像在一起。\n\n免费计划包括一个银行账户, 十个活跃支票, 手动输入, 日历和提醒.\n\nShekati Plus 增加了更多的帳戶,無限活躍支票,支票掃描,背書,部分結算,替換和現金流預測。\n\n选择月度或年度订阅。 在购买前,您当地的价格会显示出来。 订阅将自动续订,直到您在 Apple 帐户中取消为止。\n\n您可以在订阅结束后读取、关闭和导出现有支票。",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · 每月",
+      "description": "不限支票數量"
+    },
+    "annual": {
+      "name": "Shekati Plus · 每年",
+      "description": "不限支票數量"
+    }
+  },
+  "screenshotHeadings": [
+    "你的帳戶",
+    "支票簿",
+    "檢視掃描的細節 · Shekati Plus",
+    "支票的細節",
+    "到期日"
+  ]
+}

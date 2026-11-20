@@ -1,0 +1,26 @@
+{
+  "locale": "ms",
+  "applicationLocale": "ms",
+  "name": "Shekati",
+  "subtitle": "Pengurusan cek",
+  "keywords": "cek,akaun bank,kalendar,peringatan",
+  "description": "Rekod cek masuk dan keluar, lihat tarikh tamat tempoh mereka dan simpan imej cek anda bersama.\n\nPelan percuma termasuk satu akaun bank, sepuluh cek aktif, masukan manual, kalendar dan peringatan.\n\nShekati Plus menambah lebih banyak akaun, cek aktif tanpa had, imbasan cek, pengesahan, penyelesaian sebahagian, penggantian dan ramalan aliran tunai.\n\nPilih langganan bulanan atau tahunan. Harga tempatan anda dipaparkan sebelum pembelian. Langganan diperbaharui secara automatik sehingga dibatalkan dalam Akaun Apple anda.\n\nAnda boleh baca, tutup dan eksport cek sedia ada selepas langganan berakhir.",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Bulanan",
+      "description": "Cek tanpa had"
+    },
+    "annual": {
+      "name": "Shekati Plus · Tahunan",
+      "description": "Cek tanpa had"
+    }
+  },
+  "screenshotHeadings": [
+    "Akaun anda",
+    "Daftar cek",
+    "Periksa perincian imbasan · Shekati Plus",
+    "Perincian cek",
+    "Tarikh tamat"
+  ]
+}

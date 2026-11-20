@@ -1,0 +1,26 @@
+{
+  "locale": "ca",
+  "applicationLocale": "ca",
+  "name": "Shekati",
+  "subtitle": "Gestió de xecs",
+  "keywords": "xecs,comptes bancaris,calendari,recordatoris",
+  "description": "Registreu els xecs entrants i sortints, vegeu les seves dates de venciment i mantingueu les imatges dels vostres xecs junts.\n\nEl pla gratuït inclou un compte bancari, deu xecs actius, entrada manual, calendari i recordatoris.\n\nShekati Plus afegeix més comptes, xecs actius il·limitats, escaneig de xecs, endossats, liquidacions parcials, reemplaçaments i previsions de fluxos de caixa.\n\nEscolliu una subscripció mensual o anual. El preu local es mostra abans de la compra. Les subscripcions es renoven automàticament fins que no es cancel·lin al vostre compte Apple.\n\nPodeu llegir, tancar i exportar xecs existents després que acabi una subscripció.",
+  "subscriptionGroup": "Shekati Plus",
+  "subscriptionLocalizations": {
+    "monthly": {
+      "name": "Shekati Plus · Mensual",
+      "description": "Xecs il·limitats"
+    },
+    "annual": {
+      "name": "Shekati Plus · Anual",
+      "description": "Xecs il·limitats"
+    }
+  },
+  "screenshotHeadings": [
+    "El vostre compte",
+    "Registre de xecs",
+    "Revisa els detalls escanejats · Shekati Plus",
+    "Detalls del xec",
+    "Dates de venciment"
+  ]
+}

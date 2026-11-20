@@ -258,6 +258,7 @@
 "Name" = "الاسم";
 "Name / number / bank / status" = "الاسم / الرقم / البنك / الحالة";
 "Name and number" = "الاسم والرقم";
+"Needs review" = "يحتاج إلى مراجعة";
 "New bank accounts" = "حسابات بنكية جديدة";
 "New cheque books" = "دفاتر شيكات جديدة";
 "New cheques" = "شيكات جديدة";
@@ -365,6 +366,7 @@
 "Refresh your cheque reminders" = "حدّث تذكيرات شيكاتك";
 "Reload prices" = "إعادة تحميل الأسعار";
 "Remaining" = "المتبقي";
+"Remaining after payment" = "المتبقي بعد الدفعة";
 "Remaining amount" = "المبلغ المتبقي";
 "Remind me in 1 hour" = "ذكّرني بعد ساعة";
 "Reminder options" = "خيارات التذكير";
@@ -493,6 +495,7 @@
 "The cheque could not be restored. Please try again." = "تعذرت استعادة الشيك. حاول مرة أخرى.";
 "The cheque could not be saved. Your draft is still here; please try again." = "تعذر حفظ الشيك. بياناتك المدخلة ما زالت موجودة؛ حاول مرة أخرى.";
 "The cheque moves to Recently Deleted for 30 days. Its reminders stop; you can restore its details and photos." = "يُنقل الشيك إلى المحذوفة مؤخرًا لمدة 30 يومًا، وتتوقف تنبيهاته. يمكنك استعادة تفاصيله وصوره.";
+"The cheque stays in follow-up until the new holder confirms collection." = "يبقى الشيك قيد المتابعة حتى يؤكّد الحائز الجديد تحصيله.";
 "The end date must be on or after the start date." = "تاريخ النهاية يجب أن يكون في تاريخ البداية أو بعده.";
 "The file contains invalid cheque information." = "يحتوي الملف على معلومات شيكات غير صحيحة.";
 "The file could not be read or saved. Please try again." = "تعذرت قراءة الملف أو حفظه. حاول مرة أخرى.";
