@@ -86,50 +86,70 @@ final class StoreScreenshotUITests: XCTestCase {
         capture("04-detail")
         edit.tap()
 
+        let resources = Bundle(for: type(of: self))
+        let translationPath = try XCTUnwrap(resources.path(forResource: locale, ofType: "lproj"))
+        let translations = try XCTUnwrap(Bundle(path: translationPath))
+        let numberField = app.textFields["chequeNumberField"]
+        for _ in 0..<8 where !numberField.isHittable { app.swipeUp() }
+        XCTAssertEqual(numberField.value as? String, "004182")
+        numberField.tap()
+        numberField.typeText("9")
+        let edited = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value CONTAINS %@", "9"), object: numberField)
+        XCTAssertEqual(XCTWaiter.wait(for: [edited], timeout: 8), .completed)
+        let done = translations.localizedString(forKey: "Done", value: nil, table: nil)
+        let finishTyping = app.toolbars.buttons.matching(NSPredicate(format: "label == %@", done)).firstMatch
+        XCTAssertTrue(finishTyping.waitForExistence(timeout: 8) && finishTyping.isHittable)
+        finishTyping.tap()
+
         let scan = app.buttons["readChequeImage"]
-        for _ in 0..<12 where !scan.isHittable {
-            app.swipeUp()
-        }
-        XCTAssertTrue(scan.isHittable)
-        scan.tap()
         let numberChoice = app.switches.matching(NSPredicate(format: "label CONTAINS %@", "004182")).firstMatch
-        guard numberChoice.waitForExistence(timeout: 90) else {
-            XCTFail("Vision did not open the review of the recognized cheque number. " + app.debugDescription)
-            return
+        func openReview() {
+            for _ in 0..<12 where !scan.isHittable { app.swipeUp() }
+            XCTAssertTrue(scan.isHittable)
+            scan.tap()
+            XCTAssertTrue(numberChoice.waitForExistence(timeout: 90),
+                          "Vision must open the recognized number. " + app.debugDescription)
+            XCTAssertEqual(numberChoice.value as? String, "1", "The recognized number must be selected.")
         }
-        XCTAssertEqual(numberChoice.value as? String, "1", "The recognized number must be selected.")
+        openReview()
         let use = app.buttons.matching(identifier: "useOCRFields").firstMatch
         if use.exists && use.isHittable {
             XCTAssertTrue(use.isEnabled)
+            use.tap()
         } else {
             // UIKit moves a long translated toolbar action into its system overflow menu.
             let overflow = app.navigationBars.buttons.matching(identifier: "OverflowBarButtonItem").firstMatch
             XCTAssertTrue(overflow.waitForExistence(timeout: 8) && overflow.isHittable)
             overflow.tap()
-            let resources = Bundle(for: type(of: self))
-            let path = try XCTUnwrap(resources.path(forResource: locale, ofType: "lproj"))
-            let bundle = try XCTUnwrap(Bundle(path: path))
-            let title = bundle.localizedString(forKey: "Use selected", value: nil, table: nil)
-            let action = app.descendants(matching: .any).matching(NSPredicate(
-                format: "(elementType == %d OR elementType == %d) AND (identifier == %@ OR label == %@)",
-                XCUIElement.ElementType.button.rawValue, XCUIElement.ElementType.menuItem.rawValue, "useOCRFields", title
-            )).firstMatch
-            XCTAssertTrue(action.waitForExistence(timeout: 8) && action.isEnabled && action.isHittable,
-                          "The overflow must offer the enabled localized Use selected action.")
-            // Dismiss using the menu backdrop without applying or changing any recognized value.
-            app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85)).tap()
-            let closed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: action)
-            XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 8), .completed)
-            XCTAssertTrue(numberChoice.isHittable)
-            XCTAssertEqual(numberChoice.value as? String, "1")
+            let title = translations.localizedString(forKey: "Use selected", value: nil, table: nil)
+            let actions = app.descendants(matching: .any).matching(
+                NSPredicate(format: "identifier == %@ OR label == %@ OR title == %@", "useOCRFields", title, title))
+            guard actions.firstMatch.waitForExistence(timeout: 8),
+                  let action = actions.allElementsBoundByIndex.first(where: { $0.isEnabled && $0.isHittable }) else {
+                XCTFail("Missing enabled OCR action in overflow for \(locale); expected '\(title)'. " + app.debugDescription)
+                return
+            }
+            action.tap()
         }
+        // Verify the action's effect in the editor. Nothing is saved to the cheque.
+        let closed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: numberChoice)
+        XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 10), .completed)
+        let amount = app.textFields["amountField"]
+        for _ in 0..<10 where !amount.isHittable { app.swipeDown() }
+        XCTAssertEqual(amount.value as? String, "1250.000",
+                       "The editor must show the recognized JOD amount.")
+        for _ in 0..<8 where !numberField.exists { app.swipeUp() }
+        XCTAssertEqual(numberField.value as? String, "004182",
+                       "Using the selected fields must replace the deliberately changed draft number with the scanned number.")
+        // Start the actual screenshot from a freshly opened, unmodified review presentation.
+        openReview()
         capture("03-review")
         let amountChoice = app.switches.matching(NSPredicate(format: "label CONTAINS %@", "1250.000")).firstMatch
         for _ in 0..<4 where !amountChoice.exists { app.swipeUp() }
         XCTAssertTrue(amountChoice.exists, "The review must contain the fixture amount recognized by Vision.")
         XCTAssertEqual(amountChoice.value as? String, "1")
 
-        // Relaunch to leave the read-only review without accepting changes to the source cheque.
+        // Relaunch to discard the editor draft without saving changes to the source cheque.
         app.terminate()
         app.launch()
         let calendar = nativeTab(.calendar, in: app)
