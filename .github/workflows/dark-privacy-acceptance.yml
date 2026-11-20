@@ -34,7 +34,7 @@ jobs:
       - name: Inspect the two language interfaces with fixtures on iPhone
         run: |
           mkdir -p evidence
-          xcodebuild test -project Shekati.xcodeproj -scheme Shekati -destination "platform=iOS Simulator,id=$SIM" -derivedDataPath "$RUNNER_TEMP/DarkDerived" -resultBundlePath "$RUNNER_TEMP/DarkPrivacy.xcresult" -only-testing:ShekatiUITests/DarkAmountPrivacyAcceptanceTests -parallel-testing-enabled NO -test-iterations 1 CODE_SIGNING_ALLOWED=NO
+          xcodebuild test -project Shekati.xcodeproj -scheme Shekati -destination "platform=iOS Simulator,id=$SIM" -derivedDataPath "$RUNNER_TEMP/DarkDerived" -resultBundlePath "$RUNNER_TEMP/DarkPrivacy.xcresult" -only-testing:ShekatiUITests/DarkAmountPrivacyAcceptanceTests -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
       - name: Export original screenshots, accessibility trees and test results
         if: always()
         run: |
