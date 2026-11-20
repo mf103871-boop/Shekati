@@ -86,6 +86,21 @@ final class StoreScreenshotUITests: XCTestCase {
         capture("04-detail")
         edit.tap()
 
+        let resources = Bundle(for: type(of: self))
+        let translationPath = try XCTUnwrap(resources.path(forResource: locale, ofType: "lproj"))
+        let translations = try XCTUnwrap(Bundle(path: translationPath))
+        let numberField = app.textFields["chequeNumberField"]
+        for _ in 0..<8 where !numberField.isHittable { app.swipeUp() }
+        XCTAssertEqual(numberField.value as? String, "004182")
+        numberField.tap()
+        numberField.typeText("9")
+        let edited = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value CONTAINS %@", "9"), object: numberField)
+        XCTAssertEqual(XCTWaiter.wait(for: [edited], timeout: 8), .completed)
+        let done = translations.localizedString(forKey: "Done", value: nil, table: nil)
+        let finishTyping = app.toolbars.buttons.matching(NSPredicate(format: "label == %@", done)).firstMatch
+        XCTAssertTrue(finishTyping.waitForExistence(timeout: 8) && finishTyping.isHittable)
+        finishTyping.tap()
+
         let scan = app.buttons["readChequeImage"]
         let numberChoice = app.switches.matching(NSPredicate(format: "label CONTAINS %@", "004182")).firstMatch
         func openReview() {
@@ -106,10 +121,7 @@ final class StoreScreenshotUITests: XCTestCase {
             let overflow = app.navigationBars.buttons.matching(identifier: "OverflowBarButtonItem").firstMatch
             XCTAssertTrue(overflow.waitForExistence(timeout: 8) && overflow.isHittable)
             overflow.tap()
-            let resources = Bundle(for: type(of: self))
-            let path = try XCTUnwrap(resources.path(forResource: locale, ofType: "lproj"))
-            let bundle = try XCTUnwrap(Bundle(path: path))
-            let title = bundle.localizedString(forKey: "Use selected", value: nil, table: nil)
+            let title = translations.localizedString(forKey: "Use selected", value: nil, table: nil)
             let actions = app.descendants(matching: .any).matching(
                 NSPredicate(format: "identifier == %@ OR label == %@ OR title == %@", "useOCRFields", title, title))
             guard actions.firstMatch.waitForExistence(timeout: 8),
@@ -125,7 +137,10 @@ final class StoreScreenshotUITests: XCTestCase {
         let amount = app.textFields["amountField"]
         for _ in 0..<10 where !amount.isHittable { app.swipeDown() }
         XCTAssertEqual(amount.value as? String, "1250.000",
-                       "Using the selected OCR fields must copy the recognized JOD amount to the draft.")
+                       "The editor must show the recognized JOD amount.")
+        for _ in 0..<8 where !numberField.exists { app.swipeUp() }
+        XCTAssertEqual(numberField.value as? String, "004182",
+                       "Using the selected fields must replace the deliberately changed draft number with the scanned number.")
         // Start the actual screenshot from a freshly opened, unmodified review presentation.
         openReview()
         capture("03-review")
