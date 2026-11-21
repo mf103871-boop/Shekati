@@ -6,56 +6,7 @@ permissions:
   contents: read
   actions: read
 jobs:
-  compile:
-    runs-on: macos-26
-    timeout-minutes: 15
-    env:
-      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: 9fca85268c9a4bde4b563c7447bff062b793b0fc
-          persist-credentials: false
-      - uses: actions/checkout@v4
-        with:
-          path: qa-harness
-          sparse-checkout: .github/qa
-          persist-credentials: false
-      - uses: actions/download-artifact@v4
-        with:
-          name: Candidate-17-simulator-products
-          run-id: 44887100891
-          github-token: ${{ github.token }}
-          path: original-simulator
-      - name: Compile unchanged simulator products with the release compiler
-        run: |
-          set -euo pipefail
-          test "$(git rev-parse HEAD)" = 9fca85268c9a4bde4b563c7447bff062b793b0fc
-          xcodebuild -version
-          python3 qa-harness/.github/qa/probe.py
-          test "$(git diff --name-only)" = ShekatiUITests/EnhancementUITests.swift
-          if ! command -v xcodegen >/dev/null; then brew install xcodegen; fi
-          xcodegen generate
-          xcodebuild build-for-testing -project Shekati.xcodeproj -scheme Shekati -configuration Debug -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ONLY_ACTIVE_ARCH=NO ARCHS=arm64 CODE_SIGNING_ALLOWED=NO > "$RUNNER_TEMP/build.log" 2>&1 || { grep -E 'error:|failed:' "$RUNNER_TEMP/build.log" | head -60; exit 1; }
-          (cd original-simulator && shasum -a 256 -c RuntimeProducts.sha256 && tar -xzf RuntimeProducts.tgz)
-          app_path=Products/Debug-iphonesimulator/Shekati.app
-          mv "DerivedData/Build/$app_path" "$RUNNER_TEMP/recompiled.app"
-          mv "original-simulator/$app_path" "DerivedData/Build/$app_path"
-          shasum -a 256 "DerivedData/Build/$app_path/Shekati"
-          cd DerivedData/Build
-          COPYFILE_DISABLE=1 tar -czf ../../RuntimeProducts.tgz Products
-          cd ../..
-          shasum -a 256 RuntimeProducts.tgz > RuntimeProducts.sha256
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Candidate-17-simulator-products
-          path: |
-            RuntimeProducts.tgz
-            RuntimeProducts.sha256
-          retention-days: 3
-          compression-level: 0
   compatibility:
-    needs: compile
     runs-on: macos-15
     timeout-minutes: 38
     env:
@@ -93,7 +44,9 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: Candidate-17-simulator-products
-      - name: Install exact simulator products and launch Shekati 1.0.0 (17)
+          run-id: 44889062779
+          github-token: ${{ github.token }}
+      - name: Verify exact products before XCTest installs and launches the candidate
         run: |
           set -euo pipefail
           shasum -a 256 -c RuntimeProducts.sha256
@@ -101,17 +54,27 @@ jobs:
           app=Products/Debug-iphonesimulator/Shekati.app
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$app/Info.plist")" = 17
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$app/Info.plist")" = 1.0.0
-          xcrun simctl install "$DEVICE" "$app"
-          xcrun simctl launch "$DEVICE" com.mf103871.shekati
-          sleep 8
-          xcrun simctl io "$DEVICE" screenshot candidate-ios17-launch.png
-          xcrun simctl terminate "$DEVICE" com.mf103871.shekati
+          shasum -a 256 "$app/Shekati"
+          xcrun simctl spawn "$DEVICE" launchctl print system/com.apple.SpringBoard >/dev/null || xcrun simctl bootstatus "$DEVICE" -b
       - name: Enter a cheque, deposit, collect and open its calendar entry
         timeout-minutes: 9
         run: |
           manifests=(Products/*.xctestrun)
           test "${#manifests[@]}" -eq 1
-          xcodebuild test-without-building -xctestrun "${manifests[0]}" -destination "platform=iOS Simulator,id=$DEVICE" -parallel-testing-enabled NO -resultBundlePath Runtime17.xcresult -only-testing:ShekatiUITests/EnhancementUITests/testIncomingDepositAndCollectionMoveTheBankBalanceOnceAndRemainInCalendar
+          run_probe() {
+            xcodebuild test-without-building -xctestrun "${manifests[0]}" -destination "platform=iOS Simulator,id=$DEVICE" -parallel-testing-enabled NO -resultBundlePath "$1" -only-testing:ShekatiUITests/EnhancementUITests/testIncomingDepositAndCollectionMoveTheBankBalanceOnceAndRemainInCalendar
+          }
+          set -o pipefail
+          if ! run_probe Runtime17.xcresult 2>&1 | tee "$RUNNER_TEMP/first-test.log"; then
+            if grep -q 'is installing or uninstalling, and cannot be launched' "$RUNNER_TEMP/first-test.log" && ! grep -q 'Tap "chooseCurrency"' "$RUNNER_TEMP/first-test.log"; then
+              mv Runtime17.xcresult InstallBusy.xcresult
+              xcrun simctl bootstatus "$DEVICE" -b
+              sleep 10
+              run_probe Runtime17.xcresult
+            else
+              exit 1
+            fi
+          fi
       - name: Record QA result
         if: always()
         run: |
