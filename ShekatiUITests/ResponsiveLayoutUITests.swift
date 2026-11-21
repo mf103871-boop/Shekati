@@ -303,10 +303,17 @@ final class ResponsiveLayoutUITests: XCTestCase {
             return
         }
         field.typeText(text)
-        let accepted = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", expected), object: field)
-        let received = XCTWaiter.wait(for: [accepted], timeout: 5)
-        if received != .completed { inputDiagnostics(field, in: app, stage: "Exact input was not received") }
-        XCTAssertEqual(received, .completed, "The intended field must receive exactly the supplied fixture text")
+        // On SE with Arabic accessibility text, one AX read took over seven seconds.
+        // Poll the actual string, then check a fresh reading even if the last poll timed out.
+        if field.value as? String != expected {
+            let accepted = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                field.value as? String == expected
+            }, object: nil)
+            _ = XCTWaiter.wait(for: [accepted], timeout: 20)
+        }
+        let actual = field.value as? String
+        if actual != expected { inputDiagnostics(field, in: app, stage: "Exact input was not received") }
+        XCTAssertEqual(actual, expected, "The intended field must receive exactly the supplied fixture text")
     }
 
     private func typeLongFixture(_ text: String, into field: XCUIElement, in app: XCUIApplication) {

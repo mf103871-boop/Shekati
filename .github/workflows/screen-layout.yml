@@ -18,6 +18,12 @@ on:
       - 'ShekatiUITests/NativeScreenCapture.swift'
       - 'project.yml'
   workflow_dispatch:
+    inputs:
+      size:
+        type: choice
+        description: iPhone size to verify
+        default: all
+        options: [all, small, medium, large]
 permissions:
   contents: read
 concurrency:
@@ -31,7 +37,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        size: [small, medium, large]
+        size: ${{ fromJSON(github.event_name == 'workflow_dispatch' && inputs.size != 'all' && inputs.size != '' && format('["{0}"]', inputs.size) || '["small","medium","large"]') }}
     steps:
       - uses: actions/checkout@v4
         with:
