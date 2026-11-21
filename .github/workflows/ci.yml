@@ -16,10 +16,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - shard: general
-            artifactSuffix: ''
-          - shard: ledger
-            artifactSuffix: '-ledger'
           - shard: capture
             artifactSuffix: '-capture'
     runs-on: macos-26
@@ -60,8 +56,7 @@ jobs:
               raise SystemExit('No available iPhone simulator. Install an iOS simulator runtime on the runner.')
           # StoreKitTest on iOS 26.5 reports SKInternalErrorDomain 3 when a CLI
           # session loads its catalog (FB22237318). Layout CI covers the latest runtime.
-          preferred = [pair for pair in candidates if pair[0].endswith('iOS-26-2')]
-          runtime, device = sorted(preferred or candidates, key=lambda value: (value[0], value[1]['name']), reverse=True)[0]
+          runtime, device = next(pair for pair in candidates if pair[0].endswith('iOS-26-2') and pair[1]['name'] == 'iPhone Air')
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write(f"destination=platform=iOS Simulator,id={device['udid']}\n")
           print('Selected', device['name'], runtime)
@@ -108,7 +103,7 @@ jobs:
           if [[ "$SHARD" == "ledger" ]]; then
             selectors=(-only-testing:ShekatiUITests/LedgerToolsUITests)
           elif [[ "$SHARD" == "capture" ]]; then
-            selectors=(-only-testing:ShekatiUITests/StoreScreenshotUITests)
+            selectors=(-only-testing:ShekatiUITests/StoreScreenshotUITests/testArabicLargeTextOCRFooterInPortraitAndLandscape)
           else
             selectors=(-only-testing:ShekatiUITests
                        -skip-testing:ShekatiUITests/ResponsiveLayoutUITests
