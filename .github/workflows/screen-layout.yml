@@ -21,7 +21,7 @@ on:
     inputs:
       compact_scan_review:
         type: boolean
-        description: Verify the Arabic large-text scan review on iPhone SE in both orientations
+        description: Verify the focused amount and currency at Arabic Accessibility L on iPhone SE in landscape
         default: false
 permissions:
   contents: read
@@ -57,7 +57,7 @@ jobs:
       - name: Prepare simulator
         env:
           SIMULATOR_UDID: ${{ steps.simulator.outputs.udid }}
-          APPEARANCE: ${{ github.event_name == 'workflow_dispatch' && inputs.compact_scan_review && 'dark' || 'light' }}
+          APPEARANCE: light
         run: |
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
           xcrun simctl boot "$SIMULATOR_UDID"
@@ -72,7 +72,7 @@ jobs:
           set -o pipefail
           suite=ShekatiUITests/ResponsiveLayoutUITests
           if [[ "$COMPACT_SCAN" == "true" ]]; then
-            suite=ShekatiUITests/StoreScreenshotUITests/testArabicLargeTextOCRFooterInPortraitAndLandscape
+            suite=ShekatiUITests/ResponsiveLayoutUITests/testArabicLandscapeCurrencyWithFocusedAmount
           fi
           xcodebuild test -project Shekati.xcodeproj -scheme Shekati \
             -destination "$SIMULATOR_DESTINATION" \

@@ -22,6 +22,101 @@ final class ResponsiveLayoutUITests: XCTestCase {
     func testEnglishAccessibilityPortraitAndLandscape() { exerciseLayout(arabic: false, largeText: true) }
     func testArabicAccessibilityPortraitAndLandscape() { exerciseLayout(arabic: true, largeText: true) }
 
+    func testArabicLandscapeCurrencyWithFocusedAmount() throws {
+        try exerciseCurrencyProbe()
+    }
+
+    private func exerciseCurrencyProbe() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--arabic", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityL"]
+        app.launch()
+        let choose = app.buttons["chooseCurrency"]
+        XCTAssertTrue(choose.waitForExistence(timeout: 15))
+        reveal(choose, in: app)
+        choose.tap()
+        let usd = app.buttons["currency_USD"]
+        reveal(usd, in: app)
+        usd.tap()
+        let addCheque = app.buttons["addCheque"]
+        XCTAssertTrue(addCheque.waitForExistence(timeout: 10))
+        addCheque.tap()
+        selectOutgoing(in: app, arabic: true)
+        let amountField = app.textFields["amountField"]
+        reveal(amountField, in: app)
+        amountField.tap()
+        type(amount, into: "amountField", expected: amount, in: app)
+        dismissKeyboard(in: app, arabic: true)
+        rotate(.landscapeLeft, in: app)
+        reveal(amountField, in: app, searchToward: .earlier)
+        amountField.tap()
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 15))
+        XCTAssertTrue(app.buttons["التالي"].waitForExistence(timeout: 10))
+
+        struct Viewport {
+            let keyboard: Bool
+            let currency: CGRect?
+            let hasCurrencyLabel: Bool
+            let top: CGFloat
+            let bottom: CGFloat
+            var currencyFullyVisible: Bool {
+                guard let currency, currency.height > 0 else { return false }
+                return currency.minY >= top && currency.maxY <= bottom
+            }
+        }
+        func measure(_ stage: String) throws -> Viewport {
+            diagnostics(app, stage)
+            var elements: [any XCUIElementSnapshot] = [try app.snapshot()]
+            var index = 0
+            while index < elements.count {
+                elements.append(contentsOf: elements[index].children)
+                index += 1
+            }
+            let bounds = app.windows.firstMatch.frame
+            let field = try XCTUnwrap(elements.first { $0.identifier == "amountField" })
+            let codes = elements.filter { $0.label == "USD" && $0.elementType == .staticText && !$0.frame.isEmpty }
+            let code = codes.min { abs($0.frame.minY - field.frame.maxY) < abs($1.frame.minY - field.frame.maxY) }
+            let nearbyCode = code.flatMap { abs($0.frame.minY - field.frame.maxY) <= 72 ? $0 : nil }
+            let keyboard = elements.first { $0.elementType == .keyboard && $0.frame.intersects(bounds) }
+            let top = elements.filter { $0.elementType == .navigationBar && $0.frame.intersects(bounds) }
+                .map { $0.frame.maxY }.max() ?? bounds.minY
+            let bars = elements.filter { $0.elementType == .toolbar && $0.frame.minY >= top && $0.frame.intersects(bounds) }
+            let actions = elements.filter { $0.elementType == .button && ["التالي", "تم"].contains($0.label) && $0.frame.minY >= top && $0.frame.intersects(bounds) }
+            let lowerBounds = bars.map { $0.frame.minY } + actions.map { $0.frame.minY } + [keyboard?.frame.minY ?? bounds.maxY]
+            let bottom = lowerBounds.min() ?? bounds.maxY
+            let related = elements.filter { ($0.label.contains("USD") || $0.identifier == "amountField") && $0.elementType != .application }
+            let rows = related.map { "\($0.elementType.rawValue) id=\($0.identifier) label=\($0.label) value=\(String(describing: $0.value)) frame=\($0.frame)" }
+            let detail = XCTAttachment(string: (["window=\(bounds) contentTop=\(top) contentBottom=\(bottom) keyboard=\(String(describing: keyboard?.frame))"] + rows).joined(separator: "\n"))
+            detail.name = stage + " currency geometry"
+            detail.lifetime = .keepAlways
+            self.add(detail)
+            return Viewport(keyboard: keyboard != nil, currency: nearbyCode?.frame,
+                            hasCurrencyLabel: nearbyCode != nil || field.label.contains("USD"),
+                            top: top, bottom: bottom)
+        }
+        let before = try measure("SE-currency-01-focused")
+        let bounds = app.windows.firstMatch.frame
+        let startY = before.bottom - 5
+        let endY = max(before.top + 4, startY - 46)
+        XCTAssertGreaterThan(startY - endY, 8, "The drag must originate in the visible form and stay above the keyboard")
+        let origin = app.coordinate(withNormalizedOffset: .zero)
+        let start = origin.withOffset(CGVector(dx: bounds.width * 0.54, dy: startY))
+        let end = origin.withOffset(CGVector(dx: bounds.width * 0.54, dy: endY))
+        start.press(forDuration: 0.06, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.24)
+        let scrolled = try measure("SE-currency-02-one-scroll")
+        if scrolled.keyboard {
+            dismissKeyboard(in: app, arabic: true)
+        } else {
+            reveal(amountField, in: app, searchToward: .earlier)
+            amountField.tap()
+            dismissKeyboard(in: app, arabic: true)
+        }
+        let closed = try measure("SE-currency-03-done")
+        XCTAssertTrue(before.keyboard && before.hasCurrencyLabel, "The focused amount must expose its currency in accessibility")
+        XCTAssertTrue(scrolled.keyboard && scrolled.currencyFullyVisible, "One short scroll must make the full code visible with the keypad open")
+        XCTAssertTrue(!closed.keyboard && closed.currencyFullyVisible, "After Done, the full currency code must be visible")
+        XCTAssertEqual(amountField.value as? String, amount)
+    }
+
     private func exerciseLayout(arabic: Bool, largeText: Bool) {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing"] + (arabic ? ["--arabic"] : [])
