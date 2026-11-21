@@ -174,15 +174,16 @@ final class StoreScreenshotUITests: XCTestCase {
         if locale == "nl" {
             // On this device the previous toolbar overflow swallowed the only action.
             // Scroll across every fixture switch while keeping the single footer action visible.
+            let cancel = translations.localizedString(forKey: "Cancel", value: nil, table: nil)
             for field in ["number", "bank", "party", "amount", "dueDate"] {
                 let choice = app.switches.matching(identifier: "ocr-field-" + field).firstMatch
-                revealRecognizedSwitch(choice, above: use, in: app, movingDown: true)
+                revealRecognizedSwitch(choice, above: use, in: app, cancelTitle: cancel, movingDown: true)
                 XCTAssertEqual(choice.value as? String, "1", field)
                 tapRecognizedFieldSwitch(choice, expected: "0")
             }
             XCTAssertFalse(use.isEnabled)
             attachNativeScreenshot(in: app, name: "QA-NL-OCR-none")
-            revealRecognizedSwitch(numberChoice, above: use, in: app, movingDown: false)
+            revealRecognizedSwitch(numberChoice, above: use, in: app, cancelTitle: cancel, movingDown: false)
             tapRecognizedFieldSwitch(numberChoice, expected: "1")
             XCTAssertTrue(use.isEnabled && use.isHittable)
             attachNativeScreenshot(in: app, name: "QA-NL-OCR-number")
@@ -258,10 +259,7 @@ final class StoreScreenshotUITests: XCTestCase {
                 XCTAssertTrue(app.windows.firstMatch.frame.contains(use.frame))
                 XCTAssertGreaterThanOrEqual(use.frame.height, 44)
                 attachNativeScreenshot(in: app, name: "OCR-Arabic-large-" + suffix + "-footer")
-                for _ in 0..<10 {
-                    if due.exists && due.isHittable && due.frame.maxY <= use.frame.minY { break }
-                    if due.exists && due.frame.midY < 0 { app.swipeDown() } else { app.swipeUp() }
-                }
+                revealRecognizedSwitch(due, above: use, in: app, cancelTitle: "إلغاء", movingDown: true)
                 XCTAssertTrue(due.isHittable, due.debugDescription)
                 XCTAssertLessThanOrEqual(due.frame.maxY, use.frame.minY, "The fixed action must not cover the last recognized field.")
                 XCTAssertEqual(due.value as? String, "1")
@@ -278,13 +276,43 @@ final class StoreScreenshotUITests: XCTestCase {
     }
 
     private func revealRecognizedSwitch(_ row: XCUIElement, above footer: XCUIElement,
-                                        in app: XCUIApplication, movingDown: Bool) {
+                                        in app: XCUIApplication, cancelTitle: String, movingDown: Bool) {
         let control = row.switches.firstMatch
-        for _ in 0..<6 {
-            if control.exists && control.isHittable && control.frame.maxY <= footer.frame.minY { return }
-            if movingDown { app.swipeUp() } else { app.swipeDown() }
+        for _ in 0..<12 {
+            let window = app.windows.firstMatch.frame
+            let footerFrame = footer.frame
+            let bars = app.navigationBars.containing(.button, identifier: cancelTitle).allElementsBoundByIndex
+            guard let navigation = bars.first(where: {
+                $0.buttons[cancelTitle].firstMatch.isHittable && !$0.buttons["saveCheque"].exists
+            }) else { break }
+            let top = max(window.minY, navigation.frame.maxY) + 4
+            let bottom = min(window.maxY, footerFrame.minY) - 4
+            let body = CGRect(x: footerFrame.minX, y: top, width: footerFrame.width, height: max(0, bottom - top))
+            if control.exists && control.isHittable && body.contains(control.frame)
+                && row.frame.maxY <= footerFrame.minY { return }
+            // SwiftUI Form is exposed as a collection, table or scroll view depending on iOS.
+            // A screen-level swipe can travel across the sheet after rotating the iPhone.
+            let forms = app.collectionViews.allElementsBoundByIndex + app.tables.allElementsBoundByIndex
+                + app.scrollViews.allElementsBoundByIndex
+            let center = CGPoint(x: body.midX, y: body.midY)
+            guard let form = forms.first(where: { $0.frame.contains(center) && $0.isHittable }) else { break }
+            let frame = form.frame
+            let content = frame.intersection(body)
+            guard content.width > 30, content.height > 30 else { break }
+            let target = control.exists ? control.frame : .null
+            let scrollForward = target.isNull || target.isEmpty ? movingDown : target.midY > content.midY
+            let upper = content.minY + content.height * 0.15
+            let lower = content.minY + content.height * 0.85
+            let x = (content.midX - frame.minX) / frame.width
+            func coordinate(at y: CGFloat) -> XCUICoordinate {
+                form.coordinate(withNormalizedOffset: CGVector(dx: x, dy: (y - frame.minY) / frame.height))
+            }
+            let start = coordinate(at: scrollForward ? lower : upper)
+            let end = coordinate(at: scrollForward ? upper : lower)
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
         }
-        XCTFail("The native switch must be fully reachable above the fixed button: " + row.debugDescription)
+        attachNativeScreenshot(in: app, name: "OCR-review-switch-unreachable")
+        XCTFail("The native switch must be fully reachable in the review form above its action. " + app.debugDescription)
     }
 
     private func tapRecognizedFieldSwitch(_ row: XCUIElement, expected: String,

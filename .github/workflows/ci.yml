@@ -20,6 +20,8 @@ jobs:
             artifactSuffix: ''
           - shard: ledger
             artifactSuffix: '-ledger'
+          - shard: capture
+            artifactSuffix: '-capture'
     runs-on: macos-26
     timeout-minutes: 105
     steps:
@@ -102,12 +104,15 @@ jobs:
           SHARD: ${{ matrix.shard }}
         run: |
           mkdir -p build
-          # The general shard includes every current and future UI class except the two named here.
+          # Specialized flows have their own simulator. The general shard picks up future UI classes.
           if [[ "$SHARD" == "ledger" ]]; then
             selectors=(-only-testing:ShekatiUITests/LedgerToolsUITests)
+          elif [[ "$SHARD" == "capture" ]]; then
+            selectors=(-only-testing:ShekatiUITests/StoreScreenshotUITests)
           else
             selectors=(-only-testing:ShekatiUITests
                        -skip-testing:ShekatiUITests/ResponsiveLayoutUITests
+                       -skip-testing:ShekatiUITests/StoreScreenshotUITests
                        -skip-testing:ShekatiUITests/LedgerToolsUITests)
           fi
           xcodebuild test-without-building -project Shekati.xcodeproj -scheme Shekati -destination "$DEST" \
