@@ -1,0 +1,24 @@
+name: Build 16 to 17 in-place upgrade on one simulator
+on:
+  push:
+    branches: [qa/in-place-upgrade-16-to-17]
+permissions:
+  contents: read
+jobs:
+  upgrade:
+    runs-on: macos-26
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prepare XcodeGen
+        run: brew install xcodegen
+      - name: Make one simulated installation, upgrade it and compare its records
+        run: python3 Tools/UpgradeAcceptance/run.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-in-place-upgrade-evidence
+          path: upgrade-evidence
+          retention-days: 14
