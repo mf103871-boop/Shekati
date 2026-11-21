@@ -124,7 +124,7 @@ struct ChequeOperationsView: View {
                         }
                         if let last = position.accepted.last {
                             Button(app.tr("Correct last action"), role: .destructive) {
-                                sheet = OperationIntent(action: .discardConflict, parent: nil, related: last)
+                                sheet = OperationIntent(action: .discardConflict, parent: nil, related: last, correctsLastAction: true)
                             }
                         }
                     } label: {
@@ -140,7 +140,7 @@ struct ChequeOperationsView: View {
                 Text(app.tr("Activity history")).font(.headline)
                 ForEach(history) { event in
                     VStack(alignment: .leading, spacing: 3) {
-                        Text(app.tr(event.kind.title))
+                        Text(app.tr(event.kind == .discardConflict ? "Previous entry excluded" : event.kind.title))
                         Text([app.formatDay(event.day), event.amount == 0 ? "" : money(event.amount), event.party]
                             .filter { !$0.isEmpty }.joined(separator: " · "))
                             .font(.footnote).foregroundStyle(.secondary)
@@ -165,8 +165,11 @@ private struct OperationIntent: Identifiable {
     let action: LedgerAction
     let parent: UUID?
     let related: LedgerOperation?
+    var correctsLastAction = false
     var historicalAmount: Int64?
     var historicalCurrency: String?
+
+    var title: String { correctsLastAction ? "Correct last action" : action.title }
 }
 
 @MainActor
@@ -203,7 +206,7 @@ private struct OperationForm: View {
     private var summary: String {
         let amountText = display(effectiveAmount ?? 0)
         let accountName = intent.action == .historicalSettlement ? "" : accounts.first(where: { $0.id == record.bankAccountID })?.name ?? ""
-        let parts = [app.tr(intent.action.title), record.number, app.formatDay(LocalDay(date: date)), (effectiveAmount ?? 0) == 0 ? "" : amountText,
+        let parts = [app.tr(intent.title), record.number, app.formatDay(LocalDay(date: date)), (effectiveAmount ?? 0) == 0 ? "" : amountText,
                      accountName, party, number,
                      intent.action == .replace ? app.formatDay(LocalDay(date: due)) : "",
                      remainderAfterPayment.map { app.tr("Remaining after payment") + " · " + display($0) } ?? ""]
@@ -262,7 +265,7 @@ private struct OperationForm: View {
                               ([.endorse, .discardConflict, .markReturned, .cancel, .historicalSettlement].contains(intent.action) && party.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) ||
                               (intent.action == .replace && number.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty))
             }
-            .navigationTitle(app.tr(intent.action.title)).navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(app.tr(intent.title)).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button(app.tr("Cancel")) { dismiss() } } }
             .confirmationDialog(app.tr("Confirm action"), isPresented: $confirmation, titleVisibility: .visible) {
                 Button(app.tr("Confirm")) { commit() }.accessibilityIdentifier("commitOperation")

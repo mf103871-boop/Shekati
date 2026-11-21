@@ -85,10 +85,12 @@ final class HistoricalSettlementUITests: XCTestCase {
             format: "label CONTAINS %@ AND label CONTAINS %@", "004182", correction
         )).firstMatch
         XCTAssertTrue(correctionSummary.waitForExistence(timeout: 8))
+        XCTAssertTrue(correctionSummary.label.contains("Correct last action"))
         tapPresentedButton(confirm)
         XCTAssertTrue(historical.waitForExistence(timeout: 6))
         XCTAssertTrue(detailAmount("Remaining amount", "125.001").exists)
         XCTAssertTrue(history.exists)
+        XCTAssertTrue(app.staticTexts["Previous entry excluded"].exists)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", correction)).firstMatch.exists)
         attachNativeScreenshot(in: app, name: "historical-settlement-04-corrected")
         nativeTab(.home, in: app).tap()
