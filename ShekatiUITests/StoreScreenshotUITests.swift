@@ -154,36 +154,30 @@ final class StoreScreenshotUITests: XCTestCase {
         }
         openReview()
         let use = app.buttons.matching(identifier: "useOCRFields").firstMatch
-        if use.exists && use.isHittable {
-            XCTAssertTrue(use.isEnabled)
-            use.tap()
-        } else {
-            // UIKit moves a long translated toolbar action into its system overflow menu.
-            let overflow = app.navigationBars.buttons.matching(identifier: "OverflowBarButtonItem").firstMatch
-            XCTAssertTrue(overflow.waitForExistence(timeout: 8) && overflow.isHittable)
-            let beforeOverflow = XCUIScreen.main.screenshot()
-            overflow.tap()
-            let title = translations.localizedString(forKey: "Use selected", value: nil, table: nil)
-            func menuAction(in host: XCUIApplication) -> XCUIElement? {
-                let actions = host.descendants(matching: .any).matching(
-                    NSPredicate(format: "identifier == %@ OR label == %@ OR title == %@", "useOCRFields", title, title))
-                guard actions.firstMatch.waitForExistence(timeout: 8) else { return nil }
-                return actions.allElementsBoundByIndex.first { $0.isEnabled && $0.isHittable }
+        XCTAssertTrue(use.waitForExistence(timeout: 8))
+        XCTAssertTrue(use.isEnabled && use.isHittable)
+        XCTAssertEqual(use.label, translations.localizedString(forKey: "Use selected", value: nil, table: nil))
+        XCTAssertGreaterThanOrEqual(use.frame.height, 44)
+        XCTAssertTrue(app.windows.firstMatch.frame.contains(use.frame))
+        if locale == "nl" {
+            // On this device the previous toolbar overflow swallowed the only action.
+            // Scroll across every fixture switch while keeping the single footer action visible.
+            for field in ["number", "bank", "party", "amount", "dueDate"] {
+                let choice = app.switches.matching(identifier: "ocr-field-" + field).firstMatch
+                for _ in 0..<4 where !choice.isHittable { app.swipeUp() }
+                XCTAssertTrue(choice.isHittable, field)
+                XCTAssertEqual(choice.value as? String, "1", field)
+                choice.tap()
+                XCTAssertEqual(choice.value as? String, "0", field)
             }
-            // The Dutch toolbar overflows on the medium display. Check both the app
-            // and the system menu host for the actual enabled, localized action.
-            guard let action = menuAction(in: app) ?? menuAction(in: XCUIApplication(bundleIdentifier: "com.apple.springboard")) else {
-                for (name, image) in [("before", beforeOverflow), ("after", XCUIScreen.main.screenshot())] {
-                    let attachment = XCTAttachment(screenshot: image)
-                    attachment.name = "OCR-overflow-" + name
-                    attachment.lifetime = .keepAlways
-                    add(attachment)
-                }
-                XCTFail("Missing enabled OCR action in overflow for \(locale); expected '\(title)'. " + app.debugDescription)
-                return
-            }
-            action.tap()
+            XCTAssertFalse(use.isEnabled)
+            for _ in 0..<4 where !numberChoice.isHittable { app.swipeDown() }
+            XCTAssertTrue(numberChoice.isHittable)
+            numberChoice.tap()
+            XCTAssertEqual(numberChoice.value as? String, "1")
+            XCTAssertTrue(use.isEnabled && use.isHittable)
         }
+        use.tap()
         // Verify the action's effect in the editor. Nothing is saved to the cheque.
         let closed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: numberChoice)
         XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 10), .completed)
@@ -202,5 +196,37 @@ final class StoreScreenshotUITests: XCTestCase {
         XCTAssertTrue(amountChoice.exists, "The review must contain the fixture amount recognized by Vision.")
         XCTAssertEqual(amountChoice.value as? String, "1")
 
+    }
+
+    func testArabicOCRSelectionRemainsVisibleInDarkMode() {
+        continueAfterFailure = false
+        let previous = XCUIDevice.shared.appearance
+        XCUIDevice.shared.appearance = .dark
+        defer { XCUIDevice.shared.appearance = previous }
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing", "--store-screens", "-ShekatiStoreLocale", "ar",
+                               "-AppleLanguages", "(ar)", "-AppleLocale", "ar"]
+        app.launch()
+        let ledger = nativeTab(.cheques, in: app)
+        XCTAssertTrue(ledger.waitForExistence(timeout: 12))
+        ledger.tap()
+        let row = app.descendants(matching: .any).matching(identifier: "cheque-row-00000000-0000-4000-8000-000000004182").firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 8))
+        row.tap()
+        let edit = app.buttons["editCheque"]
+        XCTAssertTrue(edit.waitForExistence(timeout: 5))
+        edit.tap()
+        let scan = app.buttons["readChequeImage"]
+        for _ in 0..<10 where !scan.isHittable { app.swipeUp() }
+        XCTAssertTrue(scan.isHittable)
+        scan.tap()
+        let use = app.buttons.matching(identifier: "useOCRFields").firstMatch
+        XCTAssertTrue(use.waitForExistence(timeout: 90))
+        XCTAssertTrue(use.isEnabled && use.isHittable)
+        XCTAssertGreaterThanOrEqual(use.frame.height, 44)
+        attachNativeScreenshot(in: app, name: "OCR-Arabic-dark-selected-fields")
+        use.tap()
+        XCTAssertTrue(app.buttons["readChequeImage"].waitForExistence(timeout: 8))
+        XCTAssertFalse(use.exists)
     }
 }
