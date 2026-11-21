@@ -22,8 +22,34 @@ final class ResponsiveLayoutUITests: XCTestCase {
     func testEnglishAccessibilityPortraitAndLandscape() { exerciseLayout(arabic: false, largeText: true) }
     func testArabicAccessibilityPortraitAndLandscape() { exerciseLayout(arabic: true, largeText: true) }
 
-    func testArabicLandscapeCurrencyWithFocusedAmount() {
-        exerciseLayout(arabic: true, largeText: true, currencyProbeOnly: true)
+    func testArabicLandscapeCurrencyWithFocusedAmount() throws {
+        let app = XCUIApplication()
+        // Reuse the existing single USD owner so this currency-only probe does not exercise onboarding.
+        app.launchArguments = ["--ui-testing", "--legacy-settlement-test", "--arabic",
+                               "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityL"]
+        app.launch()
+        let add = app.buttons["addCheque"]
+        XCTAssertTrue(add.waitForExistence(timeout: 20))
+        add.tap()
+        let picker = element("chequeDirectionPicker", in: app)
+        XCTAssertTrue(picker.waitForExistence(timeout: 10))
+        for _ in 0..<4 where !picker.isHittable { app.swipeUp() }
+        picker.tap()
+        let outgoing = app.buttons["صادر"].firstMatch
+        XCTAssertTrue(outgoing.waitForExistence(timeout: 8))
+        outgoing.tap()
+        let field = app.textFields["amountField"]
+        for _ in 0..<7 where !field.isHittable { app.swipeUp() }
+        field.tap()
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 10))
+        field.typeText(amount)
+        XCTAssertEqual(field.value as? String, amount)
+        dismissKeyboard(in: app, arabic: true)
+        rotate(.landscapeLeft, in: app)
+        if !field.isHittable { reveal(field, in: app, searchToward: .earlier) }
+        field.tap()
+        XCTAssertTrue(app.buttons["التالي"].waitForExistence(timeout: 10))
+        try probeLandscapeCurrency(in: app, amountField: field)
     }
 
     private func probeLandscapeCurrency(in app: XCUIApplication, amountField: XCUIElement) throws {
@@ -101,7 +127,7 @@ final class ResponsiveLayoutUITests: XCTestCase {
         XCTAssertEqual(amountField.value as? String, amount)
     }
 
-    private func exerciseLayout(arabic: Bool, largeText: Bool, currencyProbeOnly: Bool = false) {
+    private func exerciseLayout(arabic: Bool, largeText: Bool) {
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing"] + (arabic ? ["--arabic"] : [])
         if largeText {
@@ -161,10 +187,6 @@ final class ResponsiveLayoutUITests: XCTestCase {
         // without making an assumption about UIKit's insertion position inside an existing value.
         XCTAssertEqual(amountField.value as? String, amount)
         capture(app, "04 numeric keyboard landscape")
-        if currencyProbeOnly {
-            XCTAssertNoThrow(try probeLandscapeCurrency(in: app, amountField: amountField))
-            return
-        }
         dismissKeyboard(in: app, arabic: arabic)
         for (identifier, value) in [("partyField", payee), ("chequeNumberField", chequeNumber)] {
             let field = app.textFields[identifier]
