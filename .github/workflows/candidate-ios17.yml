@@ -4,6 +4,7 @@ on:
     branches: [qa/build17-ios17-compatibility]
 permissions:
   contents: read
+  actions: read
 jobs:
   compile:
     runs-on: macos-26
@@ -15,14 +16,32 @@ jobs:
         with:
           ref: 9fca85268c9a4bde4b563c7447bff062b793b0fc
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          path: qa-harness
+          sparse-checkout: .github/qa
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: Candidate-17-simulator-products
+          run-id: 44887100891
+          github-token: ${{ github.token }}
+          path: original-simulator
       - name: Compile unchanged simulator products with the release compiler
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = 9fca85268c9a4bde4b563c7447bff062b793b0fc
           xcodebuild -version
+          python3 qa-harness/.github/qa/probe.py
+          test "$(git diff --name-only)" = ShekatiUITests/EnhancementUITests.swift
           if ! command -v xcodegen >/dev/null; then brew install xcodegen; fi
           xcodegen generate
           xcodebuild build-for-testing -project Shekati.xcodeproj -scheme Shekati -configuration Debug -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ONLY_ACTIVE_ARCH=NO ARCHS=arm64 CODE_SIGNING_ALLOWED=NO > "$RUNNER_TEMP/build.log" 2>&1 || { grep -E 'error:|failed:' "$RUNNER_TEMP/build.log" | head -60; exit 1; }
+          (cd original-simulator && shasum -a 256 -c RuntimeProducts.sha256 && tar -xzf RuntimeProducts.tgz)
+          app_path=Products/Debug-iphonesimulator/Shekati.app
+          mv "DerivedData/Build/$app_path" "$RUNNER_TEMP/recompiled.app"
+          mv "original-simulator/$app_path" "DerivedData/Build/$app_path"
+          shasum -a 256 "DerivedData/Build/$app_path/Shekati"
           cd DerivedData/Build
           COPYFILE_DISABLE=1 tar -czf ../../RuntimeProducts.tgz Products
           cd ../..
@@ -99,6 +118,22 @@ jobs:
           if [ -d Runtime17.xcresult ]; then
             xcrun xcresulttool get test-results summary --path Runtime17.xcresult > summary-ios17.json
             cat summary-ios17.json
+            xcrun xcresulttool export attachments --path Runtime17.xcresult --output-path ProbeAttachments
+          fi
+          if [ -n "${DEVICE:-}" ]; then
+            data="$(xcrun simctl get_app_container "$DEVICE" com.mf103871.shekati data)"
+            export QA_STORE="$data/Library/Application Support/Shekati/Shekati.store"
+            python3 - <<'PY'
+          import json, os, pathlib, sqlite3
+          p=pathlib.Path(os.environ['QA_STORE'])
+          db=sqlite3.connect(p.as_uri()+'?mode=ro', uri=True)
+          receipt={}
+          receipt['cheques']=db.execute('SELECT ZNUMBER,ZCURRENCYCODE,ZAMOUNTMINORUNITS,ZSTATUSRAW FROM ZCHEQUERECORD').fetchall()
+          receipt['events']=db.execute('SELECT ZKINDRAW,ZAMOUNTMINOR,ZCURRENCYCODE FROM ZLEDGEREVENTRECORD ORDER BY Z_PK').fetchall()
+          receipt['accounts']=db.execute('SELECT ZNAME,ZCURRENCYCODE,ZOPENINGMINOR FROM ZBANKACCOUNTRECORD').fetchall()
+          pathlib.Path('persisted-ios17.json').write_text(json.dumps(receipt,indent=2))
+          print(receipt)
+          PY
           fi
       - uses: actions/upload-artifact@v4
         if: always()
@@ -108,5 +143,7 @@ jobs:
             summary-ios17.json
             Runtime17.xcresult
             candidate-ios17-launch.png
+            persisted-ios17.json
+            ProbeAttachments
           if-no-files-found: ignore
           retention-days: 7
