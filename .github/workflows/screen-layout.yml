@@ -57,11 +57,12 @@ jobs:
       - name: Prepare simulator
         env:
           SIMULATOR_UDID: ${{ steps.simulator.outputs.udid }}
+          APPEARANCE: ${{ github.event_name == 'workflow_dispatch' && inputs.compact_scan_review && 'dark' || 'light' }}
         run: |
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
           xcrun simctl boot "$SIMULATOR_UDID"
           xcrun simctl bootstatus "$SIMULATOR_UDID" -b
-          xcrun simctl ui "$SIMULATOR_UDID" appearance light
+          xcrun simctl ui "$SIMULATOR_UDID" appearance "$APPEARANCE"
           xcrun simctl status_bar "$SIMULATOR_UDID" override --time '9:41' --dataNetwork wifi --wifiMode active --wifiBars 3 --batteryState charged --batteryLevel 100
       - name: Exercise Arabic and English in portrait and landscape
         env:

@@ -229,7 +229,7 @@ final class StoreScreenshotUITests: XCTestCase {
         }
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--store-screens", "-ShekatiStoreLocale", "ar",
-                               "-AppleLanguages", "(ar)", "-AppleLocale", "ar"]
+                               "-AppleLanguages", "(ar)", "-AppleLocale", "ar", "-appearance", "dark"]
         if largeText {
             app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityL"]
         }
@@ -238,7 +238,8 @@ final class StoreScreenshotUITests: XCTestCase {
         XCTAssertTrue(ledger.waitForExistence(timeout: 12))
         ledger.tap()
         let row = app.descendants(matching: .any).matching(identifier: "cheque-row-00000000-0000-4000-8000-000000004182").firstMatch
-        XCTAssertTrue(row.waitForExistence(timeout: 8))
+        for _ in 0..<8 where !row.isHittable { app.swipeUp() }
+        XCTAssertTrue(row.isHittable, app.debugDescription)
         row.tap()
         let edit = app.buttons["editCheque"]
         XCTAssertTrue(edit.waitForExistence(timeout: 5))
