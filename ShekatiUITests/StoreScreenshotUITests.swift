@@ -179,15 +179,15 @@ final class StoreScreenshotUITests: XCTestCase {
                 for _ in 0..<4 where !choice.isHittable { app.swipeUp() }
                 XCTAssertTrue(choice.isHittable, field)
                 XCTAssertEqual(choice.value as? String, "1", field)
-                choice.tap()
-                XCTAssertEqual(choice.value as? String, "0", field)
+                tapRecognizedFieldSwitch(choice, expected: "0")
             }
             XCTAssertFalse(use.isEnabled)
+            attachNativeScreenshot(in: app, name: "QA-NL-OCR-none")
             for _ in 0..<4 where !numberChoice.isHittable { app.swipeDown() }
             XCTAssertTrue(numberChoice.isHittable)
-            numberChoice.tap()
-            XCTAssertEqual(numberChoice.value as? String, "1")
+            tapRecognizedFieldSwitch(numberChoice, expected: "1")
             XCTAssertTrue(use.isEnabled && use.isHittable)
+            attachNativeScreenshot(in: app, name: "QA-NL-OCR-number")
         }
         use.tap()
         // Verify the action's effect in the editor. Nothing is saved to the cheque.
@@ -196,6 +196,7 @@ final class StoreScreenshotUITests: XCTestCase {
         for _ in 0..<10 where !amount.isHittable { app.swipeDown() }
         XCTAssertEqual(amount.value as? String, locale == "nl" ? "1250.001" : "1250.000",
                        "Applying the selected fields must preserve a manually edited, unselected JOD amount.")
+        if locale == "nl" { attachNativeScreenshot(in: app, name: "QA-NL-OCR-draft") }
         for _ in 0..<8 where !numberField.exists { app.swipeUp() }
         XCTAssertEqual(numberField.value as? String, "004182",
                        "Using the selected fields must replace the deliberately changed draft number with the scanned number.")
@@ -265,10 +266,8 @@ final class StoreScreenshotUITests: XCTestCase {
                 XCTAssertTrue(due.isHittable, due.debugDescription)
                 XCTAssertLessThanOrEqual(due.frame.maxY, use.frame.minY, "The fixed action must not cover the last recognized field.")
                 XCTAssertEqual(due.value as? String, "1")
-                due.tap()
-                XCTAssertEqual(due.value as? String, "0")
-                due.tap()
-                XCTAssertEqual(due.value as? String, "1")
+                tapRecognizedFieldSwitch(due, expected: "0")
+                tapRecognizedFieldSwitch(due, expected: "1")
                 attachNativeScreenshot(in: app, name: "OCR-Arabic-large-" + suffix + "-last-field")
             }
         } else {
@@ -277,5 +276,24 @@ final class StoreScreenshotUITests: XCTestCase {
         use.tap()
         XCTAssertTrue(app.buttons["readChequeImage"].waitForExistence(timeout: 8))
         XCTAssertFalse(use.exists)
+    }
+
+    private func tapRecognizedFieldSwitch(_ row: XCUIElement, expected: String,
+                                          file: StaticString = #filePath, line: UInt = #line) {
+        // SwiftUI exposes a labeled switch row with selectable text, and a native
+        // UISwitch at its trailing edge. Tap the control surfaced by UIKit, in either layout direction.
+        XCTAssertFalse(row.label.isEmpty, file: file, line: line)
+        let control = row.switches.firstMatch
+        guard control.exists && control.isHittable else {
+            XCTFail("Missing hittable native switch: " + row.debugDescription, file: file, line: line)
+            return
+        }
+        control.tap()
+        let change = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            row.value as? String == expected
+        }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [change], timeout: 8), .completed,
+                       "The native switch must update its labeled accessibility state after one tap",
+                       file: file, line: line)
     }
 }
