@@ -16,9 +16,23 @@ final class LegacyUpgradeScreenTests: XCTestCase {
         let tab = app.tabBars.buttons.matching(NSPredicate(format:"label IN %@", ["Cheques","Checks"])).firstMatch
         XCTAssertTrue(tab.waitForExistence(timeout:20),app.debugDescription)
         tab.tap()
+        #if LEGACY_BUILD9
+        // In the shipped legacy app this tab only lists outgoing cheques.
+        // Assert that scope, then reach the actual all-cheques register from Home.
+        let outgoing = app.buttons.matching(NSPredicate(format:"identifier BEGINSWITH %@ AND label CONTAINS %@", "cheque-row-", "007309")).firstMatch
+        XCTAssertTrue(outgoing.waitForExistence(timeout:12),app.debugDescription)
+        capture("Legacy-outgoing")
+        app.tabBars.buttons["Home"].tap()
+        let all = app.buttons["See all"]
+        for _ in 0..<7 where !all.isHittable { app.swipeUp() }
+        XCTAssertTrue(all.isHittable,app.debugDescription)
+        all.tap()
+        #endif
         let row = app.descendants(matching: .any).matching(NSPredicate(format:"identifier BEGINSWITH %@ AND label CONTAINS %@", "cheque-row-", "004182")).firstMatch
         XCTAssertTrue(row.waitForExistence(timeout:15),app.debugDescription)
         XCTAssertTrue(row.label.contains("1,250.075") || row.label.contains("1250.075"),row.label)
+        for _ in 0..<6 where !row.isHittable { app.swipeUp() }
+        XCTAssertTrue(row.isHittable,row.debugDescription)
         capture("Legacy-register")
         row.tap()
         let front = app.buttons.matching(NSPredicate(format:"label BEGINSWITH[c] %@ AND label CONTAINS[c] %@", "Front","image")).firstMatch
