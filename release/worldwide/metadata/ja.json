@@ -2,8 +2,8 @@
   "locale": "ja",
   "applicationLocale": "ja",
   "name": "Shekati",
-  "subtitle": "小切手管理",
-  "keywords": "小切手,銀行口座,カレンダー,リマインダー",
+  "subtitle": "小切手帳と期日の管理",
+  "keywords": "銀行口座,残高管理,入金予定,支払予定,決済日,資金繰り,リマインダー",
   "description": "受け取った小切手と振り出した小切手を、画像や支払期日と一緒に管理できます。カレンダーで今後の期日を確認し、リマインダーを設定できます。\n\n無料プランでは、銀行口座を1件、未決済の小切手を10枚まで登録できます。小切手の手入力、カレンダー、リマインダーをご利用いただけます。\n\nShekati Plusでは複数の銀行口座を管理でき、未決済の小切手の登録枚数に上限はありません。小切手をスキャンして読み取り結果を確認したり、裏書譲渡、一部決済、小切手の差し替えを記録したりできます。資金繰りの見通しも確認できます。\n\n月額または年額のプランを選べます。購入前にお住まいの地域の価格が表示されます。サブスクリプションは、Apple Accountで解約するまで自動更新されます。\n\n契約終了後も、登録済みの小切手を閲覧し、処理を完了したり、記録を書き出したりできます。\n\n利用規約\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nプライバシーポリシー\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {

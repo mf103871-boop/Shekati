@@ -2,8 +2,8 @@
   "locale": "tr",
   "applicationLocale": "tr",
   "name": "Shekati",
-  "subtitle": "Çek takibi",
-  "keywords": "Çekler,Banka hesapları,takvim,hatırlatmalar",
+  "subtitle": "Çek defteri ve vade takibi",
+  "keywords": "tahsilat,ödeme,bakiye,banka hesabı,hatırlatıcı,takvim,nakit akışı,ciro,mutabakat",
   "description": "Aldığınız ve düzenlediğiniz çekleri vade tarihleri ve görüntüleriyle birlikte kaydedin. Takvimden yaklaşan vadeleri görün ve hatırlatmalar ayarlayın.\n\nÜcretsiz planda bir banka hesabı ve en fazla on aktif çek yönetebilirsiniz. Çekleri elle girebilir, takvimi ve hatırlatmaları kullanabilirsiniz.\n\nShekati Plus ile birden fazla banka hesabını ve sınırsız sayıda aktif çeki takip edebilirsiniz. Çekleri tarayıp okunan bilgileri gözden geçirebilir, ciro işlemlerini, kısmi ödemeleri ve çek değişimlerini kaydedebilir, nakit akışı tahminlerini inceleyebilirsiniz.\n\nAylık veya yıllık abonelik seçebilirsiniz. Bölgenizde geçerli fiyat satın almadan önce gösterilir. Abonelik, Apple Hesabınızdan iptal edene kadar otomatik olarak yenilenir.\n\nAboneliğiniz sona erdikten sonra da mevcut çek kayıtlarını görüntüleyebilir, kapatabilir ve dışa aktarabilirsiniz.\n\nKullanım Şartları\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nGizlilik politikası\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {

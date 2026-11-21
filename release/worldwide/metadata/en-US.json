@@ -2,9 +2,9 @@
   "locale": "en-US",
   "applicationLocale": "en-US",
   "name": "Shekati",
-  "subtitle": "Check tracker",
-  "keywords": "checks,bank accounts,calendar,reminders",
-  "description": "Record incoming and outgoing checks, see their due dates and keep your check images together.\n\nThe free plan includes one bank account, ten active checks, manual entry, a calendar and reminders.\n\nShekati Plus adds more accounts, unlimited active checks, check scanning, endorsements, partial settlements, replacements and cash flow forecasts.\n\nChoose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until canceled in your Apple Account.\n\nYou can read, close and export existing checks after a subscription ends.\n\nTerms of use\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPrivacy policy\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
+  "subtitle": "Check register & due dates",
+  "keywords": "checkbook,tracker,balance,deposit,reminders,calendar,cash flow,reconciliation,postdated,payee",
+  "description": "Keep a check register for checks you write and receive. See your recorded bank balance and how much is left after outgoing checks due in the next seven days. Open the calendar for upcoming due dates, or a check to review its photos and payment history.\n\nThe free plan includes one bank account, ten active checks, manual entry, a calendar and reminders.\n\nShekati Plus adds more accounts, unlimited active checks, check scanning, endorsements, partial settlements, replacements and cash flow forecasts.\n\nChoose a monthly or annual subscription. Your local price is shown before purchase. Subscriptions renew automatically until canceled in your Apple Account.\n\nYou can read, close and export existing checks after a subscription ends.\n\nTerms of use\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPrivacy policy\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
     "monthly": {

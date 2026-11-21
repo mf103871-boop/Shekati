@@ -2,8 +2,8 @@
   "locale": "vi",
   "applicationLocale": "vi",
   "name": "Shekati",
-  "subtitle": "Quản lý séc",
-  "keywords": "séc,tài khoản ngân hàng,lịch,nhắc nhở",
+  "subtitle": "Sổ séc và ngày đáo hạn",
+  "keywords": "tài khoản ngân hàng,số dư,thu tiền,thanh toán,nhắc nhở,lịch,dòng tiền",
   "description": "Ghi lại séc đã nhận và séc đã phát hành, lưu ảnh cùng ngày đến hạn của từng tờ séc. Bạn có thể xem những séc sắp đến hạn trên lịch và đặt lời nhắc.\n\nGói miễn phí cho phép quản lý một tài khoản ngân hàng và tối đa mười séc chưa tất toán. Bạn có thể nhập séc thủ công, xem lịch và đặt lời nhắc.\n\nVới Shekati Plus, bạn có thể quản lý nhiều tài khoản ngân hàng và theo dõi số lượng séc chưa tất toán không giới hạn. Hãy quét séc, kiểm tra thông tin nhận dạng được, ghi lại việc ký hậu chuyển nhượng, thanh toán một phần hoặc thay thế séc, và xem dự báo dòng tiền.\n\nBạn có thể chọn gói tháng hoặc gói năm. Giá tại khu vực của bạn sẽ hiển thị trước khi mua. Gói đăng ký tự động gia hạn cho đến khi bạn hủy trong Tài khoản Apple.\n\nSau khi gói đăng ký hết hạn, bạn vẫn có thể xem, đóng các hồ sơ séc đã lưu và xuất dữ liệu.\n\nĐiều kiện sử dụng\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nChính sách riêng tư\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {

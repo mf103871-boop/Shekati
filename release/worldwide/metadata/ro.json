@@ -2,8 +2,8 @@
   "locale": "ro",
   "applicationLocale": "ro",
   "name": "Shekati",
-  "subtitle": "Evidența cecurilor",
-  "keywords": "cecuri,conturi bancare,calendar,scadențe",
+  "subtitle": "Registru de cecuri și scadențe",
+  "keywords": "carnet,încasări,plăți,sold bancar,calendar,mementouri,lichidități,reconciliere",
   "description": "Înregistrați cecurile primite și emise, urmăriți scadențele și păstrați câte o fotografie pentru fiecare cec. Versiunea gratuită permite gestionarea unui cont bancar și a până la 10 cecuri deschise, cu introducere manuală, calendar și mementouri.\n\nCu Shekati Plus puteți gestiona oricâte conturi și cecuri doriți. Scanați cecuri, înregistrați giruri, plăți parțiale și cecuri de înlocuire și consultați prognoza fluxului de numerar.\n\nAlegeți un abonament lunar sau anual. Prețul local este afișat înainte de cumpărare. Abonamentul se reînnoiește automat până când îl anulați din contul Apple. După expirare puteți în continuare să consultați, să închideți și să exportați cecurile înregistrate.\n\nTermeni de utilizare\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolitica de confidențialitate\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {

@@ -2,8 +2,8 @@
   "locale": "da",
   "applicationLocale": "da",
   "name": "Shekati",
-  "subtitle": "Checkoversigt",
-  "keywords": "checks,Bankkonti,kalender,påmindelser",
+  "subtitle": "Checkhæfte og forfaldsdatoer",
+  "keywords": "bankkonto,saldo,indbetaling,udbetaling,påmindelser,kalender,likviditet,afstemning",
   "description": "Registrér modtagne og udstedte checks, se forfaldsdatoerne, og gem et billede af hver check. Gratisversionen omfatter én bankkonto og op til 10 åbne checks samt manuel indtastning, kalender og påmindelser.\n\nMed Shekati Plus kan du registrere så mange konti og checks, som du har brug for. Scan checks, registrér overdragelser ved endossement, delbetalinger og erstatningschecks, og se din forventede likviditet.\n\nVælg et måneds- eller årsabonnement. Du ser den lokale pris inden købet. Abonnementet fornys automatisk, indtil du opsiger det på din Apple-konto. Efter udløb kan du stadig se, afslutte og eksportere eksisterende checks.\n\nBrugsvilkår\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPrivatlivspolitik\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {

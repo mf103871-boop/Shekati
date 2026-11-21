@@ -2,8 +2,8 @@
   "locale": "nl-NL",
   "applicationLocale": "nl",
   "name": "Shekati",
-  "subtitle": "Chequebeheer",
-  "keywords": "cheques,bankrekeningen,kalender,herinneringen",
+  "subtitle": "Chequeboek en vervaldatums",
+  "keywords": "bankrekening,saldo,storting,inning,herinneringen,kalender,kasstroom,afstemming",
   "description": "Registreer ontvangen en uitgeschreven cheques, bekijk de vervaldatums en bewaar een foto van elke cheque. Gratis beheer je één bankrekening en maximaal 10 openstaande cheques. Handmatige invoer, de kalender en herinneringen zijn inbegrepen.\n\nMet Shekati Plus beheer je onbeperkt rekeningen en cheques. Scan cheques, leg overdrachten via endossement, deelbetalingen en vervangende cheques vast en bekijk je verwachte kasstroom.\n\nKies een maand- of jaarabonnement. Je ziet de lokale prijs vóór aankoop. Het abonnement wordt automatisch verlengd totdat je het opzegt via je Apple Account. Na afloop kun je bestaande cheques nog steeds bekijken, afsluiten en exporteren.\n\nGebruiksvoorwaarden\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPrivacybeleid\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {

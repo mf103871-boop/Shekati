@@ -2,8 +2,8 @@
   "locale": "ms",
   "applicationLocale": "ms",
   "name": "Shekati",
-  "subtitle": "Pengurusan cek",
-  "keywords": "cek,akaun bank,kalendar,peringatan",
+  "subtitle": "Buku cek dan tarikh matang",
+  "keywords": "akaun bank,baki,deposit,kutipan,bayaran,peringatan,kalendar,aliran tunai",
   "description": "Rekodkan cek yang anda terima dan keluarkan. Simpan imej setiap cek bersama tarikh matangnya, semak tarikh yang akan datang dalam kalendar dan tetapkan peringatan.\n\nPelan percuma membolehkan anda mengurus satu akaun bank dan sehingga sepuluh cek aktif. Anda boleh memasukkan butiran cek secara manual serta menggunakan kalendar dan peringatan.\n\nDengan Shekati Plus, anda boleh mengurus beberapa akaun bank dan merekodkan cek aktif tanpa had bilangan. Imbas cek dan semak butiran yang dibaca, rekodkan pengendorsan, bayaran sebahagian dan penggantian cek, serta lihat unjuran aliran tunai.\n\nPilih langganan bulanan atau tahunan. Harga tempatan dipaparkan sebelum pembelian. Langganan diperbaharui secara automatik sehingga anda membatalkannya melalui Akaun Apple anda.\n\nSelepas langganan tamat, anda masih boleh menyemak rekod cek sedia ada, menandakan urusannya selesai dan mengeksport data.\n\nSyarat penggunaan\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nDasar Privasi\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {

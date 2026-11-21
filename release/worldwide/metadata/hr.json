@@ -2,8 +2,8 @@
   "locale": "hr",
   "applicationLocale": "hr",
   "name": "Shekati",
-  "subtitle": "Praćenje čekova",
-  "keywords": "čekovi,bankovni računi,kalendar,podsjetnici",
+  "subtitle": "Čekovna knjižica i dospijeća",
+  "keywords": "evidencija,naplata,isplata,stanje računa,podsjetnici,kalendar,novčani tok",
   "description": "Evidentirajte primljene i izdane čekove, pratite datume dospijeća i spremite fotografiju svakog čeka. Besplatno možete voditi jedan bankovni račun i do 10 otvorenih čekova uz ručni unos, kalendar i podsjetnike.\n\nShekati Plus omogućuje neograničen broj računa i čekova. Skenirajte čekove, evidentirajte prijenose indosamentom, djelomične uplate i zamjenske čekove te pratite očekivani novčani tok.\n\nOdaberite mjesečnu ili godišnju pretplatu. Lokalna cijena prikazuje se prije kupnje. Pretplata se obnavlja automatski dok je ne otkažete na svojem Apple računu. Nakon isteka i dalje možete pregledavati, zatvarati i izvoziti postojeće zapise o čekovima.\n\nUvjeti korištenja\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolitika privatnosti\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {

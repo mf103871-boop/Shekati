@@ -2,8 +2,8 @@
   "locale": "hu",
   "applicationLocale": "hu",
   "name": "Shekati",
-  "subtitle": "Csekknyilvántartás",
-  "keywords": "csekkek,bankszámlák,naptár,emlékeztetők",
+  "subtitle": "Csekkfüzet és esedékesség",
+  "keywords": "bankszámla,egyenleg,befizetés,kifizetés,emlékeztető,naptár,pénzforgalom",
   "description": "Tartsa nyilván a kapott és kiállított csekkeket, kövesse a határidőket, és mentse el a csekkek fényképét. Az ingyenes változatban egy bankszámlát és legfeljebb 10 nyitott csekket kezelhet. A kézi rögzítés, a naptár és az emlékeztetők is elérhetők.\n\nA Shekati Plus csomagban tetszőleges számú bankszámlát és csekket kezelhet. Beolvashatja a csekkeket, rögzítheti a forgatmányokat, a részfizetéseket és a cserecsekkeket, valamint megtekintheti a várható pénzforgalmat.\n\nHavi vagy éves előfizetést választhat. A helyi ár a vásárlás előtt jelenik meg. Az előfizetés automatikusan megújul, amíg le nem mondja Apple-fiókjában. Lejárat után a meglévő csekkeket továbbra is megtekintheti, lezárhatja és exportálhatja.\n\nFelhasználási feltételek\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nAdatvédelmi tájékoztató\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {

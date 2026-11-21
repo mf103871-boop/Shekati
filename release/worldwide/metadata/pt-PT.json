@@ -2,8 +2,8 @@
   "locale": "pt-PT",
   "applicationLocale": "pt-PT",
   "name": "Shekati",
-  "subtitle": "Gestão de cheques",
-  "keywords": "cheques,contas bancárias,calendário,Lembretes",
+  "subtitle": "Cheques e vencimentos",
+  "keywords": "saldo,depósitos,lembretes,calendário,reconciliação,tesouraria,cobrança,endosso",
   "description": "Registe os cheques recebidos e emitidos, acompanhe as datas de vencimento e guarde uma fotografia de cada cheque. Na versão gratuita pode gerir uma conta bancária e até 10 cheques em aberto, com registo manual, calendário e lembretes.\n\nCom o Shekati Plus pode gerir contas e cheques sem esses limites. Digitalize cheques, registe endossos, pagamentos parciais e substituições e consulte as previsões de tesouraria.\n\nEscolha uma assinatura mensal ou anual. O preço local é apresentado antes da compra. A assinatura renova-se automaticamente até a cancelar na sua Conta Apple. Depois de terminar, continua a poder consultar, encerrar e exportar os cheques já registados.\n\nTermos de uso\nhttps://www.apple.com/legal/internet-services/itunes/dev/stdeula/\n\nPolítica de privacidade\nhttps://mf103871-boop.github.io/Shekati/privacy.html",
   "subscriptionGroup": "Shekati Plus",
   "subscriptionLocalizations": {
