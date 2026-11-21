@@ -1,0 +1,74 @@
+name: Candidate 17 on iOS 17.5
+on:
+  push:
+    branches: [qa/build17-ios17-compatibility]
+permissions:
+  contents: read
+jobs:
+  compatibility:
+    runs-on: macos-15
+    timeout-minutes: 38
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 9fca85268c9a4bde4b563c7447bff062b793b0fc
+          persist-credentials: false
+      - name: Identify host and exact candidate source
+        run: |
+          test "$(git rev-parse HEAD)" = 9fca85268c9a4bde4b563c7447bff062b793b0fc
+          sw_vers
+          uname -m
+          xcodebuild -version
+          xcrun simctl list runtimes
+          df -h /
+      - name: Acquire Apple iOS 17.5 simulator
+        timeout-minutes: 16
+        run: |
+          set -euo pipefail
+          if ! xcrun simctl list runtimes | grep -Eq '^iOS 17\.5 .*21F79.*iOS-17-5$'; then
+            xcodebuild -downloadPlatform iOS -buildVersion 17.5
+          fi
+          xcrun simctl list runtimes
+          xcrun simctl list runtimes | grep -E '^iOS 17\.5 .*21F79.*iOS-17-5$'
+      - name: Boot test iPhone and record its runtime
+        run: |
+          set -euo pipefail
+          device="$(xcrun simctl create Shekati-Minimum-iOS17 com.apple.CoreSimulator.SimDeviceType.iPhone-15 com.apple.CoreSimulator.SimRuntime.iOS-17-5)"
+          xcrun simctl boot "$device"
+          xcrun simctl bootstatus "$device" -b
+          xcrun simctl list devices booted
+          echo "DEVICE=$device" >> "$GITHUB_ENV"
+      - name: Build and launch Shekati 1.0.0 (17)
+        run: |
+          set -euo pipefail
+          if ! command -v xcodegen >/dev/null; then brew install xcodegen; fi
+          xcodegen generate
+          xcodebuild build-for-testing -project Shekati.xcodeproj -scheme Shekati -configuration Debug -destination "platform=iOS Simulator,id=$DEVICE" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO > "$RUNNER_TEMP/build.log" 2>&1 || { tail -100 "$RUNNER_TEMP/build.log"; exit 1; }
+          app=DerivedData/Build/Products/Debug-iphonesimulator/Shekati.app
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$app/Info.plist")" = 17
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$app/Info.plist")" = 1.0.0
+          xcrun simctl install "$DEVICE" "$app"
+          xcrun simctl launch "$DEVICE" com.mf103871.shekati
+          xcrun simctl terminate "$DEVICE" com.mf103871.shekati
+      - name: Enter a cheque, deposit, collect and open its calendar entry
+        timeout-minutes: 9
+        run: |
+          xcodebuild test-without-building -project Shekati.xcodeproj -scheme Shekati -destination "platform=iOS Simulator,id=$DEVICE" -derivedDataPath DerivedData -parallel-testing-enabled NO -resultBundlePath Runtime17.xcresult -only-testing:ShekatiUITests/EnhancementUITests/testIncomingDepositAndCollectionMoveTheBankBalanceOnceAndRemainInCalendar
+      - name: Record QA result
+        if: always()
+        run: |
+          if [ -d Runtime17.xcresult ]; then
+            xcrun xcresulttool get test-results summary --path Runtime17.xcresult > summary-ios17.json
+            cat summary-ios17.json
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Candidate-17-on-iOS17
+          path: |
+            summary-ios17.json
+            Runtime17.xcresult
+          if-no-files-found: ignore
+          retention-days: 7
