@@ -12,23 +12,34 @@ concurrency:
   cancel-in-progress: true
 jobs:
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - shard: general
+            artifactSuffix: ''
+          - shard: ledger
+            artifactSuffix: '-ledger'
     runs-on: macos-26
     timeout-minutes: 105
     steps:
       - uses: actions/checkout@v4
       - name: Validate app and store localizations
+        if: matrix.shard == 'general'
         run: python3 Tools/Localization/audit_release.py
       - name: Show build tools
         run: |
           xcodebuild -version
           swift --version
       - name: Validate core behavior on macOS
+        if: matrix.shard == 'general'
         run: swift test --package-path Packages/ShekatiCore
       - name: Install project generator
         run: brew install xcodegen
       - name: Generate Xcode project
         run: xcodegen generate
       - name: Validate schema bootstrap build
+        if: matrix.shard == 'general'
         run: |
           xcodegen generate --spec Tools/SchemaBootstrap/project.yml --project Tools/SchemaBootstrap
           xcodebuild build -project Tools/SchemaBootstrap/ShekatiSchemaBootstrap.xcodeproj \
@@ -59,6 +70,7 @@ jobs:
           DEST: ${{ steps.simulator.outputs.destination }}
         run: xcodebuild build-for-testing -project Shekati.xcodeproj -scheme Shekati -destination "$DEST" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO
       - name: Exercise finance, migration, reminders and StoreKit
+        if: matrix.shard == 'general'
         env:
           DEST: ${{ steps.simulator.outputs.destination }}
         run: |
@@ -67,13 +79,13 @@ jobs:
             -derivedDataPath DerivedData -resultBundlePath build/Financial.xcresult \
             -only-testing:ShekatiTests -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
       - name: Summarize hosted unit tests
-        if: always() && steps.compile.outcome == 'success'
+        if: always() && matrix.shard == 'general' && steps.compile.outcome == 'success'
         run: |
           if [ -d build/Financial.xcresult ]; then
             xcrun xcresulttool get test-results summary --path build/Financial.xcresult | tee build/unit-summary.json
           fi
       - name: Save hosted unit test results
-        if: always()
+        if: always() && matrix.shard == 'general'
         uses: actions/upload-artifact@v4
         with:
           name: Shekati-finance-migration-storekit
@@ -87,10 +99,22 @@ jobs:
         if: ${{ !cancelled() && steps.compile.outcome == 'success' }}
         env:
           DEST: ${{ steps.simulator.outputs.destination }}
+          SHARD: ${{ matrix.shard }}
         run: |
+          mkdir -p build
+          # The general shard includes every current and future UI class except the two named here.
+          if [[ "$SHARD" == "ledger" ]]; then
+            selectors=(-only-testing:ShekatiUITests/LedgerToolsUITests)
+          else
+            selectors=(-only-testing:ShekatiUITests
+                       -skip-testing:ShekatiUITests/ResponsiveLayoutUITests
+                       -skip-testing:ShekatiUITests/LedgerToolsUITests)
+          fi
           xcodebuild test-without-building -project Shekati.xcodeproj -scheme Shekati -destination "$DEST" \
             -derivedDataPath DerivedData -resultBundlePath build/Shekati.xcresult \
-            -only-testing:ShekatiUITests -skip-testing:ShekatiUITests/ResponsiveLayoutUITests \
+            "${selectors[@]}" -parallel-testing-enabled NO \
+            -test-timeouts-enabled YES -default-test-execution-time-allowance 1500 \
+            -maximum-test-execution-time-allowance 1800 \
             CODE_SIGNING_ALLOWED=NO
       - name: Export native UI attachments
         if: always()
@@ -102,7 +126,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Shekati-native-ui-attachments
+          name: Shekati-native-ui-attachments${{ matrix.artifactSuffix }}
           path: build/ui-attachments
           if-no-files-found: ignore
           retention-days: 14
@@ -110,7 +134,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Shekati-simulator-test-report
+          name: Shekati-simulator-test-report${{ matrix.artifactSuffix }}
           path: build/Shekati.xcresult
           if-no-files-found: ignore
           retention-days: 14

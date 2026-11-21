@@ -10,6 +10,7 @@ struct NumericTextField: UIViewRepresentable {
     let keyboardType: UIKeyboardType
     @Binding var isFocused: Bool
     let identifier: String
+    var dismissWhenUnfocused = true
     var accessibilityTitle: String? = nil
     var textAlignment: NSTextAlignment = .left
     var nextTitle: String? = nil
@@ -29,7 +30,6 @@ struct NumericTextField: UIViewRepresentable {
         field.smartQuotesType = .no
         field.smartDashesType = .no
         field.smartInsertDeleteType = .no
-        field.returnKeyType = .done
         field.textContentType = nil
         field.semanticContentAttribute = .forceLeftToRight
         field.textColor = .label
@@ -48,24 +48,30 @@ struct NumericTextField: UIViewRepresentable {
     func updateUIView(_ field: UITextField, context: Context) {
         context.coordinator.parent = self
         field.placeholder = title
-        field.keyboardType = keyboardType
+        if field.keyboardType != keyboardType { field.keyboardType = keyboardType }
+        let returnKey: UIReturnKeyType = nextAction == nil ? .done : .next
+        if field.returnKeyType != returnKey { field.returnKeyType = returnKey }
         field.isEnabled = context.environment.isEnabled
         field.textAlignment = textAlignment
         field.accessibilityIdentifier = identifier
         field.accessibilityLabel = accessibilityTitle ?? title
         field.font = UIFont.preferredFont(forTextStyle: .body, compatibleWith: field.traitCollection)
         if let toolbar = field.inputAccessoryView as? UIToolbar {
-            toolbar.semanticContentAttribute = context.environment.layoutDirection == .rightToLeft ?
+            let direction: UISemanticContentAttribute = context.environment.layoutDirection == .rightToLeft ?
                 .forceRightToLeft : .forceLeftToRight
-            var items: [UIBarButtonItem] = []
-            if let nextTitle, nextAction != nil {
-                items.append(UIBarButtonItem(title: nextTitle, style: .plain,
-                    target: context.coordinator, action: #selector(Coordinator.next)))
+            if toolbar.semanticContentAttribute != direction { toolbar.semanticContentAttribute = direction }
+            let nextLabel = nextAction == nil ? nil : nextTitle
+            if toolbar.items?.compactMap(\.title) != [nextLabel, doneTitle].compactMap({ $0 }) {
+                var items: [UIBarButtonItem] = []
+                if let nextLabel {
+                    items.append(UIBarButtonItem(title: nextLabel, style: .plain,
+                        target: context.coordinator, action: #selector(Coordinator.next)))
+                }
+                items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+                items.append(UIBarButtonItem(title: doneTitle, style: .done,
+                    target: context.coordinator, action: #selector(Coordinator.done)))
+                toolbar.setItems(items, animated: false)
             }
-            items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
-            items.append(UIBarButtonItem(title: doneTitle, style: .done,
-                target: context.coordinator, action: #selector(Coordinator.done)))
-            if toolbar.items?.map(\.title) != items.map(\.title) { toolbar.setItems(items, animated: false) }
         }
         if field.text != text { field.text = text }
         if !field.isEnabled && field.isFirstResponder {
@@ -78,7 +84,7 @@ struct NumericTextField: UIViewRepresentable {
                 guard coordinator?.parent.isFocused == true, field?.window != nil, field?.isEnabled == true else { return }
                 field?.becomeFirstResponder()
             }
-        } else if !isFocused && field.isFirstResponder {
+        } else if !isFocused && dismissWhenUnfocused && field.isFirstResponder {
             field.resignFirstResponder()
         }
     }
@@ -104,22 +110,15 @@ struct NumericTextField: UIViewRepresentable {
         }
 
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            parent.isFocused = false
-            textField.resignFirstResponder()
+            if parent.nextAction != nil { next() } else { done() }
             return false
         }
 
         @objc func next() {
             guard let action = parent.nextAction else { done(); return }
-            // Finish UIKit's end-editing transaction before SwiftUI requests the next
-            // native responder. Otherwise its pending FocusState target can be cleared
-            // by the old numeric responder's resignation in the same transaction.
-            parent.isFocused = false
-            field?.resignFirstResponder()
-            DispatchQueue.main.async { [weak self] in
-                guard self?.field?.window != nil else { return }
-                action()
-            }
+            // Becoming first responder ends editing of the previous field. Dismissing
+            // it here would also start hiding the keyboard while the next one opens.
+            action()
         }
 
         @objc func done() {

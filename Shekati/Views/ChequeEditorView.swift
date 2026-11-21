@@ -103,6 +103,7 @@ struct ChequeEditorView: View {
     // state: SwiftUI clears FocusState values with no registered `.focused` native field.
     @State private var focusedField: EntryField?
     @FocusState private var nativeFocusedField: EntryField?
+    @State private var keyboardEndFrame: CGRect?
 
     private enum EntryField: Hashable { case amount, party, number, bank, customDays }
 
@@ -318,7 +319,8 @@ struct ChequeEditorView: View {
                             HStack {
                                 NumericTextField(title: app.tr("Days before (1–365)"), text: $customDays,
                                                  keyboardType: .numberPad, isFocused: numericFocus(.customDays),
-                                                 identifier: "chequeReminderDaysField", doneTitle: app.tr("Done")) { proposed, _ in
+                                                 identifier: "chequeReminderDaysField", dismissWhenUnfocused: focusedField == nil,
+                                                 doneTitle: app.tr("Done")) { proposed, _ in
                                     NumericInput.integer(proposed)
                                 }
                                 Button(app.tr("Add")) { addCustomReminder() }
@@ -393,8 +395,8 @@ struct ChequeEditorView: View {
                 }
             }
             ToolbarItemGroup(placement: .keyboard) {
-                if focusedField == .party || focusedField == .bank {
-                    if focusedField == .party {
+                if nativeFocusedField == .party || nativeFocusedField == .bank {
+                    if nativeFocusedField == .party {
                         Button(app.tr("Next")) { focusedField = .number }
                     }
                     Spacer()
@@ -412,8 +414,11 @@ struct ChequeEditorView: View {
             if cleanForm == nil { cleanForm = formSnapshot }
         }
         .onChange(of: focusedField) { _, field in
-            let nativeTarget = field == .party || field == .bank ? field : nil
-            if nativeFocusedField != nativeTarget { nativeFocusedField = nativeTarget }
+            // When entering a UIKit number field, let it take first responder from
+            // the text field. Clearing FocusState would also dismiss the keyboard.
+            if field == .party || field == .bank || field == nil {
+                if nativeFocusedField != field { nativeFocusedField = field }
+            }
             revealFocusedField(using: scrollProxy)
         }
         .onChange(of: nativeFocusedField) { previous, field in
@@ -430,9 +435,10 @@ struct ChequeEditorView: View {
             }
         }
         .onChange(of: amountText) { _, _ in amountError = nil }
-        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardDidChangeFrameNotification)) { _ in
-            // Numeric and alphabetic keyboards have different prediction/accessory
-            // heights. Reposition after the final frame, including device rotation.
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardDidChangeFrameNotification)) { note in
+            guard let frame = note.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+                  frame != keyboardEndFrame else { return }
+            keyboardEndFrame = frame
             revealFocusedField(using: scrollProxy)
         }
         .onChange(of: frontPhoto) { _, item in
@@ -510,9 +516,9 @@ struct ChequeEditorView: View {
             // apply the native focus handoff before resolving the row's position.
             await Task.yield()
             guard focusedField == field, entrySequence == sequence else { return }
-            withAnimation(.easeOut(duration: 0.2)) {
-                proxy.scrollTo(field, anchor: .center)
-            }
+            // UIKit is already animating the keyboard and its accessory. An
+            // additional animated Form scroll can compete with that transition.
+            proxy.scrollTo(field, anchor: .center)
         }
     }
 
@@ -543,7 +549,7 @@ struct ChequeEditorView: View {
             if !dynamicTypeSize.isAccessibilitySize { Spacer(minLength: 12) }
             NumericTextField(title: app.tr("Required"), text: $amountText,
                              keyboardType: fractionDigits == 0 ? .numberPad : .decimalPad,
-                             isFocused: numericFocus(.amount), identifier: "amountField",
+                             isFocused: numericFocus(.amount), identifier: "amountField", dismissWhenUnfocused: focusedField == nil,
                              accessibilityTitle: app.tr("Amount"), textAlignment: dynamicTypeSize.isAccessibilitySize ? .left : .right,
                              nextTitle: app.tr("Next"), doneTitle: app.tr("Done"),
                              nextAction: { focusedField = .party }) { proposed, _ in
@@ -581,7 +587,8 @@ struct ChequeEditorView: View {
         if focusedField == .party { previousSuggestions(for: .party) }
         NumericTextField(title: app.tr("Cheque number (optional)"), text: $number,
                          keyboardType: .numberPad, isFocused: numericFocus(.number),
-                         identifier: "chequeNumberField", doneTitle: app.tr("Done")) { proposed, current in
+                         identifier: "chequeNumberField", dismissWhenUnfocused: focusedField == nil,
+                         doneTitle: app.tr("Done")) { proposed, current in
             if let accepted = NumericInput.integer(proposed) { return accepted }
             // Older cheques may contain letters. Opening their editor must not erase them.
             // Let the owner remove legacy characters, but never introduce new ones.

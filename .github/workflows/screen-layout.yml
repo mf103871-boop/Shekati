@@ -18,6 +18,11 @@ on:
       - 'ShekatiUITests/NativeScreenCapture.swift'
       - 'project.yml'
   workflow_dispatch:
+    inputs:
+      compact_scan_review:
+        type: boolean
+        description: Verify the Arabic large-text scan review on iPhone SE in both orientations
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -31,7 +36,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        size: [small, medium, large]
+        size: ${{ fromJSON(github.event_name == 'workflow_dispatch' && inputs.compact_scan_review && '["small"]' || '["small","medium","large"]') }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,21 +57,27 @@ jobs:
       - name: Prepare simulator
         env:
           SIMULATOR_UDID: ${{ steps.simulator.outputs.udid }}
+          APPEARANCE: ${{ github.event_name == 'workflow_dispatch' && inputs.compact_scan_review && 'dark' || 'light' }}
         run: |
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
           xcrun simctl boot "$SIMULATOR_UDID"
           xcrun simctl bootstatus "$SIMULATOR_UDID" -b
-          xcrun simctl ui "$SIMULATOR_UDID" appearance light
+          xcrun simctl ui "$SIMULATOR_UDID" appearance "$APPEARANCE"
           xcrun simctl status_bar "$SIMULATOR_UDID" override --time '9:41' --dataNetwork wifi --wifiMode active --wifiBars 3 --batteryState charged --batteryLevel 100
       - name: Exercise Arabic and English in portrait and landscape
         env:
           SIMULATOR_DESTINATION: ${{ steps.simulator.outputs.destination }}
+          COMPACT_SCAN: ${{ github.event_name == 'workflow_dispatch' && inputs.compact_scan_review }}
         run: |
           set -o pipefail
+          suite=ShekatiUITests/ResponsiveLayoutUITests
+          if [[ "$COMPACT_SCAN" == "true" ]]; then
+            suite=ShekatiUITests/StoreScreenshotUITests/testArabicLargeTextOCRFooterInPortraitAndLandscape
+          fi
           xcodebuild test -project Shekati.xcodeproj -scheme Shekati \
             -destination "$SIMULATOR_DESTINATION" \
             -derivedDataPath DerivedData -resultBundlePath build/ScreenLayout.xcresult \
-            -only-testing:ShekatiUITests/ResponsiveLayoutUITests \
+            "-only-testing:$suite" \
             -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 \
             CODE_SIGNING_ALLOWED=NO | tee build/screen-layout.log
       - name: Export native screenshots and test summary
@@ -77,7 +88,7 @@ jobs:
             xcrun xcresulttool get test-results summary --path build/ScreenLayout.xcresult > build/test-summary.json
           fi
       - name: Verify original screenshot dimensions and orientation coverage
-        if: success()
+        if: success() && (github.event_name != 'workflow_dispatch' || !inputs.compact_scan_review)
         run: python3 Tools/ScreenAudit/verify_capture.py
       - name: Save original screenshots and audit evidence
         if: always()

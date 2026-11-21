@@ -130,6 +130,20 @@ final class StoreScreenshotUITests: XCTestCase {
         let resources = Bundle(for: type(of: self))
         let translationPath = try XCTUnwrap(resources.path(forResource: locale, ofType: "lproj"))
         let translations = try XCTUnwrap(Bundle(path: translationPath))
+        let done = translations.localizedString(forKey: "Done", value: nil, table: nil)
+        let finishTyping = app.toolbars.buttons.matching(NSPredicate(format: "label == %@", done)).firstMatch
+        let amount = app.textFields["amountField"]
+        if locale == "nl" {
+            for _ in 0..<6 where !amount.isHittable { app.swipeUp() }
+            XCTAssertTrue(amount.isHittable)
+            XCTAssertEqual(amount.value as? String, "1250.000")
+            // Put the caret at the end of the right-aligned amount and change one JOD fils.
+            amount.coordinate(withNormalizedOffset: CGVector(dx: 0.99, dy: 0.5)).tap()
+            amount.typeText(XCUIKeyboardKey.delete.rawValue + "1")
+            XCTAssertEqual(amount.value as? String, "1250.001")
+            XCTAssertTrue(finishTyping.waitForExistence(timeout: 8) && finishTyping.isHittable)
+            finishTyping.tap()
+        }
         let numberField = app.textFields["chequeNumberField"]
         for _ in 0..<8 where !numberField.isHittable { app.swipeUp() }
         XCTAssertEqual(numberField.value as? String, "004182")
@@ -137,8 +151,6 @@ final class StoreScreenshotUITests: XCTestCase {
         numberField.typeText("9")
         let edited = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value CONTAINS %@", "9"), object: numberField)
         XCTAssertEqual(XCTWaiter.wait(for: [edited], timeout: 8), .completed)
-        let done = translations.localizedString(forKey: "Done", value: nil, table: nil)
-        let finishTyping = app.toolbars.buttons.matching(NSPredicate(format: "label == %@", done)).firstMatch
         XCTAssertTrue(finishTyping.waitForExistence(timeout: 8) && finishTyping.isHittable)
         finishTyping.tap()
 
@@ -164,27 +176,25 @@ final class StoreScreenshotUITests: XCTestCase {
             // Scroll across every fixture switch while keeping the single footer action visible.
             for field in ["number", "bank", "party", "amount", "dueDate"] {
                 let choice = app.switches.matching(identifier: "ocr-field-" + field).firstMatch
-                for _ in 0..<4 where !choice.isHittable { app.swipeUp() }
-                XCTAssertTrue(choice.isHittable, field)
+                revealRecognizedSwitch(choice, above: use, in: app, movingDown: true)
                 XCTAssertEqual(choice.value as? String, "1", field)
-                choice.tap()
-                XCTAssertEqual(choice.value as? String, "0", field)
+                tapRecognizedFieldSwitch(choice, expected: "0")
             }
             XCTAssertFalse(use.isEnabled)
-            for _ in 0..<4 where !numberChoice.isHittable { app.swipeDown() }
-            XCTAssertTrue(numberChoice.isHittable)
-            numberChoice.tap()
-            XCTAssertEqual(numberChoice.value as? String, "1")
+            attachNativeScreenshot(in: app, name: "QA-NL-OCR-none")
+            revealRecognizedSwitch(numberChoice, above: use, in: app, movingDown: false)
+            tapRecognizedFieldSwitch(numberChoice, expected: "1")
             XCTAssertTrue(use.isEnabled && use.isHittable)
+            attachNativeScreenshot(in: app, name: "QA-NL-OCR-number")
         }
         use.tap()
         // Verify the action's effect in the editor. Nothing is saved to the cheque.
         let closed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: numberChoice)
         XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 10), .completed)
-        let amount = app.textFields["amountField"]
         for _ in 0..<10 where !amount.isHittable { app.swipeDown() }
-        XCTAssertEqual(amount.value as? String, "1250.000",
-                       "The editor must show the recognized JOD amount.")
+        XCTAssertEqual(amount.value as? String, locale == "nl" ? "1250.001" : "1250.000",
+                       "Applying the selected fields must preserve a manually edited, unselected JOD amount.")
+        if locale == "nl" { attachNativeScreenshot(in: app, name: "QA-NL-OCR-draft") }
         for _ in 0..<8 where !numberField.exists { app.swipeUp() }
         XCTAssertEqual(numberField.value as? String, "004182",
                        "Using the selected fields must replace the deliberately changed draft number with the scanned number.")
@@ -199,34 +209,100 @@ final class StoreScreenshotUITests: XCTestCase {
     }
 
     func testArabicOCRSelectionRemainsVisibleInDarkMode() {
+        exerciseArabicDarkScan(largeText: false)
+    }
+
+    func testArabicLargeTextOCRFooterInPortraitAndLandscape() {
+        exerciseArabicDarkScan(largeText: true)
+    }
+
+    private func exerciseArabicDarkScan(largeText: Bool) {
         continueAfterFailure = false
         let previous = XCUIDevice.shared.appearance
         XCUIDevice.shared.appearance = .dark
-        defer { XCUIDevice.shared.appearance = previous }
+        XCUIDevice.shared.orientation = .portrait
+        defer {
+            XCUIDevice.shared.appearance = previous
+            XCUIDevice.shared.orientation = .portrait
+        }
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing", "--store-screens", "-ShekatiStoreLocale", "ar",
-                               "-AppleLanguages", "(ar)", "-AppleLocale", "ar"]
+                               "-AppleLanguages", "(ar)", "-AppleLocale", "ar", "-appearance", "dark"]
+        if largeText {
+            app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityL"]
+        }
         app.launch()
         let ledger = nativeTab(.cheques, in: app)
         XCTAssertTrue(ledger.waitForExistence(timeout: 12))
         ledger.tap()
         let row = app.descendants(matching: .any).matching(identifier: "cheque-row-00000000-0000-4000-8000-000000004182").firstMatch
-        XCTAssertTrue(row.waitForExistence(timeout: 8))
+        for _ in 0..<8 where !row.isHittable { app.swipeUp() }
+        XCTAssertTrue(row.isHittable, app.debugDescription)
         row.tap()
         let edit = app.buttons["editCheque"]
         XCTAssertTrue(edit.waitForExistence(timeout: 5))
         edit.tap()
         let scan = app.buttons["readChequeImage"]
-        for _ in 0..<10 where !scan.isHittable { app.swipeUp() }
+        for _ in 0..<16 where !scan.isHittable { app.swipeUp() }
         XCTAssertTrue(scan.isHittable)
         scan.tap()
         let use = app.buttons.matching(identifier: "useOCRFields").firstMatch
         XCTAssertTrue(use.waitForExistence(timeout: 90))
         XCTAssertTrue(use.isEnabled && use.isHittable)
         XCTAssertGreaterThanOrEqual(use.frame.height, 44)
-        attachNativeScreenshot(in: app, name: "OCR-Arabic-dark-selected-fields")
+        if largeText {
+            let due = app.switches.matching(identifier: "ocr-field-dueDate").firstMatch
+            for (orientation, suffix) in [(UIDeviceOrientation.portrait, "portrait"), (.landscapeLeft, "landscape")] {
+                rotateIPhone(to: orientation, in: app)
+                XCTAssertTrue(use.isEnabled && use.isHittable)
+                XCTAssertTrue(app.windows.firstMatch.frame.contains(use.frame))
+                XCTAssertGreaterThanOrEqual(use.frame.height, 44)
+                attachNativeScreenshot(in: app, name: "OCR-Arabic-large-" + suffix + "-footer")
+                for _ in 0..<10 {
+                    if due.exists && due.isHittable && due.frame.maxY <= use.frame.minY { break }
+                    if due.exists && due.frame.midY < 0 { app.swipeDown() } else { app.swipeUp() }
+                }
+                XCTAssertTrue(due.isHittable, due.debugDescription)
+                XCTAssertLessThanOrEqual(due.frame.maxY, use.frame.minY, "The fixed action must not cover the last recognized field.")
+                XCTAssertEqual(due.value as? String, "1")
+                tapRecognizedFieldSwitch(due, expected: "0")
+                tapRecognizedFieldSwitch(due, expected: "1")
+                attachNativeScreenshot(in: app, name: "OCR-Arabic-large-" + suffix + "-last-field")
+            }
+        } else {
+            attachNativeScreenshot(in: app, name: "OCR-Arabic-dark-selected-fields")
+        }
         use.tap()
         XCTAssertTrue(app.buttons["readChequeImage"].waitForExistence(timeout: 8))
         XCTAssertFalse(use.exists)
+    }
+
+    private func revealRecognizedSwitch(_ row: XCUIElement, above footer: XCUIElement,
+                                        in app: XCUIApplication, movingDown: Bool) {
+        let control = row.switches.firstMatch
+        for _ in 0..<6 {
+            if control.exists && control.isHittable && control.frame.maxY <= footer.frame.minY { return }
+            if movingDown { app.swipeUp() } else { app.swipeDown() }
+        }
+        XCTFail("The native switch must be fully reachable above the fixed button: " + row.debugDescription)
+    }
+
+    private func tapRecognizedFieldSwitch(_ row: XCUIElement, expected: String,
+                                          file: StaticString = #filePath, line: UInt = #line) {
+        // SwiftUI exposes a labeled switch row with selectable text, and a native
+        // UISwitch at its trailing edge. Tap the control surfaced by UIKit, in either layout direction.
+        XCTAssertFalse(row.label.isEmpty, file: file, line: line)
+        let control = row.switches.firstMatch
+        guard control.exists && control.isHittable else {
+            XCTFail("Missing hittable native switch: " + row.debugDescription, file: file, line: line)
+            return
+        }
+        control.tap()
+        let change = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            row.value as? String == expected
+        }, object: nil)
+        XCTAssertEqual(XCTWaiter.wait(for: [change], timeout: 8), .completed,
+                       "The native switch must update its labeled accessibility state after one tap",
+                       file: file, line: line)
     }
 }
