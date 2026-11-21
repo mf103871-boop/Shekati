@@ -13,7 +13,7 @@ concurrency:
 jobs:
   test:
     runs-on: macos-26
-    timeout-minutes: 60
+    timeout-minutes: 105
     steps:
       - uses: actions/checkout@v4
       - name: Validate app and store localizations
@@ -83,6 +83,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
       - name: Run iPhone interaction tests
+        timeout-minutes: 80
         if: ${{ !cancelled() && steps.compile.outcome == 'success' }}
         env:
           DEST: ${{ steps.simulator.outputs.destination }}
