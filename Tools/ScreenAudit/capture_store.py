@@ -83,6 +83,8 @@ def capture(entry, original_run, destination, device, app_info, shipping_source)
     for test in json.loads((attachments / "manifest.json").read_text()):
         for item in test.get("attachments", []):
             label = item.get("suggestedHumanReadableName", "")
+            if run.returncode and (diagnostic := re.search(r"OCR-overflow-(before|after)\b", label)):
+                shutil.copyfile(attachments / item["exportedFileName"], folder / f"diagnostic-overflow-{diagnostic[1]}.png")
             match = re.search("Store-" + re.escape(bundle) + r"-(0[1-5]-[a-z]+)(?![a-z])", label)
             if not match or match[1] not in SCREENS:
                 continue

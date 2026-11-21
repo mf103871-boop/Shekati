@@ -90,25 +90,36 @@ final class StoreScreenshotUITests: XCTestCase {
             attachNativeScreenshot(in: app, name: "Store-\(locale)-\(screen)")
         }
         let homeBalance = element("outgoingDueAmount")
-        func waitForDestination(_ identifier: String) {
+        func waitForDestination(_ identifier: String, leaving previous: XCUIElement) {
             let marker = element(identifier)
             XCTAssertTrue(marker.waitForExistence(timeout: 12), "Missing destination landmark \(identifier)")
-            let homeLeft = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: homeBalance)
-            XCTAssertEqual(XCTWaiter.wait(for: [homeLeft], timeout: 12), .completed,
-                           "The home content must leave the screen before capturing \(identifier)")
+            let previousLeft = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: previous)
+            XCTAssertEqual(XCTWaiter.wait(for: [previousLeft], timeout: 12), .completed,
+                           "The previous content must leave the screen before capturing \(identifier)")
             XCTAssertTrue(marker.isHittable, "The destination landmark \(identifier) must be visible")
         }
         XCTAssertTrue(app.buttons["addCheque"].waitForExistence(timeout: 15))
         XCTAssertTrue(homeBalance.waitForExistence(timeout: 10))
         capture("01-home")
 
+        // The simulator fixture uses today's date at launch. Capture the calendar and
+        // register in the same session so midnight cannot create two different due dates.
+        let row = element("cheque-row-00000000-0000-4000-8000-000000004182")
+        let calendar = nativeTab(.calendar, in: app)
+        XCTAssertTrue(calendar.waitForExistence(timeout: 10))
+        calendar.tap()
+        waitForDestination("calendarNextMonth", leaving: homeBalance)
+        XCTAssertTrue(row.waitForExistence(timeout: 8))
+        let calendarRow = row.label
+        XCTAssertTrue(calendarRow.contains("004182"))
+        capture("05-calendar")
+
         let ledger = nativeTab(.cheques, in: app)
         XCTAssertTrue(ledger.waitForExistence(timeout: 5))
         ledger.tap()
-        waitForDestination("shownChequeCount")
-        let row = element("cheque-row-00000000-0000-4000-8000-000000004182")
+        waitForDestination("shownChequeCount", leaving: element("calendarNextMonth"))
         XCTAssertTrue(row.waitForExistence(timeout: 8))
-        XCTAssertTrue(row.label.contains("004182"))
+        XCTAssertEqual(row.label, calendarRow, "The same cheque must expose the same amount, due date and state on both screens.")
         capture("02-ledger")
         row.tap()
         let edit = app.buttons["editCheque"]
@@ -150,12 +161,24 @@ final class StoreScreenshotUITests: XCTestCase {
             // UIKit moves a long translated toolbar action into its system overflow menu.
             let overflow = app.navigationBars.buttons.matching(identifier: "OverflowBarButtonItem").firstMatch
             XCTAssertTrue(overflow.waitForExistence(timeout: 8) && overflow.isHittable)
+            let beforeOverflow = XCUIScreen.main.screenshot()
             overflow.tap()
             let title = translations.localizedString(forKey: "Use selected", value: nil, table: nil)
-            let actions = app.descendants(matching: .any).matching(
-                NSPredicate(format: "identifier == %@ OR label == %@ OR title == %@", "useOCRFields", title, title))
-            guard actions.firstMatch.waitForExistence(timeout: 8),
-                  let action = actions.allElementsBoundByIndex.first(where: { $0.isEnabled && $0.isHittable }) else {
+            func menuAction(in host: XCUIApplication) -> XCUIElement? {
+                let actions = host.descendants(matching: .any).matching(
+                    NSPredicate(format: "identifier == %@ OR label == %@ OR title == %@", "useOCRFields", title, title))
+                guard actions.firstMatch.waitForExistence(timeout: 8) else { return nil }
+                return actions.allElementsBoundByIndex.first { $0.isEnabled && $0.isHittable }
+            }
+            // The Dutch toolbar overflows on the medium display. Check both the app
+            // and the system menu host for the actual enabled, localized action.
+            guard let action = menuAction(in: app) ?? menuAction(in: XCUIApplication(bundleIdentifier: "com.apple.springboard")) else {
+                for (name, image) in [("before", beforeOverflow), ("after", XCUIScreen.main.screenshot())] {
+                    let attachment = XCTAttachment(screenshot: image)
+                    attachment.name = "OCR-overflow-" + name
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
+                }
                 XCTFail("Missing enabled OCR action in overflow for \(locale); expected '\(title)'. " + app.debugDescription)
                 return
             }
@@ -179,14 +202,5 @@ final class StoreScreenshotUITests: XCTestCase {
         XCTAssertTrue(amountChoice.exists, "The review must contain the fixture amount recognized by Vision.")
         XCTAssertEqual(amountChoice.value as? String, "1")
 
-        // Relaunch to discard the editor draft without saving changes to the source cheque.
-        app.terminate()
-        app.launch()
-        let calendar = nativeTab(.calendar, in: app)
-        XCTAssertTrue(calendar.waitForExistence(timeout: 10))
-        calendar.tap()
-        waitForDestination("calendarNextMonth")
-        XCTAssertTrue(row.waitForExistence(timeout: 8), "The selected date must contain the seeded incoming cheque.")
-        capture("05-calendar")
     }
 }
