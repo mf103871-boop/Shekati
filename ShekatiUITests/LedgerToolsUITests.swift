@@ -115,7 +115,7 @@ final class LedgerToolsUITests: XCTestCase {
 
     private func launch() -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing"]
+        app.launchArguments = ["--ui-testing", "-AppleLanguages", "(en-US)", "-AppleLocale", "en_US"]
         app.launch()
         XCTAssertTrue(app.buttons["chooseCurrency"].waitForExistence(timeout: 10))
         reveal(app.buttons["chooseCurrency"], in: app)
@@ -170,13 +170,13 @@ final class LedgerToolsUITests: XCTestCase {
     }
 
     private func assertSelection(count: String, amount: String, in app: XCUIApplication) {
-        let countElement = element("selectedChequeCount", in: app)
-        let amountElement = element("selectedChequeAmount", in: app)
-        XCTAssertTrue(countElement.waitForExistence(timeout: 5))
-        let exactCount = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == %@", count), object: countElement)
-        let exactAmount = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label CONTAINS %@", amount), object: amountElement)
-        XCTAssertEqual(XCTWaiter.wait(for: [exactCount, exactAmount], timeout: 5), .completed,
-                       "The footer must recompute the selected count and currency-precise sum")
+        for (identifier, expected) in [("selectedChequeCount", count), ("selectedChequeAmount", "$" + amount)] {
+            let labels = app.staticTexts.matching(identifier: identifier)
+            let value = labels.matching(NSPredicate(format: "label == %@", expected)).firstMatch
+            XCTAssertTrue(value.waitForExistence(timeout: 10),
+                          "Expected \(identifier) to read \(expected), found \(labels.allElementsBoundByIndex.map(\.label))")
+            XCTAssertTrue(app.windows.firstMatch.frame.intersects(value.frame), "\(identifier) must be visible in the footer")
+        }
     }
 
     private func rotate(_ orientation: UIDeviceOrientation, in app: XCUIApplication) {
