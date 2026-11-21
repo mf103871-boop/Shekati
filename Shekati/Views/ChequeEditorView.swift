@@ -943,7 +943,7 @@ struct ChequeEditorView: View {
 }
 
 private enum AttachmentSide: Equatable { case front, back }
-private enum OCRField: Hashable { case number, bank, party, amount, dueDate }
+private enum OCRField: String, Hashable { case number, bank, party, amount, dueDate }
 
 @MainActor
 private struct OCRReviewSheet: View {
@@ -1014,14 +1014,31 @@ private struct OCRReviewSheet: View {
                 }
             }
         }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            VStack(spacing: 0) {
+                Divider()
+                Button {
+                    apply(selected)
+                } label: {
+                    Text(app.tr("Use selected"))
+                        .font(.headline)
+                        .foregroundStyle(selected.isEmpty ? Color.secondary : Theme.onAccent)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(selected.isEmpty)
+                .accessibilityIdentifier("useOCRFields")
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+            }
+            .background(.regularMaterial)
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
+            ToolbarItem(placement: .cancellationAction) {
                 Button(app.tr("Cancel")) { dismiss() }
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(app.tr("Use selected")) { apply(selected) }
-                    .fontWeight(.semibold).disabled(selected.isEmpty).accessibilityIdentifier("useOCRFields")
             }
         }
     }
@@ -1037,5 +1054,6 @@ private struct OCRReviewSheet: View {
                     .font(.body).textSelection(.enabled)
             }
         }
+        .accessibilityIdentifier("ocr-field-" + field.rawValue)
     }
 }
