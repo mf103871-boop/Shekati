@@ -98,6 +98,18 @@ final class InPlaceUpgradeAcceptanceTests: XCTestCase {
         addPhoto(at: 0, in: app)
         addPhoto(at: 1, in: app)
         app.buttons["saveCheque"].tap()
+        // Saving the first live cheque legitimately requests notification permission.
+        // A passive waiter does not trigger XCTest's registered interruption monitor.
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let consent = springboard.alerts.buttons["Allow"].firstMatch
+        if consent.waitForExistence(timeout: 12) {
+            let screenshot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+            screenshot.name = "Upgrade-16-notification-permission"
+            screenshot.lifetime = .keepAlways
+            add(screenshot)
+            consent.tap()
+            waitForAbsence(consent, timeout: 15)
+        }
         waitForAbsence(app.buttons["saveCheque"], timeout: 20)
         findHistoryCheque(in: app)
         tapInForm(app.buttons["operation-deposit"], in: app)
