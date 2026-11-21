@@ -279,6 +279,15 @@ final class StoreScreenshotUITests: XCTestCase {
         let control = row.switches.firstMatch
         let reviewContent = NSPredicate(format: "identifier BEGINSWITH %@ OR label == %@",
                                         "ocr-field-", "مراجعة معلومات الصورة")
+        // Form virtualizes both the title and switches while the sample image is
+        // passing. Their initial presence identifies the viewport for this orientation.
+        let centerX = footer.frame.midX
+        let collection = app.collectionViews.containing(reviewContent).allElementsBoundByIndex
+            .first { $0.frame.minX <= centerX && $0.frame.maxX >= centerX }
+        guard let formFrame = collection?.frame else {
+            XCTFail("Cannot identify the scan review collection. " + app.debugDescription)
+            return
+        }
         var scrollForward = true
         for _ in 0..<14 {
             let screen = window.frame
@@ -286,12 +295,8 @@ final class StoreScreenshotUITests: XCTestCase {
             let navigation = app.navigationBars.containing(.button, identifier: "إلغاء").allElementsBoundByIndex
                 .first { $0.buttons["إلغاء"].firstMatch.isHittable && !$0.buttons["saveCheque"].exists }
             guard let navigation else { break }
-            // The Form itself has no tap action. Identify its frontmost collection from
-            // its OCR-specific children, even while those children are partially clipped.
-            let forms = app.collectionViews.containing(reviewContent).allElementsBoundByIndex
-            guard let form = forms.first(where: { $0.frame.minX <= action.midX && $0.frame.maxX >= action.midX }) else { break }
-            let top = max(screen.minY, navigation.frame.maxY, form.frame.minY) + 5
-            let bottom = min(screen.maxY, action.minY, form.frame.maxY) - 8
+            let top = max(screen.minY, navigation.frame.maxY, formFrame.minY) + 5
+            let bottom = min(screen.maxY, action.minY, formFrame.maxY) - 8
             guard bottom > top + 28 else { break }
             let frame = row.exists ? row.frame : .null
             if control.exists && control.isHittable && !frame.isNull
