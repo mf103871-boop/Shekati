@@ -39,17 +39,47 @@ final class ResponsiveLayoutUITests: XCTestCase {
         XCTAssertTrue(outgoing.waitForExistence(timeout: 8))
         outgoing.tap()
         let field = app.textFields["amountField"]
-        for _ in 0..<7 where !field.isHittable { app.swipeUp() }
-        field.tap()
+        try focusVisibleAmount(field, in: app)
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 10))
         field.typeText(amount)
         XCTAssertEqual(field.value as? String, amount)
         dismissKeyboard(in: app, arabic: true)
         rotate(.landscapeLeft, in: app)
-        if !field.isHittable { reveal(field, in: app, searchToward: .earlier) }
-        field.tap()
+        try focusVisibleAmount(field, in: app)
         XCTAssertTrue(app.buttons["التالي"].waitForExistence(timeout: 10))
         try probeLandscapeCurrency(in: app, amountField: field)
+    }
+
+    private func focusVisibleAmount(_ field: XCUIElement, in app: XCUIApplication) throws {
+        let window = app.windows.firstMatch
+        let bounds = window.frame
+        let origin = window.coordinate(withNormalizedOffset: .zero)
+        for _ in 0..<12 {
+            var nodes: [any XCUIElementSnapshot] = [try app.snapshot()]
+            var i = 0
+            while i < nodes.count { nodes.append(contentsOf: nodes[i].children); i += 1 }
+            let nav = try XCTUnwrap(nodes.first { $0.elementType == .navigationBar && $0.identifier == "إضافة شيك" })
+            let top = nav.frame.maxY + 10
+            let bars = nodes.filter { $0.elementType == .toolbar && $0.frame.intersects(bounds)
+                && $0.frame.width > bounds.width * 0.8 && $0.frame.minY > top }
+            let bottom = (bars.map { $0.frame.minY }.min() ?? bounds.maxY) - 10
+            let position = nodes.first { $0.identifier == "amountField" }?.frame
+            if let position, position.minY >= top && position.maxY <= bottom && field.isHittable {
+                field.tap()
+                return
+            }
+            // isHittable can be true even when the entire input is underneath the
+            // edit sheet's navigation bar. Drag the form until the input fits first.
+            let forward = position.map { $0.midY > (top + bottom) / 2 } ?? true
+            let gap = position.map { abs($0.midY - (top + bottom) / 2) } ?? (bottom - top)
+            let distance = min((bottom - top) * 0.55, max(25, gap))
+            let startY = forward ? bottom - 2 : top + 2
+            let start = origin.withOffset(CGVector(dx: bounds.midX, dy: startY))
+            let end = origin.withOffset(CGVector(dx: bounds.midX, dy: startY + (forward ? -distance : distance)))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
+        }
+        diagnostics(app, "Amount field outside the editor")
+        XCTFail("The amount field must be fully inside its editor before requesting the keyboard")
     }
 
     private func probeLandscapeCurrency(in app: XCUIApplication, amountField: XCUIElement) throws {
