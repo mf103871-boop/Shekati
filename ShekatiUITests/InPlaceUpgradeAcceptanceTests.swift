@@ -33,28 +33,16 @@ final class InPlaceUpgradeAcceptanceTests: XCTestCase {
     private func addPhoto(at position: Int, in app: XCUIApplication) {
         let photoButton = app.buttons.matching(identifier: "Photos").element(boundBy: position)
         tapInForm(photoButton, in: app)
-        let assetLabels = NSPredicate(format: "label BEGINSWITH[c] 'Photo,' OR label BEGINSWITH[c] 'Photo '")
-        let assets = app.descendants(matching: .any).matching(assetLabels)
-        let grid = app.collectionViews.cells
-        let presented = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in assets.firstMatch.exists || grid.firstMatch.exists }, object: nil)
-        _ = XCTWaiter.wait(for: [presented], timeout: 12)
-        var photoFrames: [CGRect] = []
-        let thumbnails = assets.allElementsBoundByIndex.filter { element in
-            let frame = element.frame
-            guard element.isHittable, [.image, .cell, .button].contains(element.elementType), frame.width > 30, frame.height > 30, !photoFrames.contains(where: { abs($0.midX - frame.midX) < 5 && abs($0.midY - frame.midY) < 5 }) else { return false }
-            photoFrames.append(frame)
-            return true
-        }
-        if thumbnails.count > position {
-            thumbnails[position].tap()
-        } else {
-            let cells = grid.allElementsBoundByIndex.filter { cell in
-                let frame = cell.frame
-                return cell.isHittable && frame.width > 45 && frame.height > 45 && frame.width < app.windows.firstMatch.frame.width * 0.65
-            }
-            XCTAssertGreaterThan(cells.count, position, app.debugDescription)
-            cells[position].tap()
-        }
+        // The app's own Form remains behind the remote system sheet. Wait for
+        // a specific photo, not for generic cells that also belong to the editor.
+        let photos = app.images.matching(identifier: "PXGGridLayout-Info")
+        let thumbnail = photos.element(boundBy: position)
+        XCTAssertTrue(thumbnail.waitForExistence(timeout: 25), app.debugDescription)
+        XCTAssertTrue(thumbnail.label.hasPrefix("Photo,"))
+        XCTAssertTrue(app.windows.firstMatch.frame.contains(thumbnail.frame))
+        // PhotoKit exposes each thumbnail as an image rather than an action.
+        // Tap its actual pixel bounds and verify that the editor receives an attachment.
+        thumbnail.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
         let attached = app.buttons.matching(identifier: "Remove image").element(boundBy: position)
         XCTAssertTrue(attached.waitForExistence(timeout: 15), app.debugDescription)
     }
