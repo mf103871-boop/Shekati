@@ -51,16 +51,25 @@ final class ResponsiveLayoutUITests: XCTestCase {
             let codes = elements.filter { $0.label == "USD" && $0.elementType == .staticText && !$0.frame.isEmpty }
             let code = codes.min { abs($0.frame.minY - field.frame.maxY) < abs($1.frame.minY - field.frame.maxY) }
             let nearbyCode = code.flatMap { abs($0.frame.minY - field.frame.maxY) <= 72 ? $0 : nil }
-            let keyboard = elements.first { $0.elementType == .keyboard && $0.frame.intersects(bounds) }
+            // Remote keyboard windows on SE 26.5 expose their full-width strips in
+            // fixed portrait coordinates to snapshot(), even when the app is landscape.
+            // Only rotate full-height strips from that coordinate space, keeping all
+            // editor rows and already landscape-native strips in their own geometry.
+            func landscapeStrip(_ f: CGRect) -> CGRect {
+                guard abs(f.height - bounds.width) < 2, f.width < bounds.height else { return f }
+                return CGRect(x: f.minY, y: bounds.height - f.maxX, width: f.height, height: f.width)
+            }
+            let keyboard = elements.filter { $0.elementType == .keyboard }.map { landscapeStrip($0.frame) }
+                .first { !$0.isEmpty && $0.intersects(bounds) && abs($0.width - bounds.width) < 2 }
             let top = elements.filter { $0.elementType == .navigationBar && $0.frame.intersects(bounds) }
                 .map { $0.frame.maxY }.max() ?? bounds.minY
-            let bars = elements.filter { $0.elementType == .toolbar && $0.frame.minY >= top && $0.frame.intersects(bounds) }
-            let actions = elements.filter { $0.elementType == .button && ["التالي", "تم"].contains($0.label) && $0.frame.minY >= top && $0.frame.intersects(bounds) }
-            let lowerBounds = bars.map { $0.frame.minY } + actions.map { $0.frame.minY } + [keyboard?.frame.minY ?? bounds.maxY]
+            let bars = elements.filter { $0.elementType == .toolbar }.map { landscapeStrip($0.frame) }
+                .filter { abs($0.width - bounds.width) < 2 && $0.minY >= top && $0.intersects(bounds) }
+            let lowerBounds = bars.map(\.minY) + [keyboard?.minY ?? bounds.maxY]
             let bottom = lowerBounds.min() ?? bounds.maxY
             let related = elements.filter { ($0.label.contains("USD") || $0.identifier == "amountField") && $0.elementType != .application }
             let rows = related.map { "\($0.elementType.rawValue) id=\($0.identifier) label=\($0.label) value=\(String(describing: $0.value)) frame=\($0.frame)" }
-            let detail = XCTAttachment(string: (["window=\(bounds) contentTop=\(top) contentBottom=\(bottom) keyboard=\(String(describing: keyboard?.frame))"] + rows).joined(separator: "\n"))
+            let detail = XCTAttachment(string: (["window=\(bounds) contentTop=\(top) contentBottom=\(bottom) keyboard=\(String(describing: keyboard)) bars=\(bars)"] + rows).joined(separator: "\n"))
             detail.name = stage + " currency geometry"
             detail.lifetime = .keepAlways
             self.add(detail)
@@ -73,7 +82,7 @@ final class ResponsiveLayoutUITests: XCTestCase {
         let startY = before.bottom - 5
         let endY = max(before.top + 4, startY - 46)
         XCTAssertGreaterThan(startY - endY, 8, "The drag must originate in the visible form and stay above the keyboard")
-        let origin = app.coordinate(withNormalizedOffset: .zero)
+        let origin = app.windows.firstMatch.coordinate(withNormalizedOffset: .zero)
         let start = origin.withOffset(CGVector(dx: bounds.width * 0.54, dy: startY))
         let end = origin.withOffset(CGVector(dx: bounds.width * 0.54, dy: endY))
         start.press(forDuration: 0.06, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.24)
