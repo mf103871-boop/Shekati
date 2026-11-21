@@ -77,9 +77,9 @@ final class InPlaceUpgradeAcceptanceTests: XCTestCase {
         XCTAssertTrue(choose.waitForExistence(timeout: 15), "Build 16 must start on an empty simulator")
         tapInForm(choose, in: app)
         app.buttons["currency_USD"].tap()
-        let add = app.buttons["addCheque"]
-        XCTAssertTrue(add.waitForExistence(timeout: 15))
-        add.tap()
+        let addCheque = app.buttons["addCheque"]
+        XCTAssertTrue(addCheque.waitForExistence(timeout: 15))
+        addCheque.tap()
         let amount = app.textFields["amountField"]
         tapInForm(amount, in: app)
         amount.typeText("125.50")
@@ -106,7 +106,7 @@ final class InPlaceUpgradeAcceptanceTests: XCTestCase {
             let screenshot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
             screenshot.name = "Upgrade-16-notification-permission"
             screenshot.lifetime = .keepAlways
-            add(screenshot)
+            self.add(screenshot)
             consent.tap()
             waitForAbsence(consent, timeout: 15)
         }
