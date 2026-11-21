@@ -176,15 +176,13 @@ final class StoreScreenshotUITests: XCTestCase {
             // Scroll across every fixture switch while keeping the single footer action visible.
             for field in ["number", "bank", "party", "amount", "dueDate"] {
                 let choice = app.switches.matching(identifier: "ocr-field-" + field).firstMatch
-                for _ in 0..<4 where !choice.isHittable { app.swipeUp() }
-                XCTAssertTrue(choice.isHittable, field)
+                revealRecognizedSwitch(choice, above: use, in: app, movingDown: true)
                 XCTAssertEqual(choice.value as? String, "1", field)
                 tapRecognizedFieldSwitch(choice, expected: "0")
             }
             XCTAssertFalse(use.isEnabled)
             attachNativeScreenshot(in: app, name: "QA-NL-OCR-none")
-            for _ in 0..<4 where !numberChoice.isHittable { app.swipeDown() }
-            XCTAssertTrue(numberChoice.isHittable)
+            revealRecognizedSwitch(numberChoice, above: use, in: app, movingDown: false)
             tapRecognizedFieldSwitch(numberChoice, expected: "1")
             XCTAssertTrue(use.isEnabled && use.isHittable)
             attachNativeScreenshot(in: app, name: "QA-NL-OCR-number")
@@ -277,6 +275,16 @@ final class StoreScreenshotUITests: XCTestCase {
         use.tap()
         XCTAssertTrue(app.buttons["readChequeImage"].waitForExistence(timeout: 8))
         XCTAssertFalse(use.exists)
+    }
+
+    private func revealRecognizedSwitch(_ row: XCUIElement, above footer: XCUIElement,
+                                        in app: XCUIApplication, movingDown: Bool) {
+        let control = row.switches.firstMatch
+        for _ in 0..<6 {
+            if control.exists && control.isHittable && control.frame.maxY <= footer.frame.minY { return }
+            if movingDown { app.swipeUp() } else { app.swipeDown() }
+        }
+        XCTFail("The native switch must be fully reachable above the fixed button: " + row.debugDescription)
     }
 
     private func tapRecognizedFieldSwitch(_ row: XCUIElement, expected: String,
