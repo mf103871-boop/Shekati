@@ -284,12 +284,19 @@ final class StoreScreenshotUITests: XCTestCase {
         let centerX = footer.frame.midX
         let collection = app.collectionViews.containing(reviewContent).allElementsBoundByIndex
             .first { $0.frame.minX <= centerX && $0.frame.maxX >= centerX }
-        guard let formFrame = collection?.frame else {
+        guard let collection, let snapshot = try? collection.snapshot() else {
             XCTFail("Cannot identify the scan review collection. " + app.debugDescription)
             return
         }
+        let formFrame = collection.frame
+        let contentHeight = snapshot.children.map { $0.frame.height }
+            .filter { $0.isFinite }.max() ?? formFrame.height
+        // Cover the actual content extent, plus two viewports for the large image
+        // and cells whose final height is resolved as SwiftUI brings them onscreen.
+        let travelBudget = max(contentHeight, formFrame.height) + 2 * formFrame.height
+        var travelled: CGFloat = 0
         var scrollForward = true
-        for _ in 0..<14 {
+        while travelled < travelBudget {
             let screen = window.frame
             let action = footer.frame
             let navigation = app.navigationBars.containing(.button, identifier: "إلغاء").allElementsBoundByIndex
@@ -315,6 +322,7 @@ final class StoreScreenshotUITests: XCTestCase {
             let start = origin.withOffset(CGVector(dx: x, dy: startY - screen.minY))
             let end = origin.withOffset(CGVector(dx: x, dy: endY - screen.minY))
             start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
+            travelled += distance
         }
         attachNativeScreenshot(in: app, name: "OCR-review-date-unreachable")
         XCTFail("The date and its native switch must be fully reachable above the review action. " + app.debugDescription)
